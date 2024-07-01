@@ -10,6 +10,8 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   useEffect(() => {
     if (locationStatus === 'granted') {
       navigation.navigate('HomeScreen');
+    } else if (locationStatus === 'undetermined') {
+      navigation.navigate('PermissionsScreen');
     }
   }, [locationStatus]);
 
