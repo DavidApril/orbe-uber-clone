@@ -1,1 +1,2 @@
-c:\Users\Victus\Documents\GitHub\UBER-APP-CONDUCTOR\src\services\auth\auth.service.ts
+export * from './auth/auth.service'
+export * from './permissions/location.permissons.service'

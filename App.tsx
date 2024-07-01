@@ -1,17 +1,19 @@
 import 'react-native-gesture-handler';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { AuthProvider } from './src/providers/auth-provider';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { NavigationContainer } from '@react-navigation/native';
-import { StackNavigator } from './src/presentation/navigation/stack-navigation';
-import { useColorScheme } from 'react-native';
+import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
+import {EvaIconsPack} from '@ui-kitten/eva-icons';
+import {NavigationContainer} from '@react-navigation/native';
+import {StackNavigator} from './src/presentation/navigation/stack-navigation';
+import {useColorScheme} from 'react-native';
 import * as eva from '@eva-design/eva';
+import {AuthProvider, PermissionsCheckerProvider} from './src/providers';
 
 export const App = () => {
-
   const colorScheme = useColorScheme();
-	const theme = colorScheme === 'dark' ? eva.dark : eva.light;
-	const backgroundColor = colorScheme === 'dark' ? theme['color-basic-800'] : theme['color-basic-100'];
+  const theme = colorScheme === 'dark' ? eva.dark : eva.light;
+  const backgroundColor =
+    colorScheme === 'dark'
+      ? theme['color-basic-800']
+      : theme['color-basic-100'];
 
   return (
     <>
@@ -30,7 +32,9 @@ export const App = () => {
             },
           }}>
           <AuthProvider>
-            <StackNavigator />
+            <PermissionsCheckerProvider>
+              <StackNavigator />
+            </PermissionsCheckerProvider>
           </AuthProvider>
         </NavigationContainer>
       </ApplicationProvider>
