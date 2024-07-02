@@ -1,19 +1,23 @@
 import React, {PropsWithChildren, useEffect} from 'react';
 import {AppState} from 'react-native';
-import {usePermissionStore} from '../store';
+import {useAuthStore, usePermissionStore} from '../store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParams} from '../presentation/navigation/stack-navigation';
 
 export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   const {checkLocationPermission, locationStatus} = usePermissionStore();
+  const {status} = useAuthStore();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
+
   useEffect(() => {
-    if (locationStatus === 'granted') {
+    if (locationStatus === 'granted' && status === 'authorized') {
       navigation.navigate('HomeScreen');
-    } else if (locationStatus === 'undetermined') {
+    } else if (locationStatus === 'undetermined' && status === 'authorized') {
       navigation.navigate('PermissionsScreen');
+    } else {
+      navigation.navigate('LoginScreen');
     }
-  }, [locationStatus]);
+  }, [locationStatus, status]);
 
   useEffect(() => {
     checkLocationPermission();

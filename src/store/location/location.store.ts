@@ -3,7 +3,7 @@ import {Location} from '../../interfaces';
 import {LocationService} from '../../services';
 
 interface LocationState {
-  lastKnownLocation: Location | null | unknown;
+  lastKnownLocation: Location | null;
   userLocationList: Location[];
   watchId: number | null;
 
