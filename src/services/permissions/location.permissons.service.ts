@@ -8,7 +8,7 @@ import {
 } from 'react-native-permissions';
 import {PermissionStatus} from '../../interfaces';
 
-export class LocationService {
+export class PermissionsService {
   static requestLocationPermission = async (): Promise<PermissionStatus> => {
     let status: RNPermissionStatus = 'unavailable';
 
