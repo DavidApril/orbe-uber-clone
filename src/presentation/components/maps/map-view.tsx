@@ -1,20 +1,24 @@
 import {Platform} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker, Polyline} from 'react-native-maps';
-import {useEffect, useRef, useState} from 'react';
+import {PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {Location} from '../../../interfaces';
 import {useLocationStore} from '../../../store';
 import {FAB} from '../ui/floating-action-button';
-import { MapStyle } from '../../../config/const/map';
+import {MapStyle} from '../../../config/const/map';
 
 interface Props {
   showsUserLocation?: boolean;
   initialLocation: Location;
+  children?: PropsWithChildren;
+  handlePress?: (evt: any) => void;
 }
 
 export const CustomMapView = ({
   showsUserLocation = true,
   initialLocation,
-}: Props) => {
+  handlePress,
+  children,
+}: Props & PropsWithChildren) => {
   const mapRef = useRef<MapView>();
   const cameraLocation = useRef<Location>(initialLocation);
   const [isFollowingUser, setIsFollowingUser] = useState(true);
@@ -60,13 +64,16 @@ export const CustomMapView = ({
     <>
       <MapView
         customMapStyle={MapStyle}
+        showsIndoors={false}
+
+        onPress={handlePress}
         showsCompass={false}
         showsMyLocationButton={false}
         showsTraffic={true}
         showsBuildings={true}
         ref={map => (mapRef.current = map!)}
         showsUserLocation={showsUserLocation}
-        provider={Platform.OS === 'ios' ? undefined : PROVIDER_GOOGLE} // remove if not using Google Maps
+        provider={Platform.OS === 'ios' ? undefined : PROVIDER_GOOGLE}
         style={{flex: 1}}
         onTouchStart={() => setIsFollowingUser(false)}
         region={{
@@ -75,6 +82,9 @@ export const CustomMapView = ({
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
+        {children}
+  
+
         {isShowingPolyline && (
           <Polyline
             coordinates={userLocationList}
@@ -84,23 +94,7 @@ export const CustomMapView = ({
         )}
       </MapView>
 
-      {/* <FAB
-        iconName={isShowingPolyline ? 'eye-outline' : 'eye-off-outline'}
-        onPress={() => setIsShowingPolyline(!isShowingPolyline)}
-        style={{
-          bottom: 140,
-          right: 20,
-        }}
-      />
-
-      <FAB
-        iconName={isFollowingUser ? 'walk-outline' : 'accessibility-outline'}
-        onPress={() => setIsFollowingUser(!isFollowingUser)}
-        style={{
-          bottom: 80,
-          right: 20,
-        }}
-      /> */}
+      {/* {origin && destination && <FAB iconName="" />} */}
 
       <FAB
         iconName="compass-outline"

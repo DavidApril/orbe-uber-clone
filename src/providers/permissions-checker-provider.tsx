@@ -11,7 +11,7 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
 
   useEffect(() => {
     if (locationStatus === 'granted' && status === 'authorized') {
-      navigation.navigate('HomeScreen');
+      navigation.navigate('HomeClientScreen');
     } else if (locationStatus === 'undetermined' && status === 'authorized') {
       navigation.navigate('PermissionsScreen');
     } else {

@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useAuthStore, useLocationStore} from '../../../store';
 import {
-  AcceptDeniedNotification,
   CustomIcon,
   CustomMapView,
   FAB,
@@ -10,14 +9,12 @@ import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
 import {
   Button,
-  ButtonGroup,
   Layout,
   List,
   ListItem,
-  Text,
 } from '@ui-kitten/components';
 
-export const HomeScreen = () => {
+export const HomeDriverScreen = () => {
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [driverRequests, setDriveRequests] = useState<any[]>([]);
@@ -63,11 +60,6 @@ export const HomeScreen = () => {
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
   }
-
-  // useEffect(() => {
-  //   console.log(driverRequests)
-  // }, [driverRequests]);
-
 
   const AcceptDeniedButtons = (): React.ReactElement => (
     <Layout
@@ -119,45 +111,7 @@ export const HomeScreen = () => {
             />
           )}
         />
-        // <FlatList
-        //   style={{
-        // position: 'absolute',
-        // zIndex: 999,
-        // top: 80,
-        // left: 20,
-        // backgroundColor: 'black',
-        // right: 20,
-        // height: 400,
-        //   }}
-        //   data={driverRequests}
-        //   renderItem={data => (
-        //     <Layout
-        //       style={{
-        // backgroundColor: 'black',
-        // borderRadius: 30,
-        // position: 'absolute',
-        // zIndex: 999,
-        // paddingHorizontal: 20,
-        // paddingVertical: 10,
-        // alignItems: 'center',
-        //       }}>
-        //       <Layout></Layout>
-        // <Layout
-        //   style={{
-        //     backgroundColor: 'transparent',
-        //     display: 'flex',
-        //     flexDirection: 'row',
-        //   }}>
-        //   <Button appearance="ghost" status="success">
-        //     Aceptar
-        //   </Button>
-        //   <Button appearance="ghost" status="danger">
-        //     Rechazar
-        //   </Button>
-        // </Layout>
-        //     </Layout>
-        //   )}
-        // />
+      
       )}
 
       <CustomMapView initialLocation={lastKnownLocation!} />

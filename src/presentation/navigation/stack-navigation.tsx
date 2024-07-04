@@ -2,20 +2,28 @@ import {
   StackCardStyleInterpolator,
   createStackNavigator,
 } from '@react-navigation/stack';
+
 import {
-  HomeScreen,
+  HomeDriverScreen,
+  HomeClientScreen,
   LoadingScreen,
   LoginScreen,
   PermissionsScreen,
   RegisterScreen,
+  RegisterDriverScreen,
+  RegisterClientScreen,
 } from '../screens';
+import {useAuthStore} from '../../store';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
   LoginScreen: undefined;
   RegisterScreen: undefined;
   PermissionsScreen: undefined;
-  HomeScreen: undefined;
+  HomeClientScreen: undefined;
+  HomeDriverScreen: undefined;
+  RegisterDriverScreen: undefined;
+  RegisterClientScreen: undefined;
 };
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
@@ -29,9 +37,15 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
 };
 
 export const StackNavigator = () => {
+  const {user} = useAuthStore();
+
+  console.log(user?.email);
+
+  const isDriver = user?.email?.includes('conductor');
+
   return (
     <Navigator
-      initialRouteName="LoadingScreen"
+      initialRouteName="RegisterDriverScreen"
       screenOptions={{headerShown: false}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation}}
@@ -50,14 +64,31 @@ export const StackNavigator = () => {
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation}}
+        name="RegisterDriverScreen"
+        component={RegisterDriverScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation}}
+        name="RegisterClientScreen"
+        component={RegisterClientScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation}}
         name="PermissionsScreen"
         component={PermissionsScreen}
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation}}
-        name="HomeScreen"
-        component={HomeScreen}
+        name="HomeDriverScreen"
+        component={HomeDriverScreen}
       />
+      {!isDriver && (
+        <Screen
+          options={{cardStyleInterpolator: fadeAnimation}}
+          name="HomeClientScreen"
+          component={HomeClientScreen}
+        />
+      )}
     </Navigator>
   );
 };

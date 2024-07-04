@@ -1,25 +1,56 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import {Button, Input, Layout, Text} from '@ui-kitten/components';
+import {Button, Input, Layout, Text, Toggle} from '@ui-kitten/components';
 import {useWindowDimensions} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {RootStackParams} from '../../../navigation/stack-navigation';
 import {CustomIcon} from '../../../components';
+import {useState} from 'react';
 
 interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 
 export const RegisterScreen = ({navigation}: Props) => {
   const {height} = useWindowDimensions();
 
+  const [checked, setChecked] = useState<boolean>(false);
+
   return (
     <Layout style={{flex: 1}}>
       <ScrollView style={{marginHorizontal: 40}}>
         <Layout style={{paddingTop: height * 0.35}}>
           <Text category="h1">Registrar</Text>
-          <Text category="p2">Por favor, crea una cuenta para continuar</Text>
+          <Text category="p2">Por favor, Seleccione un tipo de cuenta</Text>
         </Layout>
 
+        <Layout style={{height: 60}}></Layout>
+
+        <Layout
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 10,
+          }}>
+          <Text style={{fontSize: 20, color: checked ? 'green' : 'gray'}}>
+            ¿Eres un conductor?
+          </Text>
+          <Toggle
+            checked={checked}
+            onChange={setChecked}
+            style={{marginVertical: 10}}></Toggle>
+        </Layout>
+        <Layout style={{height: 60}}></Layout>
+
+        <Button
+          onPress={() => {
+            navigation.push(
+              checked ? 'RegisterDriverScreen' : 'RegisterClientScreen',
+            );
+          }}>
+          Continuar
+        </Button>
+
         {/* Inputs */}
-        <Layout style={{marginTop: 20}}>
+        {/* <Layout style={{marginTop: 20}}>
           <Input
             accessoryLeft={<CustomIcon name="person-outline" />}
             placeholder="Nombre completo"
@@ -39,21 +70,20 @@ export const RegisterScreen = ({navigation}: Props) => {
             autoCapitalize="none"
             style={{marginBottom: 20}}
           />
-        </Layout>
+        </Layout> */}
 
         {/* Space */}
-        <Layout style={{height: 20}}></Layout>
 
         {/* Button */}
-        <Layout>
+        {/* <Layout>
           <Button appearance="ghost">Crear</Button>
-        </Layout>
+        </Layout> */}
 
         {/* Space */}
-        <Layout style={{height: 50}}></Layout>
+        {/* <Layout style={{height: 50}}></Layout> */}
 
         {/* Not have account */}
-        <Layout
+        {/* <Layout
           style={{
             alignItems: 'flex-end',
             flexDirection: 'row',
@@ -67,7 +97,7 @@ export const RegisterScreen = ({navigation}: Props) => {
             {' '}
             Ingresa aquí
           </Text>
-        </Layout>
+        </Layout> */}
       </ScrollView>
     </Layout>
   );
