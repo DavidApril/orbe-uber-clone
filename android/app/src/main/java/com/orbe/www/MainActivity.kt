@@ -1,4 +1,4 @@
-package com.test
+package com.orbe.www
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

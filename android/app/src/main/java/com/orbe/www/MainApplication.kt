@@ -1,4 +1,4 @@
-package com.test
+package com.orbe.www
 
 import android.app.Application
 import com.facebook.react.PackageList
