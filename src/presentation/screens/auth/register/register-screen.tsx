@@ -16,15 +16,11 @@ export const RegisterScreen = ({navigation}: Props) => {
   return (
     <Layout style={{flex: 1}}>
       <ScrollView style={{marginHorizontal: 40}}>
-        <Layout style={{paddingTop: height * 0.35}}>
-          <Text category="h1">Registrar</Text>
-          <Text category="p2">Por favor, Seleccione un tipo de cuenta</Text>
-        </Layout>
-
         <Layout style={{height: 60}}></Layout>
 
         <Layout
           style={{
+            paddingTop: height * 0.35,
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
