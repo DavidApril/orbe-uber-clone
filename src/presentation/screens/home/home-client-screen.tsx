@@ -1,21 +1,31 @@
-import {useEffect, useState} from 'react';
-import {useAuthStore, useLocationStore} from '../../../store';
-import {CustomIcon, CustomMapView, FAB} from '../../components';
-import {LoadingScreen} from '../loading/loading-screen';
-import {useSocket} from '../../../hooks';
 import {Button, Layout, List, ListItem} from '@ui-kitten/components';
+import {
+  CustomIcon,
+  CustomMapView,
+  FAB,
+  SearchPlacesInput,
+} from '../../components';
+import {LoadingScreen} from '../loading/loading-screen';
 import {Marker} from 'react-native-maps';
-import {orbeApi} from '../../../config/api';
-import {API_PREFIX, API_URL} from '@env';
+import {useAuthStore, useLocationStore} from '../../../store';
+import {useEffect, useState} from 'react';
+import {useSocket} from '../../../hooks';
+import {useWindowDimensions} from 'react-native';
 import axios from 'axios';
 
 export const HomeClientScreen = () => {
   const {user} = useAuthStore();
+  const {height, width} = useWindowDimensions();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [nearbyDrivers, setNearbyDrivers] = useState<any[]>([]);
 
   const [origin, setOrigin] = useState<any>(null);
   const [destination, setDestination] = useState<any>(null);
+
+  const [originPlace, setOriginPlace] = useState<any>(null);
+  const [destinationPlace, setDestinationPlace] = useState<any>(null);
+
+  const [places, setPlaces] = useState<any[]>([]);
 
   const [searchingDriver, setSearchingDriver] = useState<boolean>(false);
 
@@ -113,6 +123,29 @@ export const HomeClientScreen = () => {
 
   return (
     <>
+      <CustomMapView
+        handlePress={handlePress}
+        initialLocation={lastKnownLocation!}>
+        {origin && (
+          <Marker
+            draggable
+            coordinate={{
+              latitude: origin.latitude,
+              longitude: origin.longitude,
+            }}
+          />
+        )}
+
+        {destination && (
+          <Marker
+            draggable
+            coordinate={{
+              latitude: destination.latitude,
+              longitude: destination.longitude,
+            }}
+          />
+        )}
+      </CustomMapView>
       {nearbyDrivers && searchingDriver && (
         <List
           style={{
@@ -145,29 +178,6 @@ export const HomeClientScreen = () => {
         />
       )}
 
-      <CustomMapView
-        handlePress={handlePress}
-        initialLocation={lastKnownLocation!}>
-        {origin && (
-          <Marker
-            draggable
-            coordinate={{
-              latitude: origin.latitude,
-              longitude: origin.longitude,
-            }}
-          />
-        )}
-
-        {destination && (
-          <Marker
-            draggable
-            coordinate={{
-              latitude: destination.latitude,
-              longitude: destination.longitude,
-            }}
-          />
-        )}
-      </CustomMapView>
       {origin && destination && (
         <>
           <FAB
@@ -195,11 +205,64 @@ export const HomeClientScreen = () => {
             /> */}
         </>
       )}
+
+      {places.length > 0 && (
+        <List
+          data={places}
+          style={{
+            height: 'auto',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 99999,
+            borderBottomRightRadius: 35,
+            borderBottomLeftRadius: 35,
+            overflow: 'hidden',
+          }}
+          renderItem={({item}) => (
+            <ListItem
+              onPress={() => {
+                if (!originPlace) {
+                  setOriginPlace(item);
+                } else {
+                  setDestinationPlace(item);
+                }
+                setPlaces([]);
+              }}
+              style={{paddingHorizontal: 10, paddingVertical: 10}}
+              title={item.place_name}
+              description={item.text_es}
+            />
+          )}
+        />
+      )}
+
+      <Layout
+        style={{
+          width,
+          height: height * 0.3,
+          backgroundColor: 'black',
+          position: 'absolute',
+          zIndex: 9999,
+          bottom: 0,
+          borderTopLeftRadius: 35,
+          borderTopRightRadius: 35,
+          padding: 20,
+        }}>
+        <SearchPlacesInput
+          placeholder="Recogida"
+          value="hola"
+          setPlaces={setPlaces}
+        />
+        <SearchPlacesInput placeholder="Llegada" setPlaces={setPlaces} />
+
+        <Button appearance="ghost">Confirmar</Button>
+      </Layout>
+
       {searchingDriver && (
         <FAB
-          onPress={() => {
-            console.log({nearbyDrivers});
-          }}
+          onPress={() => {}}
           iconName={'search-outline'}
           label={'Buscando conductores...'}
           style={{
