@@ -1,28 +1,52 @@
 import {Platform} from 'react-native';
-import MapView, {PROVIDER_GOOGLE, Marker, Polyline} from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE, Polyline, Marker} from 'react-native-maps';
 import {PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {Location} from '../../../interfaces';
 import {useLocationStore} from '../../../store';
 import {FAB} from '../ui/floating-action-button';
 import {MapStyle} from '../../../config/const/map';
+import {GOOGLE_API_KEY} from '@env';
+import MapViewDirections from 'react-native-maps-directions';
 
 interface Props {
   showsUserLocation?: boolean;
   initialLocation: Location;
   children?: PropsWithChildren;
   handlePress?: (evt: any) => void;
+  origin?: Location | null;
+  showTraffic?: boolean;
+  destination?: Location | null;
+  setRaceData: React.Dispatch<
+    React.SetStateAction<{
+      distance: number;
+      duration: number;
+    } | null>
+  >;
 }
 
 export const CustomMapView = ({
   showsUserLocation = true,
   initialLocation,
-  handlePress,
+  // handlePress,
   children,
+  setRaceData,
+  showTraffic = false,
+  origin,
+  destination,
 }: Props & PropsWithChildren) => {
   const mapRef = useRef<MapView>();
   const cameraLocation = useRef<Location>(initialLocation);
   const [isFollowingUser, setIsFollowingUser] = useState(true);
   const [isShowingPolyline, setIsShowingPolyline] = useState(true);
+
+  useEffect(() => {
+    if (origin) {
+      moveCameraToLocation(origin);
+    }
+    if (destination) {
+      moveCameraToLocation(destination);
+    }
+  }, [origin, destination]);
 
   const {
     getLocation,
@@ -65,11 +89,11 @@ export const CustomMapView = ({
       <MapView
         customMapStyle={MapStyle}
         showsIndoors={false}
-
-        onPress={handlePress}
         showsCompass={false}
         showsMyLocationButton={false}
-        showsTraffic={true}
+        showsTraffic={showTraffic}
+        showsPointsOfInterest
+        showsIndoorLevelPicker={false}
         showsBuildings={true}
         ref={map => (mapRef.current = map!)}
         showsUserLocation={showsUserLocation}
@@ -83,17 +107,41 @@ export const CustomMapView = ({
           longitudeDelta: 0.0121,
         }}>
         {children}
-  
 
-        {isShowingPolyline && (
-          <Polyline
-            coordinates={userLocationList}
-            strokeColor="black"
-            strokeWidth={5}
+        {origin && destination && (
+          <MapViewDirections
+            origin={origin}
+            mode="DRIVING"
+            onReady={data => {
+              setRaceData({distance: data.distance, duration: data.duration});
+            }}
+            destination={destination}
+            apikey={GOOGLE_API_KEY}
+            strokeColor="white"
+            strokeWidth={4}
+          />
+        )}
+
+        {origin && (
+          <Marker
+            title="Recogida"
+            coordinate={{
+              latitude: origin?.latitude,
+              longitude: origin?.longitude,
+            }}
+          />
+        )}
+
+        {destination && (
+          <Marker
+            title="Destino"
+            coordinate={{
+              latitude: destination?.latitude,
+              longitude: destination?.longitude,
+            }}
           />
         )}
       </MapView>
-
       {/* {origin && destination && <FAB iconName="" />} */}
 
       <FAB

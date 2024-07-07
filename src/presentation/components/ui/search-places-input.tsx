@@ -12,14 +12,13 @@ interface Props {
 }
 
 export const SearchPlacesInput = ({placeholder, setPlaces, ...props}: Props) => {
-  const debounceRef = useRef<NodeJS.Timeout>();
-  const {lastKnownLocation} = useLocationStore();
 
   const [query, setQuery] = useState<string>('');
 
-  const onQueryChanged = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>,
-  ) => {
+  const {lastKnownLocation} = useLocationStore();
+  const debounceRef = useRef<NodeJS.Timeout>();
+
+  const onQueryChanged = ( e: NativeSyntheticEvent<TextInputChangeEventData> ) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
     debounceRef.current = setTimeout(async () => {
@@ -47,6 +46,8 @@ export const SearchPlacesInput = ({placeholder, setPlaces, ...props}: Props) => 
 
   return (
     <>
+      
+      
       <Input
         value={query ?? props.value}
         onChange={onQueryChanged}

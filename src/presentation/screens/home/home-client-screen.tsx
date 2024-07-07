@@ -6,12 +6,15 @@ import {
   SearchPlacesInput,
 } from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
-import {Marker} from 'react-native-maps';
 import {useAuthStore, useLocationStore} from '../../../store';
 import {useEffect, useState} from 'react';
 import {useSocket} from '../../../hooks';
 import {useWindowDimensions} from 'react-native';
-import axios from 'axios';
+import {RacesService} from '../../../services';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {GOOGLE_API_KEY} from '@env';
+import {Location} from '../../../interfaces';
+import MapViewDirections from 'react-native-maps-directions';
 
 export const HomeClientScreen = () => {
   const {user} = useAuthStore();
@@ -19,22 +22,17 @@ export const HomeClientScreen = () => {
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [nearbyDrivers, setNearbyDrivers] = useState<any[]>([]);
 
-  const [origin, setOrigin] = useState<any>(null);
-  const [destination, setDestination] = useState<any>(null);
-
-  const [originPlace, setOriginPlace] = useState<any>(null);
-  const [destinationPlace, setDestinationPlace] = useState<any>(null);
-
-  const [places, setPlaces] = useState<any[]>([]);
+  const [origin, setOrigin] = useState<Location | null>(null);
+  const [destination, setDestination] = useState<Location | null>(null);
+  
+  const [raceData, setRaceData] = useState<{
+    distance: number;
+    duration: number;
+  } | null>(null);
 
   const [searchingDriver, setSearchingDriver] = useState<boolean>(false);
 
-  const {socket, online} = useSocket(
-    `ws://orbeapi.devzeros.com:3001/location-client`,
-  );
-  useEffect(() => {
-    console.log({online});
-  }, [online, searchingDriver]);
+  const {socket} = useSocket(`ws://orbeapi.devzeros.com:3001/location-client`);
 
   useEffect(() => {
     const payload = {
@@ -48,7 +46,6 @@ export const HomeClientScreen = () => {
   useEffect(() => {
     socket.on('conductores-cercanos', data => {
       setNearbyDrivers(data);
-      console.log({data});
     });
   }, [lastKnownLocation]);
 
@@ -58,42 +55,25 @@ export const HomeClientScreen = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(nearbyDrivers);
-  }, [nearbyDrivers]);
-
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
   }
 
   const createRequest = async (id_driver: any) => {
-    const request = {
-      coordinates: [
-        {
-          type: 'origen',
-          latitud: origin?.latitude,
-          longitud: origin?.longitude,
-        },
-        {
-          type: 'destino',
-          latitud: destination?.latitude,
-          longitud: destination?.longitude,
-        },
-      ],
-      id_client: user?.uid,
-      id_driver: id_driver.toString(),
-    };
+    if (!user || !origin || !destination) return;
 
-    try {
-      const {data: response} = await axios.post(
-        `https://orbeapi.devzeros.com/api_v1/request/createRequest`,
-        request,
-      );
-      console.log({request});
-      console.log({response});
-    } catch (error) {
-      console.log(error);
-    }
+    await RacesService.createRequest({
+      id_client: user.uid,
+      id_driver: id_driver,
+      origin: {
+        latitude: origin?.latitude,
+        longitude: origin?.longitude,
+      },
+      destination: {
+        latitude: destination?.latitude,
+        longitude: destination?.longitude,
+      },
+    });
   };
 
   const AcceptDeniedButtons = (id_driver: string): React.ReactElement => (
@@ -112,40 +92,13 @@ export const HomeClientScreen = () => {
     </Layout>
   );
 
-  const handlePress = (event: any) => {
-    const {coordinate} = event.nativeEvent;
-    if (!origin) {
-      setOrigin(coordinate);
-    } else {
-      setDestination(coordinate);
-    }
-  };
-
   return (
     <>
       <CustomMapView
-        handlePress={handlePress}
-        initialLocation={lastKnownLocation!}>
-        {origin && (
-          <Marker
-            draggable
-            coordinate={{
-              latitude: origin.latitude,
-              longitude: origin.longitude,
-            }}
-          />
-        )}
-
-        {destination && (
-          <Marker
-            draggable
-            coordinate={{
-              latitude: destination.latitude,
-              longitude: destination.longitude,
-            }}
-          />
-        )}
-      </CustomMapView>
+        origin={origin}
+        destination={destination}
+        setRaceData={setRaceData}
+        initialLocation={lastKnownLocation!}></CustomMapView>
       {nearbyDrivers && searchingDriver && (
         <List
           style={{
@@ -178,7 +131,7 @@ export const HomeClientScreen = () => {
         />
       )}
 
-      {origin && destination && (
+      {/* {origin && destination && (
         <>
           <FAB
             onPress={() => {
@@ -196,66 +149,142 @@ export const HomeClientScreen = () => {
             }}
           />
 
-          {/* <MapViewDirections
+          <MapViewDirections
             origin={origin}
             destination={destination}
             apikey="AIzaSyALjv44Bcm65rOIEMQSmkyDqQfD_82dAEY"
             strokeColor="hotpink"
             strokeWidth={4}
-            /> */}
-        </>
-      )}
-
-      {places.length > 0 && (
-        <List
-          data={places}
-          style={{
-            height: 'auto',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 99999,
-            borderBottomRightRadius: 35,
-            borderBottomLeftRadius: 35,
-            overflow: 'hidden',
-          }}
-          renderItem={({item}) => (
-            <ListItem
-              onPress={() => {
-                if (!originPlace) {
-                  setOriginPlace(item);
-                } else {
-                  setDestinationPlace(item);
-                }
-                setPlaces([]);
-              }}
-              style={{paddingHorizontal: 10, paddingVertical: 10}}
-              title={item.place_name}
-              description={item.text_es}
             />
-          )}
-        />
-      )}
+            </>
+      )} */}
 
       <Layout
         style={{
-          width,
+          // width: width * 0.9,
           height: height * 0.3,
+          left: 10,
+          right: 10,
+          bottom: 10,
           backgroundColor: 'black',
           position: 'absolute',
           zIndex: 9999,
-          bottom: 0,
-          borderTopLeftRadius: 35,
-          borderTopRightRadius: 35,
+          borderRadius: 35,
           padding: 20,
         }}>
-        <SearchPlacesInput
-          placeholder="Recogida"
-          value="hola"
-          setPlaces={setPlaces}
+        <GooglePlacesAutocomplete
+          placeholder="Lugar de recogida"
+          textInputProps={{placeholderTextColor: 'white'}}
+          fetchDetails={true}
+          enableHighAccuracyLocation
+          debounce={300}
+          styles={{
+            container: {
+              flex: 1,
+              backgroundColor: 'transparent',
+            },
+            row: {
+              backgroundColor: 'black',
+              padding: 13,
+              height: 44,
+              flexDirection: 'row',
+              borderRadius: 50,
+              width: width * 0.8,
+              left: 10,
+              right: 10,
+            },
+            separator: {
+              height: 5,
+              backgroundColor: 'transparent',
+            },
+            textInput: {
+              borderRadius: 50,
+              backgroundColor: 'black',
+              borderColor: 'blue',
+              borderWidth: 1,
+              color: 'white',
+              paddingHorizontal: 20,
+            },
+            poweredContainer: {
+              display: 'none',
+            },
+            listView: {
+              backgroundColor: 'transparent',
+              position: 'absolute',
+              zIndex: 9999,
+              transform: [{translateY: height * -0.3}],
+            },
+          }}
+          onPress={(_, details = null) => {
+            if (details?.geometry.location) {
+              setOrigin({
+                latitude: details?.geometry.location.lat,
+                longitude: details?.geometry.location.lng,
+              });
+            }
+          }}
+          query={{
+            key: GOOGLE_API_KEY,
+            language: 'es',
+          }}
         />
-        <SearchPlacesInput placeholder="Llegada" setPlaces={setPlaces} />
+
+        <GooglePlacesAutocomplete
+          placeholder="Lugar de llegada"
+          textInputProps={{placeholderTextColor: 'white'}}
+          fetchDetails={true}
+          enableHighAccuracyLocation
+          debounce={300}
+          styles={{
+            container: {
+              flex: 1,
+              backgroundColor: 'transparent',
+            },
+            row: {
+              backgroundColor: 'black',
+              padding: 13,
+              height: 44,
+              flexDirection: 'row',
+              borderRadius: 50,
+              width: width * 0.8,
+              left: 10,
+              right: 10,
+            },
+            separator: {
+              height: 5,
+              backgroundColor: 'transparent',
+            },
+            textInput: {
+              borderRadius: 50,
+              backgroundColor: 'black',
+              borderColor: 'blue',
+              borderWidth: 1,
+              color: 'white',
+              paddingHorizontal: 20,
+            },
+            poweredContainer: {
+              display: 'none',
+            },
+            listView: {
+              backgroundColor: 'transparent',
+              position: 'absolute',
+              zIndex: 9999,
+              transform: [{translateY: height * -0.3}],
+            },
+          }}
+          onPress={(_, details = null) => {
+            if (details?.geometry.location) {
+              setDestination({
+                latitude: details?.geometry.location.lat,
+                longitude: details?.geometry.location.lng,
+              });
+            }
+          }}
+          query={{
+            key: GOOGLE_API_KEY,
+            language: 'es',
+          }}
+        />
 
         <Button appearance="ghost">Confirmar</Button>
       </Layout>
