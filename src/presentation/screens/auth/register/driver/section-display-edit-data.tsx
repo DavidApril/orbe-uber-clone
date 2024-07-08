@@ -16,13 +16,12 @@ export const SectionDisplayEditData = () => {
 
   async function handleSubmit(email: string, password: string) {
     try {
-      Alert.alert(`creating and logging...`);
+      Alert.alert(`Creando e iniciando sesión...`);
       if (driverRegisterForm) {
         setIsLoading(true);
-        await UsersService.createDriver(driverRegisterForm);
+        await UsersService.createClient(driverRegisterForm);
         login(email, password);
         setIsLoading(false);
-        Alert.alert(`user logged successfully`);
       } else {
         Alert.alert(`not logged`);
       }
@@ -103,12 +102,14 @@ export const SectionDisplayEditData = () => {
 
       <Layout>
         <Button
-          onPress={() =>
-            handleSubmit(
-              driverRegisterForm!.email,
-              driverRegisterForm?.password,
-            )
-          }
+          onPress={() => {
+            if (driverRegisterForm?.email && driverRegisterForm.password) {
+              handleSubmit(
+                driverRegisterForm!.email,
+                driverRegisterForm?.password,
+              );
+            }
+          }}
           appearance="ghost">
           Registrar
         </Button>

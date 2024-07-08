@@ -1,4 +1,4 @@
-import {Button, Layout, Spinner, Text} from '@ui-kitten/components';
+import {Button, Layout, List, Spinner, Text} from '@ui-kitten/components';
 import {CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useAuthStore, useLocationStore} from '../../../store';
@@ -17,7 +17,6 @@ export const HomeClientScreen = () => {
   const {height, width} = useWindowDimensions();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [nearbyDrivers, setNearbyDrivers] = useState<any[]>([]);
-  const [nearbyDriversDetails, setNearbyDriversDetails] = useState<any[]>([]);
   const [origin, setOrigin] = useState<Location | null>(null);
   const [destination, setDestination] = useState<Location | null>(null);
   const [modalLocation, setModalLocation] = useState(false);
@@ -27,12 +26,25 @@ export const HomeClientScreen = () => {
   const [modal, setModal] = useState(false);
   const [data, setData] = useState<any>();
 
+  const fetchData = async (uid: string) => {
+    const res = await orbeApi.get(`/user/getUserByUid?uid_firebase=${uid}`);
+    setData(res.data.data);
+  };
+
   useEffect(() => {
-    const fetchData = async (uid: string) => {
-      const res = await orbeApi.get(`/user/getUserByUid?uid_firebase=${uid}`);
-      setData(res.data.data.cliente);
-      console.log(res.data.data.cliente, 'this is data');
-    };
+    nearbyDrivers.forEach( async driver => {
+      // const res = await fetchData(driver.id);
+      console.log({driver})
+    });
+
+    console.log()
+  }, [nearbyDrivers]);
+
+  // useEffect(() => {
+  //   console.log({nearbyDrivers});
+  // }, [nearbyDrivers]);
+
+  useEffect(() => {
     if (user?.uid) {
       fetchData(user?.uid);
     }
@@ -96,22 +108,6 @@ export const HomeClientScreen = () => {
     return <LoadingScreen />;
   }
 
-  const AcceptDeniedButtons = (id_driver: string): React.ReactElement => (
-    <Layout
-      style={{
-        backgroundColor: 'transparent',
-        display: 'flex',
-        flexDirection: 'row',
-      }}>
-      <Button
-        onPress={() => createRequest(id_driver)}
-        appearance="ghost"
-        status="success">
-        Enviar
-      </Button>
-    </Layout>
-  );
-
   return (
     <>
       <FAB
@@ -136,6 +132,37 @@ export const HomeClientScreen = () => {
           top: 20,
         }}
       />
+
+      {nearbyDrivers && searchingDriver && (
+        <List
+          style={{
+            position: 'absolute',
+            zIndex: 99999,
+            marginTop: height * 0.1,
+            left: 20,
+            right: 20,
+            borderRadius: 35,
+            overflow: 'hidden',
+            // height: height * 0.5,
+            backgroundColor: 'white',
+          }}
+          data={nearbyDrivers}
+          renderItem={({item}) => {
+            return (
+              <Layout
+                style={{
+                  backgroundColor: 'black',
+                  borderRadius: 35,
+                  paddingHorizontal: 30,
+                  paddingVertical: 10,
+                }}>
+                <Text>{item.id}</Text>
+              </Layout>
+            );
+          }}
+        />
+      )}
+
       <Modal
         style={{
           width: '100%',
@@ -525,7 +552,8 @@ export const HomeClientScreen = () => {
         <Layout
           style={{
             marginTop: 40,
-            left: 0, right: 0,
+            left: 0,
+            right: 0,
             flexDirection: 'row',
             gap: 10,
             justifyContent: 'center',

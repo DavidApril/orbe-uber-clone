@@ -9,6 +9,33 @@ export class UsersService {
     console.log(newUser);
   }
 
+  static async createClient(driver: DriverRegisterForm) {
+    try {
+      const {data: response} = await orbeApi.post('/worker/create', {
+        email: driver.email,
+        password: driver.password,
+        createWithEmailAndPassword: true,
+        driver: {
+          identification: driver.identification,
+          name: driver.firstName,
+          lastName: driver.lastName,
+          phone: driver.phone,
+          imageUrl: 'driver.image',
+          documents: [],
+          vehicles: [],
+        },
+        roles: [
+          {
+            name: 'CLIENTE',
+          },
+        ],
+      });
+
+      console.log({response});
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   static async createDriver(driver: DriverRegisterForm) {
     try {
