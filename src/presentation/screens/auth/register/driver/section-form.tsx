@@ -182,8 +182,8 @@ export const SectionForm = () => {
               <Button
                 // disabled={!isValid}
                 onPress={() => {
-                  console.log({errors})
-                  handleSubmit()
+                  console.log({errors});
+                  handleSubmit();
                 }}
                 style={{marginTop: 20}}>
                 Continuar

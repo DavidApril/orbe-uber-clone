@@ -1,21 +1,37 @@
 import {Button, Layout, Text} from '@ui-kitten/components';
 import React, {useState} from 'react';
-import {useDriverStore} from '../../../../../store';
-import {useWindowDimensions} from 'react-native';
+import {useAuthStore, useDriverStore} from '../../../../../store';
+import {Alert, useWindowDimensions} from 'react-native';
 import {CustomIcon} from '../../../../components';
 import {UsersService} from '../../../../../services';
+import {LoadingScreen} from '../../../loading/loading-screen';
 
 export const SectionDisplayEditData = () => {
   const {width} = useWindowDimensions();
   const {driverRegisterForm} = useDriverStore();
+  const {login} = useAuthStore();
 
   const [loading, setIsLoading] = useState<boolean>(false);
 
-  async function handleSubmit() {
-    if (!driverRegisterForm) return;
-    setIsLoading(true);
-    await UsersService.createDriver(driverRegisterForm);
-    setIsLoading(false);
+  async function handleSubmit(email: string, password: string) {
+    try {
+      Alert.alert(`creating and logging...`);
+      if (driverRegisterForm) {
+        setIsLoading(true);
+        await UsersService.createDriver(driverRegisterForm);
+        login(email, password);
+        setIsLoading(false);
+        Alert.alert(`user logged successfully`);
+      } else {
+        Alert.alert(`not logged`);
+      }
+    } catch (error) {
+      Alert.alert('user registration failed');
+    }
+  }
+
+  if (loading) {
+    return <LoadingScreen />;
   }
 
   return (
@@ -85,7 +101,14 @@ export const SectionDisplayEditData = () => {
       <Layout style={{height: 10}}></Layout>
 
       <Layout>
-        <Button onPress={() => handleSubmit()} appearance="ghost">
+        <Button
+          onPress={() =>
+            handleSubmit(
+              driverRegisterForm!.email,
+              driverRegisterForm?.password,
+            )
+          }
+          appearance="ghost">
           Registrar
         </Button>
       </Layout>

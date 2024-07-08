@@ -1,74 +1,75 @@
-import { User } from 'firebase/auth';
-import { StateCreator, create } from 'zustand';
-import { AuthStatus } from '../../interfaces';
-import { AuthService } from '../../services/auth/auth.service';
+import {User} from 'firebase/auth';
+import {StateCreator, create} from 'zustand';
+import {AuthStatus} from '../../interfaces';
+import {AuthService} from '../../services/auth/auth.service';
 
 export interface AuthState {
-	status: AuthStatus;
-	token?: string;
-	user?: User;
+  status: AuthStatus;
+  token?: string;
+  user?: User;
 
-	login: (email: string, password: string) => Promise<{ ok: boolean }>;
-	logout: () => void;
-	checkIsAuthenticated: () => Promise<void>;
-	sendPasswordResetEmail: (email: string) => Promise<void>;
-	resetPassword: (actionCode: string, newPassword: string) => Promise<void>;
-	googleSignIn: () => Promise<void>;
+  login: (email: string, password: string) => Promise<{ok: boolean}>;
+  logout: () => void;
+  checkIsAuthenticated: () => Promise<void>;
+  sendPasswordResetEmail: (email: string) => Promise<void>;
+  resetPassword: (actionCode: string, newPassword: string) => Promise<void>;
+  googleSignIn: () => Promise<void>;
 }
 
 const storeApi: StateCreator<AuthState> = (set, get) => ({
-	status: 'unauthorized',
-	token: undefined,
-	user: undefined,
+  status: 'unauthorized',
+  token: undefined,
+  user: undefined,
 
-	login: async (email: string, password: string) => {
-		try {
-			const { user, token } = await AuthService.login(email, password);
-			set({ status: 'authorized', token, user });
-			return { ok: true };
-		} catch (error) {
-			set({ status: 'unauthorized', token: undefined, user: undefined });
-			return { ok: false };
-		}
-	},
+  login: async (email: string, password: string) => {
+    try {
+      const {user, token} = await AuthService.login(email, password);
+      set({status: 'authorized', token, user});
+      return {ok: true};
+    } catch (error) {
+      set({status: 'unauthorized', token: undefined, user: undefined});
+      return {ok: false};
+    }
+  },
 
-	logout: () => set({ status: 'unauthorized', token: undefined, user: undefined }),
+  logout: () =>
+    set({status: 'unauthorized', token: undefined, user: undefined}),
 
-	checkIsAuthenticated: async () => {
-		try {
-			// await AuthService.checkIsAuthenticated();
-			const token = get().token;
-			const user = get().user;
-			set({ status: 'authorized', token, user });
-		} catch (error) {
-			set({ status: 'unauthorized', token: undefined, user: undefined });
-		}
-	},
+  checkIsAuthenticated: async () => {
+    try {
+      // await AuthService.checkIsAuthenticated();
+      const token = get().token;
+      const user = get().user;
+      set({status: 'authorized', token, user});
+    } catch (error) {
+      set({status: 'unauthorized', token: undefined, user: undefined});
+    }
+  },
 
-	sendPasswordResetEmail: async (email: string) => {
-		try {
-			await AuthService.sendPasswordResetEmail(email);
-		} catch (error) {
-			throw error;
-		}
-	},
+  sendPasswordResetEmail: async (email: string) => {
+    try {
+      await AuthService.sendPasswordResetEmail(email);
+    } catch (error) {
+      throw error;
+    }
+  },
 
-	resetPassword: async (actionCode, newPassword) => {
-		try {
-			await AuthService.resetPassword(actionCode, newPassword);
-		} catch (error) {
-			throw error;
-		}
-	},
+  resetPassword: async (actionCode, newPassword) => {
+    try {
+      await AuthService.resetPassword(actionCode, newPassword);
+    } catch (error) {
+      throw error;
+    }
+  },
 
-	googleSignIn: async () => {
-		try {
-			const { token, user } = await AuthService.googleSignIn();
-			set({ status: 'authorized', token, user });
-		} catch (error) {
-			throw error;
-		}
-	},
+  googleSignIn: async () => {
+    try {
+      const {token, user} = await AuthService.googleSignIn();
+      set({status: 'authorized', token, user});
+    } catch (error) {
+      throw error;
+    }
+  },
 });
 
 export const useAuthStore = create<AuthState>()(storeApi);
