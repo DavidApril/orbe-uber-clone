@@ -1,33 +1,14 @@
-import {
-  Button,
-  Layout,
-  List,
-  ListItem,
-  Spinner,
-  Text,
-} from '@ui-kitten/components';
-import {
-  CustomIcon,
-  CustomMapView,
-  FAB,
-  SearchPlacesInput,
-} from '../../components';
+import {Button, Layout, Spinner, Text} from '@ui-kitten/components';
+import {CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useAuthStore, useLocationStore} from '../../../store';
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useSocket} from '../../../hooks';
-import {
-  Modal,
-  Pressable,
-  TextInput,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import {DriverService, RacesService} from '../../../services';
+import {Modal, Pressable, useWindowDimensions, View} from 'react-native';
+import {RacesService} from '../../../services';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {API_PREFIX, API_SOCKET_URL, API_URL, GOOGLE_API_KEY} from '@env';
+import {API_SOCKET_URL, GOOGLE_API_KEY} from '@env';
 import {Location} from '../../../interfaces';
-import MapViewDirections from 'react-native-maps-directions';
 import {orbeApi} from '../../../config/api';
 
 export const HomeClientScreen = () => {
@@ -271,7 +252,7 @@ export const HomeClientScreen = () => {
           )}
         </Layout>
       </Layout>
-      
+
       <Layout
         style={{
           width: '100%',
@@ -435,7 +416,7 @@ export const HomeClientScreen = () => {
               alignItems: 'center',
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}>
-            <View
+            <Layout
               style={{
                 width: width * 0.9,
                 height: height * 0.5,
@@ -519,26 +500,32 @@ export const HomeClientScreen = () => {
                   language: 'es',
                 }}
               />
-              <View>
+              <Layout>
                 <Pressable
                   onPress={() => {
                     setModalDestiny(false);
                   }}>
                   <Text>Cerrar</Text>
                 </Pressable>
-              </View>
-            </View>
+              </Layout>
+            </Layout>
           </Pressable>
         </Modal>
 
-        <Button appearance="ghost">Confirmar</Button>
+        <Button
+          onPress={() => {
+            setSearchingDriver(!searchingDriver);
+          }}
+          appearance="ghost">
+          {!searchingDriver ? 'Confirmar' : 'Cancelar'}
+        </Button>
       </Layout>
 
       {searchingDriver && (
         <Layout
           style={{
-            marginTop: 10,
-            marginLeft: 10,
+            marginTop: 40,
+            left: 0, right: 0,
             flexDirection: 'row',
             gap: 10,
             justifyContent: 'center',
