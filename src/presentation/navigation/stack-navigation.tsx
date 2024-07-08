@@ -14,6 +14,9 @@ import {
   RegisterClientScreen,
 } from '../screens';
 import {useAuthStore} from '../../store';
+import {DriverService} from '../../services';
+import {useEffect, useState} from 'react';
+import {CLIENT, DRIVER} from '../../interfaces';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -37,15 +40,10 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
 };
 
 export const StackNavigator = () => {
-  const {user} = useAuthStore();
-
-  console.log(user?.email);
-
-  const isDriver = user?.email?.includes('conductor');
 
   return (
     <Navigator
-      initialRouteName="RegisterDriverScreen"
+      initialRouteName="LoadingScreen"
       screenOptions={{headerShown: false}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation}}
@@ -82,13 +80,11 @@ export const StackNavigator = () => {
         name="HomeDriverScreen"
         component={HomeDriverScreen}
       />
-      {!isDriver && (
-        <Screen
-          options={{cardStyleInterpolator: fadeAnimation}}
-          name="HomeClientScreen"
-          component={HomeClientScreen}
-        />
-      )}
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation}}
+        name="HomeClientScreen"
+        component={HomeClientScreen}
+      />
     </Navigator>
   );
 };

@@ -2,6 +2,8 @@ declare module '@env' {
   export const API_PREFIX: string;
   export const API_URL: string;
 
+  export const API_SOCKET_URL: string;
+
   export const MAPBOX_ACCESS_TOKEN: string;
   export const MAPBOX_API_URL: string;
 

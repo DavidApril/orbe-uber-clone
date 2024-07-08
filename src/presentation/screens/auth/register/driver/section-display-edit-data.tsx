@@ -7,6 +7,7 @@ import {UsersService} from '../../../../../services';
 
 export const SectionDisplayEditData = () => {
   const {width} = useWindowDimensions();
+
   const {driverRegisterForm} = useDriverStore();
 
   const [loading, setIsLoading] = useState<boolean>(false);

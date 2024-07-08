@@ -9,6 +9,7 @@ export class UsersService {
     console.log(newUser);
   }
 
+
   static async createDriver(driver: DriverRegisterForm) {
     try {
       const {data: response} = await orbeApi.post('/worker/create', {

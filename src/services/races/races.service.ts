@@ -35,7 +35,8 @@ export class RacesService {
         `/request/createRequest`,
         request,
       );
-      console.log({response});
+
+      return response;
     } catch (error) {
       console.log(error);
     }
