@@ -21,7 +21,7 @@ export class UsersService {
           name: driver.firstName,
           lastName: driver.lastName,
           phone: driver.phone,
-          imageUrl: driver.image,
+          imageUrl: 'driver.image',
           documents: [],
           vehicles: [],
         },
