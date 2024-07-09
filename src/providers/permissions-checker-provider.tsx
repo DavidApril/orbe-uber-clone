@@ -30,10 +30,6 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   };
 
   useEffect(() => {
-    console.log({isDriver});
-  }, [isDriver]);
-
-  useEffect(() => {
     if (user) {
       getUserByUid(user!.uid);
     }
