@@ -10,8 +10,15 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import {API_SOCKET_URL, GOOGLE_API_KEY} from '@env';
 import {Location} from '../../../interfaces';
 import {orbeApi} from '../../../config/api';
+import {
+  DrawerActions,
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
+import {RootStackParams} from '../../navigation';
 
 export const HomeClientScreen = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {user} = useAuthStore();
   const {logout} = useAuthStore();
   const {height, width} = useWindowDimensions();
@@ -26,18 +33,32 @@ export const HomeClientScreen = () => {
   const [modal, setModal] = useState(false);
   const [data, setData] = useState<any>();
 
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerLeft: () => (
+  //       <FAB
+  //         iconName="person-outline"
+  //         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
+  //         style={{
+  //           position: 'absolute',
+  //           left: 20,
+  //           top: 20,
+  //         }}
+  //       />
+  //     ),
+  //   });
+  // }, []);
+
   const fetchData = async (uid: string) => {
     const res = await orbeApi.get(`/user/getUserByUid?uid_firebase=${uid}`);
     setData(res.data.data);
   };
 
   useEffect(() => {
-    nearbyDrivers.forEach( async driver => {
+    nearbyDrivers.forEach(async driver => {
       // const res = await fetchData(driver.id);
-      console.log({driver})
+      console.log({driver});
     });
-
-    console.log()
   }, [nearbyDrivers]);
 
   // useEffect(() => {
@@ -111,24 +132,11 @@ export const HomeClientScreen = () => {
   return (
     <>
       <FAB
-        iconName="arrow-circle-left-outline"
-        onPress={() => {
-          logout();
-        }}
+        iconName="menu-2-outline"
+        onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
         style={{
           position: 'absolute',
           left: 20,
-          top: 20,
-        }}
-      />
-      <FAB
-        iconName="person-outline"
-        onPress={() => {
-          setModal(true);
-        }}
-        style={{
-          position: 'absolute',
-          left: 80,
           top: 20,
         }}
       />

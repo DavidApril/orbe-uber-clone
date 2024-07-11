@@ -13,10 +13,7 @@ import {
   RegisterDriverScreen,
   RegisterClientScreen,
 } from '../screens';
-import {useAuthStore} from '../../store';
-import {DriverService} from '../../services';
-import {useEffect, useState} from 'react';
-import {CLIENT, DRIVER} from '../../interfaces';
+import {FAB} from '../components';
 
 export type RootStackParams = {
   LoadingScreen: undefined;
@@ -40,7 +37,6 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
 };
 
 export const StackNavigator = () => {
-
   return (
     <Navigator
       initialRouteName="LoadingScreen"

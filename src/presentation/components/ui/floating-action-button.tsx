@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   btn: {
     zIndex: 1,
     position: 'absolute',
-    borderRadius: 40,
+    borderRadius: 100,
     justifyContent: 'center',
     backgroundColor: 'black',
     alignItems: 'center',

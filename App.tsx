@@ -1,19 +1,18 @@
 import 'react-native-gesture-handler';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
-import {NavigationContainer} from '@react-navigation/native';
-import {StackNavigator} from './src/presentation/navigation/stack-navigation';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {useColorScheme} from 'react-native';
 import * as eva from '@eva-design/eva';
 import {AuthProvider, PermissionsCheckerProvider} from './src/providers';
+import {DrawerNavigation} from './src/presentation/navigation';
+import { globalColors } from './src/presentation/theme/styles';
 
 export const App = () => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === 'dark' ? eva.dark : eva.light;
-  const backgroundColor =
-    colorScheme === 'dark'
-      ? theme['color-basic-800']
-      : theme['color-basic-100'];
+  // const backgroundColor =
+  //   colorScheme === 'dark' ? theme['black'] : theme['white'];
 
   return (
     <>
@@ -21,19 +20,16 @@ export const App = () => {
       <ApplicationProvider {...eva} theme={theme}>
         <NavigationContainer
           theme={{
-            dark: colorScheme === 'dark',
+            ...DefaultTheme,
             colors: {
-              primary: theme['color-primary-500'],
-              background: backgroundColor,
-              card: theme['color-basic-100'],
-              text: theme['text-basic-color'],
-              border: theme['color-basic-800'],
-              notification: theme['color-primary-500'],
+              ...DefaultTheme.colors,
+              primary: globalColors.primary,
             },
           }}>
           <AuthProvider>
             <PermissionsCheckerProvider>
-              <StackNavigator />
+              {/* <StackNavigator /> */}
+              <DrawerNavigation />
             </PermissionsCheckerProvider>
           </AuthProvider>
         </NavigationContainer>
