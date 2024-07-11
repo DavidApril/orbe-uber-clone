@@ -1,4 +1,11 @@
-import {Button, Layout, List, Spinner, Text} from '@ui-kitten/components';
+import {
+  Button,
+  Input,
+  Layout,
+  List,
+  Spinner,
+  Text,
+} from '@ui-kitten/components';
 import {CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useAuthStore, useLocationStore} from '../../../store';
@@ -35,10 +42,6 @@ export const HomeClientScreen = () => {
     const res = await orbeApi.get(`/user/getUserByUid?uid_firebase=${uid}`);
     setData(res.data.data);
   };
-
-  // useEffect(() => {
-  //   console.log({nearbyDrivers});
-  // }, [nearbyDrivers]);
 
   useEffect(() => {
     if (user?.uid) {
@@ -143,71 +146,6 @@ export const HomeClientScreen = () => {
         />
       )}
 
-      <Modal
-        style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#0006',
-        }}
-        animationType="fade"
-        visible={modal}
-        transparent={true}
-        onRequestClose={() => {
-          setModal(false);
-        }}>
-        <Layout
-          style={{
-            margin: 'auto',
-            backgroundColor: 'black',
-            borderRadius: 20,
-            padding: 20,
-            width: '90%',
-            height: 'auto',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 35,
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5,
-          }}>
-          <Text style={{fontSize: 20, color: 'white'}}>Tus Datos</Text>
-          <Layout style={{gap: 15, alignItems: 'flex-start'}}>
-            <Text style={{fontSize: 15, color: '#fff8'}}>
-              Nombre: {data?.name}
-            </Text>
-            <Text style={{fontSize: 15, color: '#fff8'}}>
-              Telefono: {data?.phone}
-            </Text>
-          </Layout>
-          <Pressable
-            onPress={() => {
-              setModal(false);
-            }}
-            style={{
-              padding: 10,
-              borderRadius: 25,
-              width: '90%',
-              backgroundColor: '#20f',
-            }}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 16,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
-              Cerrar
-            </Text>
-          </Pressable>
-        </Layout>
-      </Modal>
       <CustomMapView
         origin={origin}
         destination={destination}
@@ -263,22 +201,28 @@ export const HomeClientScreen = () => {
       <Layout
         style={{
           width: '100%',
-          height: height * 0.3,
+          height: height * 0.5,
           bottom: 0,
-          backgroundColor: 'black',
           position: 'absolute',
           zIndex: 9999,
-          borderStartEndRadius: 35,
           padding: 20,
           gap: 10,
+          paddingTop: 40,
+          borderTopRightRadius: 35,
+          borderTopLeftRadius: 35,
         }}>
+        <Text style={{fontWeight: 'bold', fontSize: 30}}>
+          Selecciona
+          <Text> dos puntos para buscar un conductor</Text>
+        </Text>
+
+        <Layout style={{height: 20}}></Layout>
+
         <Pressable
           style={{
-            padding: 20,
-            borderWidth: 1,
-            borderRadius: 20,
-            borderColor: '#20f',
-            paddingLeft: 15,
+            padding: 15,
+            borderRadius: 50,
+            backgroundColor: 'black',
           }}
           onPress={() => {
             setModalLocation(true);
@@ -304,12 +248,12 @@ export const HomeClientScreen = () => {
               alignItems: 'center',
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}>
-            <View
+            <Layout
               style={{
                 width: width * 0.9,
                 height: height * 0.5,
-                backgroundColor: 'black',
-                borderColor: '#20f',
+                // backgroundColor: 'black',
+                // borderColor: '#20f',
                 borderWidth: 1,
                 borderRadius: 20,
                 padding: 20,
@@ -337,7 +281,6 @@ export const HomeClientScreen = () => {
                     gap: 20,
                   },
                   row: {
-                    backgroundColor: 'black',
                     padding: 13,
                     height: 44,
                     flexDirection: 'row',
@@ -358,8 +301,6 @@ export const HomeClientScreen = () => {
                   textInput: {
                     borderRadius: 50,
                     backgroundColor: 'black',
-                    borderColor: 'blue',
-                    borderWidth: 1,
                     color: 'white',
                     paddingHorizontal: 20,
                   },
@@ -388,17 +329,15 @@ export const HomeClientScreen = () => {
                   language: 'es',
                 }}
               />
-            </View>
+            </Layout>
           </Pressable>
         </Modal>
 
         <Pressable
           style={{
-            padding: 20,
-            borderWidth: 1,
-            borderRadius: 20,
-            borderColor: '#20f',
-            paddingLeft: 15,
+            padding: 15,
+            borderRadius: 50,
+            backgroundColor: 'black',
           }}
           onPress={() => {
             setModalDestiny(true);
@@ -427,9 +366,6 @@ export const HomeClientScreen = () => {
               style={{
                 width: width * 0.9,
                 height: height * 0.5,
-                backgroundColor: 'black',
-                borderColor: '#20f',
-                borderWidth: 1,
                 borderRadius: 20,
                 padding: 20,
                 alignItems: 'center',
@@ -456,7 +392,6 @@ export const HomeClientScreen = () => {
                     gap: 20,
                   },
                   row: {
-                    backgroundColor: 'black',
                     padding: 13,
                     height: 44,
                     flexDirection: 'row',
@@ -477,19 +412,15 @@ export const HomeClientScreen = () => {
                   textInput: {
                     borderRadius: 50,
                     backgroundColor: 'black',
-                    borderColor: 'blue',
-                    borderWidth: 1,
                     color: 'white',
                     paddingHorizontal: 20,
                   },
                   poweredContainer: {
                     display: 'none',
-                    backgroundColor: 'white',
                   },
                   listView: {
                     backgroundColor: 'transparent',
                     zIndex: 9999,
-                    transform: [{translateY: height * 0}],
                   },
                 }}
                 onPress={(_, details = null) => {
@@ -519,10 +450,13 @@ export const HomeClientScreen = () => {
           </Pressable>
         </Modal>
 
+        <Layout style={{height: 20}}></Layout>
+
         <Button
           onPress={() => {
             setSearchingDriver(!searchingDriver);
           }}
+          status="success"
           appearance="ghost">
           {!searchingDriver ? 'Confirmar' : 'Cancelar'}
         </Button>

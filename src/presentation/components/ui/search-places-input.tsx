@@ -4,64 +4,78 @@ import {useEffect, useRef, useState} from 'react';
 import {searchApi} from '../../../config/api';
 import {useLocationStore} from '../../../store';
 import {NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
+import {GOOGLE_API_KEY} from '@env';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 interface Props {
   placeholder?: string;
-  setPlaces: (places: any) => void;
-  [x: string]: any;
+  setPosition: any;
 }
 
-export const SearchPlacesInput = ({placeholder, setPlaces, ...props}: Props) => {
-
-  const [query, setQuery] = useState<string>('');
-
-  const {lastKnownLocation} = useLocationStore();
-  const debounceRef = useRef<NodeJS.Timeout>();
-
-  const onQueryChanged = ( e: NativeSyntheticEvent<TextInputChangeEventData> ) => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-
-    debounceRef.current = setTimeout(async () => {
-      const places = await searchPlacesByQuery(query);
-      setPlaces(places);
-    }, 350);
-  };
-
-  const searchPlacesByQuery = async (query: string): Promise<any[]> => {
-    if (query.length === 0) {
-      return [];
-    }
-    const {data} = await searchApi.get(`/${query}.json`, {
-      params: {
-        proximity: `${lastKnownLocation?.longitude},${lastKnownLocation?.latitude}`,
-      },
-    });
-
-    return data.features;
-  };
-
-  useEffect(() => {
-    if (query.length === 0) setPlaces([]);
-  }, [query]);
-
+export const SearchPlacesInput = ({placeholder, setPosition}: Props) => {
   return (
-    <>
-      
-      
-      <Input
-        value={query ?? props.value}
-        onChange={onQueryChanged}
-        onChangeText={setQuery}
-        accessoryLeft={<CustomIcon name="pin-outline" />}
-        placeholder={placeholder}
-        style={{
-          marginBottom: 10,
-          backgroundColor: 'black',
-          paddingVertical: 10,
+    <GooglePlacesAutocomplete
+      placeholder={placeholder ?? ''}
+      textInputProps={{placeholderTextColor: 'white'}}
+      fetchDetails={true}
+      enableHighAccuracyLocation
+      debounce={300}
+      styles={{
+        container: {
+          flex: 1,
+          width: '100%',
+          backgroundColor: 'transparent',
+          gap: 20,
+        },
+        row: {
+          // backgroundColor: 'black',
+          // padding: 13,
+          // height: 44,
+          flexDirection: 'row',
           borderRadius: 50,
-          borderColor: 'transparent',
-        }}
-      />
-    </>
+          width: width * 0.75,
+          left: 10,
+          right: 10,
+        },
+        primaryText: {
+          color: 'white',
+          fontSize: 16,
+          fontWeight: 'bold',
+        },
+        separator: {
+          height: 5,
+          backgroundColor: 'transparent',
+        },
+        textInput: {
+          borderRadius: 50,
+          backgroundColor: 'black',
+          color: 'white',
+          paddingHorizontal: 20,
+        },
+        poweredContainer: {
+          display: 'none',
+          backgroundColor: 'white',
+        },
+        listView: {
+          backgroundColor: 'transparent',
+          zIndex: 9999,
+          transform: [{translateY: height * 0}],
+        },
+      }}
+      onPress={(_, details = null) => {
+        if (details?.geometry.location) {
+          setPosition({
+            latitude: details?.geometry.location.lat,
+            longitude: details?.geometry.location.lng,
+          });
+          // setInputLocation(details.formatted_address || ''); // Actualiza el texto del input
+          // setModalLocation(false); // Cierra el modal al seleccionar un lugar
+        }
+      }}
+      query={{
+        key: GOOGLE_API_KEY,
+        language: 'es',
+      }}
+    />
   );
 };
