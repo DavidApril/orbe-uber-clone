@@ -6,17 +6,18 @@ interface Props {
   iconName: string;
   style?: StyleProp<ViewStyle>;
   label?: string;
+  white?: boolean
   disabled?: boolean;
   onPress: () => void;
 }
 
-export const FAB = ({iconName, onPress, style, label, disabled}: Props) => {
+export const FAB = ({iconName, onPress, white, style, label, disabled}: Props) => {
   return (
     <Button
       style={[styles.btn, style]}
       disabled={disabled}
       appearance="ghost"
-      accessoryLeft={<CustomIcon name={iconName} />}
+      accessoryLeft={<CustomIcon white={white} name={iconName} />}
       onPress={onPress}>
       {label}
     </Button>

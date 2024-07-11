@@ -97,6 +97,7 @@ export const HomeClientScreen = () => {
   return (
     <>
       <FAB
+        white
         iconName="menu-2-outline"
         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
         style={{

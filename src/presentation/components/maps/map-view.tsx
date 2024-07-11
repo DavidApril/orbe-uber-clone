@@ -145,6 +145,7 @@ export const CustomMapView = ({
       {/* {origin && destination && <FAB iconName="" />} */}
 
       <FAB
+        white
         iconName="compass-outline"
         onPress={moveToCurrentLocation}
         style={{
