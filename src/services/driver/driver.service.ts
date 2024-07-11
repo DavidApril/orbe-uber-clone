@@ -1,9 +1,39 @@
-import { API_PREFIX, API_URL } from '@env';
 import {orbeApi} from '../../config/api';
-import {OIDriversResponse, DriverByID, OIDriverByUid} from '../../interfaces';
+import {
+  OIDriversResponse,
+  DriverByID,
+  DriverRegisterForm,
+} from '../../interfaces';
 
 export class DriverService {
   static take: number = 6;
+
+  static createDriver = async (driver: DriverRegisterForm) => {
+    try {
+      const {data: response} = await orbeApi.post('/worker/create', {
+        email: driver.email,
+        password: driver.password,
+        createWithEmailAndPassword: true,
+        driver: {
+          identification: driver.identification,
+          name: driver.firstName,
+          lastName: driver.lastName,
+          phone: driver.phone,
+          imageUrl: 'driver.image',
+          documents: [],
+          vehicles: [],
+        },
+        roles: [
+          {
+            name: 'DRIVER',
+          },
+        ],
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   static getDrivers = async (skip = 0, take = this.take) => {
     try {
@@ -34,7 +64,7 @@ export class DriverService {
     try {
       const {data: DriverResponse} = await orbeApi.get(
         `/worker/getDriverByUserId?idUser=${id}`,
-			);
+      );
       const driver = DriverResponse.data;
       return driver;
     } catch (error) {
@@ -42,7 +72,7 @@ export class DriverService {
     }
   };
 
-  static getDriverByUserUid = async (uid: string): Promise<OIDriverByUid> => {
+  static getDriverByUserUid = async (uid: string) => {
     try {
       const {data: DriverResponse} = await orbeApi.get(
         `/worker/getDriversByUid?uid=${uid}`,

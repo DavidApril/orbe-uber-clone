@@ -2,7 +2,8 @@ import {Layout, Text} from '@ui-kitten/components';
 import {useAuthStore} from '../../../../store';
 
 export const ProfileClientScreen = () => {
-  const {user} = useAuthStore();
+  const {user, role} = useAuthStore();
+  console.log({role})
 
   return (
     <Layout>

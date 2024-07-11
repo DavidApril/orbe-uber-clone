@@ -1,10 +1,10 @@
 import {Button, Layout, Text} from '@ui-kitten/components';
 import React, {useState} from 'react';
-import {useAuthStore, useDriverStore} from '../../../../../store';
+import {useAuthStore, useDriverStore} from '../../../../store';
 import {Alert, useWindowDimensions} from 'react-native';
-import {CustomIcon} from '../../../../components';
-import {UsersService} from '../../../../../services';
-import {LoadingScreen} from '../../../loading/loading-screen';
+import {CustomIcon} from '../../../components';
+import {LoadingScreen} from '../../loading/loading-screen';
+import {DriverService} from '../../../../services';
 
 export const SectionDisplayEditData = () => {
   const {width} = useWindowDimensions();
@@ -19,7 +19,7 @@ export const SectionDisplayEditData = () => {
       Alert.alert(`Creando e iniciando sesión...`);
       if (driverRegisterForm) {
         setIsLoading(true);
-        await UsersService.createClient(driverRegisterForm);
+        await DriverService.createDriver(driverRegisterForm);
         login(email, password);
         setIsLoading(false);
       } else {

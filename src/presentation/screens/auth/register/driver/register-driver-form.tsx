@@ -1,21 +1,13 @@
-import {Alert, useWindowDimensions} from 'react-native';
-import {
-  Button,
-  Input,
-  Layout,
-  Select,
-  SelectItem,
-  Text,
-} from '@ui-kitten/components';
+import {DriverRegisterForm} from '../../../../../interfaces';
+import {useDriverStore} from '../../../../../store';
+import {useWindowDimensions} from 'react-native';
+import {Button, Input, Layout, Text} from '@ui-kitten/components';
 import {Formik} from 'formik';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useEffect} from 'react';
 import * as Yup from 'yup';
-import {DriverRegisterForm} from '../../../../interfaces';
-import {useAuthStore, useDriverStore} from '../../../../store';
-import {UsersService} from '../../../../services';
 
-export const RegisterClientScreen = () => {
+export const RegisterDriverForm = () => {
   const {height} = useWindowDimensions();
 
   const setDriverRegisterForm = useDriverStore(
@@ -46,30 +38,9 @@ export const RegisterClientScreen = () => {
     confirmPassword: '',
   };
 
-  const {login} = useAuthStore();
-
-  async function onSubmit(values: typeof initialValues) {
-    if (!values.email || !values.password) return;
+  function onSubmit(values: typeof initialValues) {
     setDriverRegisterForm({...values});
-    try {
-      Alert.alert(`Creando e iniciando sesión...`);
-      if (driverRegisterForm) {
-        await UsersService.createClient(driverRegisterForm);
-        login(
-          driverRegisterForm!.email ?? '',
-          driverRegisterForm.password ?? '',
-        );
-      } else {
-        Alert.alert(`not logged`);
-      }
-    } catch (error) {
-      Alert.alert('user registration failed');
-    }
   }
-
-  useEffect(() => {
-    console.log({driverRegisterForm});
-  }, [driverRegisterForm]);
 
   return (
     <Layout style={{flex: 1}}>
@@ -199,6 +170,7 @@ export const RegisterClientScreen = () => {
               <Button
                 // disabled={!isValid}
                 onPress={() => {
+                  console.log({errors});
                   handleSubmit();
                 }}
                 style={{marginTop: 20}}>

@@ -1,10 +1,9 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import {Button, Input, Layout, Text, Toggle} from '@ui-kitten/components';
+import {Button, Layout, Text, Toggle} from '@ui-kitten/components';
 import {useWindowDimensions} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {RootStackParams} from '../../../navigation/stack-navigation';
-import {CustomIcon} from '../../../components';
 import {useState} from 'react';
+import { RootStackParams } from '../../../../interfaces';
 
 interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 

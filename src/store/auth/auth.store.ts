@@ -1,8 +1,7 @@
 import {User} from 'firebase/auth';
 import {StateCreator, create} from 'zustand';
 import {AuthStatus, CLIENT, DRIVER} from '../../interfaces';
-import {AuthService} from '../../services/auth/auth.service';
-import {UsersService} from '../../services';
+import {AuthService, UserService} from '../../services';
 
 export interface AuthState {
   status: AuthStatus;
@@ -29,11 +28,16 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
   login: async (email: string, password: string) => {
     try {
       const {user, token} = await AuthService.login(email, password);
-      const userByUID = await UsersService.getUserByUid(user.uid);
 
-      const role = !userByUID ? DRIVER : CLIENT;
+      const userByUID = await UserService.getUserByUid(user.uid);
 
-      set({status: 'authorized', token, user, role});
+      if (!!userByUID.driver) {
+        set({role: DRIVER});
+      } else if (!!userByUID.cliente) {
+        set({role: CLIENT});
+      }
+
+      set({status: 'authorized', token, user});
       return {ok: true};
     } catch (error) {
       set({status: 'unauthorized', token: undefined, user: undefined});
@@ -42,7 +46,12 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
   },
 
   logout: () =>
-    set({status: 'unauthorized', token: undefined, user: undefined}),
+    set({
+      status: 'unauthorized',
+      token: undefined,
+      user: undefined,
+      role: null,
+    }),
 
   checkIsAuthenticated: async () => {
     try {

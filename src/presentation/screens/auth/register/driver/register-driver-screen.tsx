@@ -1,7 +1,7 @@
 import {useDriverStore} from '../../../../../store';
-import {SectionForm} from './section-form';
+import {RegisterDriverForm} from './register-driver-form';
 import {SectionCamera} from './section-camera';
-import {SectionDisplayEditData} from './section-display-edit-data';
+import {SectionDisplayEditData} from '../section-display-edit-data';
 
 export const RegisterDriverScreen = () => {
   const driverRegisterForm = useDriverStore(state => state.driverRegisterForm);
@@ -19,8 +19,8 @@ export const RegisterDriverScreen = () => {
 
   return (
     <>
-      {driverRegisterForm === null && <SectionForm />}
-      {driverRegisterForm?.image === '' && <SectionCamera />}
+      {driverRegisterForm === null && <RegisterDriverForm />}
+      {/* {driverRegisterForm?.image === '' && <SectionCamera />} */}
       {isValidForm && <SectionDisplayEditData />}
     </>
   );
