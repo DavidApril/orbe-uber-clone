@@ -29,7 +29,7 @@ export function DrawerNavigation() {
           paddingHorizontal: 20,
         },
       }}>
-      <Screen name="StackNavigator" component={StackNavigator} />
+      <Screen name="Inicio" component={StackNavigator} />
       <Screen
         name="Perfil"
         component={role === CLIENT ? ProfileClientScreen : ProfileDriverScreen}

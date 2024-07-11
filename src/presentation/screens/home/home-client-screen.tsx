@@ -9,7 +9,7 @@ import {
 import {CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useAuthStore, useLocationStore} from '../../../store';
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {useSocket} from '../../../hooks';
 import {Modal, Pressable, useWindowDimensions, View} from 'react-native';
 import {RacesService} from '../../../services';
@@ -22,6 +22,7 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
 export const HomeClientScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
@@ -35,19 +36,6 @@ export const HomeClientScreen = () => {
   const [modalDestiny, setModalDestiny] = useState(false);
   const [inputLocation, setInputLocation] = useState('');
   const [inputDestiny, setInputDestiny] = useState('');
-  const [modal, setModal] = useState(false);
-  const [data, setData] = useState<any>();
-
-  const fetchData = async (uid: string) => {
-    const res = await orbeApi.get(`/user/getUserByUid?uid_firebase=${uid}`);
-    setData(res.data.data);
-  };
-
-  useEffect(() => {
-    if (user?.uid) {
-      fetchData(user?.uid);
-    }
-  }, []);
 
   const [raceData, setRaceData] = useState<{
     distance: number;
@@ -83,6 +71,8 @@ export const HomeClientScreen = () => {
       getLocation();
     }
   }, []);
+
+  const snapPoints = useMemo(() => ['40%', '50%'], []);
 
   const createRequest = async (id_driver: any) => {
     if (!user || !origin || !destination) return;
@@ -198,269 +188,266 @@ export const HomeClientScreen = () => {
         </Layout>
       </Layout>
 
-      <Layout
-        style={{
-          width: '100%',
-          height: height * 0.5,
-          bottom: 0,
-          position: 'absolute',
-          zIndex: 9999,
-          padding: 20,
-          gap: 10,
-          paddingTop: 40,
-          borderTopRightRadius: 35,
-          borderTopLeftRadius: 35,
-        }}>
-        <Text style={{fontWeight: 'bold', fontSize: 30}}>
-          Selecciona
-          <Text> dos puntos para buscar un conductor</Text>
-        </Text>
-
-        <Layout style={{height: 20}}></Layout>
-
-        <Pressable
+      <BottomSheet snapPoints={snapPoints}>
+        <Layout
           style={{
-            padding: 15,
-            borderRadius: 50,
-            backgroundColor: 'black',
-          }}
-          onPress={() => {
-            setModalLocation(true);
+            bottom: 0,
+            zIndex: 9999,
+            padding: 20,
+            gap: 10,
+            paddingTop: 40,
           }}>
-          <Text style={{color: 'white'}}>
-            {inputLocation || 'Lugar de recogida'}
+          <Text style={{fontWeight: 'bold', fontSize: 30}}>
+            Selecciona
+            <Text> dos puntos para buscar un conductor</Text>
           </Text>
-        </Pressable>
 
-        <Modal
-          transparent={true}
-          visible={modalLocation}
-          onRequestClose={() => {
-            setModalLocation(false);
-          }}>
+          <Layout style={{height: 20}}></Layout>
+
           <Pressable
+            style={{
+              padding: 15,
+              borderRadius: 50,
+              backgroundColor: 'black',
+            }}
             onPress={() => {
+              setModalLocation(true);
+            }}>
+            <Text style={{color: 'white'}}>
+              {inputLocation || 'Lugar de recogida'}
+            </Text>
+          </Pressable>
+
+          <Modal
+            transparent={true}
+            visible={modalLocation}
+            onRequestClose={() => {
               setModalLocation(false);
-            }}
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}>
-            <Layout
+            <Pressable
+              onPress={() => {
+                setModalLocation(false);
+              }}
               style={{
-                width: width * 0.9,
-                height: height * 0.5,
-                // backgroundColor: 'black',
-                // borderColor: '#20f',
-                borderWidth: 1,
-                borderRadius: 20,
-                padding: 20,
+                flex: 1,
+                justifyContent: 'center',
                 alignItems: 'center',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-                elevation: 5,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
               }}>
-              <GooglePlacesAutocomplete
-                placeholder="Lugar de recogida"
-                textInputProps={{placeholderTextColor: 'white'}}
-                fetchDetails={true}
-                enableHighAccuracyLocation
-                debounce={300}
-                styles={{
-                  container: {
-                    flex: 1,
-                    width: '100%',
-                    backgroundColor: 'transparent',
-                    gap: 20,
+              <Layout
+                style={{
+                  width: width * 0.9,
+                  height: height * 0.5,
+                  // backgroundColor: 'black',
+                  // borderColor: '#20f',
+                  borderWidth: 1,
+                  borderRadius: 20,
+                  padding: 20,
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
                   },
-                  row: {
-                    padding: 13,
-                    height: 44,
-                    flexDirection: 'row',
-                    borderRadius: 50,
-                    width: width * 0.75,
-                    left: 10,
-                    right: 10,
-                  },
-                  primaryText: {
-                    color: 'white',
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                  },
-                  separator: {
-                    height: 5,
-                    backgroundColor: 'transparent',
-                  },
-                  textInput: {
-                    borderRadius: 50,
-                    backgroundColor: 'black',
-                    color: 'white',
-                    paddingHorizontal: 20,
-                  },
-                  poweredContainer: {
-                    display: 'none',
-                    backgroundColor: 'white',
-                  },
-                  listView: {
-                    backgroundColor: 'transparent',
-                    zIndex: 9999,
-                    transform: [{translateY: height * 0}],
-                  },
-                }}
-                onPress={(_, details = null) => {
-                  if (details?.geometry.location) {
-                    setOrigin({
-                      latitude: details?.geometry.location.lat,
-                      longitude: details?.geometry.location.lng,
-                    });
-                    setInputLocation(details.formatted_address || ''); // Actualiza el texto del input
-                    setModalLocation(false); // Cierra el modal al seleccionar un lugar
-                  }
-                }}
-                query={{
-                  key: GOOGLE_API_KEY,
-                  language: 'es',
-                }}
-              />
-            </Layout>
-          </Pressable>
-        </Modal>
-
-        <Pressable
-          style={{
-            padding: 15,
-            borderRadius: 50,
-            backgroundColor: 'black',
-          }}
-          onPress={() => {
-            setModalDestiny(true);
-          }}>
-          <Text style={{color: 'white'}}>
-            {inputDestiny || 'Lugar de llegada'}
-          </Text>
-        </Pressable>
-
-        <Modal
-          visible={modalDestiny}
-          onRequestClose={() => {
-            setModalDestiny(false);
-          }}>
-          <Pressable
-            onPress={() => {
-              setModalDestiny(false);
-            }}
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            }}>
-            <Layout
-              style={{
-                width: width * 0.9,
-                height: height * 0.5,
-                borderRadius: 20,
-                padding: 20,
-                alignItems: 'center',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-                elevation: 5,
-              }}>
-              <GooglePlacesAutocomplete
-                placeholder="Lugar de llegada"
-                textInputProps={{placeholderTextColor: 'white'}}
-                fetchDetails={true}
-                enableHighAccuracyLocation
-                debounce={300}
-                styles={{
-                  container: {
-                    flex: 1,
-                    width: '100%',
-                    backgroundColor: 'transparent',
-                    gap: 20,
-                  },
-                  row: {
-                    padding: 13,
-                    height: 44,
-                    flexDirection: 'row',
-                    borderRadius: 50,
-                    width: width * 0.75,
-                    left: 10,
-                    right: 10,
-                  },
-                  primaryText: {
-                    color: 'white',
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                  },
-                  separator: {
-                    height: 5,
-                    backgroundColor: 'transparent',
-                  },
-                  textInput: {
-                    borderRadius: 50,
-                    backgroundColor: 'black',
-                    color: 'white',
-                    paddingHorizontal: 20,
-                  },
-                  poweredContainer: {
-                    display: 'none',
-                  },
-                  listView: {
-                    backgroundColor: 'transparent',
-                    zIndex: 9999,
-                  },
-                }}
-                onPress={(_, details = null) => {
-                  if (details?.geometry.location) {
-                    setDestination({
-                      latitude: details?.geometry.location.lat,
-                      longitude: details?.geometry.location.lng,
-                    });
-                    setInputDestiny(details.formatted_address || ''); // Actualiza el texto del input
-                    setModalDestiny(false); // Cierra el modal al seleccionar un lugar
-                  }
-                }}
-                query={{
-                  key: GOOGLE_API_KEY,
-                  language: 'es',
-                }}
-              />
-              <Layout>
-                <Pressable
-                  onPress={() => {
-                    setModalDestiny(false);
-                  }}>
-                  <Text>Cerrar</Text>
-                </Pressable>
+                  shadowOpacity: 0.25,
+                  shadowRadius: 4,
+                  elevation: 5,
+                }}>
+                <GooglePlacesAutocomplete
+                  placeholder="Lugar de recogida"
+                  textInputProps={{placeholderTextColor: 'white'}}
+                  fetchDetails={true}
+                  enableHighAccuracyLocation
+                  debounce={300}
+                  styles={{
+                    container: {
+                      flex: 1,
+                      width: '100%',
+                      backgroundColor: 'transparent',
+                      gap: 20,
+                    },
+                    row: {
+                      padding: 13,
+                      height: 44,
+                      flexDirection: 'row',
+                      borderRadius: 50,
+                      width: width * 0.75,
+                      left: 10,
+                      right: 10,
+                    },
+                    primaryText: {
+                      color: 'white',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    },
+                    separator: {
+                      height: 5,
+                      backgroundColor: 'transparent',
+                    },
+                    textInput: {
+                      borderRadius: 50,
+                      backgroundColor: 'black',
+                      color: 'white',
+                      paddingHorizontal: 20,
+                    },
+                    poweredContainer: {
+                      display: 'none',
+                      backgroundColor: 'white',
+                    },
+                    listView: {
+                      backgroundColor: 'transparent',
+                      zIndex: 9999,
+                      transform: [{translateY: height * 0}],
+                    },
+                  }}
+                  onPress={(_, details = null) => {
+                    if (details?.geometry.location) {
+                      setOrigin({
+                        latitude: details?.geometry.location.lat,
+                        longitude: details?.geometry.location.lng,
+                      });
+                      setInputLocation(details.formatted_address || ''); // Actualiza el texto del input
+                      setModalLocation(false); // Cierra el modal al seleccionar un lugar
+                    }
+                  }}
+                  query={{
+                    key: GOOGLE_API_KEY,
+                    language: 'es',
+                  }}
+                />
               </Layout>
-            </Layout>
+            </Pressable>
+          </Modal>
+
+          <Pressable
+            style={{
+              padding: 15,
+              borderRadius: 50,
+              backgroundColor: 'black',
+            }}
+            onPress={() => {
+              setModalDestiny(true);
+            }}>
+            <Text style={{color: 'white'}}>
+              {inputDestiny || 'Lugar de llegada'}
+            </Text>
           </Pressable>
-        </Modal>
 
-        <Layout style={{height: 20}}></Layout>
+          <Modal
+            visible={modalDestiny}
+            onRequestClose={() => {
+              setModalDestiny(false);
+            }}>
+            <Pressable
+              onPress={() => {
+                setModalDestiny(false);
+              }}
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              }}>
+              <Layout
+                style={{
+                  width: width * 0.9,
+                  height: height * 0.5,
+                  borderRadius: 20,
+                  padding: 20,
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 4,
+                  elevation: 5,
+                }}>
+                <GooglePlacesAutocomplete
+                  placeholder="Lugar de llegada"
+                  textInputProps={{placeholderTextColor: 'white'}}
+                  fetchDetails={true}
+                  enableHighAccuracyLocation
+                  debounce={300}
+                  styles={{
+                    container: {
+                      flex: 1,
+                      width: '100%',
+                      backgroundColor: 'transparent',
+                      gap: 20,
+                    },
+                    row: {
+                      padding: 13,
+                      height: 44,
+                      flexDirection: 'row',
+                      borderRadius: 50,
+                      width: width * 0.75,
+                      left: 10,
+                      right: 10,
+                    },
+                    primaryText: {
+                      color: 'white',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    },
+                    separator: {
+                      height: 5,
+                      backgroundColor: 'transparent',
+                    },
+                    textInput: {
+                      borderRadius: 50,
+                      backgroundColor: 'black',
+                      color: 'white',
+                      paddingHorizontal: 20,
+                    },
+                    poweredContainer: {
+                      display: 'none',
+                    },
+                    listView: {
+                      backgroundColor: 'transparent',
+                      zIndex: 9999,
+                    },
+                  }}
+                  onPress={(_, details = null) => {
+                    if (details?.geometry.location) {
+                      setDestination({
+                        latitude: details?.geometry.location.lat,
+                        longitude: details?.geometry.location.lng,
+                      });
+                      setInputDestiny(details.formatted_address || ''); // Actualiza el texto del input
+                      setModalDestiny(false); // Cierra el modal al seleccionar un lugar
+                    }
+                  }}
+                  query={{
+                    key: GOOGLE_API_KEY,
+                    language: 'es',
+                  }}
+                />
+                <Layout>
+                  <Pressable
+                    onPress={() => {
+                      setModalDestiny(false);
+                    }}>
+                    <Text>Cerrar</Text>
+                  </Pressable>
+                </Layout>
+              </Layout>
+            </Pressable>
+          </Modal>
 
-        <Button
-          onPress={() => {
-            setSearchingDriver(!searchingDriver);
-          }}
-          status="success"
-          appearance="ghost">
-          {!searchingDriver ? 'Confirmar' : 'Cancelar'}
-        </Button>
-      </Layout>
+          <Layout style={{height: 20}}></Layout>
+
+          <Button
+            onPress={() => {
+              setSearchingDriver(!searchingDriver);
+            }}
+            status="success"
+            appearance="ghost">
+            {!searchingDriver ? 'Confirmar' : 'Cancelar'}
+          </Button>
+        </Layout>
+      </BottomSheet>
 
       {searchingDriver && (
         <Layout
