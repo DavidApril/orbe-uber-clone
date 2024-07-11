@@ -1,45 +1,20 @@
-import React, {PropsWithChildren, useEffect, useState} from 'react';
+import React, {PropsWithChildren, useEffect} from 'react';
 import {AppState} from 'react-native';
 import {useAuthStore, usePermissionStore} from '../store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParams} from '../presentation/navigation/stack-navigation';
-import {orbeApi} from '../config/api';
-import {LoadingScreen} from '../presentation/screens';
+import {RootStackParams} from '../interfaces';
 
 export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   const {status} = useAuthStore();
-  const {user} = useAuthStore();
+  const {role} = useAuthStore();
   const {checkLocationPermission, locationStatus} = usePermissionStore();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
-  const [isDriver, setIsDriver] = useState<boolean | null>(null);
-
-  const getUserByUid = async (uid: string) => {
-    try {
-      const {data: response} = await orbeApi.get(
-        `/user/getUserByUid?uid_firebase=${uid}`,
-      );
-      if (!response.data) {
-        setIsDriver(true);
-      } else {
-        setIsDriver(false);
-      }
-    } catch (error) {
-      console.log({error});
-    }
-  };
-
-  useEffect(() => {
-    if (user) {
-      getUserByUid(user!.uid);
-    }
-  }, [user]);
-
   useEffect(() => {
     if (locationStatus === 'granted' && status === 'authorized') {
-      if (isDriver) {
+      if (role === 'DRIVER') {
         navigation.navigate('HomeDriverScreen');
-      } else {
+      } else if (role === 'CLIENTE') {
         navigation.navigate('HomeClientScreen');
       }
     } else if (locationStatus === 'undetermined' && status === 'authorized') {
@@ -47,7 +22,7 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
     } else {
       navigation.navigate('LoginScreen');
     }
-  }, [locationStatus, status, isDriver]);
+  }, [locationStatus, status]);
 
   useEffect(() => {
     checkLocationPermission();

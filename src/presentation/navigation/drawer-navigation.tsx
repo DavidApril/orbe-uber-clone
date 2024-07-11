@@ -2,11 +2,19 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {StackNavigator} from './stack-navigation';
 import {globalColors} from '../theme/styles';
 import {CustomDrawerContent} from '../components';
-import {ProfileClientScreen, SettingsScreen} from '../screens';
+import {
+  ProfileClientScreen,
+  ProfileDriverScreen,
+  SettingsScreen,
+} from '../screens';
+import {useAuthStore} from '../../store';
+import {CLIENT} from '../../interfaces';
 
 const {Navigator, Screen} = createDrawerNavigator();
 
 export function DrawerNavigation() {
+  const {role} = useAuthStore();
+
   return (
     <Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
@@ -22,7 +30,10 @@ export function DrawerNavigation() {
         },
       }}>
       <Screen name="StackNavigator" component={StackNavigator} />
-      <Screen name="Perfil" component={ProfileClientScreen} />
+      <Screen
+        name="Perfil"
+        component={role === CLIENT ? ProfileClientScreen : ProfileDriverScreen}
+      />
       <Screen name="Configuración" component={SettingsScreen} />
     </Navigator>
   );

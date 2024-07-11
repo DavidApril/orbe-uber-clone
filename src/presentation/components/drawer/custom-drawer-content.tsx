@@ -1,13 +1,11 @@
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
-  DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {Button, Layout} from '@ui-kitten/components';
 import {useAuthStore} from '../../../store';
-import {useWindowDimensions, View} from 'react-native';
-import { CustomIcon } from '../ui/custom-icon';
+import {useWindowDimensions} from 'react-native';
 
 export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const {user, logout} = useAuthStore();

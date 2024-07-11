@@ -2,13 +2,10 @@ import {PropsWithChildren, useEffect} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import {useAuthStore} from '../store/auth/auth.store';
-import {RootStackParams} from '../presentation/navigation/stack-navigation';
+import { RootStackParams } from '../interfaces';
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
   const {status} = useAuthStore();
-  useEffect(() => {
-    console.log({status});
-  }, [status]);
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
   useEffect(() => {

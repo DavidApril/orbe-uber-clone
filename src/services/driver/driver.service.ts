@@ -44,15 +44,14 @@ export class DriverService {
 
   static getDriverByUserUid = async (uid: string): Promise<OIDriverByUid> => {
     try {
-			console.log(`${API_URL}/${API_PREFIX}/worker/getDriversByUid?uid=${uid}`)
       const {data: DriverResponse} = await orbeApi.get(
         `/worker/getDriversByUid?uid=${uid}`,
       );
       const driver = DriverResponse.data;
       return driver;
     } catch (error) {
-      console.log(error);
-      throw new Error('Error at get driver');
+      console.log({error});
+      // throw new Error('Error at get driver');
     }
   };
 

@@ -8,19 +8,17 @@ import {Modal, Pressable, useWindowDimensions, View} from 'react-native';
 import {RacesService} from '../../../services';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {API_SOCKET_URL, GOOGLE_API_KEY} from '@env';
-import {Location} from '../../../interfaces';
+import {Location, RootStackParams} from '../../../interfaces';
 import {orbeApi} from '../../../config/api';
 import {
   DrawerActions,
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native';
-import {RootStackParams} from '../../navigation';
 
 export const HomeClientScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {user} = useAuthStore();
-  const {logout} = useAuthStore();
   const {height, width} = useWindowDimensions();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [nearbyDrivers, setNearbyDrivers] = useState<any[]>([]);
@@ -33,33 +31,10 @@ export const HomeClientScreen = () => {
   const [modal, setModal] = useState(false);
   const [data, setData] = useState<any>();
 
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerLeft: () => (
-  //       <FAB
-  //         iconName="person-outline"
-  //         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
-  //         style={{
-  //           position: 'absolute',
-  //           left: 20,
-  //           top: 20,
-  //         }}
-  //       />
-  //     ),
-  //   });
-  // }, []);
-
   const fetchData = async (uid: string) => {
     const res = await orbeApi.get(`/user/getUserByUid?uid_firebase=${uid}`);
     setData(res.data.data);
   };
-
-  useEffect(() => {
-    nearbyDrivers.forEach(async driver => {
-      // const res = await fetchData(driver.id);
-      console.log({driver});
-    });
-  }, [nearbyDrivers]);
 
   // useEffect(() => {
   //   console.log({nearbyDrivers});
@@ -108,8 +83,6 @@ export const HomeClientScreen = () => {
 
   const createRequest = async (id_driver: any) => {
     if (!user || !origin || !destination) return;
-
-    console.log({user, origin, destination});
     const response = await RacesService.createRequest({
       id_client: user.uid,
       id_driver: id_driver,
@@ -122,7 +95,6 @@ export const HomeClientScreen = () => {
         longitude: destination?.longitude,
       },
     });
-    console.log(response);
   };
 
   if (lastKnownLocation === null) {

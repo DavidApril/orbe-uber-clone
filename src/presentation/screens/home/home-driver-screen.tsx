@@ -4,13 +4,19 @@ import {CustomIcon, CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
 import {Button, Layout, List, ListItem} from '@ui-kitten/components';
-import {Alert, Modal, Pressable, Text, View} from 'react-native';
-import {experimentalSetDeliveryMetricsExportedToBigQueryEnabled} from 'firebase/messaging/sw';
-import { orbeApi } from '../../../config/api';
+import {Modal, Pressable, Text, View} from 'react-native';
+import {orbeApi} from '../../../config/api';
+import {
+  DrawerActions,
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
+import {RootStackParams} from '../../../interfaces';
 
 export const HomeDriverScreen = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
+  
   const {user} = useAuthStore();
-  const {logout} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [driverRequests, setDriveRequests] = useState<any[]>([]);
   const [driverServiceIsActive, setDriverServiceIsActive] =
@@ -19,7 +25,6 @@ export const HomeDriverScreen = () => {
   const {socket} = useSocket(`ws://orbeapi.devzeros.com:3001/location`);
   const [modal, setModal] = useState(false);
   const [data, setData] = useState<any>();
-  console.log(data);
 
   useEffect(() => {
     const fetchData = async (uid: string) => {
@@ -88,27 +93,15 @@ export const HomeDriverScreen = () => {
   return (
     <>
       <FAB
-        iconName="arrow-circle-left-outline"
-        onPress={() => {
-          logout();
-        }}
+        iconName="menu-2-outline"
+        onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
         style={{
           position: 'absolute',
           left: 20,
           top: 20,
         }}
       />
-      <FAB
-        iconName="person-outline"
-        onPress={() => {
-          setModal(true);
-        }}
-        style={{
-          position: 'absolute',
-          left: 80,
-          top: 20,
-        }}
-      />
+
       <Modal
         style={{
           width: '100%',

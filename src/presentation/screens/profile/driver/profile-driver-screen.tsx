@@ -1,5 +1,9 @@
-import {Layout} from '@ui-kitten/components';
+import {Layout, Text} from '@ui-kitten/components';
 
 export const ProfileDriverScreen = () => {
-  return <Layout></Layout>;
+  return (
+    <Layout>
+      <Text>Driver</Text>
+    </Layout>
+  );
 };

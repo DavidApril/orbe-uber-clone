@@ -1,12 +1,15 @@
 import {User} from 'firebase/auth';
 import {StateCreator, create} from 'zustand';
-import {AuthStatus} from '../../interfaces';
+import {AuthStatus, CLIENT, DRIVER} from '../../interfaces';
 import {AuthService} from '../../services/auth/auth.service';
+import {UsersService} from '../../services';
 
 export interface AuthState {
   status: AuthStatus;
   token?: string;
   user?: User;
+
+  role: 'CLIENTE' | 'DRIVER' | null;
 
   login: (email: string, password: string) => Promise<{ok: boolean}>;
   logout: () => void;
@@ -21,10 +24,16 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
   token: undefined,
   user: undefined,
 
+  role: null,
+
   login: async (email: string, password: string) => {
     try {
       const {user, token} = await AuthService.login(email, password);
-      set({status: 'authorized', token, user});
+      const userByUID = await UsersService.getUserByUid(user.uid);
+
+      const role = !userByUID ? DRIVER : CLIENT;
+
+      set({status: 'authorized', token, user, role});
       return {ok: true};
     } catch (error) {
       set({status: 'unauthorized', token: undefined, user: undefined});
