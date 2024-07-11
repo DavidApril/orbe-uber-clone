@@ -12,19 +12,11 @@ import {
   RegisterScreen,
   RegisterDriverScreen,
   RegisterClientScreen,
+  ProfileClientScreen,
+  ProfileDriverScreen,
+  SettingsScreen,
 } from '../screens';
-import {FAB} from '../components';
-
-export type RootStackParams = {
-  LoadingScreen: undefined;
-  LoginScreen: undefined;
-  RegisterScreen: undefined;
-  PermissionsScreen: undefined;
-  HomeClientScreen: undefined;
-  HomeDriverScreen: undefined;
-  RegisterDriverScreen: undefined;
-  RegisterClientScreen: undefined;
-};
+import {RootStackParams} from '../../interfaces';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 
@@ -80,6 +72,21 @@ export const StackNavigator = () => {
         options={{cardStyleInterpolator: fadeAnimation}}
         name="HomeClientScreen"
         component={HomeClientScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation}}
+        name="ProfileClientScreen"
+        component={ProfileClientScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation}}
+        name="ProfileDriverScreen"
+        component={ProfileDriverScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation}}
+        name="SettingsScreen"
+        component={SettingsScreen}
       />
     </Navigator>
   );
