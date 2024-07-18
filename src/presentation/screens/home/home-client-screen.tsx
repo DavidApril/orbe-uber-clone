@@ -18,9 +18,13 @@ import {useAuthStore, useLocationStore} from '../../../store';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {useSocket} from '../../../hooks';
 import {useWindowDimensions} from 'react-native';
-import {RacesService} from '../../../services';
+import {DriverService, RacesService} from '../../../services';
 import {API_SOCKET_URL} from '@env';
-import {Location, RootStackParams} from '../../../interfaces';
+import {
+  DriverResponseByUidData,
+  Location,
+  RootStackParams,
+} from '../../../interfaces';
 import {
   DrawerActions,
   NavigationProp,
@@ -28,6 +32,7 @@ import {
 } from '@react-navigation/native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {globalColors} from '../../theme/styles';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export const HomeClientScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
@@ -37,7 +42,9 @@ export const HomeClientScreen = () => {
   const {user} = useAuthStore();
   const {height} = useWindowDimensions();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const [nearbyDrivers, setNearbyDrivers] = useState<any[]>([]);
+  const [nearbyDrivers, setNearbyDrivers] = useState<
+    DriverResponseByUidData[] | undefined
+  >([]);
   const [origin, setOrigin] = useState<Location | null>(null);
   const [destination, setDestination] = useState<Location | null>(null);
   const [searchingDriver, setSearchingDriver] = useState<boolean>(false);
@@ -64,7 +71,6 @@ export const HomeClientScreen = () => {
   useEffect(() => {
     socket.on('conductores-cercanos', data => {
       setNearbyDrivers(data);
-      // console.log({data})
     });
   }, []);
 
@@ -74,7 +80,7 @@ export const HomeClientScreen = () => {
     }
   }, []);
 
-  const snapPoints = useMemo(() => ['50%', '80%'], []);
+  const snapPoints = useMemo(() => ['20%', '50%', '80%'], []);
 
   const createRequest = async (id_driver: any) => {
     if (!user || !origin || !destination) return;
@@ -90,6 +96,8 @@ export const HomeClientScreen = () => {
         longitude: destination?.longitude,
       },
     });
+
+    console.log({response});
   };
 
   useEffect(() => {
@@ -97,6 +105,16 @@ export const HomeClientScreen = () => {
       SearchingDriverBottomSheetRef.current?.collapse();
     }
   }, [searchingDriver]);
+
+  useEffect(() => {
+    if (nearbyDrivers && searchingDriver) {
+      SearchingDriverBottomSheetRef.current?.expand();
+    }
+  }, [nearbyDrivers, searchingDriver]);
+
+  useEffect(() => {
+    SearchingDriverBottomSheetRef.current?.collapse();
+  }, [origin, destination]);
 
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
@@ -114,36 +132,6 @@ export const HomeClientScreen = () => {
           top: 20,
         }}
       />
-
-      {nearbyDrivers && searchingDriver && (
-        <List
-          style={{
-            position: 'absolute',
-            zIndex: 99999,
-            marginTop: height * 0.1,
-            left: 20,
-            right: 20,
-            borderRadius: 35,
-            overflow: 'hidden',
-            // height: height * 0.5,
-            backgroundColor: 'white',
-          }}
-          data={nearbyDrivers}
-          renderItem={({item}) => {
-            return (
-              <Layout
-                style={{
-                  backgroundColor: 'black',
-                  borderRadius: 35,
-                  paddingHorizontal: 30,
-                  paddingVertical: 10,
-                }}>
-                <Text>{item.id}</Text>
-              </Layout>
-            );
-          }}
-        />
-      )}
 
       <CustomMapView
         origin={origin}
@@ -163,7 +151,8 @@ export const HomeClientScreen = () => {
             padding: 20,
             left: 10,
             right: 10,
-            bottom: height * 0.3,
+            top: 80,
+            // bottom: height * 0.3,
           }}>
           {raceData && raceData.duration && (
             <Layout
@@ -179,7 +168,6 @@ export const HomeClientScreen = () => {
               <Text>{Math.ceil(raceData?.duration)} minutos</Text>
             </Layout>
           )}
-
           {raceData && raceData.distance && (
             <Layout
               style={{
@@ -206,7 +194,25 @@ export const HomeClientScreen = () => {
             setSearchingDriver={setSearchingDriver}
           />
         ) : (
-          <DriverInformationCard />
+          // nearbyDrivers.length > 0 && (
+          <ScrollView>
+            <Button
+              onPress={() => setSearchingDriver(false)}
+              status="danger"
+              appearance="ghost">
+              Cancelar búsqueda
+            </Button>
+            {nearbyDrivers?.map(driver => (
+              <>
+                <DriverInformationCard
+                  createRequest={createRequest}
+                  raceData={raceData}
+                  driver={driver}
+                />
+              </>
+            ))}
+          </ScrollView>
+          // )
         )}
       </BottomSheet>
 

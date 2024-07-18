@@ -1,14 +1,38 @@
 import {Button, Layout, Text} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
+import {useEffect, useState} from 'react';
+import {DriverService} from '../../../services';
 
-export const DriverInformationCard = () => {
+interface Props {
+  driver: any;
+  raceData: any;
+  createRequest: any;
+}
+
+export const DriverInformationCard = ({
+  driver,
+  raceData,
+  createRequest,
+}: Props) => {
+  // getDriverByUserUid
+
+  const [driverData, setDriverData] = useState<any>();
+
+  const getDriverData = async () => {
+    const response = await DriverService.getDriverByUserUid(driver.id);
+    if (response && !driverData) {
+      setDriverData(response.data);
+    }
+    // console.log(data)
+  };
+
+  useEffect(() => {
+    getDriverData();
+  }, []);
+
   return (
     <Layout style={{marginHorizontal: 30}}>
       <Layout style={{flexDirection: 'column', gap: 10}}>
-        <Button status="danger" appearance="ghost">
-          Cancelar búsqueda
-        </Button>
-
         <Layout style={{height: 1, backgroundColor: '#dedad9'}}></Layout>
 
         <Layout
@@ -31,9 +55,9 @@ export const DriverInformationCard = () => {
 
           <Layout style={{flexDirection: 'column'}}>
             <Text style={{fontWeight: 'bold', fontSize: 18}}>
-              Nombre conductor
+              {driverData?.driver.name + ' ' + driverData?.driver.lastName}
             </Text>
-            <Text>Rating </Text>
+            <Text>{driverData?.driver.identification}</Text>
           </Layout>
 
           <Layout
@@ -54,7 +78,7 @@ export const DriverInformationCard = () => {
             gap: 20,
           }}>
           <Layout>
-            <Text>Arrive in</Text>
+            <Text>Llega en</Text>
             <Text
               style={{
                 fontWeight: 'bold',
@@ -71,7 +95,7 @@ export const DriverInformationCard = () => {
                 fontWeight: 'bold',
                 fontSize: 20,
               }}>
-              5.8 km
+              {Math.ceil(raceData.distance)} Km
             </Text>
           </Layout>
 
@@ -82,7 +106,7 @@ export const DriverInformationCard = () => {
                 fontWeight: 'bold',
                 fontSize: 20,
               }}>
-              8.200$
+              {Math.ceil(raceData.duration)} Min
             </Text>
           </Layout>
         </Layout>
@@ -116,9 +140,11 @@ export const DriverInformationCard = () => {
               </Button>
             </Layout>
 
-            <Button style={{borderRadius: 60, paddingHorizontal: 50}}>
+            <Text>+57 {driverData?.driver.phone}</Text>
+
+            {/* <Button style={{borderRadius: 60, paddingHorizontal: 50}}>
               Ver perfil
-            </Button>
+            </Button> */}
           </Layout>
           <Layout style={{height: 1, backgroundColor: '#dedad9'}}></Layout>
 
@@ -132,7 +158,10 @@ export const DriverInformationCard = () => {
             <Button status="danger" style={{borderRadius: 50}}>
               Eliminar conductor
             </Button>
-            <Button status="success" style={{flex: 1, borderRadius: 50}}>
+            <Button
+              onPress={createRequest}
+              status="success"
+              style={{flex: 1, borderRadius: 50}}>
               Hacer petición
             </Button>
           </Layout>

@@ -276,6 +276,7 @@ export const SelectOriginDestination = ({
       <Layout style={{height: 20}}></Layout>
 
       <Button
+        disabled={!inputDestiny || !inputLocation}
         onPress={() => {
           setSearchingDriver(!searchingDriver);
         }}
