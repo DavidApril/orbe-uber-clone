@@ -20,7 +20,7 @@ export const RegisterDriverScreen = () => {
   return (
     <>
       {driverRegisterForm === null && <RegisterDriverForm />}
-      {/* {driverRegisterForm?.image === '' && <SectionCamera />} */}
+      {driverRegisterForm?.image === '' && <SectionCamera />}
       {isValidForm && <SectionDisplayEditData />}
     </>
   );

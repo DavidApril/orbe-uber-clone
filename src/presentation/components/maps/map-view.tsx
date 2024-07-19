@@ -1,4 +1,4 @@
-import {Platform, useColorScheme} from 'react-native';
+import {Platform, useColorScheme, Image} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Polyline, Marker} from 'react-native-maps';
 import {PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {Location} from '../../../interfaces';
@@ -7,10 +7,10 @@ import {FAB} from '../ui/floating-action-button';
 import {MapStyle} from '../../../config/const/map';
 import {GOOGLE_API_KEY} from '@env';
 import MapViewDirections from 'react-native-maps-directions';
-import { globalColors } from '../../theme/styles';
-import { MapLightStyle } from '../../../config/const/mapLight';
+import {MapLightStyle} from '../../../config/const/mapLight';
 
 interface Props {
+  driverPosition?: any;
   showsUserLocation?: boolean;
   initialLocation: Location;
   children?: PropsWithChildren;
@@ -18,7 +18,7 @@ interface Props {
   origin?: Location | null;
   showTraffic?: boolean;
   destination?: Location | null;
-  setRaceData: React.Dispatch<
+  setRaceData?: React.Dispatch<
     React.SetStateAction<{
       distance: number;
       duration: number;
@@ -30,6 +30,7 @@ export const CustomMapView = ({
   showsUserLocation = true,
   initialLocation,
   // handlePress,
+  driverPosition,
   children,
   setRaceData,
   showTraffic = false,
@@ -83,6 +84,12 @@ export const CustomMapView = ({
   }, []);
 
   useEffect(() => {
+    if (driverPosition) {
+      console.log({driverPosition});
+    }
+  }, [driverPosition]);
+
+  useEffect(() => {
     if (lastKnownLocation && isFollowingUser) {
       moveCameraToLocation(lastKnownLocation);
     }
@@ -117,7 +124,9 @@ export const CustomMapView = ({
             origin={origin}
             mode="DRIVING"
             onReady={data => {
-              setRaceData({distance: data.distance, duration: data.duration});
+              if (setRaceData) {
+                setRaceData({distance: data.distance, duration: data.duration});
+              }
             }}
             destination={destination}
             apikey={GOOGLE_API_KEY}
@@ -132,8 +141,21 @@ export const CustomMapView = ({
             coordinate={{
               latitude: origin?.latitude,
               longitude: origin?.longitude,
-            }}
-          />
+            }}></Marker>
+        )}
+
+        {driverPosition && (
+          <Marker
+            title="Conductor"
+            coordinate={{
+              latitude: driverPosition?.latitud,
+              longitude: driverPosition?.longitud,
+            }}>
+            <Image
+              style={{height: 50, width: 50}}
+              source={require('../../../assets/car.png')}
+            />
+          </Marker>
         )}
 
         {destination && (
@@ -155,7 +177,7 @@ export const CustomMapView = ({
         style={{
           top: 20,
           right: 20,
-          backgroundColor: '#3fc1f2'
+          backgroundColor: '#3fc1f2',
         }}
       />
     </>

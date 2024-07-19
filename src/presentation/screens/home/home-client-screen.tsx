@@ -1,36 +1,48 @@
+import {Button, Layout, Spinner, Text} from '@ui-kitten/components';
 import {
-  Button,
-  Input,
-  Layout,
-  List,
-  Spinner,
-  Text,
-} from '@ui-kitten/components';
-import {CustomMapView, FAB} from '../../components';
+  CustomMapView,
+  DriverInformationCard,
+  FAB,
+  SelectOriginDestination,
+} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useAuthStore, useLocationStore} from '../../../store';
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {useSocket} from '../../../hooks';
-import {Modal, Pressable, useColorScheme, useWindowDimensions, View} from 'react-native';
+import {
+  Modal,
+  Pressable,
+  useColorScheme,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import {RacesService} from '../../../services';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {API_SOCKET_URL, GOOGLE_API_KEY} from '@env';
-import {Location, RootStackParams} from '../../../interfaces';
-import {orbeApi} from '../../../config/api';
+import {
+  DriverResponseByUidData,
+  Location,
+  RootStackParams,
+} from '../../../interfaces';
 import {
   DrawerActions,
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
-import { globalColors } from '../../theme/styles';
+import BottomSheet from '@gorhom/bottom-sheet';
+import {ScrollView} from 'react-native-gesture-handler';
+import {globalColors} from '../../theme/styles';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export const HomeClientScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
+
+  const SearchingDriverBottomSheetRef = useRef<BottomSheet>(null);
+
   const {user} = useAuthStore();
-  const {height, width} = useWindowDimensions();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const [nearbyDrivers, setNearbyDrivers] = useState<any[]>([]);
+  const [nearbyDrivers, setNearbyDrivers] = useState<
+    DriverResponseByUidData[] | undefined
+  >([]);
   const [origin, setOrigin] = useState<Location | null>(null);
   const [destination, setDestination] = useState<Location | null>(null);
   const [modalLocation, setModalLocation] = useState(false);
@@ -38,15 +50,15 @@ export const HomeClientScreen = () => {
   const [inputLocation, setInputLocation] = useState('');
   const [inputDestiny, setInputDestiny] = useState('');
 
+  const {height, width} = useWindowDimensions();
 
   const colorScheme = useColorScheme();
 
+  const [searchingDriver, setSearchingDriver] = useState<boolean>(false);
   const [raceData, setRaceData] = useState<{
     distance: number;
     duration: number;
   } | null>(null);
-
-  const [searchingDriver, setSearchingDriver] = useState<boolean>(false);
 
   const {socket} = useSocket(`${API_SOCKET_URL}/location-client`);
 
@@ -66,7 +78,6 @@ export const HomeClientScreen = () => {
   useEffect(() => {
     socket.on('conductores-cercanos', data => {
       setNearbyDrivers(data);
-      // console.log({data})
     });
   }, []);
 
@@ -76,7 +87,9 @@ export const HomeClientScreen = () => {
     }
   }, []);
 
-  const snapPoints = useMemo(() => ['40%', '50%'], []);
+  const snapPoints = useMemo(() => ['20%', '50%', '80%'], []);
+
+  const [currentDriver, setCurrentDriver] = useState<any>(null);
 
   const createRequest = async (id_driver: any) => {
     if (!user || !origin || !destination) return;
@@ -92,7 +105,23 @@ export const HomeClientScreen = () => {
         longitude: destination?.longitude,
       },
     });
+
+    const driver = nearbyDrivers?.filter(
+      (driver: any) => driver.id === id_driver,
+    );
+
+    if (driver) {
+      setCurrentDriver(driver[0]);
+    }
+
+    return response;
   };
+
+  useEffect(() => {
+    if (searchingDriver) {
+      SearchingDriverBottomSheetRef.current?.collapse();
+    }
+  }, [searchingDriver]);
 
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
@@ -108,47 +137,25 @@ export const HomeClientScreen = () => {
           position: 'absolute',
           left: 20,
           top: 20,
-          backgroundColor: '#3fc1f2'
+          backgroundColor: '#3fc1f2',
         }}
       />
 
-      {nearbyDrivers && searchingDriver && (
-        <List
-          style={{
-            position: 'absolute',
-            zIndex: 99999,
-            marginTop: height * 0.1,
-            left: 20,
-            right: 20,
-            borderRadius: 35,
-            overflow: 'hidden',
-            // height: height * 0.5,
-            backgroundColor: 'white',
-          }}
-          data={nearbyDrivers}
-          renderItem={({item}) => {
-            return (
-              <Layout
-                style={{
-                  backgroundColor: 'black',
-                  borderRadius: 35,
-                  paddingHorizontal: 30,
-                  paddingVertical: 10,
-                }}>
-                <Text>{item.id}</Text>
-              </Layout>
-            );
-          }}
-        />
-      )}
-
       <CustomMapView
+        driverPosition={currentDriver ? currentDriver : null}
         origin={origin}
         destination={destination}
         setRaceData={setRaceData}
         initialLocation={lastKnownLocation!}></CustomMapView>
 
-      <Layout style={{position: 'relative', backgroundColor: colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight}}>
+      <Layout
+        style={{
+          position: 'relative',
+          backgroundColor:
+            colorScheme === 'dark'
+              ? globalColors.themeDark
+              : globalColors.themeLight,
+        }}>
         <Layout
           style={{
             position: 'absolute',
@@ -194,13 +201,18 @@ export const HomeClientScreen = () => {
         </Layout>
       </Layout>
 
-      <BottomSheet 
+      <BottomSheet
         style={{
-          backgroundColor: colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight,
-          borderColor: colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight
-        }} 
-        snapPoints={snapPoints}
-      >
+          backgroundColor:
+            colorScheme === 'dark'
+              ? globalColors.themeDark
+              : globalColors.themeLight,
+          borderColor:
+            colorScheme === 'dark'
+              ? globalColors.themeDark
+              : globalColors.themeLight,
+        }}
+        snapPoints={snapPoints}>
         <Layout
           style={{
             bottom: 0,
@@ -209,9 +221,7 @@ export const HomeClientScreen = () => {
             gap: 10,
             paddingTop: 40,
           }}>
-          <Text style={{fontWeight: 'bold', fontSize: 30}}>
-            Selecciona
-          </Text>
+          <Text style={{fontWeight: 'bold', fontSize: 30}}>Selecciona</Text>
           <Text> dos puntos para buscar un conductor</Text>
 
           <Layout style={{height: 20}}></Layout>
@@ -226,7 +236,13 @@ export const HomeClientScreen = () => {
             onPress={() => {
               setModalLocation(true);
             }}>
-            <Text style={{color: colorScheme === 'dark' ? globalColors.white : globalColors.black}}>
+            <Text
+              style={{
+                color:
+                  colorScheme === 'dark'
+                    ? globalColors.white
+                    : globalColors.black,
+              }}>
               {inputLocation || 'Lugar de recogida'}
             </Text>
           </Pressable>
@@ -337,12 +353,18 @@ export const HomeClientScreen = () => {
               padding: 15,
               borderRadius: 50,
               borderColor: '#3fc1f2',
-              borderWidth: 1
+              borderWidth: 1,
             }}
             onPress={() => {
               setModalDestiny(true);
             }}>
-            <Text style={{color: colorScheme === 'dark' ? globalColors.white : globalColors.black}}>
+            <Text
+              style={{
+                color:
+                  colorScheme === 'dark'
+                    ? globalColors.white
+                    : globalColors.black,
+              }}>
               {inputDestiny || 'Lugar de llegada'}
             </Text>
           </Pressable>
@@ -456,9 +478,8 @@ export const HomeClientScreen = () => {
             onPress={() => {
               setSearchingDriver(!searchingDriver);
             }}
-            style={{ padding: 20 }}
-          >
-            <Text style={{ color: '#3fc1f2', textAlign: 'center' }}>
+            style={{padding: 20}}>
+            <Text style={{color: '#3fc1f2', textAlign: 'center'}}>
               {!searchingDriver ? 'Confirmar' : 'Cancelar'}
             </Text>
           </Pressable>
@@ -468,19 +489,63 @@ export const HomeClientScreen = () => {
       {searchingDriver && (
         <Layout
           style={{
-            marginTop: 40,
-            left: 0,
-            right: 0,
-            flexDirection: 'row',
-            gap: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
+            top: 20,
             position: 'absolute',
+            left: 100,
             backgroundColor: 'transparent',
+            right: 100,
           }}>
-          <Spinner />
+          <Button
+            style={{
+              backgroundColor: 'black',
+              borderRadius: 50,
+            }}
+            onPress={() => setSearchingDriver(false)}
+            status="danger"
+            appearance="ghost">
+            Cancelar búsqueda
+          </Button>
         </Layout>
       )}
+
+      <BottomSheet ref={SearchingDriverBottomSheetRef} snapPoints={snapPoints}>
+        {!searchingDriver ? (
+          <SelectOriginDestination
+            setOrigin={setOrigin}
+            setDestination={setDestination}
+            searchingDriver={searchingDriver}
+            setSearchingDriver={setSearchingDriver}
+          />
+        ) : (
+          <ScrollView>
+            {searchingDriver && nearbyDrivers?.length === 0 && (
+              <Layout
+                style={{
+                  margin: 20,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 10,
+                }}>
+                <Spinner />
+                <Text style={{fontWeight: 'bold'}}>
+                  Buscando conductores...
+                </Text>
+              </Layout>
+            )}
+            {nearbyDrivers &&
+              nearbyDrivers?.map(driver => (
+                <>
+                  <DriverInformationCard
+                    key={driver.uid_firebase}
+                    createRequest={() => createRequest(driver.id)}
+                    raceData={raceData}
+                    driver={driver}
+                  />
+                </>
+              ))}
+          </ScrollView>
+        )}
+      </BottomSheet>
     </>
   );
 };

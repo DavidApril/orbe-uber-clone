@@ -34,6 +34,7 @@ export const RegisterDriverForm = () => {
     identification: '',
     phone: '',
     email: '',
+    image: '',
     password: '',
     confirmPassword: '',
   };
