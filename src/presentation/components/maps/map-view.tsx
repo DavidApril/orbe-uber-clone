@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import {Platform, useColorScheme} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Polyline, Marker} from 'react-native-maps';
 import {PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {Location} from '../../../interfaces';
@@ -7,6 +7,8 @@ import {FAB} from '../ui/floating-action-button';
 import {MapStyle} from '../../../config/const/map';
 import {GOOGLE_API_KEY} from '@env';
 import MapViewDirections from 'react-native-maps-directions';
+import { globalColors } from '../../theme/styles';
+import { MapLightStyle } from '../../../config/const/mapLight';
 
 interface Props {
   showsUserLocation?: boolean;
@@ -38,6 +40,8 @@ export const CustomMapView = ({
   const cameraLocation = useRef<Location>(initialLocation);
   const [isFollowingUser, setIsFollowingUser] = useState(true);
   const [isShowingPolyline, setIsShowingPolyline] = useState(true);
+
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
     if (origin) {
@@ -87,7 +91,7 @@ export const CustomMapView = ({
   return (
     <>
       <MapView
-        customMapStyle={MapStyle}
+        customMapStyle={colorScheme === 'dark' ? MapStyle : MapLightStyle}
         showsIndoors={false}
         showsCompass={false}
         showsMyLocationButton={false}
@@ -151,6 +155,7 @@ export const CustomMapView = ({
         style={{
           top: 20,
           right: 20,
+          backgroundColor: '#3fc1f2'
         }}
       />
     </>

@@ -9,32 +9,45 @@ import {
 } from '../screens';
 import {useAuthStore} from '../../store';
 import {CLIENT} from '../../interfaces';
+import {useColorScheme} from 'react-native';
+import * as eva from '@eva-design/eva';
 
 const {Navigator, Screen} = createDrawerNavigator();
 
 export function DrawerNavigation() {
   const {role} = useAuthStore();
+  const colorScheme = useColorScheme();
+  const theme = colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight;
+  console.log('this is theme: ', theme)
 
   return (
     <Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: theme,
+        },
+        headerTintColor: '#3fc1f2',
 
         // headerLeftLabelVisible: false,
         drawerType: 'slide',
+        drawerInactiveTintColor: colorScheme === 'dark' ? globalColors.white : globalColors.gray,
         drawerActiveTintColor: globalColors.primary,
         drawerItemStyle: {
           borderRadius: 50,
           paddingHorizontal: 20,
         },
       }}>
-      <Screen name="Inicio" component={StackNavigator} />
+      <Screen options={{ headerShown: false }} name="Inicio" component={StackNavigator} />
       <Screen
         name="Perfil"
         component={role === CLIENT ? ProfileClientScreen : ProfileDriverScreen}
       />
-      <Screen name="Configuración" component={SettingsScreen} />
+      <Screen
+       name="Configuración" 
+       component={SettingsScreen} 
+      />
     </Navigator>
   );
 }

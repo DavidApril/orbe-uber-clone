@@ -16,6 +16,7 @@ export const LoginScreen = ({navigation}: Props) => {
     email: '',
     password: '',
   });
+  
 
   async function onLogin() {
     if (form.email.length === 0 || form.password.length === 0) return;

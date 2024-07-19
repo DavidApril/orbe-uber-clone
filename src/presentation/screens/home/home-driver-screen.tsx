@@ -3,8 +3,8 @@ import {useAuthStore, useLocationStore} from '../../../store';
 import {CustomIcon, CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
-import {Button, Layout, List, ListItem} from '@ui-kitten/components';
-import {Modal, Pressable, Text, View} from 'react-native';
+import {Button, Icon, Layout, List, ListItem} from '@ui-kitten/components';
+import {Modal, Pressable, Text, useColorScheme, View} from 'react-native';
 import {orbeApi} from '../../../config/api';
 import {
   DrawerActions,
@@ -12,15 +12,18 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {RootStackParams} from '../../../interfaces';
+import { withDecay } from 'react-native-reanimated';
+import { globalColors } from '../../theme/styles';
 
 export const HomeDriverScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
+
+  const colorScheme = useColorScheme();
   
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [driverRequests, setDriveRequests] = useState<any[]>([]);
-  const [driverServiceIsActive, setDriverServiceIsActive] =
-    useState<boolean>(false);
+  const [driverServiceIsActive, setDriverServiceIsActive] = useState<boolean>(false);
 
   const {socket} = useSocket(`ws://orbeapi.devzeros.com:3001/location`);
   const [modal, setModal] = useState(false);
@@ -99,80 +102,11 @@ export const HomeDriverScreen = () => {
           position: 'absolute',
           left: 20,
           top: 20,
+          backgroundColor: '#3fc1f2',
         }}
+        white={true}
       />
 
-      <Modal
-        style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#0006',
-        }}
-        animationType="fade"
-        visible={modal}
-        transparent={true}
-        onRequestClose={() => {
-          setModal(false);
-        }}>
-        <View
-          style={{
-            margin: 'auto',
-            backgroundColor: 'black',
-            borderRadius: 20,
-            padding: 20,
-            width: '90%',
-            height: 'auto',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 35,
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5,
-          }}>
-          <Text style={{fontSize: 20, color: 'white'}}>Tus Datos</Text>
-          <View style={{gap: 15, alignItems: 'flex-start'}}>
-            <Text style={{fontSize: 15, color: '#fff8'}}>
-              Nombre: {data?.name}
-            </Text>
-            <Text style={{fontSize: 15, color: '#fff8'}}>
-              Apellido: {data?.lastName}
-            </Text>
-            <Text style={{fontSize: 15, color: '#fff8'}}>
-              Identificacion: {data?.identification}
-            </Text>
-            <Text style={{fontSize: 15, color: '#fff8'}}>
-              Telefono: {data?.phone}
-            </Text>
-          </View>
-          <Pressable
-            onPress={() => {
-              setModal(false);
-            }}
-            style={{
-              padding: 10,
-              borderRadius: 25,
-              width: '90%',
-              backgroundColor: '#20f',
-            }}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 16,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
-              Cerrar
-            </Text>
-          </Pressable>
-        </View>
-      </Modal>
       {driverRequests && driverServiceIsActive && (
         <List
           style={{
@@ -187,7 +121,7 @@ export const HomeDriverScreen = () => {
           renderItem={({item: request, index}) => (
             <ListItem
               style={{
-                backgroundColor: 'black',
+                backgroundColor: colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight,
                 borderRadius: 30,
                 marginBottom: 5,
                 paddingHorizontal: 20,
@@ -198,7 +132,7 @@ export const HomeDriverScreen = () => {
               // description={`Destino: ${request?.coordinates[1].longitud} - ${request?.coordinates[1].latitud}`}
               accessoryLeft={
                 <Button onPress={() => console.log(request)}>
-                  <CustomIcon name="cube-outline" />
+                  <CustomIcon color='#3fc1f2' name="cube-outline" />
                 </Button>
               }
               accessoryRight={AcceptDeniedButtons}
@@ -209,20 +143,26 @@ export const HomeDriverScreen = () => {
 
       <CustomMapView initialLocation={lastKnownLocation!} />
 
-      <FAB
-        iconName={
-          !driverServiceIsActive ? 'power-outline' : 'bar-chart-2-outline'
-        }
+      <Pressable 
         style={{
           bottom: 20,
-          left: 40,
-          right: 40,
-        }}
-        label={
-          !driverServiceIsActive ? 'Activar servicios' : 'Capturando viajes'
-        }
-        onPress={onActiveServicePress}
-      />
+          left: 20,
+          borderRadius: 20,
+          backgroundColor: '#3fc1f2',
+          width: '90%',
+          height: 50,
+          position: 'absolute',
+          flexDirection: 'row',
+          justifyContent: 'center', 
+          alignItems: 'center',
+          gap: 10
+        }} 
+        onPress={onActiveServicePress}>
+          <Icon fill={'white'} style={{ width: 30, height: 40 }} name={!driverServiceIsActive ? 'power-outline' : 'bar-chart-2-outline'} />
+          <Text style={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}>
+            {!driverServiceIsActive ? 'Activar servicios' : 'Capturando viajes'}
+          </Text>
+      </Pressable>
     </>
   );
 };

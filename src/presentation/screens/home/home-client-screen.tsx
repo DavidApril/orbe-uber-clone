@@ -11,7 +11,7 @@ import {LoadingScreen} from '../loading/loading-screen';
 import {useAuthStore, useLocationStore} from '../../../store';
 import {useEffect, useMemo, useState} from 'react';
 import {useSocket} from '../../../hooks';
-import {Modal, Pressable, useWindowDimensions, View} from 'react-native';
+import {Modal, Pressable, useColorScheme, useWindowDimensions, View} from 'react-native';
 import {RacesService} from '../../../services';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {API_SOCKET_URL, GOOGLE_API_KEY} from '@env';
@@ -23,6 +23,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import { globalColors } from '../../theme/styles';
 
 export const HomeClientScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
@@ -36,6 +37,9 @@ export const HomeClientScreen = () => {
   const [modalDestiny, setModalDestiny] = useState(false);
   const [inputLocation, setInputLocation] = useState('');
   const [inputDestiny, setInputDestiny] = useState('');
+
+
+  const colorScheme = useColorScheme();
 
   const [raceData, setRaceData] = useState<{
     distance: number;
@@ -104,6 +108,7 @@ export const HomeClientScreen = () => {
           position: 'absolute',
           left: 20,
           top: 20,
+          backgroundColor: '#3fc1f2'
         }}
       />
 
@@ -143,7 +148,7 @@ export const HomeClientScreen = () => {
         setRaceData={setRaceData}
         initialLocation={lastKnownLocation!}></CustomMapView>
 
-      <Layout style={{position: 'relative', backgroundColor: 'white'}}>
+      <Layout style={{position: 'relative', backgroundColor: colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight}}>
         <Layout
           style={{
             position: 'absolute',
@@ -189,7 +194,13 @@ export const HomeClientScreen = () => {
         </Layout>
       </Layout>
 
-      <BottomSheet snapPoints={snapPoints}>
+      <BottomSheet 
+        style={{
+          backgroundColor: colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight,
+          borderColor: colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight
+        }} 
+        snapPoints={snapPoints}
+      >
         <Layout
           style={{
             bottom: 0,
@@ -200,8 +211,8 @@ export const HomeClientScreen = () => {
           }}>
           <Text style={{fontWeight: 'bold', fontSize: 30}}>
             Selecciona
-            <Text> dos puntos para buscar un conductor</Text>
           </Text>
+          <Text> dos puntos para buscar un conductor</Text>
 
           <Layout style={{height: 20}}></Layout>
 
@@ -209,12 +220,13 @@ export const HomeClientScreen = () => {
             style={{
               padding: 15,
               borderRadius: 50,
-              backgroundColor: 'black',
+              borderWidth: 1,
+              borderColor: '#3fc1f2',
             }}
             onPress={() => {
               setModalLocation(true);
             }}>
-            <Text style={{color: 'white'}}>
+            <Text style={{color: colorScheme === 'dark' ? globalColors.white : globalColors.black}}>
               {inputLocation || 'Lugar de recogida'}
             </Text>
           </Pressable>
@@ -238,7 +250,7 @@ export const HomeClientScreen = () => {
               <Layout
                 style={{
                   width: width * 0.9,
-                  height: height * 0.5,
+                  height: height * 0.6,
                   // backgroundColor: 'black',
                   // borderColor: '#20f',
                   borderWidth: 1,
@@ -324,12 +336,13 @@ export const HomeClientScreen = () => {
             style={{
               padding: 15,
               borderRadius: 50,
-              backgroundColor: 'black',
+              borderColor: '#3fc1f2',
+              borderWidth: 1
             }}
             onPress={() => {
               setModalDestiny(true);
             }}>
-            <Text style={{color: 'white'}}>
+            <Text style={{color: colorScheme === 'dark' ? globalColors.white : globalColors.black}}>
               {inputDestiny || 'Lugar de llegada'}
             </Text>
           </Pressable>
@@ -439,14 +452,16 @@ export const HomeClientScreen = () => {
 
           <Layout style={{height: 20}}></Layout>
 
-          <Button
+          <Pressable
             onPress={() => {
               setSearchingDriver(!searchingDriver);
             }}
-            status="success"
-            appearance="ghost">
-            {!searchingDriver ? 'Confirmar' : 'Cancelar'}
-          </Button>
+            style={{ padding: 20 }}
+          >
+            <Text style={{ color: '#3fc1f2', textAlign: 'center' }}>
+              {!searchingDriver ? 'Confirmar' : 'Cancelar'}
+            </Text>
+          </Pressable>
         </Layout>
       </BottomSheet>
 

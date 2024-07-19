@@ -1,12 +1,12 @@
 import {Button, Layout, Text} from '@ui-kitten/components';
 import {useAuthStore} from '../../../../store';
 import {CustomIcon} from '../../../components';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParams } from '../../../../interfaces';
+// import { NavigationProp, useNavigation } from '@react-navigation/native';
+// import { RootStackParams } from '../../../../interfaces';
 
 export const ProfileDriverScreen = () => {
   const {user} = useAuthStore();
-  const navigation = useNavigation<NavigationProp<RootStackParams>>();
+  // const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   return (
     <Layout
@@ -105,7 +105,7 @@ export const ProfileDriverScreen = () => {
             </Text>
           </Layout>
         </Layout>
-        <Button onPress={() => navigation.goBack()} appearance="ghost">Volver</Button>
+        {/* <Button onPress={() => navigation.goBack()} appearance="ghost">Volver</Button> */}
       </Layout>
     </Layout>
   );
