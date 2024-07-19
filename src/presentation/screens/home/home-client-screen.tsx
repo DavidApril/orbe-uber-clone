@@ -1,5 +1,6 @@
 import {Button, Layout, Spinner, Text} from '@ui-kitten/components';
 import {
+  CustomIcon,
   CustomMapView,
   DriverInformationCard,
   FAB,
@@ -46,7 +47,7 @@ export const HomeClientScreen = () => {
   const [origin, setOrigin] = useState<Location | null>(null);
   const [destination, setDestination] = useState<Location | null>(null);
 
-  const {height} = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
 
   const colorScheme = useColorScheme();
 
@@ -144,35 +145,6 @@ export const HomeClientScreen = () => {
         setRaceData={setRaceData}
         initialLocation={lastKnownLocation!}></CustomMapView>
 
-      <Layout
-        style={{
-          position: 'relative',
-          backgroundColor:
-            colorScheme === 'dark'
-              ? globalColors.themeDark
-              : globalColors.themeLight,
-        }}></Layout>
-
-      <BottomSheet
-        style={{
-          backgroundColor:
-            colorScheme === 'dark'
-              ? globalColors.themeDark
-              : globalColors.themeLight,
-          borderColor:
-            colorScheme === 'dark'
-              ? globalColors.themeDark
-              : globalColors.themeLight,
-        }}
-        snapPoints={snapPoints}>
-        <SelectOriginDestination
-          setOrigin={setOrigin}
-          setDestination={setDestination}
-          searchingDriver={searchingDriver}
-          setSearchingDriver={setSearchingDriver}
-        />
-      </BottomSheet>
-
       {searchingDriver && (
         <Layout
           style={{
@@ -219,6 +191,27 @@ export const HomeClientScreen = () => {
                 </Text>
               </Layout>
             )}
+
+            {nearbyDrivers?.length === 0 && (
+              <Layout
+                style={{
+                  flex: 1,
+                  width: width,
+                  height: height * 0.6,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text>
+                  <CustomIcon
+                    height={100}
+                    width={100}
+                    name="alert-circle-outline"
+                    fill="#d5d9e0"
+                  />
+                </Text>
+              </Layout>
+            )}
+
             {nearbyDrivers &&
               nearbyDrivers?.map(driver => (
                 <>
