@@ -3,30 +3,34 @@ import {Button, Input, Layout, Text} from '@ui-kitten/components';
 import {useState} from 'react';
 import {Image, useWindowDimensions} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {RootStackParams} from '../../../navigation/stack-navigation';
 import {useAuthStore} from '../../../../store/auth/auth.store';
 import {CustomIcon} from '../../../components';
+import {RootStackParams} from '../../../../interfaces';
+import * as Yup from 'yup';
+import {Formik} from 'formik';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
 export const LoginScreen = ({navigation}: Props) => {
   const {login} = useAuthStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [form, setForm] = useState<{email: string; password: string}>({
+  const {height} = useWindowDimensions();
+
+  const initialValues = {
     email: '',
     password: '',
+  };
+
+  const validationSchema = Yup.object({
+    email: Yup.string().required().email(),
+    password: Yup.string().required(),
   });
-  
 
-  async function onLogin() {
-    if (form.email.length === 0 || form.password.length === 0) return;
-
+  async function onSubmit(values: typeof initialValues) {
     setIsLoading(true);
-    const {ok} = await login(form.email, form.password);
+    const {ok} = await login(values.email, values.password);
     setIsLoading(false);
   }
-
-  const {height} = useWindowDimensions();
 
   return (
     <Layout style={{flex: 1}}>
@@ -45,36 +49,62 @@ export const LoginScreen = ({navigation}: Props) => {
         </Layout>
 
         {/* Inputs */}
-        <Layout style={{marginTop: 20}}>
-          <Input
-            value={form.email}
-            onChangeText={value => setForm({...form, email: value})}
-            accessoryLeft={<CustomIcon name="email-outline" />}
-            placeholder="Correo eléctronico"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            style={{marginBottom: 10}}
-          />
-          <Input
-            value={form.password}
-            onChangeText={value => setForm({...form, password: value})}
-            accessoryLeft={<CustomIcon name="lock-outline" />}
-            placeholder="Contraseña"
-            secureTextEntry
-            autoCapitalize="none"
-            style={{marginBottom: 20}}
-          />
-        </Layout>
+        <Formik
+          validationSchema={validationSchema}
+          initialValues={initialValues}
+          onSubmit={onSubmit}>
+          {({values, handleChange, handleSubmit, errors, touched}) => (
+            <>
+              <Layout style={{marginTop: 20}}>
+                <Input
+                  status={
+                    touched.email && errors.email
+                      ? 'danger'
+                      : touched.email && !errors.email
+                      ? 'success'
+                      : 'basic'
+                  }
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  accessoryLeft={<CustomIcon name="email-outline" />}
+                  placeholder="Correo eléctronico"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  style={{marginBottom: 10}}
+                />
+                <Input
+                  status={
+                    touched.password && errors.password
+                      ? 'danger'
+                      : touched.password && !errors.password
+                      ? 'success'
+                      : 'basic'
+                  }
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  accessoryLeft={<CustomIcon name="lock-outline" />}
+                  placeholder="Contraseña"
+                  secureTextEntry
+                  autoCapitalize="none"
+                  style={{marginBottom: 20}}
+                />
+              </Layout>
 
-        {/* Space */}
-        <Layout style={{height: 20}}></Layout>
+              {/* Space */}
+              <Layout style={{height: 20}}></Layout>
 
-        {/* Button */}
-        <Layout>
-          <Button disabled={isLoading} onPress={onLogin} appearance="ghost">
-            Ingresar
-          </Button>
-        </Layout>
+              {/* Button */}
+              <Layout>
+                <Button
+                  disabled={isLoading}
+                  onPress={() => handleSubmit()}
+                  appearance="ghost">
+                  Ingresar
+                </Button>
+              </Layout>
+            </>
+          )}
+        </Formik>
 
         {/* Space */}
         <Layout style={{height: 50}}></Layout>
