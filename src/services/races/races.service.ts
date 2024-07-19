@@ -41,4 +41,24 @@ export class RacesService {
       console.log(error);
     }
   };
+
+  static acceptRequest = async (
+    id_client: string,
+    id_driver: string,
+    price: number,
+  ) => {
+    try {
+      const {data: acceptRequestResponse} = await orbeApi.post(
+        '/request/acceptRequest',
+        {
+          id_client,
+          id_driver,
+          price,
+        },
+      );
+      return acceptRequestResponse;
+    } catch (error) {
+      console.log({error});
+    }
+  };
 }

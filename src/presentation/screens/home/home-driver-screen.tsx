@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useAuthStore, useLocationStore} from '../../../store';
-import {CustomIcon, CustomMapView, FAB} from '../../components';
+import {ClientInformationCard, CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
 import {Button, Layout, List, ListItem} from '@ui-kitten/components';
@@ -11,20 +11,32 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native';
-import {RootStackParams} from '../../../interfaces';
+import {Location, RootStackParams} from '../../../interfaces';
+import {currencyFormat} from '../../../utils';
+import {RacesService} from '../../../services';
 
 export const HomeDriverScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
-  
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [driverRequests, setDriveRequests] = useState<any[]>([]);
   const [driverServiceIsActive, setDriverServiceIsActive] =
     useState<boolean>(false);
-
   const {socket} = useSocket(`ws://orbeapi.devzeros.com:3001/location`);
   const [modal, setModal] = useState(false);
   const [data, setData] = useState<any>();
+  const [origin, setOrigin] = useState<Location | null>(null);
+  const [destination, setDestination] = useState<Location | null>(null);
+  const [analyzingRace, setAnalyzingRace] = useState<boolean>(false);
+  const [raceData, setRaceData] = useState<{
+    distance: number;
+    duration: number;
+  } | null>(null);
+  const [currentRequest, setCurrentRequest] = useState<any>();
+
+  useEffect(() => {
+    console.log({raceData, currentRequest});
+  }, [raceData, currentRequest]);
 
   useEffect(() => {
     const fetchData = async (uid: string) => {
@@ -38,8 +50,7 @@ export const HomeDriverScreen = () => {
 
   useEffect(() => {
     socket.on('driver-request', data => {
-      if (driverRequests) setDriveRequests(data.client_request);
-      else setDriveRequests([]);
+      setDriveRequests(data.client_request);
     });
   }, []);
 
@@ -58,7 +69,6 @@ export const HomeDriverScreen = () => {
         longitud: lastKnownLocation?.longitude,
         latitud: lastKnownLocation?.latitude,
       };
-      console.log(payload);
       socket.emit('location-driver', payload);
     }, 2000);
 
@@ -67,28 +77,20 @@ export const HomeDriverScreen = () => {
 
   function onActiveServicePress() {
     setDriverServiceIsActive(!driverServiceIsActive);
-    console.log(driverRequests);
+  }
+
+  function handleAcceptRequest() {
+    setDriverServiceIsActive(false);
+  }
+
+  function analyzeRace() {
+    setAnalyzingRace(true);
+    setDriverServiceIsActive(false);
   }
 
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
   }
-
-  const AcceptDeniedButtons = (): React.ReactElement => (
-    <Layout
-      style={{
-        backgroundColor: 'transparent',
-        display: 'flex',
-        flexDirection: 'row',
-      }}>
-      <Button style={{}} appearance="ghost" status="success">
-        Aceptar
-      </Button>
-      <Button style={{}} appearance="ghost" status="danger">
-        Rechazar
-      </Button>
-    </Layout>
-  );
 
   return (
     <>
@@ -184,45 +186,124 @@ export const HomeDriverScreen = () => {
             right: 5,
           }}
           data={driverRequests}
-          renderItem={({item: request, index}) => (
-            <ListItem
-              style={{
-                backgroundColor: 'black',
-                borderRadius: 30,
-                marginBottom: 5,
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-                alignItems: 'center',
-              }}
-              title={`Cliente: ${request.id_client}`}
-              // description={`Destino: ${request?.coordinates[1].longitud} - ${request?.coordinates[1].latitud}`}
-              accessoryLeft={
-                <Button onPress={() => console.log(request)}>
-                  <CustomIcon name="cube-outline" />
-                </Button>
-              }
-              accessoryRight={AcceptDeniedButtons}
+          renderItem={({item: request}) => (
+            <ClientInformationCard
+              setCurrentRequest={setCurrentRequest}
+              analyzeRace={analyzeRace}
+              request={request}
+              setOrigin={setOrigin}
+              setDestination={setDestination}
             />
           )}
         />
       )}
 
-      <CustomMapView initialLocation={lastKnownLocation!} />
-
-      <FAB
-        iconName={
-          !driverServiceIsActive ? 'power-outline' : 'bar-chart-2-outline'
-        }
-        style={{
-          bottom: 20,
-          left: 40,
-          right: 40,
-        }}
-        label={
-          !driverServiceIsActive ? 'Activar servicios' : 'Capturando viajes'
-        }
-        onPress={onActiveServicePress}
+      <CustomMapView
+        showTraffic
+        setRaceData={setRaceData}
+        destination={analyzingRace ? destination : null}
+        origin={analyzingRace ? origin : null}
+        initialLocation={lastKnownLocation!}
       />
+
+      {!analyzingRace ? (
+        <FAB
+          iconName={
+            !driverServiceIsActive ? 'power-outline' : 'bar-chart-2-outline'
+          }
+          style={{
+            bottom: 20,
+            left: 40,
+            right: 40,
+          }}
+          label={
+            !driverServiceIsActive ? 'Activar servicios' : 'Capturando viajes'
+          }
+          onPress={onActiveServicePress}
+        />
+      ) : (
+        <>
+          <Layout
+            style={{
+              bottom: 140,
+              left: 40,
+              backgroundColor: 'transparent',
+              right: 40,
+              position: 'absolute',
+              flexDirection: 'row',
+              gap: 10,
+            }}>
+            <FAB
+              iconName={'activity-outline'}
+              style={{position: 'static', flex: 1}}
+              label={`${Math.ceil(raceData?.distance ?? 0)} Km`}
+              onPress={() => {}}
+            />
+            <FAB
+              iconName={'clock-outline'}
+              style={{position: 'static', flex: 1}}
+              label={`${Math.ceil(raceData?.duration ?? 0)} Min`}
+              onPress={() => {}}
+            />
+          </Layout>
+
+          <FAB
+            iconName={'trending-up-outline'}
+            style={{
+              bottom: 80,
+              left: 40,
+              right: 40,
+            }}
+            label={`${currencyFormat(
+              Math.ceil(raceData?.distance * 850 + 4600),
+            )}`}
+            onPress={() => {}}
+          />
+          <Layout
+            style={{
+              bottom: 20,
+              left: 40,
+              backgroundColor: 'transparent',
+              right: 40,
+              position: 'absolute',
+              flexDirection: 'row',
+              gap: 10,
+            }}>
+            <Button
+              onPress={() => {
+                setDriverServiceIsActive(true);
+                setAnalyzingRace(false);
+              }}
+              status="danger"
+              style={{flex: 1, borderRadius: 50}}>
+              Rechazar
+            </Button>
+            <Button
+              onPress={async () => {
+                const response = await RacesService.acceptRequest(
+                  currentRequest.id_client,
+                  currentRequest.id_driver,
+                  raceData!.distance * 850 + 4600,
+                );
+                console.log({response});
+              }}
+              status="success"
+              style={{flex: 1, borderRadius: 50}}>
+              Aceptar
+            </Button>
+          </Layout>
+          {/* <FAB
+            iconName={'bar-chart-2-outline'}
+            style={{
+              bottom: 20,
+              left: 40,
+              right: 40,
+            }}
+            label={'Volver'}
+            onPress={() => {}}
+          /> */}
+        </>
+      )}
     </>
   );
 };

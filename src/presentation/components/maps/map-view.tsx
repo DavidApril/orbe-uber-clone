@@ -16,7 +16,7 @@ interface Props {
   origin?: Location | null;
   showTraffic?: boolean;
   destination?: Location | null;
-  setRaceData: React.Dispatch<
+  setRaceData?: React.Dispatch<
     React.SetStateAction<{
       distance: number;
       duration: number;

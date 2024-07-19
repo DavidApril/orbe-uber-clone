@@ -1,7 +1,8 @@
-import {Button, Layout, Text} from '@ui-kitten/components';
+import {Button, Layout, Spinner, Text} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
 import {DriverService} from '../../../services';
+import {currencyFormat} from '../../../utils';
 
 interface Props {
   driver: any;
@@ -14,16 +15,14 @@ export const DriverInformationCard = ({
   raceData,
   createRequest,
 }: Props) => {
-  // getDriverByUserUid
-
   const [driverData, setDriverData] = useState<any>();
+  const [loadingRequest, setLoadingRequest] = useState<boolean>(false);
 
   const getDriverData = async () => {
     const response = await DriverService.getDriverByUserUid(driver.id);
     if (response && !driverData) {
       setDriverData(response.data);
     }
-    // console.log(data)
   };
 
   useEffect(() => {
@@ -39,7 +38,7 @@ export const DriverInformationCard = ({
           style={{
             height: 100,
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             gap: 20,
           }}>
           <Layout
@@ -72,22 +71,33 @@ export const DriverInformationCard = ({
 
         <Layout
           style={{
+            flexDirection: 'row',
+            marginBottom: 10,
+            justifyContent: 'center',
+          }}>
+          <Layout
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text>Tarifa</Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 25,
+              }}>
+              {currencyFormat(Math.ceil(raceData.distance * 850 + 4600))}
+            </Text>
+          </Layout>
+        </Layout>
+
+        <Layout
+          style={{
             height: 100,
             flexDirection: 'row',
             justifyContent: 'center',
             gap: 20,
           }}>
-          <Layout>
-            <Text>Llega en</Text>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-              }}>
-              2 min
-            </Text>
-          </Layout>
-
           <Layout>
             <Text>Distancia</Text>
             <Text
@@ -159,10 +169,19 @@ export const DriverInformationCard = ({
               Eliminar conductor
             </Button>
             <Button
-              onPress={createRequest}
+              onPress={() => {
+                setLoadingRequest(true);
+                createRequest();
+              }}
               status="success"
               style={{flex: 1, borderRadius: 50}}>
-              Hacer petición
+              {!loadingRequest ? (
+                'Hacer petición'
+              ) : (
+                <Text>
+                  <Spinner status='basic' />
+                </Text>
+              )}
             </Button>
           </Layout>
         </Layout>

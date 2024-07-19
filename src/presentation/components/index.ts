@@ -8,4 +8,6 @@ export * from './maps/map-view'
 export * from './drawer/custom-drawer-content'
 
 export * from './client/select-origin-destination'
-export * from './client/driver-information-card'
+export * from './client/client-information-card'
+
+export * from './driver/driver-information-card'

@@ -31,7 +31,6 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {globalColors} from '../../theme/styles';
 import {ScrollView} from 'react-native-gesture-handler';
 
 export const HomeClientScreen = () => {
@@ -40,7 +39,6 @@ export const HomeClientScreen = () => {
   const SearchingDriverBottomSheetRef = useRef<BottomSheet>(null);
 
   const {user} = useAuthStore();
-  const {height} = useWindowDimensions();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [nearbyDrivers, setNearbyDrivers] = useState<
     DriverResponseByUidData[] | undefined
@@ -96,8 +94,9 @@ export const HomeClientScreen = () => {
         longitude: destination?.longitude,
       },
     });
-
     console.log({response});
+
+    return response;
   };
 
   useEffect(() => {
@@ -105,16 +104,6 @@ export const HomeClientScreen = () => {
       SearchingDriverBottomSheetRef.current?.collapse();
     }
   }, [searchingDriver]);
-
-  useEffect(() => {
-    if (nearbyDrivers && searchingDriver) {
-      SearchingDriverBottomSheetRef.current?.expand();
-    }
-  }, [nearbyDrivers, searchingDriver]);
-
-  useEffect(() => {
-    SearchingDriverBottomSheetRef.current?.collapse();
-  }, [origin, destination]);
 
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
@@ -139,51 +128,27 @@ export const HomeClientScreen = () => {
         setRaceData={setRaceData}
         initialLocation={lastKnownLocation!}></CustomMapView>
 
-      <Layout style={{position: 'relative', backgroundColor: 'white'}}>
+      {searchingDriver && (
         <Layout
           style={{
+            top: 20,
             position: 'absolute',
+            left: 100,
             backgroundColor: 'transparent',
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 10,
-            zIndex: 9999,
-            padding: 20,
-            left: 10,
-            right: 10,
-            top: 80,
-            // bottom: height * 0.3,
+            right: 100,
           }}>
-          {raceData && raceData.duration && (
-            <Layout
-              style={{
-                borderRadius: 35,
-                flex: 1,
-                paddingVertical: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'black',
-                paddingHorizontal: 10,
-              }}>
-              <Text>{Math.ceil(raceData?.duration)} minutos</Text>
-            </Layout>
-          )}
-          {raceData && raceData.distance && (
-            <Layout
-              style={{
-                borderRadius: 35,
-                flex: 1,
-                paddingVertical: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'black',
-                paddingHorizontal: 10,
-              }}>
-              <Text>{Math.ceil(raceData.distance)} km</Text>
-            </Layout>
-          )}
+          <Button
+            style={{
+              backgroundColor: 'black',
+              borderRadius: 50,
+            }}
+            onPress={() => setSearchingDriver(false)}
+            status="danger"
+            appearance="ghost">
+            Cancelar búsqueda
+          </Button>
         </Layout>
-      </Layout>
+      )}
 
       <BottomSheet ref={SearchingDriverBottomSheetRef} snapPoints={snapPoints}>
         {!searchingDriver ? (
@@ -194,44 +159,35 @@ export const HomeClientScreen = () => {
             setSearchingDriver={setSearchingDriver}
           />
         ) : (
-          // nearbyDrivers.length > 0 && (
           <ScrollView>
-            <Button
-              onPress={() => setSearchingDriver(false)}
-              status="danger"
-              appearance="ghost">
-              Cancelar búsqueda
-            </Button>
-            {nearbyDrivers?.map(driver => (
-              <>
-                <DriverInformationCard
-                  createRequest={createRequest}
-                  raceData={raceData}
-                  driver={driver}
-                />
-              </>
-            ))}
+            {searchingDriver && !nearbyDrivers && (
+              <Layout
+                style={{
+                  margin: 20,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 10,
+                }}>
+                <Spinner />
+                <Text style={{fontWeight: 'bold'}}>
+                  Buscando conductores...
+                </Text>
+              </Layout>
+            )}
+            {nearbyDrivers &&
+              nearbyDrivers?.map(driver => (
+                <>
+                  <DriverInformationCard
+                    key={driver.uid_firebase}
+                    createRequest={() => createRequest(driver.id)}
+                    raceData={raceData}
+                    driver={driver}
+                  />
+                </>
+              ))}
           </ScrollView>
-          // )
         )}
       </BottomSheet>
-
-      {searchingDriver && (
-        <Layout
-          style={{
-            marginTop: 40,
-            left: 0,
-            right: 0,
-            flexDirection: 'row',
-            gap: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            backgroundColor: 'transparent',
-          }}>
-          <Spinner />
-        </Layout>
-      )}
     </>
   );
 };
