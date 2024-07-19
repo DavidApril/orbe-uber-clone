@@ -7,7 +7,7 @@ import {FAB} from '../ui/floating-action-button';
 import {MapStyle} from '../../../config/const/map';
 import {GOOGLE_API_KEY} from '@env';
 import MapViewDirections from 'react-native-maps-directions';
-import {MapLightStyle} from '../../../config/const/mapLight';
+import {MapLightStyle} from '../../../config/const/map-light';
 
 interface Props {
   driverPosition?: any;
@@ -130,7 +130,7 @@ export const CustomMapView = ({
             }}
             destination={destination}
             apikey={GOOGLE_API_KEY}
-            strokeColor="white"
+            strokeColor={colorScheme === 'dark' ? 'white' : 'black'}
             strokeWidth={4}
           />
         )}
