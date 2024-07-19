@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import {Image, Platform} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Polyline, Marker} from 'react-native-maps';
 import {PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {Location} from '../../../interfaces';
@@ -9,6 +9,7 @@ import {GOOGLE_API_KEY} from '@env';
 import MapViewDirections from 'react-native-maps-directions';
 
 interface Props {
+  driverPosition?: any;
   showsUserLocation?: boolean;
   initialLocation: Location;
   children?: PropsWithChildren;
@@ -28,6 +29,7 @@ export const CustomMapView = ({
   showsUserLocation = true,
   initialLocation,
   // handlePress,
+  driverPosition,
   children,
   setRaceData,
   showTraffic = false,
@@ -79,6 +81,12 @@ export const CustomMapView = ({
   }, []);
 
   useEffect(() => {
+    if (driverPosition) {
+      console.log({driverPosition});
+    }
+  }, [driverPosition]);
+
+  useEffect(() => {
     if (lastKnownLocation && isFollowingUser) {
       moveCameraToLocation(lastKnownLocation);
     }
@@ -113,7 +121,9 @@ export const CustomMapView = ({
             origin={origin}
             mode="DRIVING"
             onReady={data => {
-              setRaceData({distance: data.distance, duration: data.duration});
+              if (setRaceData) {
+                setRaceData({distance: data.distance, duration: data.duration});
+              }
             }}
             destination={destination}
             apikey={GOOGLE_API_KEY}
@@ -128,8 +138,18 @@ export const CustomMapView = ({
             coordinate={{
               latitude: origin?.latitude,
               longitude: origin?.longitude,
-            }}
-          />
+            }}></Marker>
+        )}
+
+        {driverPosition && (
+          <Marker
+            title="Conductor"
+            coordinate={{
+              latitude: driverPosition?.latitud,
+              longitude: driverPosition?.longitud,
+            }}>
+            <Image style={{ height: 50, width: 50}} source={require('../../../assets/car.png')} />
+          </Marker>
         )}
 
         {destination && (

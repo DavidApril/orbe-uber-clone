@@ -1,13 +1,5 @@
+import {Button, Layout, Spinner, Text} from '@ui-kitten/components';
 import {
-  Button,
-  Input,
-  Layout,
-  List,
-  Spinner,
-  Text,
-} from '@ui-kitten/components';
-import {
-  CustomIcon,
   CustomMapView,
   DriverInformationCard,
   FAB,
@@ -17,8 +9,7 @@ import {LoadingScreen} from '../loading/loading-screen';
 import {useAuthStore, useLocationStore} from '../../../store';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {useSocket} from '../../../hooks';
-import {useWindowDimensions} from 'react-native';
-import {DriverService, RacesService} from '../../../services';
+import {RacesService} from '../../../services';
 import {API_SOCKET_URL} from '@env';
 import {
   DriverResponseByUidData,
@@ -80,6 +71,8 @@ export const HomeClientScreen = () => {
 
   const snapPoints = useMemo(() => ['20%', '50%', '80%'], []);
 
+  const [currentDriver, setCurrentDriver] = useState<any>(null);
+
   const createRequest = async (id_driver: any) => {
     if (!user || !origin || !destination) return;
     const response = await RacesService.createRequest({
@@ -94,7 +87,14 @@ export const HomeClientScreen = () => {
         longitude: destination?.longitude,
       },
     });
-    console.log({response});
+
+    const driver = nearbyDrivers?.filter(
+      (driver: any) => driver.id === id_driver,
+    );
+
+    if (driver) {
+      setCurrentDriver(driver[0]);
+    }
 
     return response;
   };
@@ -123,6 +123,7 @@ export const HomeClientScreen = () => {
       />
 
       <CustomMapView
+        driverPosition={currentDriver ? currentDriver : null}
         origin={origin}
         destination={destination}
         setRaceData={setRaceData}
@@ -160,7 +161,7 @@ export const HomeClientScreen = () => {
           />
         ) : (
           <ScrollView>
-            {searchingDriver && !nearbyDrivers && (
+            {searchingDriver && nearbyDrivers?.length === 0 && (
               <Layout
                 style={{
                   margin: 20,

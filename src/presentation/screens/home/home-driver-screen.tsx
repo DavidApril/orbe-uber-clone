@@ -80,7 +80,7 @@ export const HomeDriverScreen = () => {
   }
 
   function handleAcceptRequest() {
-    setDriverServiceIsActive(false);
+    // setDriverServiceIsActive(false);
   }
 
   function analyzeRace() {
