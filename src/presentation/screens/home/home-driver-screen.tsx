@@ -46,10 +46,6 @@ export const HomeDriverScreen = () => {
   const [currentRequest, setCurrentRequest] = useState<any>();
 
   useEffect(() => {
-    console.log({raceData, currentRequest});
-  }, [raceData, currentRequest]);
-
-  useEffect(() => {
     const fetchData = async (uid: string) => {
       const res = await orbeApi.get(`/worker/getDriversByUid?uid=${uid}`);
       setData(res.data.data.driver);
@@ -61,7 +57,12 @@ export const HomeDriverScreen = () => {
 
   useEffect(() => {
     socket.on('driver-request', data => {
-      setDriveRequests(data.client_request);
+      // console.log(data.client_request)
+      data.client_request.forEach((request: any) => {
+        if (request.coordinates) {
+          setDriveRequests([...driverRequests, request]);
+        }
+      });
     });
   }, []);
 
@@ -264,6 +265,7 @@ export const HomeDriverScreen = () => {
                 const response = await RacesService.acceptRequest(
                   currentRequest.id_client,
                   currentRequest.id_driver,
+                  currentRequest.id,
                   raceData!.distance * 850 + 4600,
                 );
                 console.log({response});

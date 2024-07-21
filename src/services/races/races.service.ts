@@ -45,6 +45,7 @@ export class RacesService {
   static acceptRequest = async (
     id_client: string,
     id_driver: string,
+    id_request: string,
     price: number,
   ) => {
     try {
@@ -53,6 +54,7 @@ export class RacesService {
         {
           id_client,
           id_driver,
+          id_request,
           price,
         },
       );

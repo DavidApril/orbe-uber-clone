@@ -46,10 +46,9 @@ export const HomeClientScreen = () => {
   >([]);
   const [origin, setOrigin] = useState<Location | null>(null);
   const [destination, setDestination] = useState<Location | null>(null);
+  const [payWithCard, setPayWithCard] = useState<boolean>(false);
 
   const {height, width} = useWindowDimensions();
-
-  const colorScheme = useColorScheme();
 
   const [searchingDriver, setSearchingDriver] = useState<boolean>(false);
   const [raceData, setRaceData] = useState<{
@@ -58,6 +57,9 @@ export const HomeClientScreen = () => {
   } | null>(null);
 
   const {socket} = useSocket(`${API_SOCKET_URL}/location-client`);
+  const {socket: driverSocket, online} = useSocket(
+    `ws://orbeapi.devzeros.com:3001/location`,
+  );
 
   useEffect(() => {
     const sendClientLocation = setInterval(() => {
@@ -113,6 +115,10 @@ export const HomeClientScreen = () => {
 
     return response;
   };
+
+  useEffect(() => {
+    
+  },[])
 
   useEffect(() => {
     if (searchingDriver) {
@@ -174,6 +180,8 @@ export const HomeClientScreen = () => {
             setDestination={setDestination}
             searchingDriver={searchingDriver}
             setSearchingDriver={setSearchingDriver}
+            setPayWithCard={setPayWithCard}
+            payWithCard={payWithCard}
           />
         ) : (
           <ScrollView>
@@ -217,7 +225,9 @@ export const HomeClientScreen = () => {
                 <>
                   <DriverInformationCard
                     key={driver.uid_firebase}
-                    createRequest={() => createRequest(driver.id)}
+                    createRequest={() => {
+                      createRequest(driver.id);
+                    }}
                     raceData={raceData}
                     driver={driver}
                   />
