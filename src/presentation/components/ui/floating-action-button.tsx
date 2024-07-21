@@ -1,5 +1,5 @@
 import {Button, Layout} from '@ui-kitten/components';
-import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import {StyleProp, StyleSheet, Text, ViewStyle} from 'react-native';
 import {CustomIcon} from './custom-icon';
 
 interface Props {
@@ -19,7 +19,7 @@ export const FAB = ({iconName, onPress, white, style, label, disabled}: Props) =
       appearance="ghost"
       accessoryLeft={<CustomIcon white={white} name={iconName} />}
       onPress={onPress}>
-      {label}
+        {label}
     </Button>
   );
 };

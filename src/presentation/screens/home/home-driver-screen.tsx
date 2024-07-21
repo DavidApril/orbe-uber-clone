@@ -126,7 +126,7 @@ export const HomeDriverScreen = () => {
             marginBottom: 5,
             paddingHorizontal: 20,
             paddingVertical: 10,
-            alignItems: 'center',
+            // alignItems: 'center',
           }}
           data={driverRequests}
           renderItem={({item: request}) => (
@@ -184,10 +184,12 @@ export const HomeDriverScreen = () => {
             bottom: 20,
             left: 40,
             right: 40,
+            backgroundColor: '#3fc2f2'
           }}
           label={
             !driverServiceIsActive ? 'Activar servicios' : 'Capturando viajes'
           }
+          white={true}
           onPress={onActiveServicePress}
         />
       ) : (
@@ -224,7 +226,7 @@ export const HomeDriverScreen = () => {
               right: 40,
             }}
             label={`${currencyFormat(
-              Math.ceil(raceData!.distance * 850 + 4600),
+              Math.ceil(raceData?.distance * 850 + 4600),
             )}`}
             onPress={() => {}}
           />

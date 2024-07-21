@@ -9,7 +9,7 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
   useEffect(() => {
-    if (status === 'authorized') {
+    if (status == 'authorized') {
       navigation.reset({
         index: 0,
         routes: [{name: 'PermissionsScreen'}],
