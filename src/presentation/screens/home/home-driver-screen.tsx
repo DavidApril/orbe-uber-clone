@@ -3,7 +3,14 @@ import {useAuthStore, useLocationStore} from '../../../store';
 import {ClientInformationCard, CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
-import {Button, Icon, Layout, List, ListItem} from '@ui-kitten/components';
+import {
+  Button,
+  Icon,
+  Layout,
+  List,
+  ListItem,
+  Spinner,
+} from '@ui-kitten/components';
 import {Modal, Pressable, Text, useColorScheme, View} from 'react-native';
 import {orbeApi} from '../../../config/api';
 import {
@@ -14,8 +21,8 @@ import {
 import {RootStackParams, Location} from '../../../interfaces';
 import {withDecay} from 'react-native-reanimated';
 import {globalColors} from '../../theme/styles';
-import { currencyFormat } from '../../../utils';
-import { RacesService } from '../../../services';
+import {currencyFormat} from '../../../utils';
+import {RacesService} from '../../../services';
 
 export const HomeDriverScreen = () => {
   const colorScheme = useColorScheme();
@@ -110,7 +117,7 @@ export const HomeDriverScreen = () => {
         white={true}
       />
 
-      {driverRequests && driverServiceIsActive && (
+      {driverRequests.length > 0 && driverServiceIsActive && (
         <List
           style={{
             position: 'absolute',
@@ -176,22 +183,25 @@ export const HomeDriverScreen = () => {
       />
 
       {!analyzingRace ? (
-        <FAB
-          iconName={
-            !driverServiceIsActive ? 'power-outline' : 'bar-chart-2-outline'
-          }
+        <Button
           style={{
             bottom: 20,
+            position: 'absolute',
             left: 40,
             right: 40,
-            backgroundColor: '#3fc2f2'
+            backgroundColor: globalColors.primary,
+            borderRadius: 100,
+            borderWidth: 0,
           }}
-          label={
-            !driverServiceIsActive ? 'Activar servicios' : 'Capturando viajes'
-          }
-          white={true}
-          onPress={onActiveServicePress}
-        />
+          onPress={onActiveServicePress}>
+          {!driverServiceIsActive ? (
+            <Text>Activar servicios</Text>
+          ) : (
+            <>
+              <Spinner status="basic" />
+            </>
+          )}
+        </Button>
       ) : (
         <>
           <Layout

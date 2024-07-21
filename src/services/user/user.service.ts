@@ -7,9 +7,11 @@ export class UserService {
         `/user/getUserByUid?uid_firebase=${uid}`,
       );
 
+      
+
       return response.data;
     } catch (error) {
-      // console.log({error});
+      console.log({error});
       return false;
     }
   };

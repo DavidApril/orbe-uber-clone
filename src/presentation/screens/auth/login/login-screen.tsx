@@ -1,75 +1,57 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import {Button, Input, Layout, Text} from '@ui-kitten/components';
-import {useEffect, useRef, useState} from 'react';
-import {Animated, Image, Pressable, useWindowDimensions} from 'react-native';
+import {useState} from 'react';
+import {Animated, useWindowDimensions} from 'react-native';
+import {Button, Input, Layout, Spinner, Text} from '@ui-kitten/components';
 import {ScrollView} from 'react-native-gesture-handler';
-import {RootStackParams} from '../../../navigation/stack-navigation';
 import {useAuthStore} from '../../../../store/auth/auth.store';
 import {CustomIcon} from '../../../components';
-import { globalColors } from '../../../theme/styles';
+import {globalColors} from '../../../theme/styles';
+import {Formik} from 'formik';
+import {RootStackParams} from '../../../../interfaces';
+import * as Yup from 'yup';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
 export const LoginScreen = ({navigation}: Props) => {
   const {login} = useAuthStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [form, setForm] = useState<{email: string; password: string}>({
-    email: '',
-    password: '',
-  });
-  
-
-  async function onLogin() {
-    if (form.email.length === 0 || form.password.length === 0) return;
-
-    setIsLoading(true);
-    const {ok} = await login(form.email, form.password);
-    setIsLoading(false);
-  }
-
   const {height} = useWindowDimensions();
 
-  const rotateValue = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    const rotateAnimation = Animated.loop(
-      Animated.timing(rotateValue, {
-        toValue: 360,
-        duration: 2000,
-        useNativeDriver: true,
-      })
-    );
-
-    rotateAnimation.start();
-  }, [rotateValue]);
-
-  const rotateInterpolation = rotateValue.interpolate({
-    inputRange: [0, 360],
-    outputRange: ['0deg', '360deg']
-  });
-
-  const rotateStyle = {
-    transform: [{ rotate: rotateInterpolation }]
+  const initialValues = {
+    email: '',
+    password: '',
   };
 
-  const [focus, setFocus] = useState<boolean>(false)
-  const [inputPosition, setInputPosition] = useState<any>('')
+  const validationSchema = Yup.object({
+    email: Yup.string().required().email(),
+    password: Yup.string().required(),
+  });
 
-  const handleInputBorder = (focused: boolean, inputPosition?: string) => {
-    setFocus(focused)
-    setInputPosition(inputPosition)
+  async function onSubmit(values: typeof initialValues) {
+    setIsLoading(true);
+    const {ok} = await login(values.email, values.password);
+    console.log({ok});
+    setIsLoading(false);
   }
-
 
   return (
     <Layout style={{flex: 1}}>
       <ScrollView style={{marginHorizontal: 30}}>
-        <Layout style={{paddingTop: height * 0.25, paddingBottom: 40, flexDirection: 'row', gap: 20}}>
+        <Layout
+          style={{
+            paddingTop: height * 0.25,
+            paddingBottom: 40,
+            flexDirection: 'row',
+            gap: 20,
+          }}>
           <Animated.Image
-            style={[{
-              height: 80,
-              width: 80,
-            }, rotateStyle]}
+            style={[
+              {
+                height: 80,
+                width: 80,
+              },
+              // rotateStyle,
+            ]}
             source={require('../../../../assets/loading.png')}
           />
 
@@ -80,40 +62,68 @@ export const LoginScreen = ({navigation}: Props) => {
         </Layout>
 
         {/* Inputs */}
-        <Layout style={{marginTop: 10}}>
-          <Input
-            value={form.email}
-            onFocus={() => {handleInputBorder(true, 'input1')}}
-            onBlur={() => {handleInputBorder(false)}}
-            onChangeText={value => setForm({...form, email: value})}
-            accessoryLeft={<CustomIcon name="email-outline" />}
-            placeholder="Correo eléctronico"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            style={[{marginBottom: 10, borderRadius: 20}, focus && inputPosition === 'input1' ? {borderWidth: 1, borderColor: globalColors.primary} : null]}
-          />
-          <Input
-            value={form.password}
-            onFocus={() => {handleInputBorder(true, 'input2')}}
-            onBlur={() => {handleInputBorder(false)}}
-            onChangeText={value => setForm({...form, password: value})}
-            accessoryLeft={<CustomIcon name="lock-outline" />}
-            placeholder="Contraseña"
-            secureTextEntry
-            autoCapitalize="none"
-            style={[{marginBottom: 10, borderRadius: 20}, focus && inputPosition === 'input2' ? {borderWidth: 1, borderColor: globalColors.primary} : null]}
-          />
-        </Layout>
+        <Formik
+          validationSchema={validationSchema}
+          initialValues={initialValues}
+          onSubmit={onSubmit}>
+          {({values, handleChange, handleSubmit, errors, touched}) => (
+            <>
+              <Layout style={{marginTop: 20}}>
+                <Input
+                  status={
+                    touched.email && errors.email
+                      ? 'danger'
+                      : touched.email && !errors.email
+                      ? 'success'
+                      : 'basic'
+                  }
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  accessoryLeft={<CustomIcon name="email-outline" />}
+                  placeholder="Correo eléctronico"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  style={{marginBottom: 10}}
+                />
+                <Input
+                  status={
+                    touched.password && errors.password
+                      ? 'danger'
+                      : touched.password && !errors.password
+                      ? 'success'
+                      : 'basic'
+                  }
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  accessoryLeft={<CustomIcon name="lock-outline" />}
+                  placeholder="Contraseña"
+                  secureTextEntry
+                  autoCapitalize="none"
+                  style={{marginBottom: 20}}
+                />
+              </Layout>
 
-        {/* Space */}
-        <Layout style={{height: 60}}></Layout>
+              {/* Space */}
+              <Layout style={{height: 20}}></Layout>
 
-        {/* Button */}
-        <Layout style={{alignItems: 'center'}}>
-          <Pressable disabled={isLoading} onPress={onLogin}>
-            <Text style={{color: globalColors.primary, fontWeight: 'bold'}}>Ingresar</Text>
-          </Pressable>
-        </Layout>
+              {/* Button */}
+              <Layout>
+                <Button
+                  disabled={isLoading}
+                  onPress={() => handleSubmit()}
+                  appearance="ghost">
+                  {!isLoading ? (
+                    'Ingresar'
+                  ) : (
+                    <Text>
+                      <Spinner />
+                    </Text>
+                  )}
+                </Button>
+              </Layout>
+            </>
+          )}
+        </Formik>
 
         {/* Space */}
         <Layout style={{height: 100}}></Layout>

@@ -7,7 +7,6 @@ import {useAuthStore} from '../../../../../store';
 import {ClientService} from '../../../../../services/client/client.service';
 
 export const RegisterClientForm = () => {
-
   const validationSchema = Yup.object({
     firstName: Yup.string().required(),
     lastName: Yup.string().required(),
@@ -34,10 +33,10 @@ export const RegisterClientForm = () => {
   const {login} = useAuthStore();
 
   async function onSubmit(values: typeof initialValues) {
-    if (!values.email || !values.password ) return;
+    if (!values.email || !values.password) return;
 
     try {
-      await ClientService.createClient(values);
+      const response = await ClientService.createClient(values);
       await login(values!.email, values.password);
     } catch (error) {
       console.log({error});

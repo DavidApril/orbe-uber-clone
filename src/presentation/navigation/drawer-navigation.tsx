@@ -18,7 +18,6 @@ export function DrawerNavigation() {
   const {role} = useAuthStore();
   const colorScheme = useColorScheme();
   const theme = colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight;
-  console.log('this is theme: ', theme)
 
   return (
     <Navigator
