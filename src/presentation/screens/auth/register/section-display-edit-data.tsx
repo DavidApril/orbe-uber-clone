@@ -20,7 +20,7 @@ export const SectionDisplayEditData = () => {
       if (driverRegisterForm) {
         setIsLoading(true);
         await DriverService.createDriver(driverRegisterForm);
-        login(email, password);
+        const { ok } = await login(email, password);
         setIsLoading(false);
       } else {
         Alert.alert(`not logged`);

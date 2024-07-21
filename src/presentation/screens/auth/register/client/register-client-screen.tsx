@@ -1,17 +1,10 @@
-import {Alert, useWindowDimensions} from 'react-native';
-import {Button, Input, Layout, Text} from '@ui-kitten/components';
-import {Formik} from 'formik';
+import {useWindowDimensions} from 'react-native';
+import {Layout, Text} from '@ui-kitten/components';
 import {ScrollView} from 'react-native-gesture-handler';
-import {useEffect} from 'react';
-import * as Yup from 'yup';
-import {ClientRegisterForm} from '../../../../../interfaces';
-import {useAuthStore, useClientStore} from '../../../../../store';
-import {ClientService} from '../../../../../services/client/client.service';
 import {RegisterClientForm} from './register-client-form';
 
 export const RegisterClientScreen = () => {
   const {height} = useWindowDimensions();
-
 
   return (
     <Layout style={{flex: 1}}>

@@ -29,17 +29,22 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
     try {
       const {user, token} = await AuthService.login(email, password);
 
+      
       const userByUID = await UserService.getUserByUid(user.uid);
-
-      if (!!userByUID.driver) {
-        set({role: DRIVER});
-      } else if (!!userByUID.cliente) {
-        set({role: CLIENT});
+      
+      console.log({userByUID});
+      if (userByUID != null) {
+        if (!!userByUID.driver) {
+          set({role: DRIVER});
+        } else if (!!userByUID.cliente) {
+          set({role: CLIENT});
+        }
       }
 
       set({status: 'authorized', token, user});
       return {ok: true};
     } catch (error) {
+      console.log({error});
       set({status: 'unauthorized', token: undefined, user: undefined});
       return {ok: false};
     }

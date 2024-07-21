@@ -1,5 +1,5 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import {Button, Input, Layout, Text} from '@ui-kitten/components';
+import {Button, Input, Layout, Spinner, Text} from '@ui-kitten/components';
 import {useState} from 'react';
 import {Image, useWindowDimensions} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -29,6 +29,7 @@ export const LoginScreen = ({navigation}: Props) => {
   async function onSubmit(values: typeof initialValues) {
     setIsLoading(true);
     const {ok} = await login(values.email, values.password);
+    console.log({ok});
     setIsLoading(false);
   }
 
@@ -99,7 +100,13 @@ export const LoginScreen = ({navigation}: Props) => {
                   disabled={isLoading}
                   onPress={() => handleSubmit()}
                   appearance="ghost">
-                  Ingresar
+                  {!isLoading ? (
+                    'Ingresar'
+                  ) : (
+                    <Text>
+                      <Spinner />
+                    </Text>
+                  )}
                 </Button>
               </Layout>
             </>

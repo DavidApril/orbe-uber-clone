@@ -19,6 +19,7 @@ export class AuthService {
     password: string,
   ): Promise<UserCredential & {token: string}> => {
     try {
+      // const response = await signInWithEmailAndPassword(auth, email, password);
       const response = await signInWithEmailAndPassword(auth, email, password);
       const idToken = await response.user.getIdToken();
 
