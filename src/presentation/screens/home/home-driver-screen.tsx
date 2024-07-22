@@ -73,7 +73,6 @@ export const HomeDriverScreen = () => {
   }, []);
 
   const sendDriverLocation = () => {
-    console.log('here');
     socket.emit('location-driver', {
       id: user?.uid,
       longitud: lastKnownLocation?.longitude,
