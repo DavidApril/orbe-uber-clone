@@ -102,13 +102,8 @@ export const HomeClientScreen = () => {
       if (response.data.price) {
         setCurrentDriverAcceptRace(true);
       }
-      console.log('driver accept data', response.data.price);
     });
   }, []);
-
-  useEffect(() => {
-    console.log({currentDriverAcceptRace});
-  }, [currentDriverAcceptRace]);
 
   const createRequest = async (id_driver: any) => {
     if (!user || !origin || !destination) return;
@@ -125,8 +120,6 @@ export const HomeClientScreen = () => {
       },
     });
 
-    console.log('responseId', response);
-
     raceWaitsSocket.emit('waiting-request', {idRequest: response.data.id});
 
     const driver = nearbyDrivers?.filter(
@@ -141,8 +134,20 @@ export const HomeClientScreen = () => {
   };
 
   useEffect(() => {
-    console.log({nearbyDrivers, currentDriver});
+    const driver = nearbyDrivers?.filter(
+      (driver: any) => driver.id === currentDriver?.id,
+    );
+    if (driver) {
+      setCurrentDriver(driver[0]);
+    }
+
+    console.log({currentDriver})
+
   }, [nearbyDrivers]);
+
+  useEffect(() => {
+    console.log({ nearbyDrivers})
+  },[currentDriver])
 
   useEffect(() => {
     SearchingDriverBottomSheetRef.current?.collapse();

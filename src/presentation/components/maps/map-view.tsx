@@ -84,12 +84,6 @@ export const CustomMapView = ({
   }, []);
 
   useEffect(() => {
-    if (driverPosition) {
-      console.log({driverPosition});
-    }
-  }, [driverPosition]);
-
-  useEffect(() => {
     if (lastKnownLocation && isFollowingUser) {
       moveCameraToLocation(lastKnownLocation);
     }

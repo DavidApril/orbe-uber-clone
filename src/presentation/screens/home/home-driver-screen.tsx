@@ -72,16 +72,20 @@ export const HomeDriverScreen = () => {
     }
   }, []);
 
+  const sendDriverLocation = () => {
+    console.log('here')
+    socket.emit('location-driver', {
+      id: user?.uid,
+      longitud: lastKnownLocation?.longitude,
+      latitud: lastKnownLocation?.latitude,
+    });
+    console.log({lastKnownLocation})
+  };
+
   useEffect(() => {
     if (!driverServiceIsActive) return;
-
     const driverLocationInterval = setInterval(() => {
-      const payload = {
-        id: user?.uid,
-        longitud: lastKnownLocation?.longitude,
-        latitud: lastKnownLocation?.latitude,
-      };
-      socket.emit('location-driver', payload);
+      sendDriverLocation();
     }, 2000);
 
     return () => {
@@ -92,10 +96,6 @@ export const HomeDriverScreen = () => {
 
   function onActiveServicePress() {
     setDriverServiceIsActive(!driverServiceIsActive);
-  }
-
-  function handleAcceptRequest() {
-    // setDriverServiceIsActive(false);
   }
 
   function analyzeRace() {
@@ -152,32 +152,6 @@ export const HomeDriverScreen = () => {
         />
       )}
 
-      <Pressable
-        style={{
-          bottom: 20,
-          left: 20,
-          borderRadius: 20,
-          backgroundColor: '#3fc1f2',
-          width: '90%',
-          height: 50,
-          position: 'absolute',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 10,
-        }}
-        onPress={onActiveServicePress}>
-        <Icon
-          fill={'white'}
-          style={{width: 30, height: 40}}
-          name={
-            !driverServiceIsActive ? 'power-outline' : 'bar-chart-2-outline'
-          }
-        />
-        <Text style={{fontSize: 16, color: 'white', fontWeight: 'bold'}}>
-          {!driverServiceIsActive ? 'Activar servicios' : 'Capturando viajes'}
-        </Text>
-      </Pressable>
       <CustomMapView
         showTraffic
         setRaceData={setRaceData}
@@ -271,7 +245,6 @@ export const HomeDriverScreen = () => {
                   currentRequest.id,
                   raceData!.distance * 850 + 4600,
                 );
-                console.log({response});
               }}
               status="success"
               style={{flex: 1, borderRadius: 50}}>

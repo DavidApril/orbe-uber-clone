@@ -30,7 +30,6 @@ export const LoginScreen = ({navigation}: Props) => {
   async function onSubmit(values: typeof initialValues) {
     setIsLoading(true);
     const {ok} = await login(values.email, values.password);
-    console.log({ok});
     setIsLoading(false);
   }
 

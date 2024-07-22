@@ -32,7 +32,6 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
       
       const userByUID = await UserService.getUserByUid(user.uid);
       
-      console.log({userByUID});
       if (userByUID != null) {
         if (!!userByUID.driver) {
           set({role: DRIVER});

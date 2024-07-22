@@ -42,8 +42,6 @@ export const ClientInformationCard = ({
   useEffect(() => {
     if (!raceData) return;
     raceData?.forEach(({type, latitud, longitud}: any) => {
-      console.log(type, latitud, longitud);
-
       if (type == 'origen') {
         setOrigin({latitude: latitud, longitude: longitud});
       }

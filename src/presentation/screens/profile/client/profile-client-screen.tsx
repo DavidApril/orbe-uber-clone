@@ -21,7 +21,6 @@ export const ProfileClientScreen = () => {
     getClientByUID();
   }, [user]);
 
-  console.log({userByUid});
   return (
     <Layout
       style={{
