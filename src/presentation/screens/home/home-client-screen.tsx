@@ -57,8 +57,8 @@ export const HomeClientScreen = () => {
   } | null>(null);
 
   const {socket} = useSocket(`${API_SOCKET_URL}/location-client`);
-  const {socket: driverSocket, online} = useSocket(
-    `ws://orbeapi.devzeros.com:3001/location`,
+  const {socket: raceWaitsSocket} = useSocket(
+    `ws://orbeapi.devzeros.com:3001/client-driver-wait`,
   );
 
   useEffect(() => {
@@ -78,6 +78,10 @@ export const HomeClientScreen = () => {
     socket.on('conductores-cercanos', data => {
       setNearbyDrivers(data);
     });
+
+    return () => {
+      socket.off();
+    };
   }, []);
 
   useEffect(() => {
@@ -89,6 +93,22 @@ export const HomeClientScreen = () => {
   const snapPoints = useMemo(() => ['20%', '50%', '80%'], []);
 
   const [currentDriver, setCurrentDriver] = useState<any>(null);
+  const [currentDriverAcceptRace, setCurrentDriverAcceptRace] = useState<
+    boolean | null
+  >(null);
+
+  useEffect(() => {
+    raceWaitsSocket.on('request-response', response => {
+      if (response.data.price) {
+        setCurrentDriverAcceptRace(true);
+      }
+      console.log('driver accept data', response.data.price);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log({currentDriverAcceptRace});
+  }, [currentDriverAcceptRace]);
 
   const createRequest = async (id_driver: any) => {
     if (!user || !origin || !destination) return;
@@ -105,6 +125,10 @@ export const HomeClientScreen = () => {
       },
     });
 
+    console.log('responseId', response);
+
+    raceWaitsSocket.emit('waiting-request', {idRequest: response.data.id});
+
     const driver = nearbyDrivers?.filter(
       (driver: any) => driver.id === id_driver,
     );
@@ -117,8 +141,12 @@ export const HomeClientScreen = () => {
   };
 
   useEffect(() => {
-    
-  },[])
+    console.log({nearbyDrivers, currentDriver});
+  }, [nearbyDrivers]);
+
+  useEffect(() => {
+    SearchingDriverBottomSheetRef.current?.collapse();
+  }, [currentDriverAcceptRace]);
 
   useEffect(() => {
     if (searchingDriver) {
@@ -225,6 +253,7 @@ export const HomeClientScreen = () => {
                 <>
                   <DriverInformationCard
                     key={driver.uid_firebase}
+                    currentDriverAcceptRace={currentDriverAcceptRace}
                     createRequest={() => {
                       createRequest(driver.id);
                     }}

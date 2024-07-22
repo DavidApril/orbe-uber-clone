@@ -3,17 +3,20 @@ import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
 import {DriverService} from '../../../services';
 import {currencyFormat} from '../../../utils';
+import {globalColors} from '../../theme/styles';
 
 interface Props {
   driver: any;
   raceData: any;
   createRequest: any;
+  currentDriverAcceptRace: boolean | null;
 }
 
 export const DriverInformationCard = ({
   driver,
   raceData,
   createRequest,
+  currentDriverAcceptRace,
 }: Props) => {
   const [driverData, setDriverData] = useState<any>();
   const [loadingRequest, setLoadingRequest] = useState<boolean>(false);
@@ -24,6 +27,12 @@ export const DriverInformationCard = ({
       setDriverData(response.data);
     }
   };
+
+  useEffect(() => {
+    if (currentDriverAcceptRace !== null) {
+      setLoadingRequest(false);
+    }
+  }, [currentDriverAcceptRace]);
 
   useEffect(() => {
     getDriverData();
@@ -159,31 +168,55 @@ export const DriverInformationCard = ({
           <Layout style={{height: 1, backgroundColor: '#dedad9'}}></Layout>
 
           {/* Create request  */}
-          <Layout
-            style={{
-              flexDirection: 'row',
-              gap: 10,
-              justifyContent: 'space-between',
-            }}>
-            <Button status="danger" style={{borderRadius: 50}}>
-              Eliminar conductor
-            </Button>
-            <Button
-              onPress={() => {
-                setLoadingRequest(true);
-                createRequest();
-              }}
-              status="success"
-              style={{flex: 1, borderRadius: 50}}>
-              {!loadingRequest ? (
-                'Hacer petición'
-              ) : (
-                <Text>
-                  <Spinner status='basic' />
-                </Text>
-              )}
-            </Button>
-          </Layout>
+          {currentDriverAcceptRace == null && (
+            <Layout
+              style={{
+                flexDirection: 'row',
+                gap: 10,
+                justifyContent: 'space-between',
+              }}>
+              <Button status="danger" style={{borderRadius: 50}}>
+                Eliminar conductor
+              </Button>
+              <Button
+                disabled={loadingRequest}
+                onPress={() => {
+                  setLoadingRequest(true);
+                  createRequest();
+                }}
+                status="success"
+                style={{flex: 1, borderRadius: 50}}>
+                {!loadingRequest ? (
+                  'Hacer petición'
+                ) : (
+                  <Text>
+                    <Spinner status="basic" />
+                  </Text>
+                )}
+              </Button>
+            </Layout>
+          )}
+
+          {currentDriverAcceptRace && (
+            <Layout
+              style={{
+                flex: 1,
+                paddingVertical: 15,
+                backgroundColor: globalColors.primary,
+                borderRadius: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: 'white',
+                  fontSize: 16,
+                }}>
+                En camino
+              </Text>
+            </Layout>
+          )}
         </Layout>
       </Layout>
     </Layout>

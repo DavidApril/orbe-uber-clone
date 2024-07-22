@@ -84,7 +84,10 @@ export const HomeDriverScreen = () => {
       socket.emit('location-driver', payload);
     }, 2000);
 
-    return () => clearInterval(driverLocationInterval);
+    return () => {
+      socket.off();
+      clearInterval(driverLocationInterval);
+    };
   }, [driverServiceIsActive]);
 
   function onActiveServicePress() {
