@@ -126,20 +126,12 @@ export const ProfileClientScreen = () => {
             <Text style={{fontWeight: 'bold', fontSize: 30}}>
               Metodo de pago
             </Text>
-            <Layout
-              style={{marginVertical: 10, flexDirection: 'column', gap: 8}}>
-              <Radio checked style={{}}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontWeight: 'bold',
-                    fontSize: 30,
-                  }}>
-                  <CustomIcon name="credit-card-outline" />
-                  4440 2334 2312 2331
-                </Text>
-              </Radio>
-            </Layout>
+            <Text>
+              Visa {`\n`}
+              Número: 4575623182290326 {`\n`}
+              Fecha Expiración: 12/2025 {`\n`}
+              CVV: 123 {`\n`}
+            </Text>
           </Layout>
         </Layout>
       </Layout>

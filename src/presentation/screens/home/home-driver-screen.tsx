@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useAuthStore, useLocationStore} from '../../../store';
+import {useAuthStore, useLocationStore, useProfileDriverStore} from '../../../store';
 import {ClientInformationCard, CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
@@ -34,7 +34,6 @@ export const HomeDriverScreen = () => {
   const [driverServiceIsActive, setDriverServiceIsActive] =
     useState<boolean>(false);
   const {socket} = useSocket(`ws://orbeapi.devzeros.com:3001/location`);
-  const [modal, setModal] = useState(false);
   const [data, setData] = useState<any>();
   const [origin, setOrigin] = useState<Location | null>(null);
   const [destination, setDestination] = useState<Location | null>(null);
@@ -44,7 +43,8 @@ export const HomeDriverScreen = () => {
     duration: number;
   } | null>(null);
   const [currentRequest, setCurrentRequest] = useState<any>();
-
+  const [currentRaceAccepted, setCurrentRaceAccepted] = useState<any>(null);
+  const { addBalance, increaseTrips } = useProfileDriverStore();
   useEffect(() => {
     const fetchData = async (uid: string) => {
       const res = await orbeApi.get(`/worker/getDriversByUid?uid=${uid}`);
@@ -73,13 +73,12 @@ export const HomeDriverScreen = () => {
   }, []);
 
   const sendDriverLocation = () => {
-    console.log('here')
+    console.log('here');
     socket.emit('location-driver', {
       id: user?.uid,
       longitud: lastKnownLocation?.longitude,
       latitud: lastKnownLocation?.latitude,
     });
-    console.log({lastKnownLocation})
   };
 
   useEffect(() => {
@@ -194,11 +193,13 @@ export const HomeDriverScreen = () => {
             }}>
             <FAB
               iconName={'activity-outline'}
+              white={true}
               style={{position: 'static', flex: 1}}
               label={`${Math.ceil(raceData?.distance ?? 0)} Km`}
               onPress={() => {}}
             />
             <FAB
+              white={true}
               iconName={'clock-outline'}
               style={{position: 'static', flex: 1}}
               label={`${Math.ceil(raceData?.duration ?? 0)} Min`}
@@ -207,6 +208,7 @@ export const HomeDriverScreen = () => {
           </Layout>
 
           <FAB
+            white={true}
             iconName={'trending-up-outline'}
             style={{
               bottom: 80,
@@ -218,39 +220,61 @@ export const HomeDriverScreen = () => {
             )}`}
             onPress={() => {}}
           />
-          <Layout
-            style={{
-              bottom: 20,
-              left: 40,
-              backgroundColor: 'transparent',
-              right: 40,
-              position: 'absolute',
-              flexDirection: 'row',
-              gap: 10,
-            }}>
-            <Button
-              onPress={() => {
-                setDriverServiceIsActive(true);
-                setAnalyzingRace(false);
-              }}
-              status="danger"
-              style={{flex: 1, borderRadius: 50}}>
-              Rechazar
-            </Button>
-            <Button
-              onPress={async () => {
-                const response = await RacesService.acceptRequest(
-                  currentRequest.id_client,
-                  currentRequest.id_driver,
-                  currentRequest.id,
-                  raceData!.distance * 850 + 4600,
-                );
-              }}
-              status="success"
-              style={{flex: 1, borderRadius: 50}}>
-              Aceptar
-            </Button>
-          </Layout>
+          {!currentRaceAccepted ? (
+            <Layout
+              style={{
+                bottom: 20,
+                left: 40,
+                backgroundColor: 'transparent',
+                right: 40,
+                position: 'absolute',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <Button
+                onPress={() => {
+                  setDriverServiceIsActive(true);
+                  setAnalyzingRace(false);
+                }}
+                status="danger"
+                style={{flex: 1, borderRadius: 50}}>
+                Rechazar
+              </Button>
+              <Button
+                onPress={async () => {
+                  const response = await RacesService.acceptRequest(
+                    currentRequest.id_client,
+                    currentRequest.id_driver,
+                    currentRequest.id,
+                    raceData!.distance * 850 + 4600,
+                  );
+                  if (response) {
+                    setCurrentRaceAccepted(currentRequest);
+                    addBalance(Math.ceil(raceData!.distance * 850 + 4600))
+                    increaseTrips();
+                  }
+                }}
+                status="success"
+                style={{flex: 1, borderRadius: 50}}>
+                Aceptar
+              </Button>
+            </Layout>
+          ) : (
+            <Layout
+              style={{
+                bottom: 20,
+                left: 40,
+                backgroundColor: 'transparent',
+                right: 40,
+                position: 'absolute',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <Button status="success" style={{flex: 1}}>
+                Ya estoy aquí
+              </Button>
+            </Layout>
+          )}
         </>
       )}
     </>

@@ -18,7 +18,12 @@ import {
   View,
 } from 'react-native';
 import {RacesService} from '../../../services';
-import {API_SOCKET_URL, GOOGLE_API_KEY} from '@env';
+import {
+  API_SOCKET_URL,
+  EPAYCO_API_KEY,
+  EPAYCO_API_URL,
+  GOOGLE_API_KEY,
+} from '@env';
 import {
   DriverResponseByUidData,
   Location,
@@ -31,8 +36,7 @@ import {
 } from '@react-navigation/native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {ScrollView} from 'react-native-gesture-handler';
-import {globalColors} from '../../theme/styles';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {epaycoApi} from '../../../config/api';
 
 export const HomeClientScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
@@ -46,7 +50,7 @@ export const HomeClientScreen = () => {
   >([]);
   const [origin, setOrigin] = useState<Location | null>(null);
   const [destination, setDestination] = useState<Location | null>(null);
-  const [payWithCard, setPayWithCard] = useState<boolean>(false);
+  const [payWithCard, setPayWithCard] = useState<boolean>(true);
 
   const {height, width} = useWindowDimensions();
 
@@ -60,6 +64,16 @@ export const HomeClientScreen = () => {
   const {socket: raceWaitsSocket} = useSocket(
     `ws://orbeapi.devzeros.com:3001/client-driver-wait`,
   );
+
+  const checkout = async () => {
+    
+  };
+
+  useEffect(() => {
+    if (payWithCard) {
+      checkout();
+    }
+  }, [payWithCard]);
 
   useEffect(() => {
     const sendClientLocation = setInterval(() => {
@@ -140,14 +154,7 @@ export const HomeClientScreen = () => {
     if (driver) {
       setCurrentDriver(driver[0]);
     }
-
-    console.log({currentDriver})
-
   }, [nearbyDrivers]);
-
-  useEffect(() => {
-    console.log({ nearbyDrivers})
-  },[currentDriver])
 
   useEffect(() => {
     SearchingDriverBottomSheetRef.current?.collapse();
@@ -184,7 +191,7 @@ export const HomeClientScreen = () => {
         setRaceData={setRaceData}
         initialLocation={lastKnownLocation!}></CustomMapView>
 
-      {searchingDriver && (
+      {searchingDriver && !currentDriver && (
         <Layout
           style={{
             top: 20,

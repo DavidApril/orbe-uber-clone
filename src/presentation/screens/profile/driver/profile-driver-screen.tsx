@@ -1,12 +1,23 @@
-import {Button, Layout, Text} from '@ui-kitten/components';
-import {useAuthStore} from '../../../../store';
-import {CustomIcon} from '../../../components';
-// import { NavigationProp, useNavigation } from '@react-navigation/native';
-// import { RootStackParams } from '../../../../interfaces';
+import {Layout, Text} from '@ui-kitten/components';
+import {useAuthStore, useProfileDriverStore} from '../../../../store';
+import {DriverService} from '../../../../services';
+import {useEffect, useState} from 'react';
+import {currencyFormat} from '../../../../utils';
 
 export const ProfileDriverScreen = () => {
   const {user} = useAuthStore();
-  // const navigation = useNavigation<NavigationProp<RootStackParams>>();
+  const {balance, trips} = useProfileDriverStore();
+  const [userByUid, setUserByUid] = useState<any>();
+
+  const getClientByUID = async () => {
+    const clientByUID = await DriverService.getDriverByUserUid(user!.uid);
+    setUserByUid(clientByUID);
+  };
+  console.log({userByUid});
+
+  useEffect(() => {
+    getClientByUID();
+  }, [user]);
 
   return (
     <Layout
@@ -36,9 +47,11 @@ export const ProfileDriverScreen = () => {
             }}></Layout>
 
           <Layout style={{backgroundColor: 'transparent'}}>
-            <Text style={{}}>hola,</Text>
+            <Text style={{}}>Hola,</Text>
             <Text style={{fontWeight: 'bold', fontSize: 18}}>
-              {user?.displayName}
+              {userByUid?.data.driver?.name +
+                ' ' +
+                userByUid?.data.driver?.lastName}
             </Text>
           </Layout>
         </Layout>
@@ -55,18 +68,9 @@ export const ProfileDriverScreen = () => {
           <Layout style={{backgroundColor: 'transparent'}}>
             <Text style={{color: 'white'}}>Balance</Text>
             <Text style={{color: 'white', fontWeight: 'bold', fontSize: 40}}>
-              1.234$
+              {currencyFormat(balance)}
             </Text>
           </Layout>
-
-          <Button
-            status="success"
-            accessoryRight={
-              <CustomIcon white name="arrow-circle-down-outline" />
-            }
-            appearance="ghost">
-            Retirar dinero
-          </Button>
         </Layout>
 
         <Layout
@@ -101,7 +105,7 @@ export const ProfileDriverScreen = () => {
             }}>
             <Text style={{color: 'black'}}>Hoy</Text>
             <Text style={{color: 'black', fontWeight: 'bold', fontSize: 40}}>
-              26 <Text style={{color: 'black'}}>Viajes</Text>
+              {trips} <Text style={{color: 'black'}}>Viajes</Text>
             </Text>
           </Layout>
         </Layout>
