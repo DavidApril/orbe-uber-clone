@@ -1,6 +1,6 @@
 import {User} from 'firebase/auth';
 import {StateCreator, create} from 'zustand';
-import {AuthStatus, CLIENT, DRIVER} from '../../interfaces';
+import {AuthStatus, CLIENT, DELIVERY, DRIVER} from '../../interfaces';
 import {AuthService, UserService} from '../../services';
 
 export interface AuthState {
@@ -8,7 +8,7 @@ export interface AuthState {
   token?: string;
   user?: User;
 
-  role: 'CLIENTE' | 'DRIVER' | null;
+  role: 'CLIENTE' | 'DRIVER' | 'DELIVERY' | null;
 
   login: (email: string, password: string) => Promise<{ok: boolean}>;
   logout: () => void;
@@ -29,14 +29,15 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
     try {
       const {user, token} = await AuthService.login(email, password);
 
-      
       const userByUID = await UserService.getUserByUid(user.uid);
-      
+
       if (userByUID != null) {
-        if (!!userByUID.driver) {
-          set({role: DRIVER});
-        } else if (!!userByUID.cliente) {
+        if (!!userByUID.cliente) {
           set({role: CLIENT});
+        } else if (!!userByUID.driver) {
+          set({role: DRIVER});
+        } else if (!!userByUID.delivery) {
+          set({role: DELIVERY});
         }
       }
 
