@@ -38,7 +38,6 @@ export const SelectOriginDestination = ({
   const [inputLocation, setInputLocation] = useState('');
   const [inputDestiny, setInputDestiny] = useState('');
 
-
   return (
     <Layout
       style={{
@@ -56,7 +55,7 @@ export const SelectOriginDestination = ({
       <Pressable
         style={{
           padding: 15,
-          borderRadius: 50,
+          borderRadius: 10,
           borderWidth: 1,
           borderColor: '#3fc1f2',
         }}
@@ -176,7 +175,7 @@ export const SelectOriginDestination = ({
       <Pressable
         style={{
           padding: 15,
-          borderRadius: 50,
+          borderRadius: 10,
           borderColor: '#3fc1f2',
           borderWidth: 1,
         }}
@@ -326,7 +325,8 @@ export const SelectOriginDestination = ({
                   style={{
                     fontWeight: 'bold',
                   }}>
-                  PSE
+                  {' '}
+                  Tarjeta
                 </Text>
               </Text>
             </Radio>
@@ -340,7 +340,9 @@ export const SelectOriginDestination = ({
               borderRadius: 5,
               // borderWidth: 1,
             }}>
-            <Radio onChange={() => setPayWithCard(false)} checked={!payWithCard}>
+            <Radio
+              onChange={() => setPayWithCard(false)}
+              checked={!payWithCard}>
               <Text
                 style={{
                   alignItems: 'center',
@@ -361,7 +363,9 @@ export const SelectOriginDestination = ({
         </Layout>
       </Layout>
 
-      <Pressable
+      <Button
+        disabled={!inputDestiny || !inputLocation}
+        appearance="ghost"
         onPress={() => {
           setSearchingDriver(!searchingDriver);
         }}
@@ -369,7 +373,7 @@ export const SelectOriginDestination = ({
         <Text style={{color: '#3fc1f2', textAlign: 'center'}}>
           {!searchingDriver ? 'Confirmar' : 'Cancelar'}
         </Text>
-      </Pressable>
+      </Button>
     </Layout>
     // <Layout
     //   style={{
