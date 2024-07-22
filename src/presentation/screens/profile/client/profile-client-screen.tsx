@@ -1,8 +1,9 @@
-import {Button, Layout, Text} from '@ui-kitten/components';
+import {Button, Layout, Radio, Text} from '@ui-kitten/components';
 import {useAuthStore} from '../../../../store';
 import {CustomIcon} from '../../../components';
 import {UserService} from '../../../../services';
 import {useEffect, useState} from 'react';
+import {ScrollView} from 'react-native-gesture-handler';
 // import { NavigationProp, useNavigation } from '@react-navigation/native';
 // import { RootStackParams } from '../../../../interfaces';
 
@@ -110,6 +111,37 @@ export const ProfileClientScreen = () => {
           </Layout>
         </Layout>
         {/* <Button onPress={() => navigation.goBack()} appearance="ghost">Volver</Button> */}
+
+        <Layout
+          style={{
+            borderRadius: 30,
+            padding: 20,
+            // backgroundColor: 'black',
+            flexDirection: 'row',
+            paddingVertical: 30,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Layout style={{backgroundColor: 'transparent'}}>
+            <Text style={{fontWeight: 'bold', fontSize: 30}}>
+              Metodo de pago
+            </Text>
+            <Layout
+              style={{marginVertical: 10, flexDirection: 'column', gap: 8}}>
+              <Radio checked style={{}}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: 30,
+                  }}>
+                  <CustomIcon name="credit-card-outline" />
+                  4440 2334 2312 2331
+                </Text>
+              </Radio>
+            </Layout>
+          </Layout>
+        </Layout>
       </Layout>
     </Layout>
   );
