@@ -2,7 +2,7 @@ import React, {PropsWithChildren, useEffect} from 'react';
 import {AppState} from 'react-native';
 import {useAuthStore, usePermissionStore} from '../store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParams} from '../interfaces';
+import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../interfaces';
 
 export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   const {status} = useAuthStore();
@@ -12,10 +12,12 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
 
   useEffect(() => {
     if (locationStatus === 'granted' && status === 'authorized') {
-      if (role === 'DRIVER') {
+      if (role === DRIVER) {
         navigation.navigate('HomeDriverScreen');
-      } else if (role === 'CLIENTE') {
-        navigation.navigate('HomeClientScreen');
+      } else if (role === CLIENT) {
+        navigation.navigate('TypeClientScreen');
+      } else if (role === DELIVERY) {
+        navigation.navigate('HomeDeliveryScreen');
       }
     } else if (locationStatus === 'undetermined' && status === 'authorized') {
       navigation.navigate('PermissionsScreen');

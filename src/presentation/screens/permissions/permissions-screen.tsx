@@ -16,7 +16,7 @@ export const PermissionsScreen = () => {
     if (locationStatus === 'granted' && role === DRIVER) {
       navigation.navigate('HomeDriverScreen');
     } else if (locationStatus === 'granted' && role === CLIENT) {
-      navigation.navigate('HomeClientScreen');
+      navigation.navigate('TypeClientScreen');
     } else if (locationStatus === 'granted' && role === DELIVERY) {
       navigation.navigate('HomeDeliveryScreen');
     }

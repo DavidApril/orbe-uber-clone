@@ -30,7 +30,7 @@ import {
 import BottomSheet from '@gorhom/bottom-sheet';
 import {ScrollView} from 'react-native-gesture-handler';
 
-export const HomeClientScreen = () => {
+export const HomeClientDriverScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   const SearchingDriverBottomSheetRef = useRef<BottomSheet>(null);
