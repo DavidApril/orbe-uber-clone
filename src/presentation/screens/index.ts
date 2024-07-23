@@ -5,6 +5,7 @@ export * from './auth/register/register-screen';
 
 export * from './home/home-driver-screen';
 export * from './home/home-client-screen';
+export * from './home/home-delivery-screen';
 
 export * from './permissions/permissions-screen';
 

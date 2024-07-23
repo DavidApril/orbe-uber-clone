@@ -2,7 +2,7 @@ import {Button, Layout, Text} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
 import {useAuthStore, usePermissionStore} from '../../../store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {DRIVER, CLIENT, RootStackParams} from '../../../interfaces';
+import {DRIVER, CLIENT, RootStackParams, DELIVERY} from '../../../interfaces';
 
 export const PermissionsScreen = () => {
   const {locationStatus, requestLocationPermission} = usePermissionStore();
@@ -10,11 +10,15 @@ export const PermissionsScreen = () => {
 
   const {role} = useAuthStore();
 
+  console.log({role});
+
   useEffect(() => {
     if (locationStatus === 'granted' && role === DRIVER) {
       navigation.navigate('HomeDriverScreen');
     } else if (locationStatus === 'granted' && role === CLIENT) {
       navigation.navigate('HomeClientScreen');
+    } else if (locationStatus === 'granted' && role === DELIVERY) {
+      navigation.navigate('HomeDeliveryScreen');
     }
   }, [locationStatus, role]);
 

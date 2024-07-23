@@ -16,11 +16,12 @@ import {
   ProfileDriverScreen,
   SettingsScreen,
   RegisterDeliveryScreen,
+  HomeDeliveryScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
-
+// @ts-ignore
 const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
   return {
     cardSyle: {
@@ -78,6 +79,11 @@ export const StackNavigator = () => {
         options={{cardStyleInterpolator: fadeAnimation}}
         name="HomeClientScreen"
         component={HomeClientScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation}}
+        name="HomeDeliveryScreen"
+        component={HomeDeliveryScreen}
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation}}

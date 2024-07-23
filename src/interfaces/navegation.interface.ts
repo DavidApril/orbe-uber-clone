@@ -5,6 +5,7 @@ export type RootStackParams = {
   PermissionsScreen: undefined;
   HomeClientScreen: undefined;
   HomeDriverScreen: undefined;
+  HomeDeliveryScreen: undefined;
   RegisterDriverScreen: undefined;
   RegisterClientScreen: undefined;
   RegisterDeliveryScreen: undefined;
