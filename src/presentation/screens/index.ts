@@ -9,6 +9,8 @@ export * from './home/home-client-delivery-screen'
 export * from './home/home-client-driver-screen'
 export * from './home/type-client-screen'
 
+export * from './products/product-item-screen'
+
 export * from './permissions/permissions-screen';
 
 export * from './auth/register/driver/register-driver-screen';

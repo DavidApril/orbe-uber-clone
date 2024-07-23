@@ -19,6 +19,7 @@ import {
   SettingsScreen,
   RegisterDeliveryScreen,
   HomeDeliveryScreen,
+  ProductItemScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 
@@ -36,79 +37,84 @@ export const StackNavigator = () => {
   return (
     <Navigator
       initialRouteName="LoadingScreen"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{headerShown: true}}>
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="LoadingScreen"
         component={LoadingScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="LoginScreen"
         component={LoginScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
         name="RegisterScreen"
         component={RegisterScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro Driver'}}
         name="RegisterDriverScreen"
         component={RegisterDriverScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro cliente'}}
         name="RegisterClientScreen"
         component={RegisterClientScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro delivery'}}
         name="RegisterDeliveryScreen"
         component={RegisterDeliveryScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="PermissionsScreen"
         component={PermissionsScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="HomeDriverScreen"
         component={HomeDriverScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="TypeClientScreen"
         component={TypeClientScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="HomeClientDeliveryScreen"
         component={HomeClientDeliveryScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
+        name="ProductItemScreen"
+        component={ProductItemScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="HomeClientDriverScreen"
         component={HomeClientDriverScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="HomeDeliveryScreen"
         component={HomeDeliveryScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, title: 'Perfil'}}
         name="ProfileClientScreen"
         component={ProfileClientScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, title: 'Perfil'}}
         name="ProfileDriverScreen"
         component={ProfileDriverScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, title: 'Configuracion'}}
         name="SettingsScreen"
         component={SettingsScreen}
       />

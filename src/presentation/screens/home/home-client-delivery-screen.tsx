@@ -311,7 +311,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
     <View style={{paddingVertical: 10}}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ProductItem');
+          navigation.navigate('ProductItemScreen');
         }}
         style={styles.product}
         key={item.id}>

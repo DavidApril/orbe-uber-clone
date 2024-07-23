@@ -36,12 +36,12 @@ export const RegisterScreen = ({navigation}: Props) => {
         setRole={setRole}
         roles={ROLE_LIST_WITH_DESCRIPTIONS}
       />
-      <Button
+      {/* <Button
         status="basic"
         onPress={() => navigation.pop()}
         appearance="ghost">
         Volver
-      </Button>
+      </Button> */}
     </Layout>
   );
 };
