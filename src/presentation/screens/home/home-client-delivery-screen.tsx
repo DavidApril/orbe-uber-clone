@@ -11,6 +11,11 @@ import {
   Animated,
 } from 'react-native';
 import axios from 'axios';
+import {LoadingScreen} from '../loading/loading-screen';
+import {RestaurantService} from '../../../services/restaurant/restaurant.service';
+import {SingleRestaurantResponse} from '../../../interfaces';
+import {StorageService} from '../../../services';
+import {RestaurantCard} from '../../components';
 
 type Product = {
   id: string;
@@ -66,7 +71,6 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
   const [catalogs, setCatalogs] = useState<Catalog[]>([]);
   const [featured, setFeatured] = useState<Product[]>([]);
   const [offers, setOffers] = useState<Product[]>([]);
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loadingInfo, setLoadingInfo] = useState(false);
   const [placeholder, setPlaceholder] = useState('');
 
@@ -183,44 +187,6 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
         },
       ];
 
-      // const restaurantData = [
-      //     {
-      //         id: '1',
-      //         name: "McDonald's Valledupar",
-      //         image_url: 'https://www.tecnogus.com.co/wp-content/uploads/2023/09/McDonalds-Valledupar-jpeg.webp',
-      //         address: 'Cl. 16 #Carrera 19, Valledupar, Cesar',
-      //         rating: (Math.random() * 5).toFixed(1.5)
-      //     },
-      //     {
-      //         id: '2',
-      //         name: "Burger King Cartagena",
-      //         image_url: 'https://estaticos-cdn.prensaiberica.es/clip/51d9023b-54d6-4aa7-b3a7-9ce4e33b5eba_16-9-discover-aspect-ratio_default_0.jpg',
-      //         address: 'Av. San Martín #5-45, Cartagena, Bolívar',
-      //         rating: (Math.random() * 5).toFixed(1.5)
-      //     },
-      //     {
-      //         id: '3',
-      //         name: "KFC Bogotá",
-      //         image_url: 'https://www.elpaseoshopping.com/assets/img/upload/big/564a40ad21ac47db9d6f6c10427e68a6.jpg',
-      //         address: 'Calle 80 #70-91, Bogotá, Cundinamarca',
-      //         rating: (Math.random() * 5).toFixed(1.5)
-      //     },
-      //     {
-      //         id: '4',
-      //         name: "Subway Medellín",
-      //         image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh1yyEXpvazm8VRBxTEAvI-UhqjeE1DdwVYg&s',
-      //         address: 'Cra. 43a #1-50, Medellín, Antioquia',
-      //         rating: (Math.random() * 5).toFixed(1.5)
-      //     },
-      //     {
-      //         id: '5',
-      //         name: "Domino's Pizza Cali",
-      //         image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoOOlM0QYV0p3M356_eEbRhpFwV3LKn5T1BA&s',
-      //         address: 'Cra. 66 #11-40, Cali, Valle del Cauca',
-      //         rating: (Math.random() * 5).toFixed(1.5)
-      //     }
-      // ];
-
       const catalogData = [
         {
           id: '1',
@@ -287,11 +253,6 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
 
       //const offersResponse = await axios.get('');
       setOffers(shuffledProducts);
-
-      const restaurantsResponse = await axios.get(
-        'https://orbeapi.devzeros.com/api_v1/restaurant?skip=1&take=100',
-      );
-      setRestaurants(restaurantsResponse.data.data);
 
       setLoadingInfo(true);
     };
@@ -376,18 +337,6 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
     </TouchableOpacity>
   );
 
-  const renderFeatured = ({item}: any) => (
-    <View style={styles.featured} key={item.id}>
-      <Image
-        source={{uri: item.image_url}}
-        resizeMode="cover"
-        style={styles.featuredImage}
-      />
-      <Text style={styles.featuredName}>{item.name}</Text>
-      <Text style={styles.price}>{item.price}</Text>
-    </View>
-  );
-
   const renderOffer = ({item}: any) => (
     <View style={styles.offer} key={item.id}>
       <Image
@@ -400,6 +349,32 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
       <Text style={styles.offerDescription}>{item.description}</Text>
     </View>
   );
+
+  const [restaurants, setRestaurants] = useState<
+    SingleRestaurantResponse[] | null
+  >(null);
+
+  const getRestaurants = async () => {
+    const restaurants = await RestaurantService.getRestaurants();
+    setRestaurants(restaurants);
+  };
+
+  useEffect(() => {
+    getRestaurants();
+  }, []);
+
+  useEffect(() => {
+    if (restaurants) {
+      console.log(
+        StorageService.getPhotoByFilename(
+          restaurants[0].attachments[0].image_url,
+        ),
+      );
+    }
+
+    // getRestaurants();
+    // src={`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_API_PREFIX}/storage?fileName=${attachment.image_url}`}
+  }, [restaurants]);
 
   return (
     <>
@@ -442,7 +417,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
             </View>
 
             <View style={styles.container_sections}>
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -472,7 +447,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 style={styles.horizontalList}
-              />
+              /> */}
             </View>
 
             <View style={styles.container_sections}>
@@ -502,7 +477,9 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               </View>
               <FlatList
                 data={restaurants}
-                renderItem={renderRestaurant}
+                renderItem={({item: restaurant}) => (
+                  <RestaurantCard restaurant={restaurant} />
+                )}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 style={styles.horizontalList}
@@ -550,7 +527,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
             alignItems: 'center',
             backgroundColor: 'white',
           }}>
-          {/* <LoadingScreen /> */}
+          <LoadingScreen />
         </View>
       )}
     </>

@@ -11,3 +11,5 @@ export * from './client/select-origin-destination'
 export * from './client/client-information-card'
 
 export * from './driver/driver-information-card'
+
+export * from './restaurants/restaurant-card'
