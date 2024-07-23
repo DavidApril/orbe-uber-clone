@@ -1,5 +1,5 @@
 import {useAuthStore} from '../../../../../store';
-import { SectionDisplayEditData } from '../section-display-edit-data';
+import {SectionDisplayEditData} from './section-display-edit-data';
 import {RegisterDriverForm} from './register-driver-form';
 import {SectionCamera} from './section-camera';
 

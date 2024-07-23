@@ -15,6 +15,7 @@ import {
   ProfileClientScreen,
   ProfileDriverScreen,
   SettingsScreen,
+  RegisterDeliveryScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 
@@ -57,6 +58,11 @@ export const StackNavigator = () => {
         options={{cardStyleInterpolator: fadeAnimation}}
         name="RegisterClientScreen"
         component={RegisterClientScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation}}
+        name="RegisterDeliveryScreen"
+        component={RegisterDeliveryScreen}
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation}}

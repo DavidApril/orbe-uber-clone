@@ -11,9 +11,9 @@ export * from './permissions/permissions-screen';
 export * from './auth/register/driver/register-driver-screen';
 export * from './auth/register/driver/register-driver-form';
 export * from './auth/register/driver/section-camera';
-export * from './auth/register/section-display-edit-data';
-
+export * from './auth/register/driver/section-display-edit-data';
 export * from './auth/register/client/register-client-screen';
+export * from './auth/register/delivery/register-delivery-screen';
 
 export * from './profile/client/profile-client-screen';
 export * from './profile/driver/profile-driver-screen';

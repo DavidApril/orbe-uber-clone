@@ -1,9 +1,9 @@
 import {Button, Layout, Text} from '@ui-kitten/components';
 import React, {useState} from 'react';
-import {useAuthStore} from '../../../../store';
+import {useAuthStore} from '../../../../../store';
 import {Alert, Image, useWindowDimensions} from 'react-native';
-import {LoadingScreen} from '../../loading/loading-screen';
-import {DriverService} from '../../../../services';
+import {LoadingScreen} from '../../../loading/loading-screen';
+import {UserService} from '../../../../../services';
 
 export const SectionDisplayEditData = () => {
   const {width} = useWindowDimensions();
@@ -16,7 +16,7 @@ export const SectionDisplayEditData = () => {
 
     try {
       setIsLoading(true);
-      await DriverService.createDriver(registerForm, image_url);
+      await UserService.createDriver(registerForm, image_url);
       await login(email, password);
       setIsLoading(false);
     } catch (error) {

@@ -10,7 +10,7 @@ import {
 import {useAuthStore} from '../../store';
 import {CLIENT} from '../../interfaces';
 import {useColorScheme} from 'react-native';
-import * as eva from '@eva-design/eva';
+
 
 const {Navigator, Screen} = createDrawerNavigator();
 

@@ -3,7 +3,9 @@ import {StateCreator, create} from 'zustand';
 import {
   AuthStatus,
   CLIENT,
+  ClientRegisterForm,
   DELIVERY,
+  DeliveryRegisterForm,
   DRIVER,
   DriverRegisterForm,
 } from '../../interfaces';
@@ -14,7 +16,11 @@ export interface AuthState {
   token?: string;
   user?: User;
   role: 'CLIENTE' | 'DRIVER' | 'DELIVERY' | null;
-  registerForm: DriverRegisterForm | null;
+  registerForm:
+    | DriverRegisterForm
+    | ClientRegisterForm
+    | DeliveryRegisterForm
+    | null;
 
   setRegisterForm: (form: DriverRegisterForm) => void;
   image_url: string | null;
