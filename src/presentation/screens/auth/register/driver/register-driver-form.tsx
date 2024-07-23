@@ -1,19 +1,14 @@
 import {DriverRegisterForm} from '../../../../../interfaces';
-import {useDriverStore} from '../../../../../store';
+import {useAuthStore} from '../../../../../store';
 import {useWindowDimensions} from 'react-native';
 import {Button, Input, Layout, Text} from '@ui-kitten/components';
 import {Formik} from 'formik';
 import {ScrollView} from 'react-native-gesture-handler';
-import {useEffect} from 'react';
 import * as Yup from 'yup';
 
 export const RegisterDriverForm = () => {
   const {height} = useWindowDimensions();
-
-  const setDriverRegisterForm = useDriverStore(
-    state => state.setDriverRegisterForm,
-  );
-  const driverRegisterForm = useDriverStore(state => state.driverRegisterForm);
+  const {setRegisterForm} = useAuthStore();
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required(),
@@ -24,6 +19,7 @@ export const RegisterDriverForm = () => {
     password: Yup.string().required(),
     confirmPassword: Yup.string()
       .required()
+      // @ts-ignore
       .oneOf([Yup.ref('password'), null], 'Passwords must match'),
   });
 
@@ -40,7 +36,7 @@ export const RegisterDriverForm = () => {
   };
 
   function onSubmit(values: typeof initialValues) {
-    setDriverRegisterForm({...values});
+    setRegisterForm({...values});
   }
 
   return (

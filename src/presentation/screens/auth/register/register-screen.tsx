@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Layout} from '@ui-kitten/components';
+import {Layout, Button} from '@ui-kitten/components';
 import {StackScreenProps} from '@react-navigation/stack';
 import {
   CLIENT,
@@ -36,6 +36,12 @@ export const RegisterScreen = ({navigation}: Props) => {
         setRole={setRole}
         roles={ROLE_LIST_WITH_DESCRIPTIONS}
       />
+      <Button
+        status="basic"
+        onPress={() => navigation.pop()}
+        appearance="ghost">
+        Volver
+      </Button>
     </Layout>
   );
 };

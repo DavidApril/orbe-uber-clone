@@ -1,11 +1,11 @@
 import {Button, Layout, Text} from '@ui-kitten/components';
 import {CameraAdapter} from '../../../../../config/adapters';
 import {CustomIcon} from '../../../../components';
-import {useDriverStore} from '../../../../../store';
+import {useAuthStore} from '../../../../../store';
 
 export const SectionCamera = () => {
-  const {setDriverRegisterForm} = useDriverStore();
-
+  const { registerImage } = useAuthStore();
+  
   return (
     <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Layout>
@@ -19,7 +19,7 @@ export const SectionCamera = () => {
         <Button
           onPress={async () => {
             const photo = await CameraAdapter.getPictureFromLibrary();
-            setDriverRegisterForm({image: photo[0]});
+            registerImage(photo[0].split('/').reverse()[0]);
           }}
           accessoryLeft={<CustomIcon white name="image-outline" />}>
           Subir una foto
@@ -28,7 +28,7 @@ export const SectionCamera = () => {
         <Button
           onPress={async () => {
             const photo = await CameraAdapter.takePicture();
-            setDriverRegisterForm({image: photo[0]});
+            registerImage(photo[0].split('/').reverse()[0]);
           }}
           accessoryLeft={<CustomIcon white name="camera-outline" />}>
           Tomar una foto

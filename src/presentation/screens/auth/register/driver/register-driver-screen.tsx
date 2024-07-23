@@ -1,27 +1,16 @@
-import {useDriverStore} from '../../../../../store';
+import {useAuthStore} from '../../../../../store';
+import { SectionDisplayEditData } from '../section-display-edit-data';
 import {RegisterDriverForm} from './register-driver-form';
 import {SectionCamera} from './section-camera';
-import {SectionDisplayEditData} from '../section-display-edit-data';
 
 export const RegisterDriverScreen = () => {
-  const driverRegisterForm = useDriverStore(state => state.driverRegisterForm);
-
-  const isValidForm =
-    driverRegisterForm?.confirmPassword !== '' &&
-    driverRegisterForm?.email !== '' &&
-    driverRegisterForm?.firstName !== '' &&
-    driverRegisterForm?.lastName !== '' &&
-    driverRegisterForm?.identification !== '' &&
-    driverRegisterForm?.image !== '' &&
-    driverRegisterForm?.password !== '' &&
-    driverRegisterForm?.phone !== '' &&
-    driverRegisterForm !== null;
+  const {registerForm, image_url} = useAuthStore();
 
   return (
     <>
-      {driverRegisterForm === null && <RegisterDriverForm />}
-      {driverRegisterForm?.image === '' && <SectionCamera />}
-      {isValidForm && <SectionDisplayEditData />}
+      {!registerForm && <RegisterDriverForm />}
+      {!image_url && registerForm && <SectionCamera />}
+      {registerForm && image_url && <SectionDisplayEditData />}
     </>
   );
 };

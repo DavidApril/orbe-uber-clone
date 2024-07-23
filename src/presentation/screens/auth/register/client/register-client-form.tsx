@@ -16,6 +16,7 @@ export const RegisterClientForm = () => {
     password: Yup.string().required(),
     confirmPassword: Yup.string()
       .required()
+      // @ts-ignore
       .oneOf([Yup.ref('password'), null], 'Passwords must match'),
   });
 
@@ -36,7 +37,7 @@ export const RegisterClientForm = () => {
     if (!values.email || !values.password) return;
 
     try {
-      const response = await ClientService.createClient(values);
+      await ClientService.createClient(values);
       await login(values!.email, values.password);
     } catch (error) {
       console.log({error});

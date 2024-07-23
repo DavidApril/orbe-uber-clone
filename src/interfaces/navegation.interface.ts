@@ -7,8 +7,8 @@ export type RootStackParams = {
   HomeDriverScreen: undefined;
   RegisterDriverScreen: undefined;
   RegisterClientScreen: undefined;
-  ProfileDriverScreen: undefined
-  ProfileClientScreen: undefined
-
-  SettingsScreen: undefined,
+  RegisterDeliveryScreen: undefined;
+  ProfileDriverScreen: undefined;
+  ProfileClientScreen: undefined;
+  SettingsScreen: undefined;
 };

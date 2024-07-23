@@ -36,7 +36,6 @@ export const SelectRoleAccount = ({roles, setRole}: Props) => {
 
             paddingHorizontal: 40,
             paddingVertical: 20,
-            height: 200,
             borderRadius: 10,
           }}>
           <Layout
@@ -49,8 +48,8 @@ export const SelectRoleAccount = ({roles, setRole}: Props) => {
             <CustomIcon name={role.iconName} />
             <Text
               style={{
-                fontWeight: '100',
-                fontSize: 25,
+                fontWeight: 'bold',
+                fontSize: 17,
                 flexDirection: 'row',
                 gap: 10,
               }}>
@@ -61,7 +60,7 @@ export const SelectRoleAccount = ({roles, setRole}: Props) => {
           </Layout>
           <Text>{role.description}</Text>
 
-          <Layout style={{flex: 1, justifyContent: 'center'}}>
+          <Layout style={{justifyContent: 'center'}}>
             <Button
               onPress={() => setRole(role.name)}
               status="success"

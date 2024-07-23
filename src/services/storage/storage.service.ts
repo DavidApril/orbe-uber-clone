@@ -1,0 +1,12 @@
+import { orbeApi } from "../../config/api";
+
+export class StorageService {
+	static uploadPhoto = async (file: FormData) => {
+		try {
+			await orbeApi.postForm(`/storage/uploadImage`, file);
+			return { ok: true };
+		} catch (error) {
+			return { ok: false };
+		}
+	};
+}

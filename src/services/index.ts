@@ -4,3 +4,4 @@ export * from './location/location.service';
 export * from './user/user.service';
 export * from './races/races.service';
 export * from './driver/driver.service';
+export * from './storage/storage.service'

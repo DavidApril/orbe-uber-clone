@@ -1,12 +1,17 @@
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {orbeApi} from '../../config/api';
-import {DriverRegisterForm, DriverResponseByUid} from '../../interfaces';
+import {
+  DRIVER,
+  DriverRegisterForm,
+  DriverResponseByUid,
+} from '../../interfaces';
 import {auth} from '../../config/firebase/config';
 
 export class DriverService {
-  static take: number = 6;
-
-  static createDriver = async (driver: DriverRegisterForm) => {
+  static createDriver = async (
+    driver: DriverRegisterForm,
+    image_url: string,
+  ) => {
     if (!driver.email || !driver.password) return;
 
     try {
@@ -26,19 +31,18 @@ export class DriverService {
           name: driver.firstName,
           lastName: driver.lastName,
           phone: driver.phone,
-          imageUrl: 'driver.image',
+          imageUrl: image_url,
           documents: [],
           vehicles: [],
         },
         roles: [
           {
-            name: 'DRIVER',
+            name: DRIVER,
           },
         ],
       });
 
-      return response.data
-
+      return response.data;
     } catch (error) {
       console.log(error);
     }

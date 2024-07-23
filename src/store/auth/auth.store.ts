@@ -1,15 +1,24 @@
 import {User} from 'firebase/auth';
 import {StateCreator, create} from 'zustand';
-import {AuthStatus, CLIENT, DELIVERY, DRIVER} from '../../interfaces';
+import {
+  AuthStatus,
+  CLIENT,
+  DELIVERY,
+  DRIVER,
+  DriverRegisterForm,
+} from '../../interfaces';
 import {AuthService, UserService} from '../../services';
 
 export interface AuthState {
   status: AuthStatus;
   token?: string;
   user?: User;
-
   role: 'CLIENTE' | 'DRIVER' | 'DELIVERY' | null;
+  registerForm: DriverRegisterForm | null;
 
+  setRegisterForm: (form: DriverRegisterForm) => void;
+  image_url: string | null;
+  registerImage: (image_url: string) => void;
   login: (email: string, password: string) => Promise<{ok: boolean}>;
   logout: () => void;
   checkIsAuthenticated: () => Promise<void>;
@@ -24,7 +33,11 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
   user: undefined,
 
   role: null,
+  registerForm: null,
+  image_url: null,
 
+  registerImage: image_url => set({image_url}),
+  setRegisterForm: form => set({registerForm: form}),
   login: async (email: string, password: string) => {
     try {
       const {user, token} = await AuthService.login(email, password);
