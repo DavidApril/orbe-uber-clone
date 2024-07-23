@@ -1,7 +1,7 @@
 import {RegisterDeliveryForm} from './register-client-form';
 import {useAuthStore} from '../../../../../store';
-import {SectionCamera} from '../driver/section-camera';
-import {SectionDisplayEditData} from '../driver/section-display-edit-data';
+import {SectionDisplayEditDataDelivery} from './section-display-edit-data-delivery';
+import {SectionCamera} from '../section-camera';
 
 export const RegisterDeliveryScreen = () => {
   const {registerForm, image_url} = useAuthStore();
@@ -9,7 +9,7 @@ export const RegisterDeliveryScreen = () => {
     <>
       {!registerForm && <RegisterDeliveryForm />}
       {!image_url && registerForm && <SectionCamera />}
-      {registerForm && image_url && <SectionDisplayEditData />}
+      {registerForm && image_url && <SectionDisplayEditDataDelivery />}
     </>
   );
 };

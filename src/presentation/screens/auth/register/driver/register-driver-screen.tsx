@@ -1,7 +1,7 @@
 import {useAuthStore} from '../../../../../store';
-import {SectionDisplayEditData} from './section-display-edit-data';
+import {SectionDisplayEditDataDriver} from './section-display-edit-data-driver';
 import {RegisterDriverForm} from './register-driver-form';
-import {SectionCamera} from './section-camera';
+import {SectionCamera} from '../section-camera';
 
 export const RegisterDriverScreen = () => {
   const {registerForm, image_url} = useAuthStore();
@@ -10,7 +10,7 @@ export const RegisterDriverScreen = () => {
     <>
       {!registerForm && <RegisterDriverForm />}
       {!image_url && registerForm && <SectionCamera />}
-      {registerForm && image_url && <SectionDisplayEditData />}
+      {registerForm && image_url && <SectionDisplayEditDataDriver />}
     </>
   );
 };

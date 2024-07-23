@@ -15,15 +15,16 @@ export interface AuthState {
   status: AuthStatus;
   token?: string;
   user?: User;
-  role: 'CLIENTE' | 'DRIVER' | 'DELIVERY' | null;
+  role: CLIENT | DELIVERY | DRIVER | null;
   registerForm:
     | DriverRegisterForm
     | ClientRegisterForm
     | DeliveryRegisterForm
     | null;
-
-  setRegisterForm: (form: DriverRegisterForm) => void;
   image_url: string | null;
+
+  setRole: (role: DRIVER | CLIENT | DELIVERY) => void;
+  setRegisterForm: (form: DriverRegisterForm) => void;
   registerImage: (image_url: string) => void;
   login: (email: string, password: string) => Promise<{ok: boolean}>;
   logout: () => void;
@@ -42,6 +43,8 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
   registerForm: null,
   image_url: null,
 
+  
+  setRole: role => set({role}),
   registerImage: image_url => set({image_url}),
   setRegisterForm: form => set({registerForm: form}),
   login: async (email: string, password: string) => {
@@ -49,6 +52,8 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
       const {user, token} = await AuthService.login(email, password);
 
       const userByUID = await UserService.getUserByUid(user.uid);
+
+      console.log({userByUID})
 
       if (userByUID != null) {
         if (!!userByUID.cliente) {

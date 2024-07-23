@@ -1,7 +1,7 @@
 import {Button, Layout, Text} from '@ui-kitten/components';
-import {CameraAdapter} from '../../../../../config/adapters';
-import {CustomIcon} from '../../../../components';
-import {useAuthStore} from '../../../../../store';
+import { useAuthStore } from '../../../../store';
+import { CameraAdapter } from '../../../../config/adapters';
+import { CustomIcon } from '../../../components';
 
 export const SectionCamera = () => {
   const { registerImage } = useAuthStore();

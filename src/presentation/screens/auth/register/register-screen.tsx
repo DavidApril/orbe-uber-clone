@@ -15,7 +15,7 @@ interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 
 export const RegisterScreen = ({navigation}: Props) => {
   const [role, setRole] = useState<CLIENT | DRIVER | DELIVERY | null>(null);
-
+  
   useEffect(() => {
     if (role) {
       // @ts-ignore

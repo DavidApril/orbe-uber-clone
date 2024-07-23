@@ -5,7 +5,7 @@ import {Alert, Image, useWindowDimensions} from 'react-native';
 import {LoadingScreen} from '../../../loading/loading-screen';
 import {UserService} from '../../../../../services';
 
-export const SectionDisplayEditData = () => {
+export const SectionDisplayEditDataDelivery = () => {
   const {width} = useWindowDimensions();
 
   const {login, image_url, registerForm} = useAuthStore();
@@ -16,7 +16,8 @@ export const SectionDisplayEditData = () => {
 
     try {
       setIsLoading(true);
-      await UserService.createDriver(registerForm, image_url);
+      // @ts-ignore
+      await UserService.createDelivery(registerForm, image_url);
       await login(email, password);
       setIsLoading(false);
     } catch (error) {
