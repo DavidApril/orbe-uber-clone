@@ -1,30 +1,15 @@
-import {Button, Layout, Spinner, Text} from '@ui-kitten/components';
-import {
-  CustomIcon,
-  CustomMapView,
-  DriverInformationCard,
-  FAB,
-  SelectOriginDestination,
-} from '../../components';
+import {Layout} from '@ui-kitten/components';
+import {CustomMapView, FAB} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
-import {useAuthStore, useLocationStore} from '../../../store';
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {useSocket} from '../../../hooks';
-import {useWindowDimensions} from 'react-native';
-import {RacesService} from '../../../services';
-import {API_SOCKET_URL} from '@env';
-import {
-  DriverResponseByUidData,
-  Location,
-  RootStackParams,
-} from '../../../interfaces';
+import {useLocationStore} from '../../../store';
+import {useMemo, useRef} from 'react';
+import {RootStackParams} from '../../../interfaces';
 import {
   DrawerActions,
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {ScrollView} from 'react-native-gesture-handler';
 
 export const HomeDeliveryScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
