@@ -21,6 +21,7 @@ import {
   HomeDeliveryScreen,
   ProductItemScreen,
   RestaurantScreen,
+  ProductsCartScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 
@@ -102,6 +103,11 @@ export const StackNavigator = () => {
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="RestaurantScreen"
         component={RestaurantScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
+        name="ProductsCartScreen"
+        component={ProductsCartScreen}
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}

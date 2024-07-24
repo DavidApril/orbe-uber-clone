@@ -6,185 +6,72 @@ import {
   ImageBackground,
   Modal,
 } from 'react-native';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Layout} from '@ui-kitten/components';
-import {CustomIcon} from '../../../components';
+import {FAB, OpenDrawerMenu} from '../../../components';
 import {RootStackParams} from '../../../../interfaces';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useRestaurantStore} from '../../../../store/restaurant/restaurant';
 
-interface ProductI {
-  id: number;
-  name: string;
-  image_url: string;
-  price: number;
-  deliveryTime: string;
-  rating: number;
-  description: string;
-}
+import {LoadingScreen} from '../../loading/loading-screen';
+import {globalColors} from '../../../theme/styles';
+import {StorageService} from '../../../../services';
+import {currencyFormat} from '../../../../utils';
+import {useShoppingCartStore} from '../../../../store';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'ProductItemScreen'> {}
 
 export const ProductItemScreen = ({navigation}: Props) => {
-  const [product, setProduct] = useState<ProductI>();
-  const [countProduct, setCountProduct] = useState(0);
-  const [priceFinal, setPriceFinal] = useState<any>(0);
   const [photoOpen, setPhotoOpen] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const {restaurantSelected} = useRestaurantStore();
+  const {productSelected: product} = useRestaurantStore();
+  const {addProduct} = useShoppingCartStore();
 
-  const productData = [
-    {
-      id: '1',
-      name: 'Pizza Margherita',
-      image_url:
-        'https://i.pinimg.com/564x/0a/34/c1/0a34c17ac88f93878b0d3253ffd39e1f.jpg',
-      price: (Math.random() * 10).toFixed(2),
-      deliveryTime: (Math.random() * 60).toFixed(1),
-      rating: (Math.random() * 5).toFixed(1),
-      description:
-        'Una clásica pizza italiana cubierta con salsa de tomate, queso mozzarella fresco y hojas de albahaca. ¡Simple pero deliciosa!',
-    },
-    {
-      id: '2',
-      name: 'Sushi Platter',
-      image_url:
-        'https://i.pinimg.com/564x/1c/78/f4/1c78f4ffacffbb0e4858cffa67fc7009.jpg',
-      price: (Math.random() * 10).toFixed(2),
-      deliveryTime: (Math.random() * 60).toFixed(1),
-      rating: (Math.random() * 5).toFixed(1),
-      description:
-        'Una variedad de rollos de sushi frescos que incluyen nigiri de salmón, sashimi de atún y rollos California con aguacate.',
-    },
-    {
-      id: '3',
-      name: 'Hamburguesa con Papas Fritas',
-      image_url:
-        'https://i.pinimg.com/564x/12/a8/db/12a8dba6ad2279644dfc48cabd3a9ca3.jpg',
-      price: (Math.random() * 10).toFixed(2),
-      deliveryTime: (Math.random() * 60).toFixed(1),
-      rating: (Math.random() * 5).toFixed(1),
-      description:
-        'Una jugosa hamburguesa de carne con queso derretido, lechuga, tomate y pepinillos, acompañada de papas fritas doradas y crujientes.',
-    },
-    {
-      id: '4',
-      name: 'Espagueti Carbonara',
-      image_url:
-        'https://i.pinimg.com/564x/79/b0/4d/79b04dc4c8f3c438c63a8c25bb2ba3c8.jpg',
-      price: (Math.random() * 10).toFixed(2),
-      deliveryTime: (Math.random() * 60).toFixed(1),
-      rating: (Math.random() * 5).toFixed(1),
-      description:
-        'Plato de pasta italiana hecho con espagueti, salsa cremosa de huevo, panceta y queso Parmesano rallado.',
-    },
-    {
-      id: '5',
-      name: 'Ensalada César',
-      image_url:
-        'https://i.pinimg.com/564x/07/b3/fa/07b3fa5f80454a92f323140a4504ad23.jpg',
-      price: (Math.random() * 10).toFixed(2),
-      deliveryTime: (Math.random() * 60).toFixed(1),
-      rating: (Math.random() * 5).toFixed(1),
-      description:
-        'Lechuga romana fresca mezclada con aderezo César, crutones y virutas de queso Parmesano.',
-    },
-    {
-      id: '6',
-      name: 'Tacos',
-      image_url:
-        'https://i.pinimg.com/564x/55/4d/c5/554dc5442570bb50344b45145d63db8b.jpg',
-      price: (Math.random() * 10).toFixed(2),
-      deliveryTime: (Math.random() * 60).toFixed(1),
-      rating: (Math.random() * 5).toFixed(1),
-      description:
-        'Tacos mexicanos rellenos de carne asada sazonada, salsa, cilantro y un toque de limón.',
-    },
-    {
-      id: '7',
-      name: 'Panqueques',
-      image_url:
-        'https://i.pinimg.com/564x/98/6e/80/986e8020d901fe1c313e9460495ec5c3.jpg',
-      price: (Math.random() * 10).toFixed(2),
-      deliveryTime: (Math.random() * 60).toFixed(1),
-      rating: (Math.random() * 5).toFixed(1),
-      description:
-        'Panqueques esponjosos servidos con jarabe de arce, mantequilla y una selección de toppings como bayas o chispas de chocolate.',
-    },
-    {
-      id: '8',
-      name: 'Sundae de Helado',
-      image_url:
-        'https://i.pinimg.com/564x/9e/df/63/9edf63395b618f8a8e9fe70b6355caaa.jpg',
-      price: (Math.random() * 10).toFixed(2),
-      deliveryTime: (Math.random() * 60).toFixed(1),
-      rating: (Math.random() * 5).toFixed(1),
-      description:
-        'Un delicioso postre con bolas de helado de vainilla, sirope de chocolate, crema batida, nueces y una cereza en la cima.',
-    },
-  ];
-
-  useEffect(() => {
-    const productRandom = Math.floor(Math.random() * productData.length);
-    setProduct(productData[productRandom] as any);
-  }, []);
+  if (!product) {
+    return <LoadingScreen />;
+  }
 
   const handleAddToCart = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      // addToCart(product);
+      addProduct(product!, 1);
       setModal(true);
     }, 2000);
   };
 
-  const handlePhotoOpen = () => {
-    setPhotoOpen(true);
-  };
-
-  const handlePhotoClose = () => {
-    setPhotoOpen(false);
-  };
-
-  useEffect(() => {
-    const handlePriceFinal = () => {
-      if (product?.price) {
-        const priceResumed = (product.price * countProduct).toFixed(2);
-        setPriceFinal(priceResumed);
-      }
-    };
-    handlePriceFinal();
-  }, [countProduct]);
-
   return (
     <Layout style={styles.container}>
-      <Pressable
-        onPress={() => {
-          navigation.goBack();
-        }}
-        style={styles.arrow_back_button}>
-        {/* <CustomIcon color={'#3fc1f2'} name="arrow-back" /> */}
-      </Pressable>
+      <OpenDrawerMenu left={20} />
+      <FAB
+        white
+        style={{right: 20, top: 20, backgroundColor: globalColors.primary}}
+        iconName="arrow-back"
+        onPress={() => navigation.goBack()}
+      />
 
-      <Pressable
-        // onPress={()=>{navigation.navigate('Cart')}}
-        style={styles.cart_button}>
-        {/* <CustomIcon color={'#3fc1f2'} name="cart-outline" /> */}
-      </Pressable>
+      <FAB
+        white
+        style={{right: 80, top: 20, backgroundColor: globalColors.primary}}
+        iconName="shopping-cart"
+        onPress={() => navigation.navigate('ProductsCartScreen')}
+      />
 
       <Layout style={styles.container_product}>
-        <ImageBackground style={{height: '50%'}}>
+        <ImageBackground style={{height: '40%'}}>
           <Pressable
             style={{
               width: '100%',
               height: '100%',
             }}
-            onPress={handlePhotoOpen}>
+            onPress={() => setPhotoOpen(true)}>
             <Image
-              source={{uri: product?.image_url}}
+              source={{
+                uri: StorageService.getPhotoByFilename(product!.imageUrl),
+              }}
               style={{width: '100%', height: '100%'}}
             />
           </Pressable>
@@ -193,11 +80,15 @@ export const ProductItemScreen = ({navigation}: Props) => {
           animationType="fade"
           visible={photoOpen}
           transparent={true}
-          onRequestClose={handlePhotoClose}>
+          onRequestClose={() => setPhotoOpen(false)}>
           <Layout style={styles.modal_container}>
-            <Pressable style={styles.close_button} onPress={handlePhotoClose}>
+            <Pressable
+              style={styles.close_button}
+              onPress={() => setPhotoOpen(false)}>
               <Image
-                source={{uri: product?.image_url}}
+                source={{
+                  uri: StorageService.getPhotoByFilename(product!.imageUrl),
+                }}
                 style={styles.full_screen}
               />
             </Pressable>
@@ -205,11 +96,15 @@ export const ProductItemScreen = ({navigation}: Props) => {
         </Modal>
         <Layout style={{padding: 20, gap: 10}}>
           <Layout>
-            <Text style={styles.product_rating}>Rating: {product?.rating}</Text>
+            <Text style={styles.product_rating}>
+              Rating: {product?.category}
+            </Text>
             <Text style={styles.product_name}>{product?.name}</Text>
           </Layout>
           <Text style={styles.product_description}>{product?.description}</Text>
-          <Text style={styles.product_price}>${product?.price}</Text>
+          <Text style={styles.product_price}>
+            {currencyFormat(+product?.priceUnitary)}
+          </Text>
         </Layout>
       </Layout>
       <Layout style={styles.buy_product_container}>
@@ -253,6 +148,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
                 style={styles.modal_button}
                 onPress={() => {
                   setModal(false);
+                  navigation.navigate('ProductsCartScreen')
                 }}>
                 <Text style={styles.modal_button_text}>Ir al carrito</Text>
               </Pressable>
@@ -282,7 +178,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    paddingTop: 25,
+    // paddingTop: 25,
   },
   container_product: {
     height: '100%',

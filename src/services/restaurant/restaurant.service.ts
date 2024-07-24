@@ -95,7 +95,7 @@ export class RestaurantService {
     try {
       const {data: response}: {data: {data: ProductRestaurant[]}} =
         await orbeApi.get(
-          `product/getProducts?skip=${skip}&take=${take}&idRestaurant=${28}&appWeb=true`,
+          `product/getProducts?skip=${skip}&take=${take}&idRestaurant=${idRestaurant}&appWeb=false`,
         );
       return response.data;
     } catch (error) {
