@@ -20,6 +20,7 @@ import {
   RegisterDeliveryScreen,
   HomeDeliveryScreen,
   ProductItemScreen,
+  RestaurantScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 import { globalColors } from '../theme/styles';
@@ -105,18 +106,8 @@ export const StackNavigator = () => {
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="ProductItem"
+        name="ProductItemScreen"
         component={ProductItemScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Lista de restaurantes'}}
-        name="RestaurantList"
-        component={RestaurantList}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="RestaurantScreen"
-        component={Restaurant}
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}

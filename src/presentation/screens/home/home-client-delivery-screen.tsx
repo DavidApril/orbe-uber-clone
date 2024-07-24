@@ -10,6 +10,10 @@ import {
   Animated,
 } from 'react-native';
 import axios from 'axios';
+import { SingleRestaurantResponse } from '../../../interfaces';
+import { RestaurantService } from '../../../services/restaurant/restaurant.service';
+import { CustomIcon, RestaurantCard } from '../../components';
+import { LoadingScreen } from '../loading/loading-screen';
 
 type Product = {
   id: string;
