@@ -20,8 +20,11 @@ import {
   RegisterDeliveryScreen,
   HomeDeliveryScreen,
   ProductItemScreen,
+  RestaurantList,
+  Restaurant,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
+import { globalColors } from '../theme/styles';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -37,7 +40,7 @@ export const StackNavigator = () => {
   return (
     <Navigator
       initialRouteName="LoadingScreen"
-      screenOptions={{headerShown: true}}>
+      screenOptions={{headerShown: true, headerTintColor: globalColors.primary}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="LoadingScreen"
@@ -90,8 +93,18 @@ export const StackNavigator = () => {
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="ProductItemScreen"
+        name="ProductItem"
         component={ProductItemScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation, title: 'Lista de restaurantes'}}
+        name="RestaurantList"
+        component={RestaurantList}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
+        name="RestaurantScreen"
+        component={Restaurant}
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}

@@ -11,6 +11,9 @@ export * from './home/type-client-screen'
 
 export * from './products/product-item-screen'
 
+export * from './restaurants/restaurant-screen'
+export * from './restaurants/restaurants-list-screen'
+
 export * from './permissions/permissions-screen';
 
 export * from './auth/register/driver/register-driver-screen';
