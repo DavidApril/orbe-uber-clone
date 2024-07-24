@@ -18,7 +18,7 @@ import {currencyFormat} from '../../../../utils';
 import {StorageService} from '../../../../services';
 import {CustomIcon} from '../../../components';
 
-interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'ProductsCartScreen'> {}
 
 export const ProductsCartScreen = ({navigation}: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
