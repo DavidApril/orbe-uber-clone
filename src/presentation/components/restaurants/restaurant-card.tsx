@@ -12,7 +12,7 @@ export const RestaurantCard = ({
   restaurant: SingleRestaurantResponse;
 }) => {
   const image_url = StorageService.getPhotoByFilename(
-    restaurant.attachments[0].image_url,
+    restaurant.attachments[0]?.image_url,
   );
 
   const {setRestaurantSelected} = useRestaurantStore();
@@ -35,7 +35,7 @@ export const RestaurantCard = ({
               height: 200,
               marginBottom: 8,
             }}
-            source={{uri: image_url}}
+            source={{uri: image_url ?? ''}}
           />
         )}
       </Layout>

@@ -1,8 +1,9 @@
 import {Layout, Text} from '@ui-kitten/components/ui';
-import {Image, TouchableOpacity} from 'react-native';
+import {Image, Pressable, TouchableOpacity} from 'react-native';
 import {StorageService} from '../../../services';
 import {ProductRestaurant, RootStackParams} from '../../../interfaces';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useRestaurantStore} from '../../../store/restaurant/restaurant';
 
 interface Props {
   product: ProductRestaurant;
@@ -10,9 +11,13 @@ interface Props {
 
 export const ProductCard = ({product}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
-
+  const {setProductSelected} = useRestaurantStore();
   return (
-    <TouchableOpacity>
+    <Pressable
+      onPress={() => {
+        setProductSelected(product);
+        navigation.navigate('ProductItemScreen');
+      }}>
       <Layout
         style={{
           margin: 5,
@@ -42,6 +47,6 @@ export const ProductCard = ({product}: Props) => {
           }}
         />
       </Layout>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
