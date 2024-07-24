@@ -11,6 +11,7 @@ import {
   Animated,
 } from 'react-native';
 import axios from 'axios';
+import { CustomIcon } from '../../components';
 
 type Product = {
   id: string;
@@ -426,7 +427,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               onPress={() => {
                 navigation.toggleDrawer();
               }}>
-              {/* <Ionicons name="menu" size={36} color={'#fff'} /> */}
+              <CustomIcon name="menu" white={true} />
             </TouchableOpacity>
           </View>
 

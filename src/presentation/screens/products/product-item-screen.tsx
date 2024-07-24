@@ -1,9 +1,12 @@
 import {Text, Image, StyleSheet, Pressable, ImageBackground, Modal} from "react-native"
 import {useEffect, useState} from "react";
-import { Layout } from "@ui-kitten/components";
+import { Input, Layout } from "@ui-kitten/components";
 import { CustomIcon } from "../../components";
 import { RootStackParams } from "../../../interfaces";
 import { StackScreenProps } from "@react-navigation/stack";
+import { ScrollView } from "react-native-gesture-handler";
+import { Increment } from "./increment";
+import { globalColors } from "../../theme/styles";
 
 interface ProductI {
     id: number;
@@ -22,8 +25,10 @@ export const ProductItemScreen = ({navigation}: Props) => {
     const [countProduct, setCountProduct] = useState(0)
     const [priceFinal, setPriceFinal] = useState<any>(0)
     const [photoOpen, setPhotoOpen] = useState<boolean>(false)
+    const [preModal, setPreModal] = useState<boolean>(false)
     const [modal, setModal] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
+    const [additionalInfo, setAdditionalInfo] = useState('');
 
     
     const productData = [
@@ -111,7 +116,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
         setTimeout(() => {
             setLoading(false);
             // addToCart(product);
-            setModal(true);
+            setPreModal(true);
         }, 2000);
     };
 
@@ -141,19 +146,19 @@ export const ProductItemScreen = ({navigation}: Props) => {
                 onPress={()=>{navigation.goBack()}}
                 style={styles.arrow_back_button}
             >
-                {/* <CustomIcon color={'#3fc1f2'} name="arrow-back" /> */}
+                <CustomIcon width={80} fill='#3fc1f2' name="arrow-back-outline" />
             </Pressable>
 
             <Pressable
                 // onPress={()=>{navigation.navigate('Cart')}}
                 style={styles.cart_button}
             >
-                {/* <CustomIcon color={'#3fc1f2'} name="cart-outline" /> */}
+                {/* <CustomIcon fill='#3fc1f2' name="cart" /> */}
             </Pressable>
 
 
             <Layout style={styles.container_product}>
-                <ImageBackground style={{ height: '50%' }}>
+                <ImageBackground style={{ height: '40%' }}>
                     <Pressable style={{
                         width: '100%',
                         height: '100%'
@@ -169,38 +174,68 @@ export const ProductItemScreen = ({navigation}: Props) => {
                         </Pressable>
                     </Layout>
                 </Modal>
-                <Layout style={{ padding: 20, gap: 10 }}>
-                    <Layout>
+                <ScrollView style={{ padding: 20, height: '30%' }}>
+                    <Layout style={{ marginBottom: 10 }}>
                         <Text style={styles.product_rating}>Rating: {product?.rating}</Text>
                         <Text style={styles.product_name}>{product?.name}</Text>
                     </Layout>
                     <Text style={styles.product_description}>{product?.description}</Text>
                     <Text style={styles.product_price}>${product?.price}</Text>
-                </Layout>
-            </Layout>
-            <Layout style={styles.buy_product_container}>
-                <Layout
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        gap: 20
-                    }}
-                >
-                    <Pressable
-                        onPress={handleAddToCart}
-                        style={[styles.buy_product_button, loading ? {backgroundColor: '#3fc1f266'} : {backgroundColor: '#3fc1f2'}]}
+                    <Layout style={{ paddingVertical: 20 }}>
+                        <Increment aditional='Capas adicionales de helado' />
+                        <Increment aditional='Chips de sabores' />
+                        <Increment aditional='Chips de sabores' />
+                        <Increment aditional='Chips de sabores' />
+                        <Increment aditional='Chips de sabores' />
+                    </Layout>
+                </ScrollView>
+                <Layout style={styles.buy_product_container}>
+                    <Layout
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            gap: 20,
+                            padding: 10
+                        }}
                     >
-                        <Text style={styles.buy_product_text}>{loading ? 'CARGANDO...' : 'AÑADIR AL CARRITO'}</Text>
-                    </Pressable>
+                        <Pressable
+                            onPress={handleAddToCart}
+                            style={[styles.buy_product_button, loading ? { backgroundColor: '#3fc1f266' } : { backgroundColor: '#3fc1f2' }]}
+                        >
+                            <Text style={styles.buy_product_text}>{loading ? 'CARGANDO...' : 'AÑADIR AL CARRITO'}</Text>
+                        </Pressable>
+                    </Layout>
                 </Layout>
             </Layout>
+
+            <Modal visible={preModal} transparent={true} animationType="fade" onRequestClose={() => setPreModal(false)}>
+                <Pressable onPress={() => setPreModal(false)} style={{ width: '100%', height: '100%', backgroundColor: '#0007', justifyContent: 'center', alignItems: 'center' }}>
+                    <Layout style={{ width: '90%', height: 400, borderRadius: 25, justifyContent: 'space-evenly', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 22, fontWeight: 'bold', color: globalColors.primary }}>Algo mas?</Text>
+                        <Input
+                            placeholder="Añadir informacion adicional aqui..."
+                            multiline={true}
+                            textStyle={{ minHeight: 200 }}
+                            value={additionalInfo}
+                            onChangeText={setAdditionalInfo}
+                            style={{ padding: 20, borderRadius: 25 }}
+                        />
+                        <Pressable
+                        onPress={() => console.log('enviado!')}
+                        style={[styles.buy_product_button, {width: '90%'}]}
+                        >
+                            <Text style={styles.buy_product_text}>ENVIAR</Text>
+                        </Pressable>
+                    </Layout>
+                </Pressable>
+            </Modal>
             
             <Modal style={styles.modal} visible={modal} transparent={true} animationType="fade" onRequestClose={()=>setModal(false)}>
                 <Layout style={styles.modal_content}>
                     <Layout style={styles.modal_mask}>
                         <Text style={styles.modal_title}>{product?.name} añadido al carrito</Text>
                         <Layout style={{ alignItems: 'center' }}>
-                            {/* <CustomIcon name="checkmark-circle-2-outline" color={'#3fc1f2'} /> */}
+                            <CustomIcon name="checkmark-circle-2-outline" color={'#3fc1f2'} />
                         </Layout>
                         <Layout style={styles.modal_buttons}>
                             <Pressable style={styles.modal_button} onPress={()=>{setModal(false)}}>
@@ -231,10 +266,11 @@ const styles = StyleSheet.create({
     product_name: {
         fontSize: 30,
         fontWeight: 'bold',
+        color: 'black'
     },
     product_description: {
         fontSize: 16,
-        color: 'gray'
+        color: 'black'
     },
     product_price: {
         fontSize: 20,
@@ -242,13 +278,11 @@ const styles = StyleSheet.create({
     },
     product_rating: {
         fontSize: 20,
-        color: 'gray'
+        color: 'black',
     },
     buy_product_container: {
-        position: 'absolute',
         borderTopWidth: 1,
         borderTopColor: '#eee',
-        bottom: 0,
         width: '100%',
         paddingVertical: 20,
         gap: 30

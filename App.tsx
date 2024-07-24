@@ -7,12 +7,16 @@ import * as eva from '@eva-design/eva';
 import {AuthProvider, PermissionsCheckerProvider} from './src/providers';
 import {DrawerNavigation} from './src/presentation/navigation';
 import { globalColors } from './src/presentation/theme/styles';
+import mainColor from './main-color.json'
 
 export const App = () => {
   const colorScheme = useColorScheme();
-  const theme = colorScheme === 'dark' ? eva.dark : eva.light;
-  // const backgroundColor =
-  //   colorScheme === 'dark' ? theme['black'] : theme['white'];
+  const evaTheme = colorScheme === 'dark' ? eva.dark : eva.light;
+
+  const theme = {
+    ...evaTheme,
+    ...mainColor,
+  };
 
   return (
     <>
