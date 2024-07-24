@@ -1,6 +1,15 @@
 import {useEffect, useState} from 'react';
-import {useAuthStore, useLocationStore, useProfileDriverStore} from '../../../store';
-import {ClientInformationCard, CustomMapView, FAB} from '../../components';
+import {
+  useAuthStore,
+  useLocationStore,
+  useProfileDriverStore,
+} from '../../../store';
+import {
+  ClientInformationCard,
+  CustomMapView,
+  FAB,
+  OpenDrawerMenu,
+} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
 import {
@@ -11,15 +20,10 @@ import {
   ListItem,
   Spinner,
 } from '@ui-kitten/components';
-import {Modal, Pressable, Text, useColorScheme, View} from 'react-native';
+import {Text, useColorScheme} from 'react-native';
 import {orbeApi} from '../../../config/api';
-import {
-  DrawerActions,
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParams, Location} from '../../../interfaces';
-import {withDecay} from 'react-native-reanimated';
 import {globalColors} from '../../theme/styles';
 import {currencyFormat} from '../../../utils';
 import {RacesService} from '../../../services';
@@ -27,7 +31,6 @@ import {RacesService} from '../../../services';
 export const HomeDriverScreen = () => {
   const colorScheme = useColorScheme();
 
-  const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const [driverRequests, setDriveRequests] = useState<any[]>([]);
@@ -44,7 +47,7 @@ export const HomeDriverScreen = () => {
   } | null>(null);
   const [currentRequest, setCurrentRequest] = useState<any>();
   const [currentRaceAccepted, setCurrentRaceAccepted] = useState<any>(null);
-  const { addBalance, increaseTrips } = useProfileDriverStore();
+  const {addBalance, increaseTrips} = useProfileDriverStore();
   useEffect(() => {
     const fetchData = async (uid: string) => {
       const res = await orbeApi.get(`/worker/getDriversByUid?uid=${uid}`);
@@ -107,17 +110,7 @@ export const HomeDriverScreen = () => {
 
   return (
     <>
-      <FAB
-        iconName="menu-2-outline"
-        onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
-        style={{
-          position: 'absolute',
-          left: 20,
-          top: 20,
-          backgroundColor: '#3fc1f2',
-        }}
-        white={true}
-      />
+      <OpenDrawerMenu left={20} />
 
       {driverRequests.length > 0 && driverServiceIsActive && (
         <List
@@ -215,6 +208,7 @@ export const HomeDriverScreen = () => {
               right: 40,
             }}
             label={`${currencyFormat(
+              // @ts-ignore
               Math.ceil(raceData?.distance * 850 + 4600),
             )}`}
             onPress={() => {}}
@@ -249,7 +243,7 @@ export const HomeDriverScreen = () => {
                   );
                   if (response) {
                     setCurrentRaceAccepted(currentRequest);
-                    addBalance(Math.ceil(raceData!.distance * 850 + 4600))
+                    addBalance(Math.ceil(raceData!.distance * 850 + 4600));
                     increaseTrips();
                   }
                 }}

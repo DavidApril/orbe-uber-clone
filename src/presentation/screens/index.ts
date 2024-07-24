@@ -5,11 +5,12 @@ export * from './auth/register/register-screen';
 
 export * from './home/home-driver-screen';
 export * from './home/home-delivery-screen';
-export * from './home/home-client-delivery-screen'
-export * from './home/home-client-driver-screen'
-export * from './home/type-client-screen'
+export * from './home/home-client-delivery-screen';
+export * from './home/home-client-driver-screen';
+export * from './home/type-client-screen';
 
-export * from './products/product-item-screen'
+export * from './restaurant/products/product-item-screen';
+export * from './restaurant/restaurant-screen';
 
 export * from './restaurants/restaurant-screen'
 export * from './restaurants/restaurants-list-screen'
@@ -21,7 +22,6 @@ export * from './auth/register/driver/register-driver-form';
 export * from './auth/register/driver/section-display-edit-data-driver';
 export * from './auth/register/client/register-client-screen';
 export * from './auth/register/delivery/register-delivery-screen';
-
 
 export * from './profile/client/profile-client-screen';
 export * from './profile/driver/profile-driver-screen';

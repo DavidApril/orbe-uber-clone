@@ -20,8 +20,6 @@ import {
   RegisterDeliveryScreen,
   HomeDeliveryScreen,
   ProductItemScreen,
-  RestaurantList,
-  Restaurant,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 import { globalColors } from '../theme/styles';
@@ -57,17 +55,26 @@ export const StackNavigator = () => {
         component={RegisterScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro Driver'}}
+        options={{
+          cardStyleInterpolator: fadeAnimation,
+          title: 'Registro Driver',
+        }}
         name="RegisterDriverScreen"
         component={RegisterDriverScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro cliente'}}
+        options={{
+          cardStyleInterpolator: fadeAnimation,
+          title: 'Registro cliente',
+        }}
         name="RegisterClientScreen"
         component={RegisterClientScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro delivery'}}
+        options={{
+          cardStyleInterpolator: fadeAnimation,
+          title: 'Registro delivery',
+        }}
         name="RegisterDeliveryScreen"
         component={RegisterDeliveryScreen}
       />
@@ -90,6 +97,11 @@ export const StackNavigator = () => {
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="HomeClientDeliveryScreen"
         component={HomeClientDeliveryScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
+        name="RestaurantScreen"
+        component={RestaurantScreen}
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
