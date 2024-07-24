@@ -416,8 +416,8 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               />
             </View>
 
-            <View style={styles.container_sections}>
-              {/* <View
+            {/* <View style={styles.container_sections}>
+              <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -447,8 +447,8 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 style={styles.horizontalList}
-              /> */}
-            </View>
+              />
+            </View> */}
 
             <View style={styles.container_sections}>
               <View
@@ -486,7 +486,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               />
             </View>
 
-            <View style={styles.container_sections}>
+            {/* <View style={styles.container_sections}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -506,7 +506,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
                 showsHorizontalScrollIndicator={false}
                 style={styles.horizontalList}
               />
-            </View>
+            </View> */}
 
             {/* <Accordion title="Productos que te pueden interesar">
               <FlatList
