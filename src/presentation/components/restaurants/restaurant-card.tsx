@@ -22,7 +22,7 @@ export const RestaurantCard = ({
     <TouchableOpacity
       onPress={() => {
         setRestaurantSelected(restaurant);
-        navigation.navigate('ProductItem')
+        navigation.navigate('ProductItemScreen')
       }}
       style={{padding: 10}}
       key={restaurant.id}>
