@@ -1,23 +1,20 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {StackNavigator} from './stack-navigation';
 import {globalColors} from '../theme/styles';
-import {CustomDrawerContent} from '../components';
-import {
-  ProfileClientScreen,
-  ProfileDriverScreen,
-  SettingsScreen,
-} from '../screens';
+import {CustomDrawerContent, CustomIcon, FABGoBackButton} from '../components';
+import {ProfileClientScreen, SettingsScreen} from '../screens';
 import {useAuthStore} from '../../store';
-import {CLIENT} from '../../interfaces';
 import {useColorScheme} from 'react-native';
+import {profileRoutesByRoleMapper} from '../../utils/mappers';
+import {RootStackParams} from '../../interfaces';
 
-
-const {Navigator, Screen} = createDrawerNavigator();
+const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
 export function DrawerNavigation() {
   const {role} = useAuthStore();
   const colorScheme = useColorScheme();
-  const theme = colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight;
+  const theme =
+    colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight;
 
   return (
     <Navigator
@@ -31,22 +28,32 @@ export function DrawerNavigation() {
 
         // headerLeftLabelVisible: false,
         drawerType: 'slide',
-        drawerInactiveTintColor: colorScheme === 'dark' ? globalColors.white : globalColors.gray,
+        drawerInactiveTintColor:
+          colorScheme === 'dark' ? globalColors.white : globalColors.gray,
         drawerActiveTintColor: globalColors.primary,
         drawerItemStyle: {
           borderRadius: 50,
           paddingHorizontal: 20,
         },
       }}>
-      <Screen options={{ headerShown: false }} name="Inicio" component={StackNavigator} />
       <Screen
-        name="Perfil"
-        component={role === CLIENT ? ProfileClientScreen : ProfileDriverScreen}
+        options={{
+          title: 'Inicio',
+          drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
+
+          headerShown: false,
+        }}
+        name="HomeClientDriverScreen"
+        component={StackNavigator}
       />
-      <Screen
-       name="Configuración" 
-       component={SettingsScreen} 
-      />
+      {/* <Screen
+        options={{
+          title: 'Configuración',
+          drawerIcon: ({color}) => <CustomIcon fill={color} name="settings" />,
+        }}
+        name="SettingsScreen"
+        component={SettingsScreen}
+      /> */}
     </Navigator>
   );
 }

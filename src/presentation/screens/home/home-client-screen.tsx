@@ -6,19 +6,12 @@ import {
   FAB,
   SelectOriginDestination,
 } from '../../components';
-import {LoadingScreen} from '../loading/loading-screen';
 import {useAuthStore, useLocationStore} from '../../../store';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {useSocket} from '../../../hooks';
-import {
-  Modal,
-  Pressable,
-  useColorScheme,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import {useColorScheme, useWindowDimensions} from 'react-native';
 import {RacesService} from '../../../services';
-import {API_SOCKET_URL, GOOGLE_API_KEY} from '@env';
+import {API_SOCKET_URL} from '@env';
 import {
   DriverResponseByUidData,
   Location,
@@ -31,12 +24,11 @@ import {
 } from '@react-navigation/native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {ScrollView} from 'react-native-gesture-handler';
-import {globalColors} from '../../theme/styles';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {LoadingScreen} from '../../screens';
 
 export const HomeClientScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
-
+  
   const SearchingDriverBottomSheetRef = useRef<BottomSheet>(null);
 
   const {user} = useAuthStore();

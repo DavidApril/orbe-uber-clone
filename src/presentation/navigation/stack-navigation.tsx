@@ -24,7 +24,7 @@ import {
   ProductsCartScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
-import { globalColors } from '../theme/styles';
+import { BottomTapNavigationClientDelivery } from './bottom-tap-navigation';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -40,14 +40,18 @@ export const StackNavigator = () => {
   return (
     <Navigator
       initialRouteName="LoadingScreen"
-      screenOptions={{headerShown: true, headerTintColor: globalColors.primary}}>
+      
+      screenOptions={{headerShown: true}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="LoadingScreen"
         component={LoadingScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
+        options={{
+          cardStyleInterpolator: fadeAnimation,
+          headerShown: false,
+        }}
         name="LoginScreen"
         component={LoginScreen}
       />
@@ -98,7 +102,7 @@ export const StackNavigator = () => {
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="HomeClientDeliveryScreen"
-        component={HomeClientDeliveryScreen}
+        component={BottomTapNavigationClientDelivery}
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}

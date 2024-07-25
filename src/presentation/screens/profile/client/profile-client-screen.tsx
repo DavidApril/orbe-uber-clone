@@ -1,31 +1,38 @@
 import {Button, CheckBox, Input, Layout, Text} from '@ui-kitten/components';
 import {useAuthStore} from '../../../../store';
-import {UserService} from '../../../../services';
+import {StorageService, UserService} from '../../../../services';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {globalColors} from '../../../theme/styles';
 import {ScrollView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
+import {CustomIcon, FABGoBackButton} from '../../../components';
+import {Image} from 'react-native';
+import {RootStackParams} from '../../../../interfaces';
+import {LoadingScreen} from '../../loading/loading-screen';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 export const ProfileClientScreen = () => {
-  const {user} = useAuthStore();
+  const {user, userByUid} = useAuthStore();
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
-  const [userByUid, setUserByUid] = useState<any>();
+  if (!user) {
+    navigation.goBack();
+  }
 
-  const getClientByUID = async () => {
-    const clientByUID = await UserService.getUserByUid(user!.uid);
-    setUserByUid(clientByUID);
-  };
+  if (!userByUid) {
+    return <LoadingScreen />;
+  }
 
-  const [targets, setTarjets] = useState<any[]>([]);
+  const image_url = StorageService.getPhotoByFilename(userByUid!.cliente.photo);
 
-  useEffect(() => {
-    getClientByUID();
-  }, [user]);
+  console.log(StorageService.getPhotoByFilename(userByUid?.cliente.photo));
+
   const addTarjetBottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['70%'], []);
+  const snapPoints = useMemo(() => ['75%'], []);
 
   return (
     <ScrollView>
+      <FABGoBackButton fill="white" style={{top: 10, left: 10}} />
       <Layout
         style={{
           flex: 1,
@@ -49,8 +56,23 @@ export const ProfileClientScreen = () => {
                 height: 80,
                 width: 80,
                 backgroundColor: 'white',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                alignItems: 'center',
                 borderRadius: 50,
-              }}></Layout>
+                overflow: 'hidden',
+              }}>
+              {userByUid && userByUid.cliente.photo.length > 0 ? (
+                <Image
+                  style={{height: '100%', width: '100%'}}
+                  source={{
+                    uri: image_url,
+                  }}
+                />
+              ) : (
+                <CustomIcon fill="black" name="person" />
+              )}
+            </Layout>
 
             <Layout style={{backgroundColor: 'transparent'}}>
               <Text style={{}}>Hola,</Text>

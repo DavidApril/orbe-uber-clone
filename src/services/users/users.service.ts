@@ -2,6 +2,7 @@ import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {orbeApi} from '../../config/api';
 import {
   ClientRegisterForm,
+  ClientResponseByUid,
   DELIVERY,
   DRIVER,
   DriverRegisterForm,
@@ -120,8 +121,11 @@ export class UserService {
     return data;
   };
 
-  static getUserByUid = async (uid: string) => {
+  static getClientByUid = async (
+    uid: string,
+  ): Promise<ClientResponseByUid | undefined> => {
     try {
+      // wmr4VwQyQQTpJSQLgZmiClncNci2
       const {data: response} = await orbeApi.get(
         `/user/getUserByUid?uid_firebase=${uid}`,
       );
@@ -129,7 +133,7 @@ export class UserService {
       return response.data;
     } catch (error) {
       console.log({error});
-      return false;
+      return undefined;
     }
   };
 
