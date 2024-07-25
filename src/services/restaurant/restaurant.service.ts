@@ -103,4 +103,21 @@ export class RestaurantService {
       return [];
     }
   };
+
+  static getTotals = (
+    items: {product: ProductRestaurant; count: number}[],
+    shipping?: number,
+  ) => {
+    let subtotal = 0;
+
+    items.forEach(item => {
+      const priceProduct: number = +item.product.priceUnitary * item.count;
+      subtotal += priceProduct;
+    });
+
+    return {
+      total: subtotal + (shipping ?? 0),
+      subtotal,
+    };
+  };
 }

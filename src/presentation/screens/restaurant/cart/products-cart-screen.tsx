@@ -1,34 +1,72 @@
-import {useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {
   View,
   StyleSheet,
   Text,
   Pressable,
   FlatList,
-  Image,
   ScrollView,
   Modal,
-  TextInput,
 } from 'react-native';
-import {LoadingScreen} from '../../loading/loading-screen';
-import {RootStackParams} from '../../../../interfaces';
+
+import {BillInfoTotals, RootStackParams} from '../../../../interfaces';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useShoppingCartStore} from '../../../../store';
+import {
+  CartItem,
+  CustomIcon,
+  FAB,
+  OpenDrawerMenu,
+  PaymentControllers,
+} from '../../../components';
+import {globalColors} from '../../../theme/styles';
+import BottomSheet from '@gorhom/bottom-sheet';
+import {Button, Divider, Input, Radio, RadioGroup} from '@ui-kitten/components';
+import {RestaurantService} from '../../../../services';
 import {currencyFormat} from '../../../../utils';
-import {StorageService} from '../../../../services';
-import {CustomIcon} from '../../../components';
 
 interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 
 export const ProductsCartScreen = ({navigation}: Props) => {
+  const [shipping] = useState(3000);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [modalConfirm, setModalConfirm] = useState(false);
 
-  const {productsInCart, deleteProduct, addProduct, increaseDecrementCount} =
-    useShoppingCartStore();
+  const {productsInCart} = useShoppingCartStore();
+  const [billInfo, setBillInfo] = useState<BillInfoTotals>({
+    subtotal: 0,
+    total: 0,
+  });
+
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+  useEffect(() => {
+    const {subtotal, total} = RestaurantService.getTotals(
+      productsInCart,
+      shipping,
+    );
+    setBillInfo({total, subtotal});
+  }, [productsInCart]);
+
+  useEffect(() => {
+    console.log({selectedIndex});
+  }, [selectedIndex]);
+
+  const snapPoints = useMemo(() => ['5%', '50%'], []);
 
   return productsInCart.length > 0 ? (
     <View style={styles.container}>
+      <OpenDrawerMenu left={20} />
+      <FAB
+        white
+        style={{right: 20, top: 20, backgroundColor: globalColors.primary}}
+        iconName="arrow-back"
+        onPress={() => navigation.goBack()}
+      />
+
+      <View style={{height: 70}}></View>
+
       <Text style={styles.productCount}>
         {productsInCart.length}{' '}
         {productsInCart.length > 1 ? 'productos' : 'producto'} en el carrito
@@ -38,94 +76,14 @@ export const ProductsCartScreen = ({navigation}: Props) => {
           style={styles.flatList}
           data={productsInCart}
           keyExtractor={item => item.product.id.toString()}
-          renderItem={({item}) => (
-            <View style={styles.itemContainer}>
-              <Image
-                source={{
-                  uri: StorageService.getPhotoByFilename(item.product.imageUrl),
-                }}
-                style={styles.image}
-              />
-              <View style={styles.productInfo}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text style={styles.productName}>{item.product.name}</Text>
-                  <Pressable
-                    // onPress={() => openModal(item)}
-                    style={styles.removeButton}>
-                    {/* <Ionicons
-											name='trash'
-											size={25}
-											color={'#3fc1f2'}
-										/> */}
-                  </Pressable>
-                </View>
-                <View style={styles.priceContainer}>
-                  <Text style={styles.price}>
-                    {currencyFormat(+item.product.priceUnitary)}
-                  </Text>
-                  <View style={styles.counterContainer}>
-                    <Pressable
-                      disabled={item.count <= 0}
-                      style={[
-                        styles.button,
-                        item.count > 0
-                          ? styles.buttonActive
-                          : styles.buttonInactive,
-                      ]}
-                      onPress={() =>
-                        increaseDecrementCount(item.product.id.toString(), -1)
-                      }>
-                      <CustomIcon white name="arrow-ios-back" />
-                    </Pressable>
-                    <Text style={styles.textCount} key={item.product.id}>
-                      {item.count}
-                    </Text>
-                    <Pressable
-                      style={styles.button}
-                      onPress={() =>
-                        increaseDecrementCount(item.product.id.toString(), +1)
-                      }>
-                      <CustomIcon white name="arrow-ios-forward" />
-                    </Pressable>
-                  </View>
-                </View>
-              </View>
-            </View>
-          )}
+          renderItem={({item}) => <CartItem item={item} />}
         />
-        <View style={styles.notesContainer}>
-          <Text style={styles.notesLabel}>Notas</Text>
-          <TextInput
-            placeholder="Ingrese sus notas aqui"
-            placeholderTextColor={'gray'}
-            numberOfLines={4}
-            multiline
-            style={styles.notesInput}
-          />
-        </View>
       </ScrollView>
-      <View style={styles.containerBuy}>
-        <View style={styles.subtotalContainer}>
-          <Text style={styles.subtotalLabel}>SubTotal:</Text>
-          {/* <Text style={styles.priceFinal}>${subtotal.toFixed(2)}</Text> */}
-        </View>
-        <Pressable
-          // onPress={handleConfirmBuyProduct}
 
-          style={[
-            styles.buyProductButton,
-            // subtotal > 0 ? styles.buttonActive : styles.buttonInactive,
-          ]}
-          // disabled={subtotal <= 0}
-        >
-          <Text style={styles.buyProductText}>COMPRAR</Text>
-        </Pressable>
-      </View>
+      <BottomSheet snapPoints={snapPoints}>
+        <PaymentControllers billInfo={billInfo} shipping={shipping} />
+      </BottomSheet>
+
       <Modal
         visible={modalVisible}
         transparent={true}
@@ -186,6 +144,12 @@ export const ProductsCartScreen = ({navigation}: Props) => {
     </View>
   ) : (
     <View style={[styles.container, styles.emptyCartContainer]}>
+      <FAB
+        white
+        style={{right: 20, top: 20, backgroundColor: globalColors.primary}}
+        iconName="arrow-back"
+        onPress={() => navigation.goBack()}
+      />
       <Text>No hay productos en el carrito.</Text>
     </View>
   );

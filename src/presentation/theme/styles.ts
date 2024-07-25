@@ -1,4 +1,3 @@
-
 export const globalColors = {
   primary: '#3fc1f2',
   black: '#000',
@@ -6,4 +5,6 @@ export const globalColors = {
   gray: '#555',
   themeLight: '#fff',
   themeDark: '#222B45',
-}
+
+  shadowColor: '#717171',
+};
