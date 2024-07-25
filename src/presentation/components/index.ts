@@ -3,6 +3,7 @@ export * from './ui/floating-action-button'
 export * from './ui/accept-denied-notification'
 export * from './ui/search-places-input'
 export * from './ui/open-drawer'
+export * from './restaurants/stats'
 
 export * from './maps/map-view'
 

@@ -8,6 +8,7 @@ interface Props {
   label?: string;
   white?: boolean;
   disabled?: boolean;
+  fill?: string;
   onPress: () => void;
 }
 
@@ -18,13 +19,14 @@ export const FAB = ({
   style,
   label,
   disabled,
+  fill,
 }: Props) => {
   return (
     <Button
       style={[styles.btn, style]}
       disabled={disabled}
       appearance="ghost"
-      accessoryLeft={<CustomIcon white={white} name={iconName} />}
+      accessoryLeft={<CustomIcon fill={fill} white={white} name={iconName} />}
       onPress={onPress}>
       {label}
     </Button>

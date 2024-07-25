@@ -6,7 +6,7 @@ interface Props {
   white?: boolean;
   width?: number;
   height?: number;
-	fill?: string
+  fill?: string;
 }
 
 export const CustomIcon = ({
@@ -15,7 +15,7 @@ export const CustomIcon = ({
   white = false,
   height = 23,
   width = 23,
-	fill,
+  fill,
 }: Props) => {
   const theme = useTheme();
 

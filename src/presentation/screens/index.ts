@@ -10,6 +10,7 @@ export * from './home/home-client-driver-screen';
 export * from './home/type-client-screen';
 
 export * from './restaurant/products/product-item-screen';
+export * from './restaurant/products/products-list'
 export * from './restaurant/cart/products-cart-screen';
 export * from './restaurant/restaurant-screen';
 

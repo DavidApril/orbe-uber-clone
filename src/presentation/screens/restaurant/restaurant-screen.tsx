@@ -1,20 +1,23 @@
-import {Layout, Text} from '@ui-kitten/components';
+import {Divider, Layout, Text} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
 import {useRestaurantStore} from '../../../store/restaurant/restaurant';
 import {LoadingScreen} from '../loading/loading-screen';
 import {Image, useWindowDimensions} from 'react-native';
 import {View} from 'react-native';
 import {StorageService} from '../../../services';
-import {
-  DrawerActions,
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ProductRestaurant, RootStackParams} from '../../../interfaces';
-import {CustomIcon, FAB, OpenDrawerMenu, ProductCard} from '../../components';
+import {
+  CustomIcon,
+  FAB,
+  OpenDrawerMenu,
+  ProductCard,
+  Stats,
+} from '../../components';
 import {RestaurantService} from '../../../services/restaurant/restaurant.service';
 import {globalColors} from '../../theme/styles';
 import {ScrollView} from 'react-native-gesture-handler';
+import {ProductsList} from './products/products-list';
 
 export const RestaurantScreen = () => {
   const {height} = useWindowDimensions();
@@ -65,10 +68,14 @@ export const RestaurantScreen = () => {
 
         <View
           style={{
-            backgroundColor: 'black',
             height: height * 0.3,
             marginBottom: height * 0.1,
-          }}></View>
+          }}>
+          <Image
+            style={{width: '100%', height: '100%'}}
+            source={{uri: image_url}}
+          />
+        </View>
         <View
           style={{
             height: 100,
@@ -86,7 +93,7 @@ export const RestaurantScreen = () => {
         </View>
 
         <View style={{marginHorizontal: 20}}>
-          <Text style={{fontWeight: 'bold', fontSize: 35}}>
+          <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 35}}>
             {restaurantSelected.name}
           </Text>
 
@@ -96,45 +103,47 @@ export const RestaurantScreen = () => {
               justifyContent: 'space-between',
               marginVertical: 10,
             }}>
-            <Text
+            <View
               style={{
+                flex: 1,
                 flexDirection: 'row',
-                alignItems: 'center',
                 justifyContent: 'center',
+                alignItems: 'center',
               }}>
               <CustomIcon fill="red" name="pin" />
-              <Text style={{padding: 10}}>{restaurantSelected.address}</Text>
-            </Text>
+              <Text
+                style={{
+                  padding: 10,
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                }}>
+                {restaurantSelected.address}
+              </Text>
+            </View>
 
-            <Text
+            <View
               style={{
+                flex: 1,
                 flexDirection: 'row',
-                alignItems: 'center',
                 justifyContent: 'center',
+                alignItems: 'center',
               }}>
               <CustomIcon fill="yellow" name="star" />
-              <Text style={{padding: 10}}>4.8</Text>
-            </Text>
+              <Text
+                style={{
+                  padding: 10,
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                }}>
+                {'4.8'}
+              </Text>
+            </View>
           </View>
 
-          <View
-            style={{
-              height: 150,
-              backgroundColor: 'black',
-              marginVertical: 10,
-              borderRadius: 20,
-            }}></View>
-
-          <Text style={{marginVertical: 10, fontWeight: 'bold', fontSize: 25}}>
-            Productos
-          </Text>
-
-          <Layout style={{flexDirection: 'row', gap: 10, flexWrap: 'wrap'}}>
-            {products?.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </Layout>
+          <Stats />
         </View>
+
+        <ProductsList products={products} />
 
         <View style={{height: 20}}></View>
       </ScrollView>
