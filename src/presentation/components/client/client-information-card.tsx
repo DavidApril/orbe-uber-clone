@@ -31,7 +31,7 @@ export const ClientInformationCard = ({
   }, []);
 
   const getClient = async () => {
-    const client = await UserService.getUserByUid(request.id_client);
+    const client = await UserService.getClientByUid(request.id_client);
     setClient(client);
   };
 

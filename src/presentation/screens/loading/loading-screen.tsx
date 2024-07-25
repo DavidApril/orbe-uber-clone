@@ -1,51 +1,23 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Image, StyleSheet, View } from 'react-native';
-import { Layout } from '@ui-kitten/components';
+import {Animated, StyleSheet, useWindowDimensions} from 'react-native';
+import {Layout} from '@ui-kitten/components';
+import {useAnimation} from '../../../hooks';
 
-const LoadingScreen = () => {
-  const rotateValue = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    const rotateAnimation = Animated.loop(
-      Animated.timing(rotateValue, {
-        toValue: 360,
-        duration: 2000,
-        useNativeDriver: true,
-      })
-    );
-
-    rotateAnimation.start();
-  }, [rotateValue]);
-
-  const rotateInterpolation = rotateValue.interpolate({
-    inputRange: [0, 360],
-    outputRange: ['0deg', '360deg']
-  });
-
-  const rotateStyle = {
-    transform: [{ rotate: rotateInterpolation }]
-  };
-
+export const LoadingScreen = () => {
+  const {rotateStyle} = useAnimation();
+  const {height, width} = useWindowDimensions();
   return (
-    <Layout style={styles.container}>
+    <Layout
+      style={{height, width, justifyContent: 'center', alignItems: 'center'}}>
       <Animated.Image
-        source={require('../../../assets/loading.png')} 
-        style={[styles.image, rotateStyle]}
+        source={require('../../../assets/loading.png')}
+        style={[
+          {
+            width: 70,
+            height: 70,
+          },
+          rotateStyle,
+        ]}
       />
     </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    width: 70, 
-    height: 70,
-  },
-});
-
-export {LoadingScreen};

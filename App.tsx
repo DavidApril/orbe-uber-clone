@@ -5,8 +5,12 @@ import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {useColorScheme} from 'react-native';
 import * as eva from '@eva-design/eva';
 import {AuthProvider, PermissionsCheckerProvider} from './src/providers';
-import {DrawerNavigation} from './src/presentation/navigation';
-import { globalColors } from './src/presentation/theme/styles';
+import {
+  BottomTapNavigationClientDelivery,
+  DrawerNavigation,
+  StackNavigator,
+} from './src/presentation/navigation';
+import {globalColors} from './src/presentation/theme/styles';
 
 export const App = () => {
   const colorScheme = useColorScheme();
@@ -30,6 +34,7 @@ export const App = () => {
             <PermissionsCheckerProvider>
               {/* <StackNavigator /> */}
               <DrawerNavigation />
+              {/* <BottomTapNavigationClientDelivery /> */}
             </PermissionsCheckerProvider>
           </AuthProvider>
         </NavigationContainer>

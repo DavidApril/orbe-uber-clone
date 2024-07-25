@@ -32,7 +32,7 @@ import {
 import {RestaurantService} from '../../../../services';
 import {currencyFormat} from '../../../../utils';
 
-interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'ProductsCartScreen'> {}
 
 export const ProductsCartScreen = ({navigation}: Props) => {
   const [shipping] = useState(3000);

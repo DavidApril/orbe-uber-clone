@@ -51,7 +51,7 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
     try {
       const {user, token} = await AuthService.login(email, password);
 
-      const userByUID = await UserService.getUserByUid(user.uid);
+      const userByUID = await UserService.getClientByUid(user.uid);
 
       console.log({userByUID})
 

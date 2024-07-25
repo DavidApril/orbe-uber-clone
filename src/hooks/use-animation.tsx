@@ -15,9 +15,33 @@ export const useAnimation = () => {
     }).start();
   }, []);
 
+  const rotateValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const rotateAnimation = Animated.loop(
+      Animated.timing(rotateValue, {
+        toValue: 360,
+        duration: 2000,
+        useNativeDriver: true,
+      })
+    );
+
+    rotateAnimation.start();
+  }, [rotateValue]);
+
+  const rotateInterpolation = rotateValue.interpolate({
+    inputRange: [0, 360],
+    outputRange: ['0deg', '360deg']
+  });
+
+  const rotateStyle = {
+    transform: [{ rotate: rotateInterpolation }]
+  };
+
   return {
 
-    fadeAnim
+    fadeAnim,
+    rotateStyle
 
   }
 }
