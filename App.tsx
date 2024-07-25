@@ -11,6 +11,7 @@ import {
   StackNavigator,
 } from './src/presentation/navigation';
 import {globalColors} from './src/presentation/theme/styles';
+import mainColor from './main-color.json'
 
 export const App = () => {
   const colorScheme = useColorScheme();

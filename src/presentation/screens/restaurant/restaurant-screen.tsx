@@ -131,7 +131,7 @@ export const RestaurantScreen = () => {
               }}>
               <CustomIcon fill="yellow" name="star" />
               <Text style={{padding: 10}}>4.8</Text>
-            </Text>
+            </View>
           </View>
 
           <View
