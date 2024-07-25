@@ -46,25 +46,14 @@ export function DrawerNavigation() {
         name="HomeClientDriverScreen"
         component={StackNavigator}
       />
-
-      <Screen
-        options={{
-          title: 'Cuenta',
-          headerShown: false,
-          drawerIcon: ({color}) => <CustomIcon fill={color} name="person" />,
-        }}
-        name="ProfileClientScreen"
-        component={profileRoutesByRoleMapper(role!) ?? ProfileClientScreen}
-      />
-
-      <Screen
+      {/* <Screen
         options={{
           title: 'Configuración',
           drawerIcon: ({color}) => <CustomIcon fill={color} name="settings" />,
         }}
         name="SettingsScreen"
         component={SettingsScreen}
-      />
+      /> */}
     </Navigator>
   );
 }

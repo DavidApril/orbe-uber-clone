@@ -26,10 +26,12 @@ export const BottomTapNavigationClientDelivery = () => {
           bottom: 0,
           // width: '100%',
           backgroundColor: '#F8F7FB',
+
           borderRadius: 30,
           flexDirection: 'row',
-          paddingHorizontal: 20,
-          alignItems: 'center',
+          // paddingHorizontal: 20,
+          justifyContent: 'space-around',
+
           margin: 10,
         },
         tabBarShowLabel: false,
@@ -59,6 +61,7 @@ export const BottomTapNavigationClientDelivery = () => {
           tabBarIcon: ({color}) => (
             <CustomIcon fill={color} name="person-outline" />
           ),
+          headerShown: true,
         }}
         component={profileRoutesByRoleMapper(role!) ?? ProfileClientScreen}
       />

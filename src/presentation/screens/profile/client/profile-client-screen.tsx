@@ -7,18 +7,17 @@ import {ScrollView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {CustomIcon, FABGoBackButton} from '../../../components';
 import {Image} from 'react-native';
-import {ClientResponseByUid} from '../../../../interfaces';
+import {RootStackParams} from '../../../../interfaces';
 import {LoadingScreen} from '../../loading/loading-screen';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 export const ProfileClientScreen = () => {
-  const {user} = useAuthStore();
+  const {user, userByUid} = useAuthStore();
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
-  const [userByUid, setUserByUid] = useState<ClientResponseByUid | undefined>();
-
-  const getClientByUID = async () => {
-    const clientByUID = await UserService.getClientByUid(user!.uid);
-    setUserByUid(clientByUID);
-  };
+  if (!user) {
+    navigation.goBack();
+  }
 
   if (!userByUid) {
     return <LoadingScreen />;
@@ -28,15 +27,12 @@ export const ProfileClientScreen = () => {
 
   console.log(StorageService.getPhotoByFilename(userByUid?.cliente.photo));
 
-  useEffect(() => {
-    getClientByUID();
-  }, [user]);
   const addTarjetBottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['70%'], []);
+  const snapPoints = useMemo(() => ['75%'], []);
 
   return (
     <ScrollView>
-      <FABGoBackButton fill="white" style={{top: 20, left: 20}} />
+      <FABGoBackButton fill="white" style={{top: 10, left: 10}} />
       <Layout
         style={{
           flex: 1,
