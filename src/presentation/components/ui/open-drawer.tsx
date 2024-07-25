@@ -13,7 +13,7 @@ interface Props {
   top?: number;
 }
 
-export const OpenDrawerMenu = ({ top = 20, left, right}: Props) => {
+export const OpenDrawerMenu = ({top = 20, left, right}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   return (
@@ -25,9 +25,8 @@ export const OpenDrawerMenu = ({ top = 20, left, right}: Props) => {
         left: left,
         right: right,
         top: top,
-        backgroundColor: '#3fc1f2',
+        backgroundColor: 'white',
       }}
-      white={true}
     />
   );
 };
