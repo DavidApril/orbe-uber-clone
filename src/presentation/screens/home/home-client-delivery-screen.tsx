@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Animated,
+  Pressable,
 } from 'react-native';
 import axios from 'axios';
 import { SingleRestaurantResponse } from '../../../interfaces';
@@ -94,7 +95,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               {/* <Ionicons size={24} style={{ position: 'absolute', top: '25%', right: 25 }} color={'#777'} name='search' /> */}
             </View>
 
-            <TouchableOpacity
+            <Pressable
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -109,7 +110,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
                 navigation.toggleDrawer();
               }}>
               <CustomIcon name="menu" white={true} />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -163,6 +164,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  marginTop: 35
                 }}>
                 <Text style={[styles.sectionTitle, {paddingVertical: 0}]}>
                   Restaurantes recomendados
@@ -260,8 +262,6 @@ const styles = StyleSheet.create({
   search: {
     fontSize: 14,
     color: '#444',
-    paddingVertical: 15,
-    paddingRight: 55,
     paddingLeft: 15,
     borderRadius: 25,
     textAlign: 'left',

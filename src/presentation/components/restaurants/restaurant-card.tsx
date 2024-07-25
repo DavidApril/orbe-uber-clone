@@ -24,9 +24,9 @@ export const RestaurantCard = ({
         setRestaurantSelected(restaurant);
         navigation.navigate('RestaurantScreen')
       }}
-      style={{padding: 10}}
+      style={{padding: 10, width: 350, paddingVertical: 25}}
       key={restaurant.id}>
-      <Layout style={{padding: 10}}>
+      <Layout style={{padding: 10, borderRadius: 10,}}>
         {restaurant.attachments.length > 0 && (
           <Image
             style={{
@@ -39,14 +39,16 @@ export const RestaurantCard = ({
           />
         )}
       </Layout>
-      <Text style={{fontWeight: 'bold', fontSize: 17}}>{restaurant.name}</Text>
-      <Text style={{}}>{`${restaurant.description}`}</Text>
-      <Text style={{}}>{`Direccion: ${restaurant.address}`}</Text>
-      <Layout style={{flexDirection: 'row', gap: 5, paddingVertical: 5}}>
-        <CustomIcon name="star" />
-        <CustomIcon name="star" />
-        <CustomIcon name="star" />
-        <CustomIcon name="star" />
+      <Layout style={{ backgroundColor: 'white', paddingHorizontal: 10 }}>
+        <Text style={{fontWeight: 'bold', fontSize: 17}}>{restaurant.name}</Text>
+        <Text style={{}}>{`${restaurant.description}`}</Text>
+        <Text style={{}}>{`Direccion: ${restaurant.address}`}</Text>
+      </Layout>
+      <Layout style={{flexDirection: 'row', gap: 5, paddingVertical: 5, paddingHorizontal: 10}}>
+        <CustomIcon fill='#3fc1f2' name="star" />
+        <CustomIcon fill='#3fc1f2' name="star" />
+        <CustomIcon fill='#3fc1f2' name="star" />
+        <CustomIcon fill='#3fc1f2' name="star" />
       </Layout>
     </TouchableOpacity>
   );

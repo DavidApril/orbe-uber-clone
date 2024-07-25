@@ -65,7 +65,7 @@ export const RestaurantScreen = () => {
 
         <View
           style={{
-            backgroundColor: 'black',
+            backgroundColor: '#ccc',
             height: height * 0.3,
             marginBottom: height * 0.1,
           }}></View>
@@ -113,14 +113,14 @@ export const RestaurantScreen = () => {
                 justifyContent: 'center',
               }}>
               <CustomIcon fill="yellow" name="star" />
-              <Text style={{padding: 10}}>4.8</Text>
+              <Text style={{padding: 0}}>4.8</Text>
             </Text>
           </View>
 
           <View
             style={{
               height: 150,
-              backgroundColor: 'black',
+              backgroundColor: '#bbb',
               marginVertical: 10,
               borderRadius: 20,
             }}></View>
