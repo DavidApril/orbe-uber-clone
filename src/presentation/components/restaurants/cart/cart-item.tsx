@@ -5,6 +5,8 @@ import {currencyFormat} from '../../../../utils';
 import {CustomIcon} from '../../ui/custom-icon';
 import {ProductRestaurant} from '../../../../interfaces';
 import {useShoppingCartStore} from '../../../../store';
+import {Button} from '@ui-kitten/components';
+import {globalColors} from '../../../theme/styles';
 
 interface Props {
   item: {
@@ -17,54 +19,84 @@ export const CartItem = ({item}: Props) => {
   const {increaseDecrementCount} = useShoppingCartStore();
 
   return (
-    <View style={styles.itemContainer}>
+    <View
+      style={{
+        margin: 7,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        shadowColor: '#000000',
+        borderWidth: 1,
+        borderColor: '#eeeeee',
+        padding: 10,
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.17,
+        shadowRadius: 3.05,
+        elevation: 2,
+        // height: 200,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        gap: 10,
+      }}>
       <Image
         source={{
           uri: StorageService.getPhotoByFilename(item.product.imageUrl),
         }}
-        style={styles.image}
+        style={{height: 80, width: 80, borderRadius: 100}}
       />
-      <View style={styles.productInfo}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <Text style={styles.productName}>{item.product.name}</Text>
-          <Pressable
-            // onPress={() => openModal(item)}
-            style={styles.removeButton}></Pressable>
-        </View>
-        <View style={styles.priceContainer}>
-          <Text style={styles.price}>
-            {currencyFormat(+item.product.priceUnitary)}
-          </Text>
-          <View style={styles.counterContainer}>
+      <View>
+        <View style={{flexDirection: 'column', gap: 10}}>
+          <View>
+            <Text style={{fontWeight: 'bold', fontSize: 15}}>
+              {item.product.name}
+            </Text>
+            <Text style={{}}>{item.product.description}</Text>
+          </View>
+
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Pressable
-              disabled={item.count <= 0}
-              style={[
-                styles.button,
-                item.count > 0 ? styles.buttonActive : styles.buttonInactive,
-              ]}
               onPress={() =>
                 increaseDecrementCount(item.product.id.toString(), -1)
-              }>
-              <CustomIcon white name="arrow-ios-back" />
+              }
+              style={{
+                padding: 1,
+                height: 20,
+                width: 20,
+                borderWidth: 1,
+                borderRadius: 5,
+                borderColor: globalColors.border,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text>-</Text>
             </Pressable>
-            <Text style={styles.textCount} key={item.product.id}>
-              {item.count}
-            </Text>
+
+            <Text style={{fontWeight: 'bold'}}>{item.count}</Text>
             <Pressable
-              style={styles.button}
               onPress={() =>
-                increaseDecrementCount(item.product.id.toString(), +1)
-              }>
-              <CustomIcon white name="arrow-ios-forward" />
+                increaseDecrementCount(item.product.id.toString(), 1)
+              }
+              style={{
+                padding: 1,
+                height: 20,
+                width: 20,
+                borderWidth: 1,
+                borderRadius: 5,
+                borderColor: globalColors.border,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text>+</Text>
             </Pressable>
           </View>
         </View>
       </View>
+      <View></View>
     </View>
   );
 };

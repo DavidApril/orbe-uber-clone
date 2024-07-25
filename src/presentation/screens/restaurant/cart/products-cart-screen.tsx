@@ -21,7 +21,14 @@ import {
 } from '../../../components';
 import {globalColors} from '../../../theme/styles';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {Button, Divider, Input, Radio, RadioGroup} from '@ui-kitten/components';
+import {
+  Button,
+  Divider,
+  Input,
+  Layout,
+  Radio,
+  RadioGroup,
+} from '@ui-kitten/components';
 import {RestaurantService} from '../../../../services';
 import {currencyFormat} from '../../../../utils';
 
@@ -56,7 +63,7 @@ export const ProductsCartScreen = ({navigation}: Props) => {
   const snapPoints = useMemo(() => ['5%', '50%'], []);
 
   return productsInCart.length > 0 ? (
-    <View style={styles.container}>
+    <Layout style={{flex: 1, paddingTop: 70, padding: 20}}>
       <OpenDrawerMenu left={20} />
       <FAB
         white
@@ -65,15 +72,13 @@ export const ProductsCartScreen = ({navigation}: Props) => {
         onPress={() => navigation.goBack()}
       />
 
-      <View style={{height: 70}}></View>
 
-      <Text style={styles.productCount}>
-        {productsInCart.length}{' '}
-        {productsInCart.length > 1 ? 'productos' : 'producto'} en el carrito
-      </Text>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView>
         <FlatList
-          style={styles.flatList}
+          style={{
+            flexDirection: 'column',
+            gap: 10,
+          }}
           data={productsInCart}
           keyExtractor={item => item.product.id.toString()}
           renderItem={({item}) => <CartItem item={item} />}
@@ -141,7 +146,7 @@ export const ProductsCartScreen = ({navigation}: Props) => {
           </View>
         </View>
       </Modal>
-    </View>
+    </Layout>
   ) : (
     <View style={[styles.container, styles.emptyCartContainer]}>
       <FAB

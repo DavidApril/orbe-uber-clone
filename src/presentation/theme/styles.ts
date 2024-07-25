@@ -7,4 +7,5 @@ export const globalColors = {
   themeDark: '#222B45',
 
   shadowColor: '#717171',
+  border: '#e0e0e0'
 };
