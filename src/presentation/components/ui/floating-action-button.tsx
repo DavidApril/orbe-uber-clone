@@ -6,12 +6,19 @@ interface Props {
   iconName: string;
   style?: StyleProp<ViewStyle>;
   label?: string;
-  white?: boolean
+  white?: boolean;
   disabled?: boolean;
   onPress: () => void;
 }
 
-export const FAB = ({iconName, onPress, white, style, label, disabled}: Props) => {
+export const FAB = ({
+  iconName,
+  onPress,
+  white,
+  style,
+  label,
+  disabled,
+}: Props) => {
   return (
     <Button
       style={[styles.btn, style]}
@@ -19,7 +26,7 @@ export const FAB = ({iconName, onPress, white, style, label, disabled}: Props) =
       appearance="ghost"
       accessoryLeft={<CustomIcon white={white} name={iconName} />}
       onPress={onPress}>
-        {label}
+      {label}
     </Button>
   );
 };
@@ -29,6 +36,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
     position: 'absolute',
     borderRadius: 100,
+    height: 30,
+    width: 30,
     justifyContent: 'center',
     backgroundColor: 'black',
     alignItems: 'center',

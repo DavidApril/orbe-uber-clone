@@ -5,10 +5,11 @@ import {
   Pressable,
   ImageBackground,
   Modal,
+  View,
 } from 'react-native';
 import {useState} from 'react';
-import {Layout} from '@ui-kitten/components';
-import {FAB, OpenDrawerMenu} from '../../../components';
+import {Button, ButtonGroup, Layout} from '@ui-kitten/components';
+import {CustomIcon, FAB, OpenDrawerMenu} from '../../../components';
 import {RootStackParams} from '../../../../interfaces';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useRestaurantStore} from '../../../../store/restaurant/restaurant';
@@ -44,24 +45,28 @@ export const ProductItemScreen = ({navigation}: Props) => {
   };
 
   return (
-    <Layout style={styles.container}>
+    <Layout>
       <OpenDrawerMenu left={20} />
       <FAB
-        white
-        style={{right: 20, top: 20, backgroundColor: globalColors.primary}}
+        style={{right: 20, top: 20, backgroundColor: globalColors.white}}
         iconName="arrow-back"
         onPress={() => navigation.goBack()}
       />
 
       <FAB
-        white
-        style={{right: 80, top: 20, backgroundColor: globalColors.primary}}
+        style={{right: 80, top: 20, backgroundColor: globalColors.white}}
         iconName="shopping-cart"
         onPress={() => navigation.navigate('ProductsCartScreen')}
       />
 
       <Layout style={styles.container_product}>
-        <ImageBackground style={{height: '40%'}}>
+        <ImageBackground
+          style={{
+            height: '50%',
+            borderBottomLeftRadius: 40,
+            borderBottomRightRadius: 40,
+            overflow: 'hidden',
+          }}>
           <Pressable
             style={{
               width: '100%',
@@ -76,6 +81,33 @@ export const ProductItemScreen = ({navigation}: Props) => {
             />
           </Pressable>
         </ImageBackground>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            transform: [{translateY: -25}],
+          }}>
+          <ButtonGroup
+            status="basic"
+            style={{
+              borderRadius: 10,
+              borderWidth: 3,
+              borderColor: 'white',
+              backgroundColor: 'white',
+              zIndex: 9999,
+            }}>
+            <Button style={{borderWidth: 0}}>-1</Button>
+            <Button
+              style={{
+                backgroundColor: 'white',
+                borderColor: 'white',
+                borderWidth: 0,
+              }}>
+              0
+            </Button>
+            <Button>+1</Button>
+          </ButtonGroup>
+        </View>
         <Modal
           animationType="fade"
           visible={photoOpen}
@@ -96,36 +128,52 @@ export const ProductItemScreen = ({navigation}: Props) => {
         </Modal>
         <Layout style={{padding: 20, gap: 10}}>
           <Layout>
-            <Text style={styles.product_rating}>
-              Rating: {product?.category}
+            <Text style={{}}>{product?.category}</Text>
+            <Text style={{fontWeight: '600', fontSize: 25, color: 'black'}}>
+              {product?.name}
             </Text>
-            <Text style={styles.product_name}>{product?.name}</Text>
           </Layout>
           <Text style={styles.product_description}>{product?.description}</Text>
-          <Text style={styles.product_price}>
-            {currencyFormat(+product?.priceUnitary)}
-          </Text>
         </Layout>
       </Layout>
-      <Layout style={styles.buy_product_container}>
+      <Layout
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 24,
+        }}>
         <Layout
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
             gap: 20,
+            flex: 1,
           }}>
-          <Pressable
+          <Text
+            style={{
+              color: 'black',
+              textAlignVertical: 'center',
+              fontWeight: 'bold',
+              fontSize: 16,
+            }}>
+            {currencyFormat(+product?.priceUnitary)}
+          </Text>
+          <Button
+            style={{borderRadius: 50}}
             onPress={handleAddToCart}
-            style={[
-              styles.buy_product_button,
-              loading
-                ? {backgroundColor: '#3fc1f266'}
-                : {backgroundColor: '#3fc1f2'},
-            ]}>
+            disabled={loading}
+            status="success">
             <Text style={styles.buy_product_text}>
               {loading ? 'CARGANDO...' : 'AÑADIR AL CARRITO'}
             </Text>
-          </Pressable>
+          </Button>
+          <Button status='danger' style={{ borderRadius: 50, height: 25, width: 25 }}>
+            <CustomIcon white name='heart'/> 
+          </Button>
         </Layout>
       </Layout>
 
@@ -148,7 +196,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
                 style={styles.modal_button}
                 onPress={() => {
                   setModal(false);
-                  navigation.navigate('ProductsCartScreen')
+                  navigation.navigate('ProductsCartScreen');
                 }}>
                 <Text style={styles.modal_button_text}>Ir al carrito</Text>
               </Pressable>
