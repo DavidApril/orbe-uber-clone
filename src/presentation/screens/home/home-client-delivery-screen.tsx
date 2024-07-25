@@ -16,8 +16,7 @@ import {LoadingScreen} from '../loading/loading-screen';
 import {RestaurantService} from '../../../services/restaurant/restaurant.service';
 import {SingleRestaurantResponse} from '../../../interfaces';
 import {CustomIcon, OpenDrawerMenu, RestaurantCard} from '../../components';
-import {Button, Input, Layout} from '@ui-kitten/components';
-import {LinearGradient, RadialGradient} from 'react-native-gradients';
+import {Input, Layout} from '@ui-kitten/components';
 import {globalColors} from '../../theme/styles';
 
 export const HomeClientDeliveryScreen = ({navigation}: any) => {

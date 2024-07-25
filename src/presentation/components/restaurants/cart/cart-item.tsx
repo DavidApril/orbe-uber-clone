@@ -1,23 +1,17 @@
 import React from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {StorageService} from '../../../../services';
-import {currencyFormat} from '../../../../utils';
-import {CustomIcon} from '../../ui/custom-icon';
 import {ProductRestaurant} from '../../../../interfaces';
-import {useShoppingCartStore} from '../../../../store';
-import {Button} from '@ui-kitten/components';
-import {globalColors} from '../../../theme/styles';
+
 
 interface Props {
   item: {
     product: ProductRestaurant;
-    count: number;
+    quantity: number;
   };
 }
 
 export const CartItem = ({item}: Props) => {
-  const {increaseDecrementCount} = useShoppingCartStore();
-
   return (
     <View
       style={{
@@ -50,53 +44,10 @@ export const CartItem = ({item}: Props) => {
         style={{height: 80, width: 80, borderRadius: 100}}
       />
       <View>
-        <View style={{flexDirection: 'column', gap: 10}}>
-          <View>
-            <Text style={{fontWeight: 'bold', fontSize: 15}}>
-              {item.product.name}
-            </Text>
-            <Text style={{}}>{item.product.description}</Text>
-          </View>
+       
+        
 
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Pressable
-              onPress={() =>
-                increaseDecrementCount(item.product.id.toString(), -1)
-              }
-              style={{
-                padding: 1,
-                height: 20,
-                width: 20,
-                borderWidth: 1,
-                borderRadius: 5,
-                borderColor: globalColors.border,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text>-</Text>
-            </Pressable>
-
-            <Text style={{fontWeight: 'bold'}}>{item.count}</Text>
-            <Pressable
-              onPress={() =>
-                increaseDecrementCount(item.product.id.toString(), 1)
-              }
-              style={{
-                padding: 1,
-                height: 20,
-                width: 20,
-                borderWidth: 1,
-                borderRadius: 5,
-                borderColor: globalColors.border,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text>+</Text>
-            </Pressable>
-          </View>
-        </View>
       </View>
-      <View></View>
     </View>
   );
 };

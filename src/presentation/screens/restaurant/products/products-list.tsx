@@ -20,9 +20,8 @@ export const ProductsList = ({products}: Props) => {
           data={products}
           horizontal
           style={{paddingBottom: 15}}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item: product}) => (
-            <ProductCard key={product.id} product={product} />
+          renderItem={({item, index}) => (
+            <ProductCard key={index} product={item} />
           )}
         />
       </Layout>

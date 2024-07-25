@@ -1,14 +1,15 @@
 import {Button, Layout} from '@ui-kitten/components';
-import {StyleProp, StyleSheet, Text, ViewStyle} from 'react-native';
+import {StyleProp, StyleSheet, Text, TextStyle, ViewStyle} from 'react-native';
 import {CustomIcon} from './custom-icon';
 
 interface Props {
   iconName: string;
-  style?: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle & TextStyle>;
   label?: string;
   white?: boolean;
   disabled?: boolean;
   fill?: string;
+  color?: string;
   onPress: () => void;
 }
 

@@ -1,35 +1,45 @@
-import {Divider, Layout, Text} from '@ui-kitten/components';
-import React, {useEffect, useState} from 'react';
-import {useRestaurantStore} from '../../../store/restaurant/restaurant';
+import {Layout, List, Text} from '@ui-kitten/components';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {LoadingScreen} from '../loading/loading-screen';
 import {Image, useWindowDimensions} from 'react-native';
 import {View} from 'react-native';
 import {StorageService} from '../../../services';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {ProductRestaurant, RootStackParams} from '../../../interfaces';
+import {
+  CartProduct,
+  ProductRestaurant,
+  RootStackParams,
+} from '../../../interfaces';
 import {
   CustomIcon,
-  FAB,
+  FABGoBackButton,
+  FABShoppingCart,
   OpenDrawerMenu,
-  ProductCard,
+  PaymentControllers,
   Stats,
 } from '../../components';
 import {RestaurantService} from '../../../services/restaurant/restaurant.service';
-import {globalColors} from '../../theme/styles';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ProductsList} from './products/products-list';
+import {useCartStore} from '../../../store';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 export const RestaurantScreen = () => {
-  const {height} = useWindowDimensions();
-  const {restaurantSelected} = useRestaurantStore();
+  const {height, width} = useWindowDimensions();
 
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
+  const {cart, setCartNews, restaurantSelected} = useCartStore();
 
   useEffect(() => {
+    console.log({restaurantSelected});
     if (!restaurantSelected) {
       navigation.goBack();
     }
   }, [restaurantSelected]);
+
+  if (!restaurantSelected) {
+    return <LoadingScreen />;
+  }
 
   const image_url = StorageService.getPhotoByFilename(
     restaurantSelected!.attachments[0].image_url,
@@ -42,28 +52,36 @@ export const RestaurantScreen = () => {
     const products = await RestaurantService.getProducts(
       restaurantSelected!.id,
     );
-
-    console.log(products);
-
     setProducts(products);
   };
+  const summaryBottomSheetRef = useRef<BottomSheet>(null);
+
+  useEffect(() => {
+    setCartNews(true);
+  }, [cart]);
 
   useEffect(() => {
     getProductsByIdRestaurant(page);
   }, [page]);
 
-  if (!restaurantSelected) {
-    return <LoadingScreen />;
-  }
+  const snapPoints = useMemo(() => ['20%', '50%', '80%'], []);
+
   return (
-    <Layout style={{flex: 1}}>
-      <ScrollView>
+    <Layout style={{flex: 1, backgroundColor: 'white'}}>
+      <ScrollView
+        style={{
+          backgroundColor: 'white',
+        }}>
         <OpenDrawerMenu left={20} />
-        <FAB
-          white
-          style={{right: 20, top: 20, backgroundColor: globalColors.primary}}
-          iconName="arrow-back"
-          onPress={() => navigation.goBack()}
+        <FABGoBackButton
+          style={{right: 20, top: 20, backgroundColor: 'white'}}
+        />
+
+        <FABShoppingCart
+          onPressFunction={() => {
+            summaryBottomSheetRef.current?.expand();
+            console.log({restaurantSelected});
+          }}
         />
 
         <View
@@ -73,7 +91,7 @@ export const RestaurantScreen = () => {
           }}>
           <Image
             style={{width: '100%', height: '100%'}}
-            source={{uri: image_url}}
+            source={{uri: image_url ?? ''}}
           />
         </View>
         <View
@@ -93,9 +111,11 @@ export const RestaurantScreen = () => {
         </View>
 
         <View style={{marginHorizontal: 20}}>
-          <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 35}}>
+          <Text style={{fontWeight: 'bold', fontSize: 35}}>
             {restaurantSelected.name}
           </Text>
+
+          <Text>{restaurantSelected.description}</Text>
 
           <View
             style={{

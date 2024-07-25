@@ -8,5 +8,6 @@ export const globalColors = {
 
   shadowColor: '#717171',
   border: '#e0e0e0',
-  background: '#FFFFFFF'
+  background: '#FFFFFFF',
+  backgroundContrast: '#383838'
 };

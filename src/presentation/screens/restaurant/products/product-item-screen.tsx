@@ -7,18 +7,17 @@ import {
   Modal,
   View,
 } from 'react-native';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Button, ButtonGroup, Layout} from '@ui-kitten/components';
 import {CustomIcon, FAB, OpenDrawerMenu} from '../../../components';
-import {RootStackParams} from '../../../../interfaces';
+import {CartProduct, RootStackParams} from '../../../../interfaces';
 import {StackScreenProps} from '@react-navigation/stack';
-import {useRestaurantStore} from '../../../../store/restaurant/restaurant';
 
 import {LoadingScreen} from '../../loading/loading-screen';
 import {globalColors} from '../../../theme/styles';
 import {StorageService} from '../../../../services';
 import {currencyFormat} from '../../../../utils';
-import {useShoppingCartStore} from '../../../../store';
+import {useCartStore} from '../../../../store';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'ProductItemScreen'> {}
@@ -28,10 +27,25 @@ export const ProductItemScreen = ({navigation}: Props) => {
   const [modal, setModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const {productSelected: product} = useRestaurantStore();
-  const {addProduct} = useShoppingCartStore();
+  const {
+    addProductToCart,
+    productSelected: item,
+    cart,
+    updateProductQuantity,
+  } = useCartStore();
 
-  if (!product) {
+  const [productCart, setProductCart] = useState<CartProduct | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    const productInCart = cart.find(
+      itemCart => itemCart?.product.id === item?.id,
+    );
+    setProductCart(productInCart);
+  }, [cart]);
+
+  if (!item) {
     return <LoadingScreen />;
   }
 
@@ -39,7 +53,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      addProduct(product!, 1);
+      addProductToCart({product: item, quantity: 1});
       setModal(true);
     }, 2000);
   };
@@ -75,7 +89,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
             onPress={() => setPhotoOpen(true)}>
             <Image
               source={{
-                uri: StorageService.getPhotoByFilename(product!.imageUrl),
+                uri: StorageService.getPhotoByFilename(item!.imageUrl),
               }}
               style={{width: '100%', height: '100%'}}
             />
@@ -96,16 +110,36 @@ export const ProductItemScreen = ({navigation}: Props) => {
               backgroundColor: 'white',
               zIndex: 9999,
             }}>
-            <Button style={{borderWidth: 0}}>-1</Button>
+            <Button
+              onPress={() =>
+                updateProductQuantity({
+                  product: productCart!.product,
+                  quantity: -1,
+                })
+              }>
+              -
+            </Button>
             <Button
               style={{
                 backgroundColor: 'white',
                 borderColor: 'white',
                 borderWidth: 0,
               }}>
-              0
+              {productCart?.quantity ?? '0'}
             </Button>
-            <Button>+1</Button>
+            <Button
+              onPress={() => {
+                if (productCart) {
+                  updateProductQuantity({
+                    product: productCart!.product,
+                    quantity: +1,
+                  });
+                } else {
+                  addProductToCart({product: item, quantity: 1});
+                }
+              }}>
+              +
+            </Button>
           </ButtonGroup>
         </View>
         <Modal
@@ -119,7 +153,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
               onPress={() => setPhotoOpen(false)}>
               <Image
                 source={{
-                  uri: StorageService.getPhotoByFilename(product!.imageUrl),
+                  uri: StorageService.getPhotoByFilename(item!.imageUrl),
                 }}
                 style={styles.full_screen}
               />
@@ -128,12 +162,12 @@ export const ProductItemScreen = ({navigation}: Props) => {
         </Modal>
         <Layout style={{padding: 20, gap: 10}}>
           <Layout>
-            <Text style={{}}>{product?.category}</Text>
+            <Text style={{}}>{item?.category}</Text>
             <Text style={{fontWeight: '600', fontSize: 25, color: 'black'}}>
-              {product?.name}
+              {item?.name}
             </Text>
           </Layout>
-          <Text style={styles.product_description}>{product?.description}</Text>
+          <Text style={styles.product_description}>{item?.description}</Text>
         </Layout>
       </Layout>
       <Layout
@@ -160,7 +194,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
               fontWeight: 'bold',
               fontSize: 16,
             }}>
-            {currencyFormat(+product?.priceUnitary)}
+            {currencyFormat(+item?.priceUnitary)}
           </Text>
           <Button
             style={{borderRadius: 50}}
@@ -171,8 +205,10 @@ export const ProductItemScreen = ({navigation}: Props) => {
               {loading ? 'CARGANDO...' : 'AÑADIR AL CARRITO'}
             </Text>
           </Button>
-          <Button status='danger' style={{ borderRadius: 50, height: 25, width: 25 }}>
-            <CustomIcon white name='heart'/> 
+          <Button
+            status="danger"
+            style={{borderRadius: 50, height: 25, width: 25}}>
+            <CustomIcon white name="heart" />
           </Button>
         </Layout>
       </Layout>
@@ -186,7 +222,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
         <Layout style={styles.modal_content}>
           <Layout style={styles.modal_mask}>
             <Text style={styles.modal_title}>
-              {product?.name} añadido al carrito
+              {item?.name} añadido al carrito
             </Text>
             <Layout style={{alignItems: 'center'}}>
               {/* <CustomIcon name="checkmark-circle-2-outline" color={'#3fc1f2'} /> */}
