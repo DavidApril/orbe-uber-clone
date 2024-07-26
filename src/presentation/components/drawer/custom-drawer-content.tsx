@@ -1,62 +1,160 @@
 import {
   DrawerContentComponentProps,
-  DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {Button, Layout} from '@ui-kitten/components';
 import {useAuthStore} from '../../../store';
-import {Modal, Pressable, Text, useWindowDimensions} from 'react-native';
-import { useState } from 'react';
+import {
+  Image,
+  Modal,
+  Pressable,
+  Text,
+  useColorScheme,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import {useState} from 'react';
+import {StorageService} from '../../../services';
+import {CLIENT, DRIVER} from '../../../interfaces';
+import {globalColors} from '../../theme/styles';
 
 export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
-  const {user, logout} = useAuthStore();
+  const {logout, userByUid, role} = useAuthStore();
   const {height} = useWindowDimensions();
-  const [modal, setModal] = useState<boolean>(false)
+  const [modal, setModal] = useState<boolean>(false);
+  const colorScheme = useColorScheme();
+
+  let image_url: string = '';
+
+  if (userByUid) {
+    if (role === CLIENT) {
+      image_url = StorageService.getPhotoByFilename(userByUid?.cliente.photo);
+      console.log({image_url});
+    } else if (role === DRIVER) {
+      // @ts-ignore
+      image_url = StorageService.getPhotoByFilename(userByUid!.driver.photo);
+    }
+  }
 
   return (
-    <Layout>
-      <Layout
+    <View
+      style={{
+        backgroundColor:
+          colorScheme === 'light'
+            ? globalColors.neutralColors.background
+            : globalColors.neutralColors.backgroundDark,
+        height,
+        padding: 20,
+        overflow: 'hidden',
+      }}>
+      <View
         style={{
-          // backgroundColor: 'transparent',
-          height,
-          overflow: 'hidden'
+          height: 100,
+          flexDirection: 'row',
+          gap: 10,
+          alignItems: 'center',
         }}>
-        <Layout style={{ backgroundColor: '#3fc1f2', height: '20%', padding: 10 }}>
-          <Text>Bienvenido a OrbeDriver!</Text>
-        </Layout>
-        <Layout
-          style={{
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            backgroundColor: 'transparent',
-            height: '75%',
-            paddingVertical: 20
-          }}>
-          {/* <DrawerItem label='Profile' onPress={() => {}} /> */}
-          <Layout>
-            <DrawerItemList {...props} />
-          </Layout>
+        <Image
+          style={{height: 80, width: 80, borderRadius: 100}}
+          source={{uri: image_url}}
+        />
+        <View>
+          <Text
+            style={{
+              fontSize: 16,
+              color:
+                colorScheme === 'light'
+                  ? globalColors.fontColor.textColorHeader
+                  : globalColors.fontColor.textColorHeaderDark,
+            }}>
+            {userByUid?.cliente.name}
+          </Text>
+          <Text
+            style={{
+              fontSize: 15,
+              color:
+                colorScheme === 'light'
+                  ? globalColors.fontColor.textColor
+                  : globalColors.fontColor.textColorDark,
+            }}>
+            {userByUid?.email}
+          </Text>
+        </View>
+      </View>
+      <View
+        style={{
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          backgroundColor: 'transparent',
+          height: '75%',
+          paddingVertical: 20,
+        }}>
+        <View>
+          <DrawerItemList {...props} />
+        </View>
 
-          <Button onPress={() => setModal(true)} status="danger" appearance="ghost">
-              Cerrar sesión
-          </Button>
-        </Layout>
-        <Modal visible={modal} animationType='fade' transparent={true} onRequestClose={() => {setModal(false)}}>
-          <Pressable style={{ backgroundColor: '#0007', height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }} onPress={() => {setModal(false)}}>
-            <Layout style={{ width: '90%', borderRadius: 20, height: 150, justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-              <Text style={{ fontSize: 18 }}>Esta seguro de cerrar sesion?</Text>
-              <Layout style={{ flexDirection: 'row', gap: 10 }}>
-                <Pressable style={{ padding: 10, borderRadius: 10, backgroundColor: '#00c1f1', borderColor: '#00c1f1' }} onPress={() => setModal(false)}>
-                  <Text style={{ color: 'white' }}>Cancelar</Text>
-                </Pressable>
-                <Pressable style={{ padding: 10, borderRadius: 10, borderWidth: 1, borderColor: '#00c1f1' }} onPress={() => {logout(), setModal(false)}}>
-                  <Text style={{ color: '#00c1f1' }}>Cerrar sesion</Text>
-                </Pressable>
-              </Layout>
-            </Layout>
-          </Pressable>
-        </Modal>
-      </Layout>
-    </Layout>
+        <Button
+          onPress={() => setModal(true)}
+          status="danger"
+          appearance="ghost">
+          Cerrar sesión
+        </Button>
+      </View>
+      <Modal
+        visible={modal}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => {
+          setModal(false);
+        }}>
+        <Pressable
+          style={{
+            backgroundColor: '#0007',
+            height: '100%',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            setModal(false);
+          }}>
+          <View
+            style={{
+              width: '90%',
+              borderRadius: 20,
+              height: 150,
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 10,
+            }}>
+            <Text style={{fontSize: 18}}>Esta seguro de cerrar sesion?</Text>
+            <View style={{flexDirection: 'row', gap: 10}}>
+              <Pressable
+                style={{
+                  padding: 10,
+                  borderRadius: 10,
+                  backgroundColor: '#00c1f1',
+                  borderColor: '#00c1f1',
+                }}
+                onPress={() => setModal(false)}>
+                <Text style={{color: 'white'}}>Cancelar</Text>
+              </Pressable>
+              <Pressable
+                style={{
+                  padding: 10,
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: '#00c1f1',
+                }}
+                onPress={() => {
+                  logout(), setModal(false);
+                }}>
+                <Text style={{color: '#00c1f1'}}>Cerrar sesion</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Pressable>
+      </Modal>
+    </View>
   );
 };
