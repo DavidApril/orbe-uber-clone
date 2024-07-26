@@ -1,4 +1,4 @@
-import {Image, Pressable} from 'react-native';
+import {Image, Pressable, useColorScheme} from 'react-native';
 import {StorageService} from '../../../services';
 import {RootStackParams, SingleRestaurantResponse} from '../../../interfaces';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -18,6 +18,7 @@ export const RestaurantCard = ({
   );
 
   const {setRestaurantSelected} = useCartStore();
+  const colorScheme = useColorScheme();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   return (
@@ -34,12 +35,11 @@ export const RestaurantCard = ({
         width: 220,
         paddingTop: 25,
         position: 'relative',
-        // shadowColor: '#000000',
       }}>
       <FAB
+        white={colorScheme === 'light' ? true : false}
         iconName="shopping-bag-outline"
         style={{
-          backgroundColor: 'white',
           right: 20,
           bottom: 20,
         }}
@@ -53,7 +53,10 @@ export const RestaurantCard = ({
           top: 0,
           bottom: 0,
           borderRadius: 15,
-          backgroundColor: 'white',
+          backgroundColor:
+            colorScheme === 'light'
+              ? globalColors.grayScale.white
+              : globalColors.neutralColors.backgroundDarkAlpha,
         }}></View>
       {restaurant.attachments.length > 0 && (
         <Image
@@ -76,13 +79,24 @@ export const RestaurantCard = ({
         }}>
         <Text
           style={{
-            color: globalColors.primary,
+            color:
+              colorScheme === 'light'
+                ? globalColors.fontColor.textColorHeader
+                : globalColors.fontColor.textColorHeaderDark,
             fontWeight: 'bold',
             fontSize: 18,
           }}>
           {restaurant.name}
         </Text>
-        <Text style={{color: '#919191'}}>{restaurant.description}</Text>
+        <Text
+          style={{
+            color:
+              colorScheme === 'light'
+                ? globalColors.fontColor.textColor
+                : globalColors.fontColor.textColorDark,
+          }}>
+          {restaurant.description}
+        </Text>
       </View>
     </Pressable>
   );
