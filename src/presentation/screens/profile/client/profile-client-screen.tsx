@@ -1,23 +1,22 @@
-import {Button, CheckBox, Input, Layout, Text} from '@ui-kitten/components';
 import {useAuthStore} from '../../../../store';
-import {StorageService, UserService} from '../../../../services';
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {globalColors} from '../../../theme/styles';
-import {ScrollView} from 'react-native-gesture-handler';
-import BottomSheet from '@gorhom/bottom-sheet';
-import {CustomIcon, FABGoBackButton} from '../../../components';
-import {Image} from 'react-native';
-import {RootStackParams} from '../../../../interfaces';
+import {StorageService} from '../../../../services';
+import {globalColors, globalDimensions} from '../../../theme/styles';
+import {
+  Image,
+  ScrollView,
+  Text,
+  useColorScheme,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import {LoadingScreen} from '../../loading/loading-screen';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {StatusButton} from '../../../components';
+import {currencyFormat, parseDate} from '../../../../utils';
 
 export const ProfileClientScreen = () => {
-  const {user, userByUid} = useAuthStore();
-  const navigation = useNavigation<NavigationProp<RootStackParams>>();
-
-  if (!user) {
-    navigation.goBack();
-  }
+  const {userByUid} = useAuthStore();
+  const {height, width} = useWindowDimensions();
+  const colorSchema = useColorScheme();
 
   if (!userByUid) {
     return <LoadingScreen />;
@@ -25,116 +24,132 @@ export const ProfileClientScreen = () => {
 
   const image_url = StorageService.getPhotoByFilename(userByUid!.cliente.photo);
 
-  console.log(StorageService.getPhotoByFilename(userByUid?.cliente.photo));
-
   return (
-    <ScrollView>
-      <FABGoBackButton fill="white" style={{top: 10, left: 10}} />
-      <Layout
+    <ScrollView style={{flex: 1, height}}>
+      <View
         style={{
+          backgroundColor:
+            colorSchema === 'light'
+              ? globalColors.neutralColors.background
+              : globalColors.neutralColors.backgroundDark,
           flex: 1,
+          paddingHorizontal: 50,
+          paddingTop: 130,
+          height,
+          flexDirection: 'column',
+          alignItems: 'center',
         }}>
-        <Layout
+        <View
           style={{
-            margin: 30,
-            gap: 10,
             flexDirection: 'column',
+            gap: 10,
+            alignItems: 'center',
+            flex: 1,
           }}>
-          <Layout
+          <View
             style={{
-              height: 100,
-              flexDirection: 'row',
-              gap: 10,
-              paddingHorizontal: 20,
-              alignItems: 'center',
+              height: 200,
+              width: 200,
+              borderWidth: 10,
+              borderColor:
+                colorSchema === 'light'
+                  ? globalColors.neutralColors.border
+                  : globalColors.stateColors.success,
+              backgroundColor: 'white',
+              borderRadius: 100,
+              overflow: 'hidden',
             }}>
-            <Layout
+            <Image
+              style={{height: 200, width: 200}}
+              source={{uri: image_url}}
+            />
+          </View>
+
+          <View style={{justifyContent: 'center', marginVertical: 10}}>
+            <Text style={{textAlign: 'center'}}>{userByUid.cliente.phone}</Text>
+            <Text
               style={{
-                height: 80,
-                width: 80,
-                backgroundColor: 'white',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
+                fontSize: 38,
+                textAlign: 'center',
+                color:
+                  colorSchema === 'light'
+                    ? globalColors.fontColor.textColorHeader
+                    : globalColors.fontColor.textColorHeaderDark,
+              }}>
+              {userByUid.cliente.name}
+            </Text>
+          </View>
+
+          <View style={{flexDirection: 'row', gap: 20}}>
+            <StatusButton />
+
+            <View
+              style={{
+                height: '100%',
+                width: 1,
+                backgroundColor: globalColors.grayScale.gray,
                 borderRadius: 50,
-                overflow: 'hidden',
-              }}>
-              {userByUid && userByUid.cliente.photo.length > 0 ? (
-                <Image
-                  style={{height: '100%', width: '100%'}}
-                  source={{
-                    uri: image_url,
-                  }}
-                />
-              ) : (
-                <CustomIcon fill="black" name="person" />
-              )}
-            </Layout>
+              }}
+            />
 
-            <Layout style={{backgroundColor: 'transparent'}}>
-              <Text style={{}}>Hola,</Text>
-              <Text style={{fontWeight: 'bold', fontSize: 18}}>
-                {userByUid?.cliente.name}
+            <View style={{justifyContent: 'center'}}>
+              <Text
+                style={{
+                  color:
+                    colorSchema === 'light'
+                      ? globalColors.fontColor.textColor
+                      : globalColors.fontColor.textColorDark,
+                }}>
+                {userByUid.cliente?.created_date &&
+                  parseDate(userByUid.cliente?.created_date)}
               </Text>
-            </Layout>
-          </Layout>
-          <Layout
-            style={{
-              height: 120,
-              borderRadius: 30,
-              padding: 20,
-              backgroundColor: 'black',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Layout style={{backgroundColor: 'transparent'}}>
-              <Text style={{color: 'white'}}>Balance</Text>
-              <Text style={{color: 'white', fontWeight: 'bold', fontSize: 40}}>
-                1.234$
-              </Text>
-            </Layout>
-          </Layout>
+            </View>
+          </View>
 
-          <Layout
-            style={{
-              height: 120,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 10,
-            }}>
-            <Layout
+          <View style={{flexDirection: 'row', gap: 10}}>
+            <View
               style={{
-                backgroundColor: 'black',
-                borderRadius: 30,
-                height: 120,
-                padding: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                // width: width * 0.4,
+                borderRadius: globalDimensions.borderRadiusButtom,
+                backgroundColor:
+                  colorSchema === 'light'
+                    ? globalColors.neutralColors.backgroundAlpha
+                    : globalColors.neutralColors.backgroundDarkAlpha,
                 flex: 1,
               }}>
-              <Text style={{color: 'white'}}>Rating</Text>
-              <Text style={{color: 'white', fontWeight: 'bold', fontSize: 40}}>
-                4.8
+              <Text>
+                <Text style={{fontSize: 40, fontWeight: 'bold'}}>32</Text> pts.
               </Text>
-            </Layout>
-
-            <Layout
+            </View>
+            <View
               style={{
-                backgroundColor: '#edece8',
-                borderRadius: 30,
-                padding: 20,
                 flex: 1,
-                height: 120,
+                marginVertical: 20,
+                justifyContent: 'center',
+                padding: 30,
+                width: width * 0.4,
+                borderRadius: globalDimensions.borderRadiusButtom,
+                backgroundColor:
+                  colorSchema === 'light'
+                    ? globalColors.neutralColors.backgroundAlpha
+                    : globalColors.neutralColors.backgroundDarkAlpha,
               }}>
-              <Text style={{color: 'black'}}>Hoy</Text>
-              <Text style={{color: 'black', fontWeight: 'bold', fontSize: 40}}>
-                26 <Text style={{color: 'black'}}>Viajes</Text>
+              <Text>Balance</Text>
+              <Text>
+                <Text
+                  numberOfLines={0}
+                  style={{fontSize: 28, fontWeight: 'bold'}}>
+                  {/* {currencyFormat(5000)} */}
+                  834.000
+                </Text>{' '}
+                cop
               </Text>
-            </Layout>
-          </Layout>
-          {/* <Button onPress={() => navigation.goBack()} appearance="ghost">Volver</Button> */}
-        </Layout>
-      </Layout>
+            </View>
+          </View>
+        </View>
+      </View>
     </ScrollView>
   );
 };

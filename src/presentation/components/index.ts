@@ -6,6 +6,8 @@ export * from './ui/open-drawer';
 export * from './ui/open-drawer';
 export * from './ui/fab-go-back-screen';
 export * from './ui/avatar-chat';
+export * from './ui/status-button'
+
 export * from './bottom-tabs/custom-bottom-tabs';
 
 export * from './maps/map-view';

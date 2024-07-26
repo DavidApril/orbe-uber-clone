@@ -63,9 +63,7 @@ export const CustomBottomTabItem = ({
       }}>
       <CustomIcon
         fill={
-          iconName === 'map-outline'
-            ? 'black'
-            : isFocused
+          isFocused
             ? globalColors.primaryColors.primary
             : colorScheme === 'light'
             ? globalColors.neutralColors.bottomTabFillIcon

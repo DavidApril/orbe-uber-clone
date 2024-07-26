@@ -24,7 +24,7 @@ export const neutralColors = {
   background: '#f5f5f5',
   backgroundDark: 'black',
 
-  backgroundAlpha: '#f5f5f5',
+  backgroundAlpha: '#e8e8e8',
   backgroundDarkAlpha: '#171717',
 
   surface: '#ffffff',
@@ -32,7 +32,7 @@ export const neutralColors = {
   border: '#d1d1d1',
   borderDark: 'gray',
 
-  bottomTabFillIcon: 'black',
+  bottomTabFillIcon: '#d6d6d6',
   bottomTabFillIconDark: 'white',
 
   bottomTabBackground: 'white',
@@ -65,7 +65,7 @@ export const fontColor = {
 };
 
 export const stateColors = {
-  success: '#28a745',
+  success: '#05ed43',
   error: '#dc3545',
   warning: '#ffc107',
   info: '#17a2b8',

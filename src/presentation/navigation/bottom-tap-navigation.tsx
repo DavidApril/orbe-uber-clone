@@ -41,7 +41,7 @@ export const BottomTapNavigationClientDelivery = () => {
         options={{
           // icon name
           title: 'person-outline',
-          headerShown: true,
+          headerShown: false,
         }}
         component={profileRoutesByRoleMapper(role!) ?? ProfileClientScreen}
       />
