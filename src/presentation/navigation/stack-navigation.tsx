@@ -25,6 +25,7 @@ import {
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 import { BottomTapNavigationClientDelivery } from './bottom-tap-navigation';
+import { globalColors } from '../theme/styles';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -41,7 +42,7 @@ export const StackNavigator = () => {
     <Navigator
       initialRouteName="LoadingScreen"
       
-      screenOptions={{headerShown: true}}>
+      screenOptions={{headerShown: true, headerTintColor: globalColors.primary}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="LoadingScreen"

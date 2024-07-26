@@ -31,8 +31,8 @@ export const ProfileClientScreen = () => {
   const snapPoints = useMemo(() => ['75%'], []);
 
   return (
-    <ScrollView>
-      <FABGoBackButton fill="white" style={{top: 10, left: 10}} />
+    <ScrollView style={{ backgroundColor: 'white' }}>
+      {/* <FABGoBackButton fill="white" style={{top: 10, left: 10}} /> */}
       <Layout
         style={{
           flex: 1,
@@ -86,7 +86,7 @@ export const ProfileClientScreen = () => {
               height: 120,
               borderRadius: 30,
               padding: 20,
-              backgroundColor: 'black',
+              backgroundColor: globalColors.primary,
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
@@ -109,7 +109,7 @@ export const ProfileClientScreen = () => {
             }}>
             <Layout
               style={{
-                backgroundColor: 'black',
+                backgroundColor: globalColors.primary,
                 borderRadius: 30,
                 height: 120,
                 padding: 20,

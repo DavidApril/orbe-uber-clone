@@ -72,7 +72,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               paddingHorizontal: 20,
               fontSize: 40,
               position: 'absolute',
-              color: 'black',
+              color: globalColors.primary,
               fontWeight: '300',
               zIndex: 999,
             }}>

@@ -8,6 +8,7 @@ import {
 import {HomeClientScreen} from '../screens/home/home-client-screen';
 import {useAuthStore} from '../../store';
 import {RootStackParams} from '../../interfaces';
+import { globalColors } from '../theme/styles';
 
 const Tab = createBottomTabNavigator<RootStackParams>();
 
@@ -38,6 +39,7 @@ export const BottomTapNavigationClientDelivery = () => {
         headerStyle: {
           shadowColor: 'transparent',
         },
+        headerTintColor: globalColors.primary
       }}>
       <Tab.Screen
         name={`HomeClientDeliveryScreen`}
@@ -68,7 +70,7 @@ export const BottomTapNavigationClientDelivery = () => {
       <Tab.Screen
         name="favoritesScreen"
         options={{
-          title: 'Fav',
+          title: 'Favoritos',
           tabBarIcon: ({color}) => <CustomIcon fill={color} name="heart" />,
           tabBarIconStyle: {},
         }}
@@ -77,6 +79,7 @@ export const BottomTapNavigationClientDelivery = () => {
       <Tab.Screen
         name="SettingsScreen"
         options={{
+          title: 'Ajustes',
           tabBarIconStyle: {
             backgroundColor: 'black',
             flex: 1,

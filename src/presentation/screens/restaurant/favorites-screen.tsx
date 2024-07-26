@@ -3,7 +3,7 @@ import React from 'react';
 
 export const FavoritesScreen = () => {
   return (
-    <Layout>
+    <Layout style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', height: '100%' }}>
       <Text>Favorites screen</Text>
     </Layout>
   );
