@@ -6,6 +6,7 @@ import {useColorScheme} from 'react-native';
 
 import {RootStackParams} from '../../interfaces';
 import {TopTapNavigationClientDelivery} from './top-tap-wallet-navigation';
+import {CouponsScreen} from '../screens';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
@@ -17,8 +18,7 @@ export function DrawerNavigation() {
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerType: 'back',
-        drawerInactiveTintColor:
-          colorScheme === 'light' ? 'black' : 'white',
+        drawerInactiveTintColor: colorScheme === 'light' ? 'black' : 'white',
         drawerActiveTintColor: globalColors.primaryColors.primary,
         drawerItemStyle: {
           borderRadius: 50,
@@ -36,16 +36,30 @@ export function DrawerNavigation() {
       />
       <Screen
         options={{
-          title: 'Billetera',
+          title: 'Cupones',
+          headerShown: false,
+          sceneContainerStyle: {
+            flex: 1,
+          },
+          drawerIcon: ({color}) => <CustomIcon fill={color} name="award" />,
+        }}
+        name="WalletScreen"
+        component={CouponsScreen}
+      />
+
+      <Screen
+        options={{
+          title: 'Recargas',
+          headerShown: false,
           sceneContainerStyle: {
             flex: 1,
           },
           drawerIcon: ({color}) => (
-            <CustomIcon fill={color} name="credit-card-outline" />
+            <CustomIcon fill={color} name="credit-card" />
           ),
         }}
-        name="WalletScreen"
-        component={TopTapNavigationClientDelivery}
+        name="CouponsScreen"
+        component={CouponsScreen}
       />
     </Navigator>
   );

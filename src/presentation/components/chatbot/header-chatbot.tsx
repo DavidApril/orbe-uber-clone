@@ -24,30 +24,6 @@ export const HeaderChatBot = () => {
             ? globalColors.neutralColors.background
             : globalColors.neutralColors.backgroundDark,
       }}>
-      <Pressable
-        onPress={() => navigation.goBack()}
-        style={[
-          globalStyles.FABBackButton,
-          {
-            borderColor:
-              colorScheme === 'dark'
-                ? globalColors.neutralColors.borderDark
-                : globalColors.neutralColors.border,
-            backgroundColor:
-              colorScheme === 'dark'
-                ? globalColors.neutralColors.backgroundDark
-                : globalColors.neutralColors.background,
-          },
-        ]}>
-        <CustomIcon
-          fill={
-            colorScheme === 'dark'
-              ? globalColors.grayScale.white
-              : globalColors.grayScale.black
-          }
-          name="arrow-back"
-        />
-      </Pressable>
       <View
         style={{
           margin: 5,

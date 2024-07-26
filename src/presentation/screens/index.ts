@@ -31,3 +31,5 @@ export * from './profile/delivery/profile-delivery-screen';
 export * from './settings/settings-screen';
 
 export * from './loading/loading-screen';
+
+export * from './coupons/coupons-screen'
