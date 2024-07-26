@@ -3,7 +3,7 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {Layout} from '@ui-kitten/components';
 import React from 'react';
 import {useColorScheme, useWindowDimensions} from 'react-native';
-import {globalColors} from '../../theme/styles';
+import {globalColors, globalStyles} from '../../theme/styles';
 import {CustomIcon} from './custom-icon';
 
 export const CustomBottomTabs = ({
@@ -15,22 +15,25 @@ export const CustomBottomTabs = ({
   const {height} = useWindowDimensions();
   return (
     <Layout
-      style={{
-        height: height * 0.1,
-        margin: 10,
-        flexDirection: 'row',
-        position: 'absolute',
-        bottom: 0,
-        borderRadius: 20,
-        gap: 20,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        backgroundColor:
-          colorScheme === 'light'
-            ? globalColors.neutralColors.bottomTabContainerBackground
-            : globalColors.neutralColors.bottomTabContainerBackgroundDark,
-      }}>
+      style={[
+        {
+          height: height * 0.1,
+          margin: 10,
+          flexDirection: 'row',
+          position: 'absolute',
+          bottom: 0,
+          borderRadius: 20,
+          gap: 20,
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          paddingHorizontal: 20,
+          backgroundColor:
+            colorScheme === 'light'
+              ? globalColors.neutralColors.bottomTabContainerBackground
+              : globalColors.neutralColors.bottomTabContainerBackgroundDark,
+        },
+        globalStyles.boxShadow,
+      ]}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const isFocused = state.index === index;

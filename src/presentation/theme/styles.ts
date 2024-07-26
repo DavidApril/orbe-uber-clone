@@ -1,4 +1,4 @@
-import {StyleSheet, useColorScheme} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const grayScale = {
   black: 'black',
@@ -31,7 +31,6 @@ export const neutralColors = {
   bottomTabFillIcon: 'white',
   bottomTabFillIconDark: 'black',
 
-  
   bottomTabBackground: 'white',
   bottomTabBackgroundDark: 'black',
 
@@ -70,11 +69,23 @@ export const globalDimensions = {
 };
 
 export const globalStyles = StyleSheet.create({
+  boxShadow: {
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.05,
+    elevation: 1,
+  },
+
   primaryButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
   },
+  
   FABBackButton: {
     height: 80,
     width: 80,
