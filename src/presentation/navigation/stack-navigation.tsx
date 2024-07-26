@@ -6,8 +6,7 @@ import {
 import {
   HomeDriverScreen,
   HomeClientDriverScreen,
-  HomeClientDeliveryScreen,
-  TypeClientScreen,
+  HomeDeliveryScreen,
   LoadingScreen,
   LoginScreen,
   PermissionsScreen,
@@ -18,7 +17,6 @@ import {
   ProfileDriverScreen,
   SettingsScreen,
   RegisterDeliveryScreen,
-  HomeDeliveryScreen,
   ProductItemScreen,
   RestaurantScreen,
   ProductsCartScreen,
@@ -94,11 +92,6 @@ export const StackNavigator = () => {
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="HomeDriverScreen"
         component={HomeDriverScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="TypeClientScreen"
-        component={TypeClientScreen}
       />
       <Screen
       

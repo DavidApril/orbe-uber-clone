@@ -3,7 +3,6 @@ export type RootStackParams = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
   PermissionsScreen: undefined;
-  TypeClientScreen: undefined;
   HomeClientDriverScreen: undefined;
   HomeClientDeliveryScreen: undefined;
   HomeDriverScreen: undefined;
@@ -12,10 +11,12 @@ export type RootStackParams = {
   ProductItemScreen: undefined;
   RestaurantScreen: undefined;
   RegisterDriverScreen: undefined;
+  WalletScreen: undefined;
   RegisterClientScreen: undefined;
   favoritesScreen: undefined;
   RegisterDeliveryScreen: undefined;
   ProfileDriverScreen: undefined;
   ProfileClientScreen: undefined;
   SettingsScreen: undefined;
+  chatBotScreen: undefined;
 };

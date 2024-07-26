@@ -58,8 +58,6 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
 
       const userByUID = await UserService.getClientByUid(user.uid);
 
-
-
       set({userByUid: userByUID});
 
       if (userByUID != null) {
@@ -71,7 +69,6 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
           set({role: DELIVERY});
         }
       }
-      console.log({user, token, userByUID})
 
       set({status: 'authorized', token, user});
       return {ok: true};

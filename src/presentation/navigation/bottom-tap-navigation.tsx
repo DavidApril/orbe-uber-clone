@@ -1,6 +1,11 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {FavoritesScreen, ProfileClientScreen, SettingsScreen} from '../screens';
-import {CustomIcon} from '../components';
+import {
+  FavoritesScreen,
+  HomeClientDriverScreen,
+  ProfileClientScreen,
+  SettingsScreen,
+} from '../screens';
+import {CustomBottomTabs, CustomIcon, HeaderChatBot} from '../components';
 import {
   profileRoutesByRoleMapper,
   routesHomeByRoleMapper,
@@ -9,6 +14,7 @@ import {HomeClientScreen} from '../screens/home/home-client-screen';
 import {useAuthStore} from '../../store';
 import {RootStackParams} from '../../interfaces';
 import { globalColors } from '../theme/styles';
+import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
 
 const Tab = createBottomTabNavigator<RootStackParams>();
 
@@ -17,10 +23,8 @@ export const BottomTapNavigationClientDelivery = () => {
 
   return (
     <Tab.Navigator
+      tabBar={props => <CustomBottomTabs {...props} />}
       initialRouteName="HomeClientDeliveryScreen"
-      sceneContainerStyle={{
-        backgroundColor: 'black',
-      }}
       screenOptions={{
         tabBarStyle: {
           position: 'absolute',
@@ -39,16 +43,13 @@ export const BottomTapNavigationClientDelivery = () => {
         headerStyle: {
           shadowColor: 'transparent',
         },
-        headerTintColor: globalColors.primary
+        headerTintColor: globalColors.primaryColors.primary
       }}>
       <Tab.Screen
         name={`HomeClientDeliveryScreen`}
         options={{
-          title: 'Inicio',
-          tabBarIcon: ({color}) => <CustomIcon fill={color} name="home" />,
-          tabBarIconStyle: {
-            backgroundColor: 'black',
-          },
+          // icon name
+          title: 'home-outline',
           headerShown: false,
         }}
         component={routesHomeByRoleMapper(role!) ?? HomeClientScreen}
@@ -56,16 +57,19 @@ export const BottomTapNavigationClientDelivery = () => {
       <Tab.Screen
         name="ProfileClientScreen"
         options={{
-          title: 'Perfil',
-          tabBarIconStyle: {
-            backgroundColor: 'black',
-          },
-          tabBarIcon: ({color}) => (
-            <CustomIcon fill={color} name="person-outline" />
-          ),
-          headerShown: true,
+          // icon name
+          title: 'person-outline',
+          headerShown: false,
         }}
         component={profileRoutesByRoleMapper(role!) ?? ProfileClientScreen}
+      />
+      <Tab.Screen
+        name="HomeClientDriverScreen"
+        options={{
+          // icon name
+          title: 'map-outline',
+        }}
+        component={HomeClientDriverScreen}
       />
       <Tab.Screen
         name="favoritesScreen"
@@ -75,6 +79,15 @@ export const BottomTapNavigationClientDelivery = () => {
           tabBarIconStyle: {},
         }}
         component={FavoritesScreen}
+      />
+      <Tab.Screen
+        name="chatBotScreen"
+        options={{
+          headerShown: false,
+          // icon name
+          title: 'message-circle-outline',
+        }}
+        component={ChatBotScreen}
       />
       <Tab.Screen
         name="SettingsScreen"

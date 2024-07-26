@@ -136,7 +136,7 @@ export const LoginScreen = ({navigation}: Props) => {
           }}>
           <Text>¿No tienes cuenta?</Text>
           <Text
-            style={{color: globalColors.primary}}
+            style={{color: globalColors.primaryColors.primary}}
             category="s1"
             onPress={() => navigation.navigate('RegisterScreen')}>
             {' '}

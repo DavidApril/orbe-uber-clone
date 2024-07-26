@@ -7,13 +7,14 @@ export * from './home/home-driver-screen';
 export * from './home/home-delivery-screen';
 export * from './home/home-client-delivery-screen';
 export * from './home/home-client-driver-screen';
-export * from './home/type-client-screen';
 
 export * from './restaurant/products/product-item-screen';
 export * from './restaurant/products/products-list';
 export * from './restaurant/cart/products-cart-screen';
 export * from './restaurant/restaurant-screen';
 export * from './restaurant/favorites-screen';
+
+export * from './payment/my-cards-tab';
 
 export * from './permissions/permissions-screen';
 

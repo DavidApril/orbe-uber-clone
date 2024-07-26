@@ -25,7 +25,6 @@ export const OpenDrawerMenu = ({top = 20, left, right}: Props) => {
         left: left,
         right: right,
         top: top,
-        backgroundColor: 'white',
       }}
     />
   );

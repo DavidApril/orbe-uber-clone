@@ -4,24 +4,22 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Animated,
   useWindowDimensions,
   ImageBackground,
   Image,
+  useColorScheme,
+  TextInput,
 } from 'react-native';
 import {LoadingScreen} from '../loading/loading-screen';
 import {RestaurantService} from '../../../services/restaurant/restaurant.service';
 import {SingleRestaurantResponse} from '../../../interfaces';
 import {CustomIcon, OpenDrawerMenu, RestaurantCard} from '../../components';
-import {Input, Layout} from '@ui-kitten/components';
-import {globalColors} from '../../theme/styles';
+import {Input} from '@ui-kitten/components';
+import {globalColors, globalDimensions} from '../../theme/styles';
 
 export const HomeClientDeliveryScreen = ({navigation}: any) => {
   const [loadingInfo, setLoadingInfo] = useState(false);
-
+  const colorScheme = useColorScheme();
   const [restaurants, setRestaurants] = useState<
     SingleRestaurantResponse[] | null
   >(null);
@@ -38,33 +36,26 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
     getRestaurants();
   }, []);
 
-  const colorList = [
-    {offset: '0%', color: globalColors.primary, opacity: '1'},
-    {offset: '20%', color: globalColors.primary, opacity: '0.8'},
-    {offset: '40%', color: globalColors.primary, opacity: '0.6'},
-    {offset: '60%', color: globalColors.primary, opacity: '0.4'},
-    {offset: '100%', color: globalColors.primary, opacity: '0'},
-  ];
-
   const {height, width} = useWindowDimensions();
   return (
     <>
       {loadingInfo ? (
-        <Layout
+        <View
           style={{
-            // padding: 20,
-            // backgroundColor:'black',
             flex: 1,
-            // paddingTop: 80,
             flexDirection: 'column',
+            backgroundColor:
+              colorScheme === 'light'
+                ? globalColors.neutralColors.background
+                : globalColors.neutralColors.backgroundDark,
             gap: 28,
           }}>
-          <ImageBackground>
+          {/* <ImageBackground style={{opacity: 0.5}}>
             <Image
               source={require('../../../assets/gradient-background.webp')}
               style={{width: '100%', height: '100%', zIndex: -10}}
             />
-          </ImageBackground>
+          </ImageBackground> */}
 
           <Text
             style={{
@@ -72,14 +63,24 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               paddingHorizontal: 20,
               fontSize: 40,
               position: 'absolute',
-              color: globalColors.primary,
+              color:
+                colorScheme === 'light'
+                  ? globalColors.fontColor.textColor
+                  : globalColors.fontColor.textColorDark,
               fontWeight: '300',
               zIndex: 999,
             }}>
-            Rápidas & <Text style={{fontWeight: 'bold'}}>deliciosas</Text>{' '}
+            Rápidas &{' '}
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: globalColors.primaryColors.primary,
+              }}>
+              deliciosas
+            </Text>{' '}
             comidas
           </Text>
-          <Layout
+          <View
             style={{
               backgroundColor: 'transparent',
               flexDirection: 'row',
@@ -87,28 +88,27 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               gap: 10,
               top: 200,
             }}>
-            <Input
-              accessoryLeft={<CustomIcon fill="gray" name="search" />}
-              style={{
-                flex: 1,
-                shadowColor: '#000000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.17,
-                shadowRadius: 2.54,
-                elevation: 3,
-                paddingHorizontal: 20,
-                borderRadius: 10,
+            <View style={{flex: 1, paddingHorizontal: 20}}>
+              <TextInput
+                placeholderTextColor={
+                  colorScheme === 'light'
+                    ? globalColors.neutralColors.placeholderColor
+                    : globalColors.neutralColors.placeholderColorDark
+                }
+                style={{
+                  paddingHorizontal: 20,
+                  backgroundColor:
+                    colorScheme === 'light'
+                      ? globalColors.neutralColors.textInputBackground
+                      : globalColors.neutralColors.bottomTabBackgroundDark,
+                  borderRadius: globalDimensions.borderRadiusButtom,
+                }}
+                placeholder="Buscar..."
+              />
+            </View>
+          </View>
 
-                backgroundColor: 'white',
-              }}
-              placeholder="Buscar..."
-            />
-          </Layout>
-
-          <Layout
+          <View
             style={{
               position: 'absolute',
               backgroundColor: 'transparent',
@@ -127,207 +127,14 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               showsHorizontalScrollIndicator={false}
               style={{gap: 5, flex: 1, paddingHorizontal: 20}}
             />
-            {/* {restaurants?.map(restaurant => (
-              <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-            ))} */}
-          </Layout>
-
-          {/* <View
-            style={{
-              position: 'absolute',
-              flex: 1,
-              height: height * 0.4,
-              width,
-              zIndex: -10,
-            }}>
-            <RadialGradient
-              x="100%"
-              y="0%"
-              rx="40%"
-              ry="50%"
-              colorList={colorList}
-            />
           </View>
 
-          <View
-            style={{
-              position: 'absolute',
-              flex: 1,
-              height: height * 0.6,
-              width,
-              zIndex: -10,
-              bottom: 0,
-            }}>
-            <RadialGradient
-              x="0%"
-              y="100%"
-              rx="100%"
-              ry="100%"
-              colorList={colorList}
-            />
-          </View> */}
-
           <OpenDrawerMenu left={20} />
-
-          {/* <Layout
-            style={{
-              backgroundColor: 'white',
-              shadowColor: '#000000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.17,
-              shadowRadius: 2.54,
-              elevation: 3,
-              height: 160,
-              borderRadius: 20,
-            }}></Layout> */}
-        </Layout>
+        </View>
       ) : (
-        // <Animated.View style={styles.container}>
-        //   <View style={styles.container_top}>
-        //     <View style={styles.container_search}>
-        //       <TextInput placeholder={'Buscar'} style={styles.search} />
-
-        //       {/* <Ionicons size={24} style={{ position: 'absolute', top: '25%', right: 25 }} color={'#777'} name='search' /> */}
-        //     </View>
-
-        //     <TouchableOpacity
-        //       style={{
-        //         justifyContent: 'center',
-        //         alignItems: 'center',
-        //         height: 52,
-        //         width: 52,
-        //         borderRadius: 50,
-        //         borderWidth: 2,
-        //         borderColor: '#3fc1f2',
-        //         backgroundColor: '#3fc1f2',
-        //       }}
-        //       onPress={() => {
-        //         navigation.toggleDrawer();
-        //       }}>
-        //       {/* <Ionicons name="menu" size={36} color={'#fff'} /> */}
-        //     </TouchableOpacity>
-        //   </View>
-
-        //   <ScrollView showsVerticalScrollIndicator={false}>
-        //     {/* <View style={styles.container_sections}>
-        //       <FlatList
-        //         data={catalogs}
-        //         renderItem={renderCatalog}
-        //         horizontal
-        //         showsHorizontalScrollIndicator={false}
-        //         style={{gap: 5}}
-        //       />
-        //     </View> */}
-
-        //     {/* <View style={styles.container_sections}>
-        //       <View
-        //         style={{
-        //           flexDirection: 'row',
-        //           alignItems: 'center',
-        //           justifyContent: 'space-between',
-        //         }}>
-        //         <Text style={[styles.sectionTitle, {paddingVertical: 0}]}>
-        //           Productos Destacados
-        //         </Text>
-
-        //         <TouchableOpacity
-        //           onPress={() => {
-        //             // navigation.navigate('ProductList', ProductList);
-        //           }}>
-        //           <Text
-        //             style={{
-        //               fontWeight: 'bold',
-        //               color: '#3fc1f2',
-        //               fontSize: 17,
-        //             }}>
-        //             Ver productos
-        //           </Text>
-        //         </TouchableOpacity>
-        //       </View>
-        //       <FlatList
-        //         data={featured}
-        //         renderItem={renderProduct}
-        //         horizontal
-        //         showsHorizontalScrollIndicator={false}
-        //         style={styles.horizontalList}
-        //       />
-        //     </View> */}
-
-        //     <View style={styles.container_sections}>
-        //       <View
-        //         style={{
-        //           flexDirection: 'row',
-        //           alignItems: 'center',
-        //           justifyContent: 'space-between',
-        //         }}>
-        //         <Text style={[styles.sectionTitle, {paddingVertical: 0}]}>
-        //           Restaurantes recomendados
-        //         </Text>
-
-        //         <TouchableOpacity
-        //           onPress={() => {
-        //             navigation.navigate('RestaurantList');
-        //           }}>
-        //           <Text
-        //             style={{
-        //               fontWeight: 'bold',
-        //               color: '#3fc1f2',
-        //               fontSize: 17,
-        //             }}>
-        //             Ver mas
-        //           </Text>
-        //         </TouchableOpacity>
-        //       </View>
-        //       <FlatList
-        //         data={restaurants}
-        //         renderItem={({item: restaurant}) => (
-        //           <RestaurantCard restaurant={restaurant} />
-        //         )}
-        //         horizontal
-        //         showsHorizontalScrollIndicator={false}
-        //         style={styles.horizontalList}
-        //       />
-        //     </View>
-
-        //     {/* <View style={styles.container_sections}>
-        //       <View
-        //         style={{
-        //           flexDirection: 'row',
-        //           alignItems: 'center',
-        //           justifyContent: 'space-between',
-        //         }}>
-        //         <Text style={styles.sectionTitle}>Ofertas especiales</Text>
-        //         <Text
-        //           style={{fontWeight: 'bold', color: '#3fc1f2', fontSize: 17}}>
-        //           Ver mas
-        //         </Text>
-        //       </View>
-        //       <FlatList
-        //         data={offers}
-        //         renderItem={renderOffer}
-        //         horizontal
-        //         showsHorizontalScrollIndicator={false}
-        //         style={styles.horizontalList}
-        //       />
-        //     </View> */}
-
-        //     {/* <Accordion title="Productos que te pueden interesar">
-        //       <FlatList
-        //         data={featured}
-        //         renderItem={renderFeatured}
-        //         horizontal
-        //         showsHorizontalScrollIndicator={false}
-        //         style={styles.horizontalList}
-        //       />
-        //     </Accordion> */}
-        //   </ScrollView>
-        // </Animated.View>
-        <Layout>
+        <View>
           <LoadingScreen />
-        </Layout>
+        </View>
       )}
     </>
   );

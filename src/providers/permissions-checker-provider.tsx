@@ -15,7 +15,7 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
       if (role === DRIVER) {
         navigation.navigate('HomeDriverScreen');
       } else if (role === CLIENT) {
-        navigation.navigate('TypeClientScreen');
+        navigation.navigate('HomeClientDeliveryScreen');
       } else if (role === DELIVERY) {
         navigation.navigate('HomeDeliveryScreen');
       }

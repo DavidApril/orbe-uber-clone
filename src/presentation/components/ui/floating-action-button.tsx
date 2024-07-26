@@ -1,6 +1,14 @@
 import {Button, Layout} from '@ui-kitten/components';
-import {StyleProp, StyleSheet, Text, TextStyle, ViewStyle} from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  useColorScheme,
+  ViewStyle,
+} from 'react-native';
 import {CustomIcon} from './custom-icon';
+import { globalColors } from '../../theme/styles';
 
 interface Props {
   iconName: string;
@@ -22,9 +30,30 @@ export const FAB = ({
   disabled,
   fill,
 }: Props) => {
+  const colorScheme = useColorScheme();
+
   return (
     <Button
-      style={[styles.btn, style]}
+      style={[
+        {
+          zIndex: 1,
+          position: 'absolute',
+          borderRadius: 100,
+          height: 30,
+          width: 30,
+          justifyContent: 'center',
+          backgroundColor: colorScheme === 'light' ? globalColors.primaryColors.primary: '',
+          alignItems: 'center',
+          shadowOpacity: 0.3,
+          shadowOffset: {
+            height: 0.27,
+            width: 4.5,
+          },
+          elevation: 5,
+        },
+        ,
+        style,
+      ]}
       disabled={disabled}
       appearance="ghost"
       accessoryLeft={<CustomIcon fill={fill} white={white} name={iconName} />}
@@ -33,22 +62,3 @@ export const FAB = ({
     </Button>
   );
 };
-
-const styles = StyleSheet.create({
-  btn: {
-    zIndex: 1,
-    position: 'absolute',
-    borderRadius: 100,
-    height: 30,
-    width: 30,
-    justifyContent: 'center',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    shadowOpacity: 0.3,
-    shadowOffset: {
-      height: 0.27,
-      width: 4.5,
-    },
-    elevation: 5,
-  },
-});
