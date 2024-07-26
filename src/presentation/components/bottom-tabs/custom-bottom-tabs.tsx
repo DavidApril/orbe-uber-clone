@@ -1,8 +1,9 @@
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {Layout} from '@ui-kitten/components';
-import {useColorScheme, useWindowDimensions} from 'react-native';
+import {useWindowDimensions} from 'react-native';
 import {globalColors, globalStyles} from '../../theme/styles';
 import {CustomBottomTabItem} from './custom-bottom-tab-item';
+import {useUIStore} from '../../../store';
 
 export const CustomBottomTabs = ({
   state,
@@ -10,7 +11,7 @@ export const CustomBottomTabs = ({
   navigation,
   insets,
 }: BottomTabBarProps) => {
-  const colorScheme = useColorScheme();
+  const {isDarkMode} = useUIStore();
   const {height} = useWindowDimensions();
   return (
     <Layout
@@ -26,15 +27,13 @@ export const CustomBottomTabs = ({
           justifyContent: 'space-around',
           alignItems: 'center',
           borderWidth: 0.5,
-          borderColor:
-            colorScheme === 'light'
-              ? globalColors.neutralColors.border
-              : globalColors.neutralColors.backgroundDark,
+          borderColor: isDarkMode
+            ? globalColors.neutralColors.border
+            : globalColors.neutralColors.backgroundDark,
           paddingHorizontal: 20,
-          backgroundColor:
-            colorScheme === 'light'
-              ? globalColors.neutralColors.bottomTabContainerBackground
-              : globalColors.neutralColors.bottomTabContainerBackgroundDark,
+          backgroundColor: isDarkMode
+            ? globalColors.neutralColors.bottomTabContainerBackground
+            : globalColors.neutralColors.bottomTabContainerBackgroundDark,
         },
         globalStyles.boxShadow,
       ]}>

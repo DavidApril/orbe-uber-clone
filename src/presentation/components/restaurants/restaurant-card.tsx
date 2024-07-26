@@ -6,7 +6,7 @@ import {View} from 'react-native';
 import {Text} from 'react-native';
 import {globalColors} from '../../theme/styles';
 import {FAB} from '../ui/floating-action-button';
-import {useCartStore} from '../../../store';
+import {useCartStore, useUIStore} from '../../../store';
 
 export const RestaurantCard = ({
   restaurant,
@@ -18,8 +18,8 @@ export const RestaurantCard = ({
   );
 
   const {setRestaurantSelected} = useCartStore();
-  const colorScheme = useColorScheme();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
+  const {isDarkMode} = useUIStore();
 
   return (
     <Pressable
@@ -37,7 +37,7 @@ export const RestaurantCard = ({
         position: 'relative',
       }}>
       <FAB
-        white={colorScheme === 'light' ? true : false}
+        white={isDarkMode ? true : false}
         iconName="heart"
         style={{
           right: 20,
@@ -53,10 +53,9 @@ export const RestaurantCard = ({
           top: 0,
           bottom: 0,
           borderRadius: 15,
-          backgroundColor:
-            colorScheme === 'light'
-              ? globalColors.grayScale.white
-              : globalColors.neutralColors.backgroundDarkAlpha,
+          backgroundColor: isDarkMode
+            ? globalColors.grayScale.white
+            : globalColors.neutralColors.backgroundDarkAlpha,
         }}></View>
       {restaurant.attachments.length > 0 && (
         <Image
@@ -79,10 +78,9 @@ export const RestaurantCard = ({
         }}>
         <Text
           style={{
-            color:
-              colorScheme === 'light'
-                ? globalColors.fontColor.textColorHeader
-                : globalColors.fontColor.textColorHeaderDark,
+            color: isDarkMode
+              ? globalColors.fontColor.textColorHeader
+              : globalColors.fontColor.textColorHeaderDark,
             fontWeight: 'bold',
             fontSize: 18,
           }}>
@@ -90,10 +88,9 @@ export const RestaurantCard = ({
         </Text>
         <Text
           style={{
-            color:
-              colorScheme === 'light'
-                ? globalColors.fontColor.textColor
-                : globalColors.fontColor.textColorDark,
+            color: isDarkMode
+              ? globalColors.fontColor.textColor
+              : globalColors.fontColor.textColorDark,
           }}>
           {restaurant.description}
         </Text>

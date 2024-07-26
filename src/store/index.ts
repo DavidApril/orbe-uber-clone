@@ -3,3 +3,4 @@ export * from './permissions/permissions.store';
 export * from './location/location.store';
 export * from './driver/driver.store'
 export * from './cart/cart.store'
+export * from './ui/ui'

@@ -1,19 +1,12 @@
-import {
-  Animated,
-  StyleSheet,
-  useColorScheme,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import {Layout} from '@ui-kitten/components';
+import {Animated, useWindowDimensions, View} from 'react-native';
 import {useAnimation} from '../../../hooks';
 import {globalColors} from '../../theme/styles';
+import {useUIStore} from '../../../store';
 
 export const LoadingScreen = () => {
   const {rotateStyle} = useAnimation();
   const {height, width} = useWindowDimensions();
-
-  const colorScheme = useColorScheme();
+  const {isDarkMode} = useUIStore();
   return (
     <View
       style={{
@@ -25,10 +18,9 @@ export const LoadingScreen = () => {
         bottom: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:
-          colorScheme === 'light'
-            ? globalColors.neutralColors.background
-            : globalColors.neutralColors.backgroundDark,
+        backgroundColor: isDarkMode
+          ? globalColors.neutralColors.background
+          : globalColors.neutralColors.backgroundDark,
       }}>
       <Animated.Image
         source={require('../../../assets/loading.png')}

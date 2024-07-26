@@ -9,6 +9,7 @@ import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {StyleProp, useColorScheme, ViewStyle} from 'react-native';
 import {globalColors} from '../../theme/styles';
 import {CustomIcon} from './custom-icon';
+import {useUIStore} from '../../../store';
 
 interface Props {
   left?: number;
@@ -19,7 +20,7 @@ interface Props {
 
 export const OpenDrawerMenu = ({style}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
-  const colorScheme = useColorScheme();
+  const {isDarkMode} = useUIStore();
   return (
     <TouchableOpacity
       style={[
@@ -32,8 +33,7 @@ export const OpenDrawerMenu = ({style}: Props) => {
           top: 30,
           left: 30,
           justifyContent: 'center',
-          backgroundColor:
-            colorScheme === 'light' ? globalColors.primaryColors.primary : '',
+          backgroundColor: isDarkMode ? globalColors.primaryColors.primary : '',
           alignItems: 'center',
           shadowOpacity: 0.3,
           shadowOffset: {
@@ -46,10 +46,7 @@ export const OpenDrawerMenu = ({style}: Props) => {
         style,
       ]}
       onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}>
-      <CustomIcon
-        white={colorScheme === 'light' ? true : false}
-        name="menu-2-outline"
-      />
+      <CustomIcon white={isDarkMode ? true : false} name="menu-2-outline" />
     </TouchableOpacity>
   );
 };

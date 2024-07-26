@@ -3,7 +3,7 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {Button, Layout} from '@ui-kitten/components';
-import {useAuthStore} from '../../../store';
+import {useAuthStore, useUIStore} from '../../../store';
 import {
   Image,
   Modal,
@@ -22,7 +22,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const {logout, userByUid, role} = useAuthStore();
   const {height} = useWindowDimensions();
   const [modal, setModal] = useState<boolean>(false);
-  const colorScheme = useColorScheme();
+  const {isDarkMode} = useUIStore();
 
   let image_url: string = '';
 
@@ -38,10 +38,9 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   return (
     <View
       style={{
-        backgroundColor:
-          colorScheme === 'light'
-            ? globalColors.neutralColors.background
-            : globalColors.neutralColors.backgroundDark,
+        backgroundColor: isDarkMode
+          ? globalColors.neutralColors.background
+          : globalColors.neutralColors.backgroundDark,
         height,
         padding: 20,
         overflow: 'hidden',
@@ -61,20 +60,18 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           <Text
             style={{
               fontSize: 16,
-              color:
-                colorScheme === 'light'
-                  ? globalColors.fontColor.textColorHeader
-                  : globalColors.fontColor.textColorHeaderDark,
+              color: isDarkMode
+                ? globalColors.fontColor.textColorHeader
+                : globalColors.fontColor.textColorHeaderDark,
             }}>
             {userByUid?.cliente.name}
           </Text>
           <Text
             style={{
               fontSize: 15,
-              color:
-                colorScheme === 'light'
-                  ? globalColors.fontColor.textColor
-                  : globalColors.fontColor.textColorDark,
+              color: isDarkMode
+                ? globalColors.fontColor.textColor
+                : globalColors.fontColor.textColorDark,
             }}>
             {userByUid?.email}
           </Text>

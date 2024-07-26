@@ -6,7 +6,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {FAB} from '../ui/floating-action-button';
 import {CustomIcon} from '../ui/custom-icon';
 import {currencyFormat} from '../../../utils';
-import {useCartStore} from '../../../store';
+import {useCartStore, useUIStore} from '../../../store';
 import {useState} from 'react';
 import {LoadingScreen} from '../../screens';
 import {globalColors} from '../../theme/styles';
@@ -21,6 +21,7 @@ export const ProductCard = ({product}: Props) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
   const {setProductSelected} = useCartStore();
+  const {isDarkMode} = useUIStore();
   const {
     addProductToCart,
     removeFavorite,
@@ -28,12 +29,10 @@ export const ProductCard = ({product}: Props) => {
     removeProduct,
   } = useCartStore();
 
-
   if (!product) {
     return <LoadingScreen />;
   }
 
-  const colorScheme = useColorScheme();
   return (
     <TouchableOpacity
       onPress={() => {
@@ -42,10 +41,9 @@ export const ProductCard = ({product}: Props) => {
       }}>
       <View
         style={{
-          backgroundColor:
-            colorScheme === 'light'
-              ? globalColors.neutralColors.backgroundAlpha
-              : globalColors.neutralColors.backgroundDarkAlpha,
+          backgroundColor: isDarkMode
+            ? globalColors.neutralColors.backgroundAlpha
+            : globalColors.neutralColors.backgroundDarkAlpha,
           margin: 5,
           borderRadius: 10,
           shadowColor: '#000',

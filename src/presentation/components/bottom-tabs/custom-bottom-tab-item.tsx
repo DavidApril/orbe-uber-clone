@@ -3,6 +3,7 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {useColorScheme} from 'react-native';
 import {globalColors} from '../../theme/styles';
 import {CustomIcon} from '../ui/custom-icon';
+import {useUIStore} from '../../../store';
 
 interface Props {
   route: any;
@@ -20,6 +21,7 @@ export const CustomBottomTabItem = ({
   const isFocused = state.index === index;
   const colorScheme = useColorScheme();
   const iconName = options.title !== undefined && options.title;
+  const {isDarkMode} = useUIStore();
   const onPress = () => {
     const event = navigation.emit({
       type: 'tabPress',
@@ -54,7 +56,7 @@ export const CustomBottomTabItem = ({
             ? 'white'
             : iconName === 'map-outline'
             ? globalColors.primaryColors.primary
-            : colorScheme === 'light'
+            : isDarkMode
             ? globalColors.neutralColors.bottomTabBackground
             : globalColors.neutralColors.bottomTabBackgroundDark,
         height: 65,
@@ -65,7 +67,7 @@ export const CustomBottomTabItem = ({
         fill={
           isFocused
             ? globalColors.primaryColors.primary
-            : colorScheme === 'light'
+            : isDarkMode
             ? globalColors.neutralColors.bottomTabFillIcon
             : globalColors.neutralColors.bottomTabFillIconDark
         }

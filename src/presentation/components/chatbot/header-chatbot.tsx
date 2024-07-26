@@ -1,14 +1,11 @@
 import {Layout, Text} from '@ui-kitten/components';
-import {CustomIcon} from '../ui/custom-icon';
-import {globalColors, globalStyles} from '../../theme/styles';
-import {Image, Pressable, useColorScheme, View} from 'react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParams} from '../../../interfaces';
+import {globalColors} from '../../theme/styles';
+import {Image, useColorScheme, View} from 'react-native';
+import {useUIStore} from '../../../store';
 
 export const HeaderChatBot = () => {
   const colorScheme = useColorScheme();
-  const navigation = useNavigation<NavigationProp<RootStackParams>>();
-
+  const {isDarkMode} = useUIStore();
   return (
     <Layout
       style={{
@@ -19,10 +16,9 @@ export const HeaderChatBot = () => {
         height: 90,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor:
-          colorScheme === 'light'
-            ? globalColors.neutralColors.background
-            : globalColors.neutralColors.backgroundDark,
+        backgroundColor: isDarkMode
+          ? globalColors.neutralColors.background
+          : globalColors.neutralColors.backgroundDark,
       }}>
       <View
         style={{

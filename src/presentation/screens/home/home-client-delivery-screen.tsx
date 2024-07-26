@@ -5,7 +5,6 @@ import {
   StyleSheet,
   FlatList,
   useWindowDimensions,
-  useColorScheme,
   TextInput,
 } from 'react-native';
 import {LoadingScreen} from '../loading/loading-screen';
@@ -13,10 +12,11 @@ import {RestaurantService} from '../../../services/restaurant/restaurant.service
 import {SingleRestaurantResponse} from '../../../interfaces';
 import {OpenDrawerMenu, RestaurantCard} from '../../components';
 import {globalColors, globalDimensions} from '../../theme/styles';
+import {useUIStore} from '../../../store';
 
 export const HomeClientDeliveryScreen = ({navigation}: any) => {
   const [loadingInfo, setLoadingInfo] = useState(false);
-  const colorScheme = useColorScheme();
+  const {isDarkMode} = useUIStore();
   const [restaurants, setRestaurants] = useState<
     SingleRestaurantResponse[] | null
   >(null);
@@ -33,6 +33,10 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
     getRestaurants();
   }, []);
 
+  useEffect(() => {
+    console.log({isDarkMode})
+  },[isDarkMode])
+
   const {height, width} = useWindowDimensions();
   return (
     <>
@@ -41,10 +45,9 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
           style={{
             flex: 1,
             flexDirection: 'column',
-            backgroundColor:
-              colorScheme === 'light'
-                ? globalColors.neutralColors.background
-                : globalColors.neutralColors.backgroundDark,
+            backgroundColor: isDarkMode
+              ? globalColors.neutralColors.background
+              : globalColors.neutralColors.backgroundDark,
             gap: 28,
           }}>
           <Text
@@ -53,10 +56,9 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               paddingHorizontal: 20,
               fontSize: 40,
               position: 'absolute',
-              color:
-                colorScheme === 'light'
-                  ? globalColors.fontColor.textColor
-                  : globalColors.fontColor.textColorDark,
+              color: isDarkMode
+                ? globalColors.fontColor.textColor
+                : globalColors.fontColor.textColorDark,
               fontWeight: '300',
               zIndex: 999,
             }}>
@@ -81,16 +83,15 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
             <View style={{flex: 1, paddingHorizontal: 20}}>
               <TextInput
                 placeholderTextColor={
-                  colorScheme === 'light'
+                  isDarkMode
                     ? globalColors.neutralColors.placeholderColor
                     : globalColors.neutralColors.placeholderColorDark
                 }
                 style={{
                   paddingHorizontal: 20,
-                  backgroundColor:
-                    colorScheme === 'light'
-                      ? globalColors.neutralColors.textInputBackground
-                      : globalColors.neutralColors.bottomTabBackgroundDark,
+                  backgroundColor: isDarkMode
+                    ? globalColors.neutralColors.textInputBackground
+                    : globalColors.neutralColors.bottomTabBackgroundDark,
                   borderRadius: globalDimensions.borderRadiusButtom,
                 }}
                 placeholder="Buscar..."

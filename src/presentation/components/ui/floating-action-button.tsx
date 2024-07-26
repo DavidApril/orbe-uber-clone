@@ -8,7 +8,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import {CustomIcon} from './custom-icon';
-import { globalColors } from '../../theme/styles';
+import {globalColors} from '../../theme/styles';
+import {useUIStore} from '../../../store';
 
 interface Props {
   iconName: string;
@@ -30,7 +31,7 @@ export const FAB = ({
   disabled,
   fill,
 }: Props) => {
-  const colorScheme = useColorScheme();
+  const {isDarkMode} = useUIStore();
 
   return (
     <Button
@@ -42,7 +43,7 @@ export const FAB = ({
           height: 30,
           width: 30,
           justifyContent: 'center',
-          backgroundColor: colorScheme === 'light' ? globalColors.primaryColors.primary: '',
+          backgroundColor: isDarkMode ? globalColors.primaryColors.primary : '',
           alignItems: 'center',
           shadowOpacity: 0.3,
           shadowOffset: {

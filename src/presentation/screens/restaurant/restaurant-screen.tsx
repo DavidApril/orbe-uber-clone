@@ -20,7 +20,7 @@ import {
 import {RestaurantService} from '../../../services/restaurant/restaurant.service';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ProductsList} from './products/products-list';
-import {useCartStore} from '../../../store';
+import {useCartStore, useUIStore} from '../../../store';
 import BottomSheet, {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {globalColors} from '../../theme/styles';
 
@@ -53,7 +53,6 @@ export const RestaurantScreen = () => {
     );
     setProducts(products);
   };
-  const summaryBottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
     setCartNews(true);
@@ -63,17 +62,16 @@ export const RestaurantScreen = () => {
     getProductsByIdRestaurant(page);
   }, [page]);
 
-  const colorScheme = useColorScheme();
+  const {isDarkMode} = useUIStore();
 
   return (
     <View
       style={{
         flex: 1,
         position: 'relative',
-        backgroundColor:
-          colorScheme === 'light'
-            ? globalColors.neutralColors.background
-            : globalColors.neutralColors.backgroundDark,
+        backgroundColor: isDarkMode
+          ? globalColors.neutralColors.background
+          : globalColors.neutralColors.backgroundDark,
       }}>
       <TouchableOpacity
         style={[
@@ -86,8 +84,9 @@ export const RestaurantScreen = () => {
             top: 30,
             left: 30,
             justifyContent: 'center',
-            backgroundColor:
-              colorScheme === 'light' ? globalColors.primaryColors.primary : '',
+            backgroundColor: isDarkMode
+              ? globalColors.primaryColors.primary
+              : '',
             alignItems: 'center',
             shadowOpacity: 0.3,
             shadowOffset: {
@@ -98,15 +97,10 @@ export const RestaurantScreen = () => {
           },
         ]}
         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}>
-        <CustomIcon
-          white={colorScheme === 'light' ? true : false}
-          name="menu-2-outline"
-        />
+        <CustomIcon white={isDarkMode ? true : false} name="menu-2-outline" />
       </TouchableOpacity>
 
       <ScrollView>
-
-
         <View
           style={{
             height: height * 0.3,

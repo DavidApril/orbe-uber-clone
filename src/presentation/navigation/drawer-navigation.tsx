@@ -2,22 +2,21 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {StackNavigator} from './stack-navigation';
 import {globalColors} from '../theme/styles';
 import {CustomDrawerContent, CustomIcon} from '../components';
-import {useColorScheme} from 'react-native';
 
 import {RootStackParams} from '../../interfaces';
 import {CouponsScreen} from '../screens';
+import {useUIStore} from '../../store';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
 export function DrawerNavigation() {
-  const colorScheme = useColorScheme();
-
+  const {isDarkMode} = useUIStore();
   return (
     <Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerType: 'back',
-        drawerInactiveTintColor: colorScheme === 'light' ? 'black' : 'white',
+        drawerInactiveTintColor: isDarkMode ? 'black' : 'white',
         drawerActiveTintColor: globalColors.primaryColors.primary,
         drawerItemStyle: {
           borderRadius: 50,

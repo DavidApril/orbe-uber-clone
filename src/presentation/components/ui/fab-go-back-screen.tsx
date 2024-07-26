@@ -5,6 +5,7 @@ import {StyleProp, useColorScheme, ViewStyle} from 'react-native';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {globalColors} from '../../theme/styles';
 import {CustomIcon} from './custom-icon';
+import {useUIStore} from '../../../store';
 
 interface Props {
   fill?: string;
@@ -13,8 +14,7 @@ interface Props {
 
 export const FABGoBackButton = ({fill, style}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
-  const colorScheme = useColorScheme();
-
+  const {isDarkMode} = useUIStore();
   return (
     <TouchableOpacity
       style={[
@@ -27,8 +27,7 @@ export const FABGoBackButton = ({fill, style}: Props) => {
           top: 30,
           left: 30,
           justifyContent: 'center',
-          backgroundColor:
-            colorScheme === 'light' ? globalColors.primaryColors.primary : '',
+          backgroundColor: isDarkMode ? globalColors.primaryColors.primary : '',
           alignItems: 'center',
           shadowOpacity: 0.3,
           shadowOffset: {

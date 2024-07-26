@@ -4,15 +4,15 @@ import {globalColors, globalDimensions, globalStyles} from '../../theme/styles';
 import {
   ScrollView,
   TextInput,
-  useColorScheme,
   useWindowDimensions,
   View,
   Text,
 } from 'react-native';
+import {useUIStore} from '../../../store';
 
 export const ChatBotContainer = ({children}: PropsWithChildren) => {
   const {height} = useWindowDimensions();
-  const colorScheme = useColorScheme();
+  const {isDarkMode} = useUIStore();
 
   return (
     <Layout
@@ -24,26 +24,24 @@ export const ChatBotContainer = ({children}: PropsWithChildren) => {
           flexDirection: 'column-reverse',
           paddingBottom: height * 0.13,
           padding: 15,
-          backgroundColor:
-            colorScheme === 'light'
-              ? globalColors.neutralColors.backgroundAlpha
-              : globalColors.neutralColors.backgroundDarkAlpha,
+          backgroundColor: isDarkMode
+            ? globalColors.neutralColors.backgroundAlpha
+            : globalColors.neutralColors.backgroundDarkAlpha,
         },
         globalStyles.boxShadow,
       ]}>
       <View>
         <TextInput
           placeholderTextColor={
-            colorScheme === 'light'
+            isDarkMode
               ? globalColors.neutralColors.placeholderColor
               : globalColors.neutralColors.placeholderColorDark
           }
           style={{
             paddingHorizontal: 20,
-            backgroundColor:
-              colorScheme === 'light'
-                ? globalColors.neutralColors.textInputBackground
-                : globalColors.neutralColors.textInputBackgroundDark,
+            backgroundColor: isDarkMode
+              ? globalColors.neutralColors.textInputBackground
+              : globalColors.neutralColors.textInputBackgroundDark,
             borderRadius: globalDimensions.borderRadiusButtom,
           }}
           placeholder="Escribe un mensaje..."
@@ -54,10 +52,9 @@ export const ChatBotContainer = ({children}: PropsWithChildren) => {
         <View style={{flexDirection: 'column', gap: 10}}>
           <View
             style={{
-              backgroundColor:
-                colorScheme === 'light'
-                  ? globalColors.neutralColors.messageChatBackground
-                  : globalColors.neutralColors.messageChatBackgroundDark,
+              backgroundColor: isDarkMode
+                ? globalColors.neutralColors.messageChatBackground
+                : globalColors.neutralColors.messageChatBackgroundDark,
               borderTopLeftRadius: 40,
               borderTopRightRadius: 40,
               borderBottomLeftRadius: 40,
@@ -76,10 +73,9 @@ export const ChatBotContainer = ({children}: PropsWithChildren) => {
           </View>
           <View
             style={{
-              backgroundColor:
-                colorScheme === 'light'
-                  ? globalColors.neutralColors.messageReceptChatBackground
-                  : globalColors.neutralColors.messageReceptChatBackgroundDark,
+              backgroundColor: isDarkMode
+                ? globalColors.neutralColors.messageReceptChatBackground
+                : globalColors.neutralColors.messageReceptChatBackgroundDark,
               borderTopLeftRadius: 40,
               borderTopRightRadius: 40,
               borderBottomRightRadius: 40,
