@@ -50,7 +50,11 @@ export const CustomBottomTabItem = ({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor:
-          colorScheme === 'light'
+          isFocused && iconName === 'map-outline'
+            ? 'white'
+            : iconName === 'map-outline'
+            ? globalColors.primaryColors.primary
+            : colorScheme === 'light'
             ? globalColors.neutralColors.bottomTabBackground
             : globalColors.neutralColors.bottomTabBackgroundDark,
         height: 65,
@@ -59,7 +63,9 @@ export const CustomBottomTabItem = ({
       }}>
       <CustomIcon
         fill={
-          isFocused
+          iconName === 'map-outline'
+            ? 'black'
+            : isFocused
             ? globalColors.primaryColors.primary
             : colorScheme === 'light'
             ? globalColors.neutralColors.bottomTabFillIcon

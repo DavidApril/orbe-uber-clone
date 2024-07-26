@@ -1,5 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {FavoritesScreen, ProfileClientScreen, SettingsScreen} from '../screens';
+import {
+  FavoritesScreen,
+  HomeClientDriverScreen,
+  ProfileClientScreen,
+  SettingsScreen,
+} from '../screens';
 import {CustomBottomTabs, CustomIcon, HeaderChatBot} from '../components';
 import {
   profileRoutesByRoleMapper,
@@ -9,7 +14,6 @@ import {HomeClientScreen} from '../screens/home/home-client-screen';
 import {useAuthStore} from '../../store';
 import {RootStackParams} from '../../interfaces';
 import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
-import {Layout, Text} from '@ui-kitten/components';
 
 const Tab = createBottomTabNavigator<RootStackParams>();
 
@@ -26,6 +30,7 @@ export const BottomTapNavigationClientDelivery = () => {
       <Tab.Screen
         name={`HomeClientDeliveryScreen`}
         options={{
+          // icon name
           title: 'home-outline',
           headerShown: false,
         }}
@@ -34,14 +39,24 @@ export const BottomTapNavigationClientDelivery = () => {
       <Tab.Screen
         name="ProfileClientScreen"
         options={{
+          // icon name
           title: 'person-outline',
           headerShown: true,
         }}
         component={profileRoutesByRoleMapper(role!) ?? ProfileClientScreen}
       />
       <Tab.Screen
+        name="HomeClientDriverScreen"
+        options={{
+          // icon name
+          title: 'map-outline',
+        }}
+        component={HomeClientDriverScreen}
+      />
+      <Tab.Screen
         name="favoritesScreen"
         options={{
+          // icon name
           title: 'heart',
         }}
         component={FavoritesScreen}
@@ -50,6 +65,7 @@ export const BottomTapNavigationClientDelivery = () => {
         name="chatBotScreen"
         options={{
           headerShown: false,
+          // icon name
           title: 'message-circle-outline',
         }}
         component={ChatBotScreen}
@@ -57,6 +73,7 @@ export const BottomTapNavigationClientDelivery = () => {
       <Tab.Screen
         name="SettingsScreen"
         options={{
+          // icon name
           title: 'settings-outline',
         }}
         component={SettingsScreen}

@@ -38,7 +38,7 @@ export const RestaurantCard = ({
       }}>
       <FAB
         white={colorScheme === 'light' ? true : false}
-        iconName="shopping-bag-outline"
+        iconName="heart"
         style={{
           right: 20,
           bottom: 20,

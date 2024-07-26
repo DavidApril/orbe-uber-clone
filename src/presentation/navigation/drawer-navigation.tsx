@@ -29,7 +29,6 @@ export function DrawerNavigation() {
         options={{
           title: 'Inicio',
           drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
-
           headerShown: false,
         }}
         name="HomeClientDriverScreen"
