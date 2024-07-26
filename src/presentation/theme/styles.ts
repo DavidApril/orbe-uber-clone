@@ -27,6 +27,19 @@ export const neutralColors = {
   onSurface: '#000000',
   border: '#d1d1d1',
   borderDark: 'gray',
+
+  bottomTabFillIcon: 'white',
+  bottomTabFillIconDark: 'black',
+
+  
+  bottomTabBackground: 'white',
+  bottomTabBackgroundDark: 'black',
+
+  bottomTabFocusBackground: '#f5f5f5',
+  bottomTabFocusBackgroundDark: '#e0e0e0',
+
+  bottomTabContainerBackground: 'white',
+  bottomTabContainerBackgroundDark: 'black',
 };
 
 export const fontColor = {
@@ -50,6 +63,10 @@ export const globalColors = {
   neutralColors,
   stateColors,
   fontColor,
+};
+
+export const globalDimensions = {
+  borderRadiusButtom: 20,
 };
 
 export const globalStyles = StyleSheet.create({
