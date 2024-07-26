@@ -23,26 +23,42 @@ export const secondaryColors = {
 export const neutralColors = {
   background: '#f5f5f5',
   backgroundDark: 'black',
+
+  backgroundAlpha: '#f5f5f5',
+  backgroundDarkAlpha: '#171717',
+
   surface: '#ffffff',
   onSurface: '#000000',
   border: '#d1d1d1',
   borderDark: 'gray',
 
-  bottomTabFillIcon: 'white',
-  bottomTabFillIconDark: 'black',
+  bottomTabFillIcon: 'black',
+  bottomTabFillIconDark: 'white',
 
   bottomTabBackground: 'white',
-  bottomTabBackgroundDark: 'black',
+  bottomTabBackgroundDark: '#171717',
 
   bottomTabFocusBackground: '#f5f5f5',
   bottomTabFocusBackgroundDark: '#e0e0e0',
 
   bottomTabContainerBackground: 'white',
   bottomTabContainerBackgroundDark: 'black',
+
+  textInputBackground: '#e8e8e8',
+  textInputBackgroundDark: 'black',
+
+  placeholderColor: 'gray',
+  placeholderColorDark: 'white',
+
+  messageChatBackground: '#3498db',
+  messageChatBackgroundDark: 'black',
+
+  messageReceptChatBackground: '#a6a6a6',
+  messageReceptChatBackgroundDark: '#292929',
 };
 
 export const fontColor = {
-  textColor: 'gray',
+  textColor: 'balck',
   textColorDark: 'gray',
   textColorHeader: 'black',
   textColorHeaderDark: 'white',
@@ -85,7 +101,7 @@ export const globalStyles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 20,
   },
-  
+
   FABBackButton: {
     height: 80,
     width: 80,

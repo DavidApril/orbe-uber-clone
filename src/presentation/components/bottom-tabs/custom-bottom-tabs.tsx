@@ -25,6 +25,11 @@ export const CustomBottomTabs = ({
           gap: 20,
           justifyContent: 'space-around',
           alignItems: 'center',
+          borderWidth: 0.5,
+          borderColor:
+            colorScheme === 'light'
+              ? globalColors.neutralColors.border
+              : globalColors.neutralColors.backgroundDark,
           paddingHorizontal: 20,
           backgroundColor:
             colorScheme === 'light'

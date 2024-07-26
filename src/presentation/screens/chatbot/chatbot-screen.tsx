@@ -1,8 +1,9 @@
 import {Layout} from '@ui-kitten/components';
 import React from 'react';
-import {useColorScheme, useWindowDimensions} from 'react-native';
+import {ScrollView, useColorScheme, useWindowDimensions} from 'react-native';
 import {HeaderChatBot} from '../../components';
 import {globalColors} from '../../theme/styles';
+import {ChatBotContainer} from '../../components/chatbot/chat';
 
 export const ChatBotScreen = () => {
   const {height} = useWindowDimensions();
@@ -13,24 +14,12 @@ export const ChatBotScreen = () => {
         flex: 1,
         flexDirection: 'column-reverse',
         justifyContent: 'space-between',
-        backgroundColor: globalColors.neutralColors.background
+        backgroundColor:
+          colorScheme === 'light'
+            ? globalColors.neutralColors.background
+            : globalColors.neutralColors.backgroundDark,
       }}>
-      <Layout
-        style={{
-          height: height * 0.85,
-          borderTopLeftRadius: 50,
-          borderTopRightRadius: 50,
-          borderWidth: 2,
-          borderColor:
-            colorScheme === 'light'
-              ? globalColors.neutralColors.border
-              : globalColors.neutralColors.borderDark,
-
-          backgroundColor:
-            colorScheme === 'dark'
-              ? globalColors.secondaryColors.secondary
-              : globalColors.neutralColors.background,
-        }}></Layout>
+      <ChatBotContainer></ChatBotContainer>
 
       <HeaderChatBot />
     </Layout>

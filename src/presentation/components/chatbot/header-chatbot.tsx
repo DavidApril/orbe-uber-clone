@@ -14,7 +14,8 @@ export const HeaderChatBot = () => {
       style={{
         flexDirection: 'row',
         gap: 15,
-        padding: 10,
+        marginTop: 15,
+        marginHorizontal: 15,
         height: 90,
         justifyContent: 'flex-start',
         alignItems: 'center',

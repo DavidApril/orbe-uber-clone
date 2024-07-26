@@ -51,21 +51,22 @@ export const CustomBottomTabItem = ({
         alignItems: 'center',
         backgroundColor:
           colorScheme === 'light'
-            ? isFocused
-              ? globalColors.neutralColors.bottomTabFocusBackground
-              : globalColors.neutralColors.bottomTabFocusBackgroundDark
-              ? globalColors.neutralColors.bottomTabBackground
-              : globalColors.neutralColors.bottomTabBackgroundDark
-            : '',
+            ? globalColors.neutralColors.bottomTabBackground
+            : globalColors.neutralColors.bottomTabBackgroundDark,
         height: 65,
         width: 65,
         borderRadius: 100,
       }}>
       <CustomIcon
-        fill={isFocused ? globalColors.primaryColors.primary : '#222'}
+        fill={
+          isFocused
+            ? globalColors.primaryColors.primary
+            : colorScheme === 'light'
+            ? globalColors.neutralColors.bottomTabFillIcon
+            : globalColors.neutralColors.bottomTabFillIconDark
+        }
         name={iconName ? iconName : 'person'}
       />
-      {/* <Text style={{color: isFocused ? '#673ab7' : '#222'}}>{'tab'}</Text> */}
     </TouchableOpacity>
   );
 };
