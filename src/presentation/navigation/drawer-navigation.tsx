@@ -14,21 +14,13 @@ const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 export function DrawerNavigation() {
   const {role} = useAuthStore();
   const colorScheme = useColorScheme();
-  const theme =
-    colorScheme === 'dark' ? globalColors.themeDark : globalColors.themeLight;
 
   return (
     <Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: true,
-        headerStyle: {
-          backgroundColor: theme,
-        },
-        headerTintColor: '#3fc1f2',
-
-        // headerLeftLabelVisible: false,
-        drawerType: 'slide',
+        drawerType: 'back',
         drawerInactiveTintColor:
           colorScheme === 'dark' ? globalColors.white : globalColors.gray,
         drawerActiveTintColor: globalColors.primary,

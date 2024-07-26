@@ -1,6 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {FavoritesScreen, ProfileClientScreen, SettingsScreen} from '../screens';
-import {CustomIcon} from '../components';
+import {CustomIcon, HeaderChatBot} from '../components';
 import {
   profileRoutesByRoleMapper,
   routesHomeByRoleMapper,
@@ -8,6 +8,8 @@ import {
 import {HomeClientScreen} from '../screens/home/home-client-screen';
 import {useAuthStore} from '../../store';
 import {RootStackParams} from '../../interfaces';
+import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
+import {globalColors} from '../theme/styles';
 
 const Tab = createBottomTabNavigator<RootStackParams>();
 
@@ -17,10 +19,10 @@ export const BottomTapNavigationClientDelivery = () => {
   return (
     <Tab.Navigator
       initialRouteName="HomeClientDeliveryScreen"
-      sceneContainerStyle={{
-        backgroundColor: 'white',
-      }}
+      backBehavior="history"
       screenOptions={{
+        headerTransparent: true,
+        headerPressOpacity: 0.2,
         tabBarStyle: {
           position: 'absolute',
           bottom: 0,
@@ -67,6 +69,17 @@ export const BottomTapNavigationClientDelivery = () => {
           tabBarIconStyle: {},
         }}
         component={FavoritesScreen}
+      />
+      <Tab.Screen
+        name="chatBotScreen"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({color}) => (
+            <CustomIcon fill={color} name="message-circle-outline" />
+          ),
+          tabBarIconStyle: {},
+        }}
+        component={ChatBotScreen}
       />
       <Tab.Screen
         name="SettingsScreen"

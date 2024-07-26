@@ -19,4 +19,5 @@ export type RootStackParams = {
   ProfileDriverScreen: undefined;
   ProfileClientScreen: undefined;
   SettingsScreen: undefined;
+  chatBotScreen: undefined;
 };
