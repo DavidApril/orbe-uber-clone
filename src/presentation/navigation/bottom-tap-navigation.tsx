@@ -18,7 +18,7 @@ export const BottomTapNavigationClientDelivery = () => {
     <Tab.Navigator
       initialRouteName="HomeClientDeliveryScreen"
       sceneContainerStyle={{
-        backgroundColor: 'black',
+        backgroundColor: 'white',
       }}
       screenOptions={{
         tabBarStyle: {
@@ -44,9 +44,6 @@ export const BottomTapNavigationClientDelivery = () => {
         options={{
           title: 'Inicio',
           tabBarIcon: ({color}) => <CustomIcon fill={color} name="home" />,
-          tabBarIconStyle: {
-            backgroundColor: 'black',
-          },
           headerShown: false,
         }}
         component={routesHomeByRoleMapper(role!) ?? HomeClientScreen}
@@ -55,9 +52,6 @@ export const BottomTapNavigationClientDelivery = () => {
         name="ProfileClientScreen"
         options={{
           title: 'Perfil',
-          tabBarIconStyle: {
-            backgroundColor: 'black',
-          },
           tabBarIcon: ({color}) => (
             <CustomIcon fill={color} name="person-outline" />
           ),
@@ -78,7 +72,6 @@ export const BottomTapNavigationClientDelivery = () => {
         name="SettingsScreen"
         options={{
           tabBarIconStyle: {
-            backgroundColor: 'black',
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'center',

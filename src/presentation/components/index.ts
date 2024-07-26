@@ -20,3 +20,7 @@ export * from './restaurants/product-card';
 export * from './restaurants/cart/cart-item';
 export * from './restaurants/cart/fab-shopping-cart';
 export * from './restaurants/stats';
+
+export * from './bottom-sheets/bs-add-credit-card'
+
+export * from './wallet/credit-card'

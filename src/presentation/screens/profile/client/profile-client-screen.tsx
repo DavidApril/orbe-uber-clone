@@ -27,9 +27,6 @@ export const ProfileClientScreen = () => {
 
   console.log(StorageService.getPhotoByFilename(userByUid?.cliente.photo));
 
-  const addTarjetBottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['75%'], []);
-
   return (
     <ScrollView>
       <FABGoBackButton fill="white" style={{top: 10, left: 10}} />
@@ -136,131 +133,8 @@ export const ProfileClientScreen = () => {
             </Layout>
           </Layout>
           {/* <Button onPress={() => navigation.goBack()} appearance="ghost">Volver</Button> */}
-
-          <Layout
-            style={{
-              borderRadius: 30,
-              padding: 20,
-              // backgroundColor: 'black',
-              flexDirection: 'row',
-              paddingVertical: 30,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Layout
-              style={{
-                backgroundColor: 'transparent',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                flex: 1,
-              }}>
-              <Text style={{fontWeight: 'bold', fontSize: 25}}>
-                Métodos de pago
-              </Text>
-
-              <Layout style={{height: 15}}></Layout>
-
-              <Layout
-                style={{
-                  padding: 20,
-                  width: '100%',
-                  left: 0,
-                  right: 0,
-                  borderRadius: 15,
-                  backgroundColor: globalColors.themeDark,
-                  flexDirection: 'column',
-                  gap: 10,
-                }}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    justifyContent: 'flex-end',
-                    color: globalColors.white,
-                  }}>
-                  Visa
-                </Text>
-
-                <Text
-                  style={{
-                    fontWeight: 'condensed',
-                    justifyContent: 'flex-end',
-                    color: globalColors.white,
-                    fontSize: 22,
-                  }}>
-                  4575 6231 8229 0326 {`\n`}
-                </Text>
-                <Layout
-                  style={{
-                    backgroundColor: 'transparent',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text style={{color: 'yellow'}}>12/2025 {`\n`}</Text>
-                  <Text
-                    style={{color: 'red', fontWeight: 'bold', fontSize: 18}}>
-                    {' '}
-                    123
-                  </Text>
-                </Layout>
-              </Layout>
-
-              <Layout style={{height: 10}}></Layout>
-
-              <Button
-                onPress={() => addTarjetBottomSheetRef.current?.expand()}
-                status="success"
-                style={{borderRadius: 50}}>
-                Añadir
-              </Button>
-            </Layout>
-          </Layout>
         </Layout>
       </Layout>
-
-      <BottomSheet
-        enablePanDownToClose={true}
-        ref={addTarjetBottomSheetRef}
-        snapPoints={snapPoints}>
-        <Layout style={{margin: 30}}>
-          <Layout style={{flexDirection: 'column', gap: 10}}>
-            <Text style={{fontSize: 18}}>Nombre</Text>
-            <Input placeholder="Propietario" />
-          </Layout>
-          <Layout style={{height: 10}}></Layout>
-
-          <Layout style={{flexDirection: 'column', gap: 10}}>
-            <Text style={{fontSize: 18}}>Número de tarjeta</Text>
-            <Input placeholder="4575 6231 8229 0326" />
-          </Layout>
-
-          <Layout style={{height: 10}}></Layout>
-
-          <Layout style={{flexDirection: 'row', gap: 10}}>
-            <Layout style={{flexDirection: 'column', gap: 10, flex: 1}}>
-              <Text style={{fontSize: 18}}>Fecha</Text>
-              <Input placeholder="MM/YY" />
-            </Layout>
-
-            <Layout style={{flexDirection: 'column', gap: 10, flex: 1}}>
-              <Text style={{fontSize: 18}}>CVC</Text>
-              <Input placeholder="123" />
-            </Layout>
-          </Layout>
-
-          <Layout
-            style={{
-              margin: 30,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <CheckBox>
-              <Text>Guardar datos para pagos futuros</Text>
-            </CheckBox>
-          </Layout>
-
-          <Button status="success">Añadir</Button>
-        </Layout>
-      </BottomSheet>
     </ScrollView>
   );
 };

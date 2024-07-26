@@ -7,6 +7,7 @@ import {useAuthStore} from '../../store';
 import {useColorScheme} from 'react-native';
 import {profileRoutesByRoleMapper} from '../../utils/mappers';
 import {RootStackParams} from '../../interfaces';
+import {TopTapNavigationClientDelivery} from './top-tap-wallet-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
@@ -46,14 +47,19 @@ export function DrawerNavigation() {
         name="HomeClientDriverScreen"
         component={StackNavigator}
       />
-      {/* <Screen
+      <Screen
         options={{
-          title: 'Configuración',
-          drawerIcon: ({color}) => <CustomIcon fill={color} name="settings" />,
+          title: 'Billetera',
+          sceneContainerStyle: {
+            flex: 1,
+          },
+          drawerIcon: ({color}) => (
+            <CustomIcon fill={color} name="credit-card-outline" />
+          ),
         }}
-        name="SettingsScreen"
-        component={SettingsScreen}
-      /> */}
+        name="WalletScreen"
+        component={TopTapNavigationClientDelivery}
+      />
     </Navigator>
   );
 }
