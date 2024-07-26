@@ -24,7 +24,7 @@ export const ChatBotContainer = ({children}: PropsWithChildren) => {
           flexDirection: 'column-reverse',
           paddingBottom: height * 0.13,
           padding: 15,
-          backgroundColor: isDarkMode
+          backgroundColor: !isDarkMode
             ? globalColors.neutralColors.backgroundAlpha
             : globalColors.neutralColors.backgroundDarkAlpha,
         },
@@ -33,13 +33,13 @@ export const ChatBotContainer = ({children}: PropsWithChildren) => {
       <View>
         <TextInput
           placeholderTextColor={
-            isDarkMode
+            !isDarkMode
               ? globalColors.neutralColors.placeholderColor
               : globalColors.neutralColors.placeholderColorDark
           }
           style={{
             paddingHorizontal: 20,
-            backgroundColor: isDarkMode
+            backgroundColor: !isDarkMode
               ? globalColors.neutralColors.textInputBackground
               : globalColors.neutralColors.textInputBackgroundDark,
             borderRadius: globalDimensions.borderRadiusButtom,
@@ -52,7 +52,7 @@ export const ChatBotContainer = ({children}: PropsWithChildren) => {
         <View style={{flexDirection: 'column', gap: 10}}>
           <View
             style={{
-              backgroundColor: isDarkMode
+              backgroundColor: !isDarkMode
                 ? globalColors.neutralColors.messageChatBackground
                 : globalColors.neutralColors.messageChatBackgroundDark,
               borderTopLeftRadius: 40,
@@ -73,7 +73,7 @@ export const ChatBotContainer = ({children}: PropsWithChildren) => {
           </View>
           <View
             style={{
-              backgroundColor: isDarkMode
+              backgroundColor: !isDarkMode
                 ? globalColors.neutralColors.messageReceptChatBackground
                 : globalColors.neutralColors.messageReceptChatBackgroundDark,
               borderTopLeftRadius: 40,

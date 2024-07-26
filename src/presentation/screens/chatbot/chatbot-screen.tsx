@@ -13,7 +13,7 @@ export const ChatBotScreen = () => {
         flex: 1,
         flexDirection: 'column-reverse',
         justifyContent: 'space-between',
-        backgroundColor: isDarkMode
+        backgroundColor: !isDarkMode
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
       }}>

@@ -33,7 +33,7 @@ export const OpenDrawerMenu = ({style}: Props) => {
           top: 30,
           left: 30,
           justifyContent: 'center',
-          backgroundColor: isDarkMode ? globalColors.primaryColors.primary : '',
+          backgroundColor: globalColors.primaryColors.primary,
           alignItems: 'center',
           shadowOpacity: 0.3,
           shadowOffset: {
@@ -46,7 +46,7 @@ export const OpenDrawerMenu = ({style}: Props) => {
         style,
       ]}
       onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}>
-      <CustomIcon white={isDarkMode ? true : false} name="menu-2-outline" />
+      <CustomIcon white={!isDarkMode ? true : false} name="menu-2-outline" />
     </TouchableOpacity>
   );
 };

@@ -56,7 +56,7 @@ export const CustomBottomTabItem = ({
             ? 'white'
             : iconName === 'map-outline'
             ? globalColors.primaryColors.primary
-            : isDarkMode
+            : !isDarkMode
             ? globalColors.neutralColors.bottomTabBackground
             : globalColors.neutralColors.bottomTabBackgroundDark,
         height: 65,
@@ -67,7 +67,7 @@ export const CustomBottomTabItem = ({
         fill={
           isFocused
             ? globalColors.primaryColors.primary
-            : isDarkMode
+            : !isDarkMode
             ? globalColors.neutralColors.bottomTabFillIcon
             : globalColors.neutralColors.bottomTabFillIconDark
         }

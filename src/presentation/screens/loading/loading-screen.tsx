@@ -18,7 +18,7 @@ export const LoadingScreen = () => {
         bottom: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: isDarkMode
+        backgroundColor: !isDarkMode
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
       }}>

@@ -69,7 +69,7 @@ export const RestaurantScreen = () => {
       style={{
         flex: 1,
         position: 'relative',
-        backgroundColor: isDarkMode
+        backgroundColor: !isDarkMode
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
       }}>
@@ -84,7 +84,7 @@ export const RestaurantScreen = () => {
             top: 30,
             left: 30,
             justifyContent: 'center',
-            backgroundColor: isDarkMode
+            backgroundColor: !isDarkMode
               ? globalColors.primaryColors.primary
               : '',
             alignItems: 'center',
@@ -97,7 +97,7 @@ export const RestaurantScreen = () => {
           },
         ]}
         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}>
-        <CustomIcon white={isDarkMode ? true : false} name="menu-2-outline" />
+        <CustomIcon white={!isDarkMode ? true : false} name="menu-2-outline" />
       </TouchableOpacity>
 
       <ScrollView>

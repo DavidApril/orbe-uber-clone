@@ -43,7 +43,9 @@ export const FAB = ({
           height: 30,
           width: 30,
           justifyContent: 'center',
-          backgroundColor: isDarkMode ? globalColors.primaryColors.primary : '',
+          backgroundColor: !isDarkMode
+            ? globalColors.primaryColors.primary
+            : '',
           alignItems: 'center',
           shadowOpacity: 0.3,
           shadowOffset: {

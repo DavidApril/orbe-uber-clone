@@ -34,8 +34,8 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
   }, []);
 
   useEffect(() => {
-    console.log({isDarkMode})
-  },[isDarkMode])
+    console.log({isDarkMode});
+  }, [isDarkMode]);
 
   const {height, width} = useWindowDimensions();
   return (
@@ -45,7 +45,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
           style={{
             flex: 1,
             flexDirection: 'column',
-            backgroundColor: isDarkMode
+            backgroundColor: !isDarkMode
               ? globalColors.neutralColors.background
               : globalColors.neutralColors.backgroundDark,
             gap: 28,
@@ -56,7 +56,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               paddingHorizontal: 20,
               fontSize: 40,
               position: 'absolute',
-              color: isDarkMode
+              color: !isDarkMode
                 ? globalColors.fontColor.textColor
                 : globalColors.fontColor.textColorDark,
               fontWeight: '300',
@@ -83,13 +83,13 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
             <View style={{flex: 1, paddingHorizontal: 20}}>
               <TextInput
                 placeholderTextColor={
-                  isDarkMode
+                  !isDarkMode
                     ? globalColors.neutralColors.placeholderColor
                     : globalColors.neutralColors.placeholderColorDark
                 }
                 style={{
                   paddingHorizontal: 20,
-                  backgroundColor: isDarkMode
+                  backgroundColor: !isDarkMode
                     ? globalColors.neutralColors.textInputBackground
                     : globalColors.neutralColors.bottomTabBackgroundDark,
                   borderRadius: globalDimensions.borderRadiusButtom,

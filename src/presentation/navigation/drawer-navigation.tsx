@@ -4,7 +4,7 @@ import {globalColors} from '../theme/styles';
 import {CustomDrawerContent, CustomIcon} from '../components';
 
 import {RootStackParams} from '../../interfaces';
-import {CouponsScreen} from '../screens';
+import {CouponsScreen, ProductsCartScreen} from '../screens';
 import {useUIStore} from '../../store';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
@@ -16,7 +16,7 @@ export function DrawerNavigation() {
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerType: 'back',
-        drawerInactiveTintColor: isDarkMode ? 'black' : 'white',
+        drawerInactiveTintColor: !isDarkMode ? 'black' : 'white',
         drawerActiveTintColor: globalColors.primaryColors.primary,
         drawerItemStyle: {
           borderRadius: 50,
@@ -31,6 +31,20 @@ export function DrawerNavigation() {
         }}
         name="HomeClientDeliveryScreen"
         component={StackNavigator}
+      />
+      <Screen
+        options={{
+          title: 'Mi carrito',
+          headerShown: false,
+          sceneContainerStyle: {
+            flex: 1,
+          },
+          drawerIcon: ({color}) => (
+            <CustomIcon fill={color} name="shopping-cart-outline" />
+          ),
+        }}
+        name="ProductsCartScreen"
+        component={ProductsCartScreen}
       />
       <Screen
         options={{

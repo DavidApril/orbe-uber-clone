@@ -38,7 +38,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   return (
     <View
       style={{
-        backgroundColor: isDarkMode
+        backgroundColor: !isDarkMode
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
         height,
@@ -60,7 +60,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           <Text
             style={{
               fontSize: 16,
-              color: isDarkMode
+              color: !isDarkMode
                 ? globalColors.fontColor.textColorHeader
                 : globalColors.fontColor.textColorHeaderDark,
             }}>
@@ -69,7 +69,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           <Text
             style={{
               fontSize: 15,
-              color: isDarkMode
+              color: !isDarkMode
                 ? globalColors.fontColor.textColor
                 : globalColors.fontColor.textColorDark,
             }}>

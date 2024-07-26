@@ -16,7 +16,7 @@ export const HeaderChatBot = () => {
         height: 90,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: isDarkMode
+        backgroundColor: !isDarkMode
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
       }}>

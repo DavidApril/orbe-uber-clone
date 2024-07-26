@@ -19,15 +19,15 @@ export const FABGoBackButton = ({fill, style}: Props) => {
     <TouchableOpacity
       style={[
         {
-          zIndex: 1,
+          zIndex: 99999999999999,
           position: 'absolute',
           borderRadius: 100,
-          height: 30,
-          width: 30,
+          height: 45,
+          width: 45,
           top: 30,
           left: 30,
           justifyContent: 'center',
-          backgroundColor: isDarkMode ? globalColors.primaryColors.primary : '',
+          backgroundColor: globalColors.primaryColors.primary,
           alignItems: 'center',
           shadowOpacity: 0.3,
           shadowOffset: {
@@ -40,7 +40,7 @@ export const FABGoBackButton = ({fill, style}: Props) => {
         style,
       ]}
       onPress={() => navigation.goBack()}>
-      <CustomIcon name="arrow-back" />
+      <CustomIcon white={!isDarkMode} name="arrow-back" />
     </TouchableOpacity>
   );
 };

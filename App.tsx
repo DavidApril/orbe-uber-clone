@@ -12,14 +12,14 @@ import * as eva from '@eva-design/eva';
 
 export const App = () => {
   const colorScheme = useColorScheme();
-  const {setIsDarkMode} = useUIStore();
+  const {setisDarkMode} = useUIStore();
   const theme = colorScheme === 'dark' ? eva.dark : eva.light;
 
   useEffect(() => {
     if (colorScheme === 'light') {
-      setIsDarkMode(true);
+      setisDarkMode(false);
     } else {
-      setIsDarkMode(false);
+      setisDarkMode(true);
     }
   }, [colorScheme]);
 
@@ -32,7 +32,7 @@ export const App = () => {
             ...DefaultTheme,
             colors: {
               ...DefaultTheme.colors,
-              primary: globalColors.primary,
+              primary: globalColors.primaryColors.primary,
             },
           }}>
           <AuthProvider>

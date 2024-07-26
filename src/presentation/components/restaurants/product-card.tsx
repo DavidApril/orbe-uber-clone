@@ -41,7 +41,7 @@ export const ProductCard = ({product}: Props) => {
       }}>
       <View
         style={{
-          backgroundColor: isDarkMode
+          backgroundColor: !isDarkMode
             ? globalColors.neutralColors.backgroundAlpha
             : globalColors.neutralColors.backgroundDarkAlpha,
           margin: 5,

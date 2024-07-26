@@ -37,7 +37,7 @@ export const RestaurantCard = ({
         position: 'relative',
       }}>
       <FAB
-        white={isDarkMode ? true : false}
+        white={!isDarkMode ? true : false}
         iconName="heart"
         style={{
           right: 20,
@@ -53,7 +53,7 @@ export const RestaurantCard = ({
           top: 0,
           bottom: 0,
           borderRadius: 15,
-          backgroundColor: isDarkMode
+          backgroundColor: !isDarkMode
             ? globalColors.grayScale.white
             : globalColors.neutralColors.backgroundDarkAlpha,
         }}></View>
@@ -78,7 +78,7 @@ export const RestaurantCard = ({
         }}>
         <Text
           style={{
-            color: isDarkMode
+            color: !isDarkMode
               ? globalColors.fontColor.textColorHeader
               : globalColors.fontColor.textColorHeaderDark,
             fontWeight: 'bold',
@@ -88,7 +88,7 @@ export const RestaurantCard = ({
         </Text>
         <Text
           style={{
-            color: isDarkMode
+            color: !isDarkMode
               ? globalColors.fontColor.textColor
               : globalColors.fontColor.textColorDark,
           }}>
