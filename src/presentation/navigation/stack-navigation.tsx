@@ -115,11 +115,6 @@ export const StackNavigator = () => {
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="HomeClientDriverScreen"
-        component={HomeClientDriverScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="HomeDeliveryScreen"
         component={HomeDeliveryScreen}
       />

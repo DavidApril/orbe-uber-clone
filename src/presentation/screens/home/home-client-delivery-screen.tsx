@@ -5,16 +5,13 @@ import {
   StyleSheet,
   FlatList,
   useWindowDimensions,
-  ImageBackground,
-  Image,
   useColorScheme,
   TextInput,
 } from 'react-native';
 import {LoadingScreen} from '../loading/loading-screen';
 import {RestaurantService} from '../../../services/restaurant/restaurant.service';
 import {SingleRestaurantResponse} from '../../../interfaces';
-import {CustomIcon, OpenDrawerMenu, RestaurantCard} from '../../components';
-import {Input} from '@ui-kitten/components';
+import {OpenDrawerMenu, RestaurantCard} from '../../components';
 import {globalColors, globalDimensions} from '../../theme/styles';
 
 export const HomeClientDeliveryScreen = ({navigation}: any) => {
@@ -50,13 +47,6 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
                 : globalColors.neutralColors.backgroundDark,
             gap: 28,
           }}>
-          {/* <ImageBackground style={{opacity: 0.5}}>
-            <Image
-              source={require('../../../assets/gradient-background.webp')}
-              style={{width: '100%', height: '100%', zIndex: -10}}
-            />
-          </ImageBackground> */}
-
           <Text
             style={{
               top: 80,
@@ -129,7 +119,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
             />
           </View>
 
-          <OpenDrawerMenu left={20} />
+          <OpenDrawerMenu />
         </View>
       ) : (
         <View>

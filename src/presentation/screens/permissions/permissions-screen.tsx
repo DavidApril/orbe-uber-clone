@@ -10,8 +10,6 @@ export const PermissionsScreen = () => {
 
   const {role} = useAuthStore();
 
-  console.log({role});
-
   useEffect(() => {
     if (locationStatus === 'granted' && role === DRIVER) {
       navigation.navigate('HomeDriverScreen');

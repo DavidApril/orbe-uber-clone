@@ -1,11 +1,11 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   FavoritesScreen,
+  HomeClientDeliveryScreen,
   HomeClientDriverScreen,
   ProfileClientScreen,
-  SettingsScreen,
 } from '../screens';
-import {CustomBottomTabs, CustomIcon, HeaderChatBot} from '../components';
+import {CustomBottomTabs} from '../components';
 import {
   profileRoutesByRoleMapper,
   routesHomeByRoleMapper,
@@ -34,7 +34,7 @@ export const BottomTapNavigationClientDelivery = () => {
           title: 'home-outline',
           headerShown: false,
         }}
-        component={routesHomeByRoleMapper(role!) ?? HomeClientScreen}
+        component={HomeClientDeliveryScreen}
       />
       <Tab.Screen
         name="ProfileClientScreen"

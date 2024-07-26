@@ -5,7 +5,6 @@ import {CustomDrawerContent, CustomIcon} from '../components';
 import {useColorScheme} from 'react-native';
 
 import {RootStackParams} from '../../interfaces';
-import {TopTapNavigationClientDelivery} from './top-tap-wallet-navigation';
 import {CouponsScreen} from '../screens';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
@@ -31,7 +30,7 @@ export function DrawerNavigation() {
           drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
           headerShown: false,
         }}
-        name="HomeClientDriverScreen"
+        name="HomeClientDeliveryScreen"
         component={StackNavigator}
       />
       <Screen

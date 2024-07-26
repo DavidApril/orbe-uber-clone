@@ -1,18 +1,16 @@
-import {Button, Layout, Text} from '@ui-kitten/components/ui';
-import {Image, Pressable} from 'react-native';
+import {Button, Text} from '@ui-kitten/components/ui';
+import {Image, useColorScheme, View} from 'react-native';
 import {StorageService} from '../../../services';
-import {
-  CartProduct,
-  ProductRestaurant,
-  RootStackParams,
-} from '../../../interfaces';
+import {ProductRestaurant, RootStackParams} from '../../../interfaces';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {FAB} from '../ui/floating-action-button';
 import {CustomIcon} from '../ui/custom-icon';
 import {currencyFormat} from '../../../utils';
 import {useCartStore} from '../../../store';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {LoadingScreen} from '../../screens';
+import {globalColors} from '../../theme/styles';
+import {TouchableOpacity} from '@gorhom/bottom-sheet';
 
 interface Props {
   product: ProductRestaurant;
@@ -24,31 +22,30 @@ export const ProductCard = ({product}: Props) => {
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
   const {setProductSelected} = useCartStore();
   const {
-    cart,
-    setCartNews,
     addProductToCart,
     removeFavorite,
     addProductToFavorites,
     removeProduct,
   } = useCartStore();
 
-  useEffect(() => {
-    console.log({cart})
-    // setCartNews(true);
-  }, [cart]);
 
   if (!product) {
     return <LoadingScreen />;
   }
 
+  const colorScheme = useColorScheme();
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={() => {
         setProductSelected(product);
         navigation.navigate('ProductItemScreen');
       }}>
-      <Layout
+      <View
         style={{
+          backgroundColor:
+            colorScheme === 'light'
+              ? globalColors.neutralColors.backgroundAlpha
+              : globalColors.neutralColors.backgroundDarkAlpha,
           margin: 5,
           borderRadius: 10,
           shadowColor: '#000',
@@ -126,7 +123,7 @@ export const ProductCard = ({product}: Props) => {
           }}>
           <CustomIcon white name={!isAddedToCart ? 'plus' : 'checkmark'} />
         </Button>
-      </Layout>
-    </Pressable>
+      </View>
+    </TouchableOpacity>
   );
 };

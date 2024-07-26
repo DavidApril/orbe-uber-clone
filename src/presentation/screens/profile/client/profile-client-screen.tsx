@@ -10,8 +10,8 @@ import {
   View,
 } from 'react-native';
 import {LoadingScreen} from '../../loading/loading-screen';
-import {StatusButton} from '../../../components';
-import {currencyFormat, parseDate} from '../../../../utils';
+import {OpenDrawerMenu, StatusButton} from '../../../components';
+import {parseDate} from '../../../../utils';
 
 export const ProfileClientScreen = () => {
   const {userByUid} = useAuthStore();
@@ -25,7 +25,8 @@ export const ProfileClientScreen = () => {
   const image_url = StorageService.getPhotoByFilename(userByUid!.cliente.photo);
 
   return (
-    <ScrollView style={{flex: 1, height}}>
+    <ScrollView
+      style={{flex: 1, height, backgroundColor: 'red', position: 'relative'}}>
       <View
         style={{
           backgroundColor:

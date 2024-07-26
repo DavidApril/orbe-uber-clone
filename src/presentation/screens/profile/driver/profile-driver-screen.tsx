@@ -13,7 +13,6 @@ export const ProfileDriverScreen = () => {
     const clientByUID = await DriverService.getDriverByUserUid(user!.uid);
     setUserByUid(clientByUID);
   };
-  console.log({userByUid});
 
   useEffect(() => {
     getClientByUID();

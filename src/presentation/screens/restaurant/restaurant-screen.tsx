@@ -1,28 +1,28 @@
-import {Layout, List, Text} from '@ui-kitten/components';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {Text} from '@ui-kitten/components';
+import {useEffect, useRef, useState} from 'react';
 import {LoadingScreen} from '../loading/loading-screen';
-import {Image, useWindowDimensions} from 'react-native';
+import {Image, useColorScheme, useWindowDimensions} from 'react-native';
 import {View} from 'react-native';
 import {StorageService} from '../../../services';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {
-  CartProduct,
-  ProductRestaurant,
-  RootStackParams,
-} from '../../../interfaces';
+  DrawerActions,
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
+import {ProductRestaurant, RootStackParams} from '../../../interfaces';
 import {
   CustomIcon,
   FABGoBackButton,
   FABShoppingCart,
   OpenDrawerMenu,
-  PaymentControllers,
   Stats,
 } from '../../components';
 import {RestaurantService} from '../../../services/restaurant/restaurant.service';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ProductsList} from './products/products-list';
 import {useCartStore} from '../../../store';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, {TouchableOpacity} from '@gorhom/bottom-sheet';
+import {globalColors} from '../../theme/styles';
 
 export const RestaurantScreen = () => {
   const {height, width} = useWindowDimensions();
@@ -31,7 +31,6 @@ export const RestaurantScreen = () => {
   const {cart, setCartNews, restaurantSelected} = useCartStore();
 
   useEffect(() => {
-    console.log({restaurantSelected});
     if (!restaurantSelected) {
       navigation.goBack();
     }
@@ -64,25 +63,49 @@ export const RestaurantScreen = () => {
     getProductsByIdRestaurant(page);
   }, [page]);
 
-  const snapPoints = useMemo(() => ['20%', '50%', '80%'], []);
+  const colorScheme = useColorScheme();
 
   return (
-    <Layout style={{flex: 1, backgroundColor: 'white'}}>
-      <ScrollView
-        style={{
-          backgroundColor: 'white',
-        }}>
-        <OpenDrawerMenu left={20} />
-        <FABGoBackButton
-          style={{right: 20, top: 20, backgroundColor: 'white'}}
+    <View
+      style={{
+        flex: 1,
+        position: 'relative',
+        backgroundColor:
+          colorScheme === 'light'
+            ? globalColors.neutralColors.background
+            : globalColors.neutralColors.backgroundDark,
+      }}>
+      <TouchableOpacity
+        style={[
+          {
+            zIndex: 99999999999999,
+            position: 'absolute',
+            borderRadius: 100,
+            height: 45,
+            width: 45,
+            top: 30,
+            left: 30,
+            justifyContent: 'center',
+            backgroundColor:
+              colorScheme === 'light' ? globalColors.primaryColors.primary : '',
+            alignItems: 'center',
+            shadowOpacity: 0.3,
+            shadowOffset: {
+              height: 0.27,
+              width: 4.5,
+            },
+            elevation: 5,
+          },
+        ]}
+        onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}>
+        <CustomIcon
+          white={colorScheme === 'light' ? true : false}
+          name="menu-2-outline"
         />
+      </TouchableOpacity>
 
-        <FABShoppingCart
-          onPressFunction={() => {
-            summaryBottomSheetRef.current?.expand();
-            console.log({restaurantSelected});
-          }}
-        />
+      <ScrollView>
+
 
         <View
           style={{
@@ -167,6 +190,6 @@ export const RestaurantScreen = () => {
 
         <View style={{height: 20}}></View>
       </ScrollView>
-    </Layout>
+    </View>
   );
 };

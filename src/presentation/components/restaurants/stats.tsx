@@ -1,6 +1,6 @@
 import {Text} from '@ui-kitten/components';
 import React from 'react';
-import {View} from 'react-native';
+import {useColorScheme, View} from 'react-native';
 import {globalColors} from '../../theme/styles';
 
 export const Stats = () => {
@@ -22,14 +22,12 @@ export const Stats = () => {
         </Text>
         <Text style={{textAlign: 'center'}}>ventas</Text>
       </View>
+
       <View
         style={{
           height: '100%',
           marginHorizontal: 25,
           borderRadius: 100,
-          borderWidth: 1,
-          borderColor: globalColors.border,
-          backgroundColor: globalColors.border,
         }}></View>
 
       <View style={{flexDirection: 'column'}}>
@@ -46,10 +44,8 @@ export const Stats = () => {
           height: '100%',
           marginHorizontal: 25,
           borderRadius: 100,
-          borderWidth: 1,
-          borderColor: globalColors.border,
-          backgroundColor: globalColors.border,
         }}></View>
+
       <View style={{flexDirection: 'column'}}>
         <Text
           status="success"

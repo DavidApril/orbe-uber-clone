@@ -29,7 +29,6 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   if (userByUid) {
     if (role === CLIENT) {
       image_url = StorageService.getPhotoByFilename(userByUid?.cliente.photo);
-      console.log({image_url});
     } else if (role === DRIVER) {
       // @ts-ignore
       image_url = StorageService.getPhotoByFilename(userByUid!.driver.photo);

@@ -6,15 +6,15 @@ import {
   ImageBackground,
   Modal,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import {useEffect, useState} from 'react';
-import {Button, ButtonGroup, Layout} from '@ui-kitten/components';
-import {CustomIcon, FAB, OpenDrawerMenu} from '../../../components';
+import {Button, ButtonGroup} from '@ui-kitten/components';
+import {CustomIcon} from '../../../components';
 import {CartProduct, RootStackParams} from '../../../../interfaces';
 import {StackScreenProps} from '@react-navigation/stack';
 
 import {LoadingScreen} from '../../loading/loading-screen';
-import {globalColors} from '../../../theme/styles';
 import {StorageService} from '../../../../services';
 import {currencyFormat} from '../../../../utils';
 import {useCartStore} from '../../../../store';
@@ -26,6 +26,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
   const [photoOpen, setPhotoOpen] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const {height} = useWindowDimensions();
 
   const {
     addProductToCart,
@@ -45,11 +46,8 @@ export const ProductItemScreen = ({navigation}: Props) => {
     setProductCart(productInCart);
   }, [cart]);
 
-  if (!item) {
-    return <LoadingScreen />;
-  }
-
   const handleAddToCart = () => {
+    if (!item) return;
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -57,26 +55,15 @@ export const ProductItemScreen = ({navigation}: Props) => {
       setModal(true);
     }, 2000);
   };
-
-  return (
-    <Layout>
-      <OpenDrawerMenu left={20} />
-      <FAB
-        style={{right: 20, top: 20, backgroundColor: globalColors.white}}
-        iconName="arrow-back"
-        onPress={() => navigation.goBack()}
-      />
-
-      <FAB
-        style={{right: 80, top: 20, backgroundColor: globalColors.white}}
-        iconName="shopping-cart"
-        onPress={() => navigation.navigate('ProductsCartScreen')}
-      />
-
-      <Layout style={styles.container_product}>
+  return item ? (
+    <View>
+      <View
+        style={{
+          height,
+        }}>
         <ImageBackground
           style={{
-            height: '50%',
+            height: '35%',
             borderBottomLeftRadius: 40,
             borderBottomRightRadius: 40,
             overflow: 'hidden',
@@ -111,12 +98,16 @@ export const ProductItemScreen = ({navigation}: Props) => {
               zIndex: 9999,
             }}>
             <Button
-              onPress={() =>
-                updateProductQuantity({
-                  product: productCart!.product,
-                  quantity: -1,
-                })
-              }>
+              // @ts-ignore
+              disabled={!productCart && productCart?.quantity <= 0}
+              onPress={() => {
+                if (productCart) {
+                  updateProductQuantity({
+                    product: productCart?.product,
+                    quantity: -1,
+                  });
+                }
+              }}>
               -
             </Button>
             <Button
@@ -125,17 +116,18 @@ export const ProductItemScreen = ({navigation}: Props) => {
                 borderColor: 'white',
                 borderWidth: 0,
               }}>
-              {productCart?.quantity ?? '0'}
+              {/* @ts-ignore */}
+              {productCart?.quantity > 0 ? productCart?.quantity : '0'}
             </Button>
             <Button
               onPress={() => {
                 if (productCart) {
                   updateProductQuantity({
-                    product: productCart!.product,
+                    product: productCart?.product,
                     quantity: +1,
                   });
                 } else {
-                  addProductToCart({product: item, quantity: 1});
+                  addProductToCart({product: item!, quantity: 1});
                 }
               }}>
               +
@@ -147,7 +139,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
           visible={photoOpen}
           transparent={true}
           onRequestClose={() => setPhotoOpen(false)}>
-          <Layout style={styles.modal_container}>
+          <View style={styles.modal_container}>
             <Pressable
               style={styles.close_button}
               onPress={() => setPhotoOpen(false)}>
@@ -158,19 +150,19 @@ export const ProductItemScreen = ({navigation}: Props) => {
                 style={styles.full_screen}
               />
             </Pressable>
-          </Layout>
+          </View>
         </Modal>
-        <Layout style={{padding: 20, gap: 10}}>
-          <Layout>
+        <View style={{padding: 20, gap: 10}}>
+          <View>
             <Text style={{}}>{item?.category}</Text>
             <Text style={{fontWeight: '600', fontSize: 25, color: 'black'}}>
               {item?.name}
             </Text>
-          </Layout>
+          </View>
           <Text style={styles.product_description}>{item?.description}</Text>
-        </Layout>
-      </Layout>
-      <Layout
+        </View>
+      </View>
+      <View
         style={{
           position: 'absolute',
           bottom: 0,
@@ -180,7 +172,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
           alignItems: 'center',
           marginBottom: 24,
         }}>
-        <Layout
+        <View
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
@@ -210,8 +202,8 @@ export const ProductItemScreen = ({navigation}: Props) => {
             style={{borderRadius: 50, height: 25, width: 25}}>
             <CustomIcon white name="heart" />
           </Button>
-        </Layout>
-      </Layout>
+        </View>
+      </View>
 
       <Modal
         style={styles.modal}
@@ -219,15 +211,15 @@ export const ProductItemScreen = ({navigation}: Props) => {
         transparent={true}
         animationType="fade"
         onRequestClose={() => setModal(false)}>
-        <Layout style={styles.modal_content}>
-          <Layout style={styles.modal_mask}>
+        <View style={styles.modal_content}>
+          <View style={styles.modal_mask}>
             <Text style={styles.modal_title}>
               {item?.name} añadido al carrito
             </Text>
-            <Layout style={{alignItems: 'center'}}>
+            <View style={{alignItems: 'center'}}>
               {/* <CustomIcon name="checkmark-circle-2-outline" color={'#3fc1f2'} /> */}
-            </Layout>
-            <Layout style={styles.modal_buttons}>
+            </View>
+            <View style={styles.modal_buttons}>
               <Pressable
                 style={styles.modal_button}
                 onPress={() => {
@@ -250,11 +242,13 @@ export const ProductItemScreen = ({navigation}: Props) => {
                   Ok
                 </Text>
               </Pressable>
-            </Layout>
-          </Layout>
-        </Layout>
+            </View>
+          </View>
+        </View>
       </Modal>
-    </Layout>
+    </View>
+  ) : (
+    <LoadingScreen />
   );
 };
 
