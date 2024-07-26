@@ -5,8 +5,8 @@ export * from './ui/search-places-input';
 export * from './ui/open-drawer';
 export * from './ui/open-drawer';
 export * from './ui/fab-go-back-screen';
-export * from './ui/avatar-chat'
-export * from './ui/custom-bottom-tabs'
+export * from './ui/avatar-chat';
+export * from './bottom-tabs/custom-bottom-tabs';
 
 export * from './maps/map-view';
 
@@ -24,7 +24,7 @@ export * from './restaurants/cart/cart-item';
 export * from './restaurants/cart/fab-shopping-cart';
 export * from './restaurants/stats';
 
-export * from './bottom-sheets/bs-add-credit-card'
+export * from './bottom-sheets/bs-add-credit-card';
 
-export * from './wallet/credit-card'
-export * from './chatbot/header-chatbot'
+export * from './wallet/credit-card';
+export * from './chatbot/header-chatbot';
