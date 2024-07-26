@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -9,69 +9,43 @@ import {
   Modal,
 } from 'react-native';
 
-import {BillInfoTotals, RootStackParams} from '../../../../interfaces';
+import {RootStackParams} from '../../../../interfaces';
 import {StackScreenProps} from '@react-navigation/stack';
-import {useShoppingCartStore} from '../../../../store';
+import {useCartStore} from '../../../../store';
 import {
   CartItem,
-  CustomIcon,
   FAB,
+  FABGoBackButton,
+  FABShoppingCart,
   OpenDrawerMenu,
   PaymentControllers,
 } from '../../../components';
 import {globalColors} from '../../../theme/styles';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {
-  Button,
-  Divider,
-  Input,
-  Layout,
-  Radio,
-  RadioGroup,
-} from '@ui-kitten/components';
-import {RestaurantService} from '../../../../services';
-import {currencyFormat} from '../../../../utils';
+import {Layout, List} from '@ui-kitten/components';
 
-interface Props extends StackScreenProps<RootStackParams, 'ProductsCartScreen'> {}
+interface Props
+  extends StackScreenProps<RootStackParams, 'ProductsCartScreen'> {}
 
 export const ProductsCartScreen = ({navigation}: Props) => {
   const [shipping] = useState(3000);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalConfirm, setModalConfirm] = useState(false);
+  const summaryBottomSheetRef = useRef<BottomSheet>(null);
 
-  const {productsInCart} = useShoppingCartStore();
-  const [billInfo, setBillInfo] = useState<BillInfoTotals>({
-    subtotal: 0,
-    total: 0,
-  });
+  const {cart, getSummaryInformation} = useCartStore();
+  const {itemsInCart, subTotal, tax, total} = getSummaryInformation();
 
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const snapPoints = useMemo(() => ['15%', '70%'], []);
 
-  useEffect(() => {
-    const {subtotal, total} = RestaurantService.getTotals(
-      productsInCart,
-      shipping,
-    );
-    setBillInfo({total, subtotal});
-  }, [productsInCart]);
-
-  useEffect(() => {
-    console.log({selectedIndex});
-  }, [selectedIndex]);
-
-  const snapPoints = useMemo(() => ['5%', '50%'], []);
-
-  return productsInCart.length > 0 ? (
+  return cart.length > 0 ? (
     <Layout style={{flex: 1, paddingTop: 70, padding: 20}}>
       <OpenDrawerMenu left={20} />
-      <FAB
-        white
-        style={{right: 20, top: 20, backgroundColor: globalColors.primary}}
-        iconName="arrow-back"
-        onPress={() => navigation.goBack()}
+      <FABGoBackButton style={{backgroundColor: 'white', right: 20, top: 20}} />
+      <FABShoppingCart
+        onPressFunction={() => summaryBottomSheetRef.current?.expand()}
       />
-
 
       <ScrollView>
         <FlatList
@@ -79,14 +53,34 @@ export const ProductsCartScreen = ({navigation}: Props) => {
             flexDirection: 'column',
             gap: 10,
           }}
-          data={productsInCart}
+          data={cart}
           keyExtractor={item => item.product.id.toString()}
-          renderItem={({item}) => <CartItem item={item} />}
+          renderItem={({item}) => (
+            <CartItem item={{product: item.product, quantity: item.quantity}} />
+          )}
         />
       </ScrollView>
 
-      <BottomSheet snapPoints={snapPoints}>
-        <PaymentControllers billInfo={billInfo} shipping={shipping} />
+      <BottomSheet
+        ref={summaryBottomSheetRef}
+        enableDynamicSizing
+        style={{borderRadius: 40, paddingTop: 20}}
+        snapPoints={snapPoints}>
+        <List
+          style={{backgroundColor: globalColors.backgroundContrast}}
+          data={cart}
+          renderItem={({item}) => (
+            <CartItem item={{product: item.product, quantity: item.quantity}} />
+          )}
+        />
+
+        <PaymentControllers
+          itemsInCart={itemsInCart}
+          tax={tax}
+          subtotal={subTotal}
+          total={total}
+          shipping={0}
+        />
       </BottomSheet>
 
       <Modal

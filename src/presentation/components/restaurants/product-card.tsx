@@ -1,13 +1,18 @@
 import {Button, Layout, Text} from '@ui-kitten/components/ui';
-import {Image, Pressable, TouchableOpacity} from 'react-native';
+import {Image, Pressable} from 'react-native';
 import {StorageService} from '../../../services';
-import {ProductRestaurant, RootStackParams} from '../../../interfaces';
+import {
+  CartProduct,
+  ProductRestaurant,
+  RootStackParams,
+} from '../../../interfaces';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {useRestaurantStore} from '../../../store/restaurant/restaurant';
 import {FAB} from '../ui/floating-action-button';
-import {View} from 'react-native';
 import {CustomIcon} from '../ui/custom-icon';
 import {currencyFormat} from '../../../utils';
+import {useCartStore} from '../../../store';
+import {useEffect, useState} from 'react';
+import {LoadingScreen} from '../../screens';
 
 interface Props {
   product: ProductRestaurant;
@@ -15,7 +20,27 @@ interface Props {
 
 export const ProductCard = ({product}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
-  const {setProductSelected} = useRestaurantStore();
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
+  const {setProductSelected} = useCartStore();
+  const {
+    cart,
+    setCartNews,
+    addProductToCart,
+    removeFavorite,
+    addProductToFavorites,
+    removeProduct,
+  } = useCartStore();
+
+  useEffect(() => {
+    console.log({cart})
+    // setCartNews(true);
+  }, [cart]);
+
+  if (!product) {
+    return <LoadingScreen />;
+  }
+
   return (
     <Pressable
       onPress={() => {
@@ -41,9 +66,16 @@ export const ProductCard = ({product}: Props) => {
           position: 'relative',
         }}>
         <FAB
-          fill="gray"
+          fill={!isFavorite ? 'gray' : 'red'}
           iconName="heart"
-          onPress={() => {}}
+          onPress={() => {
+            setIsFavorite(!isFavorite);
+            if (isFavorite) {
+              removeFavorite(product);
+            } else {
+              addProductToFavorites(product);
+            }
+          }}
           style={{right: 10, top: 10, backgroundColor: 'white'}}
         />
         <Image
@@ -54,7 +86,7 @@ export const ProductCard = ({product}: Props) => {
             alignSelf: 'center',
           }}
           source={{
-            uri: StorageService.getPhotoByFilename(product.imageUrl),
+            uri: StorageService.getPhotoByFilename(product.imageUrl ?? ''),
           }}
         />
 
@@ -74,14 +106,15 @@ export const ProductCard = ({product}: Props) => {
           {currencyFormat(+product.priceUnitary)}
         </Text>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <CustomIcon white height={16} name="plus" />
-        </View>
         <Button
+          onPress={() => {
+            setIsAddedToCart(!isAddedToCart);
+            if (isAddedToCart) {
+              removeProduct({product: product, quantity: -1});
+            } else {
+              addProductToCart({product: product, quantity: 1});
+            }
+          }}
           status="success"
           style={{
             height: 15,
@@ -91,7 +124,7 @@ export const ProductCard = ({product}: Props) => {
             right: 10,
             bottom: 10,
           }}>
-          <CustomIcon white name="plus" />
+          <CustomIcon white name={!isAddedToCart ? 'plus' : 'checkmark'} />
         </Button>
       </Layout>
     </Pressable>

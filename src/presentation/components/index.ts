@@ -18,4 +18,5 @@ export * from './driver/driver-information-card';
 export * from './restaurants/restaurant-card';
 export * from './restaurants/product-card';
 export * from './restaurants/cart/cart-item';
+export * from './restaurants/cart/fab-shopping-cart';
 export * from './restaurants/stats';

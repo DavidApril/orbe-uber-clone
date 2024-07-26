@@ -7,21 +7,35 @@ import {
   Text,
 } from '@ui-kitten/components';
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {useWindowDimensions, View} from 'react-native';
 import {CustomIcon} from '../ui/custom-icon';
-import {BillInfoTotals} from '../../../interfaces';
 import {currencyFormat} from '../../../utils';
 
 interface Props {
-  billInfo: BillInfoTotals;
+  subtotal: number;
+  total: number;
   shipping: number;
+  itemsInCart: number;
+  tax: number;
 }
 
-export const PaymentControllers = ({billInfo, shipping}: Props) => {
+export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const {height, width} = useWindowDimensions();
 
   return (
-    <View style={{margin: 20}}>
+    <View
+      style={{
+        zIndex: 999999999999,
+        padding: 20,
+        borderTopRightRadius: 40,
+        borderTopLeftRadius: 40,
+        backgroundColor: 'white',
+        position: 'absolute',
+        height: height * 0.4,
+        width,
+        bottom: 0,
+      }}>
       <Input
         style={{borderRadius: 20}}
         accessoryLeft={<CustomIcon fill="gray" name="award" />}
@@ -30,7 +44,7 @@ export const PaymentControllers = ({billInfo, shipping}: Props) => {
 
       <Divider style={{marginVertical: 20}} />
 
-      <Text style={{}}>Subtotal: {currencyFormat(billInfo?.subtotal)}</Text>
+      <Text style={{}}>Subtotal: {currencyFormat(subtotal)}</Text>
       <Text style={{}}>Envío: {currencyFormat(shipping)} </Text>
 
       <Divider style={{marginVertical: 10}} />
@@ -38,7 +52,7 @@ export const PaymentControllers = ({billInfo, shipping}: Props) => {
       <Text style={{}}>
         Total:{' '}
         <Text style={{fontWeight: 'bold', fontSize: 24, color: 'black'}}>
-          {currencyFormat(billInfo?.total ?? 0)}
+          {currencyFormat(total ?? 0)}
         </Text>
       </Text>
 

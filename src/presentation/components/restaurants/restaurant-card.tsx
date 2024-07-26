@@ -1,12 +1,12 @@
-import {Image, Pressable, TouchableOpacity} from 'react-native';
+import {Image, Pressable} from 'react-native';
 import {StorageService} from '../../../services';
 import {RootStackParams, SingleRestaurantResponse} from '../../../interfaces';
-import {useRestaurantStore} from '../../../store/restaurant/restaurant';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {View} from 'react-native';
 import {Text} from 'react-native';
 import {globalColors} from '../../theme/styles';
 import {FAB} from '../ui/floating-action-button';
+import {useCartStore} from '../../../store';
 
 export const RestaurantCard = ({
   restaurant,
@@ -17,7 +17,7 @@ export const RestaurantCard = ({
     restaurant.attachments[0]?.image_url,
   );
 
-  const {setRestaurantSelected} = useRestaurantStore();
+  const {setRestaurantSelected} = useCartStore();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   return (
