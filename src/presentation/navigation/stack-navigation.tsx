@@ -40,7 +40,7 @@ export const StackNavigator = () => {
     <Navigator
       initialRouteName="LoadingScreen"
       
-      screenOptions={{headerShown: true, headerTintColor: globalColors.primary}}>
+      screenOptions={{headerShown: true, headerTintColor: globalColors.primaryColors.primary}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="LoadingScreen"
