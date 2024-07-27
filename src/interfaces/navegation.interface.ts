@@ -12,6 +12,7 @@ export type RootStackParams = {
   RestaurantScreen: undefined;
   RegisterDriverScreen: undefined;
   CouponsScreen: undefined;
+  MyCouponsScreen: undefined;
   WalletScreen: undefined;
   RegisterClientScreen: undefined;
   favoritesScreen: undefined;

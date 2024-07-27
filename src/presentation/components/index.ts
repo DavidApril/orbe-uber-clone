@@ -23,6 +23,8 @@ export * from './client/payment-controllers';
 
 export * from './driver/driver-information-card';
 
+export * from './tabs/custom-top-tap-navigation';
+
 export * from './restaurants/restaurant-card';
 export * from './restaurants/product-card';
 export * from './restaurants/cart/cart-item';
@@ -34,4 +36,5 @@ export * from './restaurants/stats';
 export * from './bottom-sheets/bs-add-credit-card';
 
 export * from './wallet/credit-card';
+
 export * from './chatbot/header-chatbot';

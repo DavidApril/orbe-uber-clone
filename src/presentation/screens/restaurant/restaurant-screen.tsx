@@ -1,27 +1,16 @@
 import {Text} from '@ui-kitten/components';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {LoadingScreen} from '../loading/loading-screen';
-import {Image, useColorScheme, useWindowDimensions} from 'react-native';
+import {Image, Pressable, useWindowDimensions} from 'react-native';
 import {View} from 'react-native';
 import {StorageService} from '../../../services';
-import {
-  DrawerActions,
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ProductRestaurant, RootStackParams} from '../../../interfaces';
-import {
-  CustomIcon,
-  FABGoBackButton,
-  FABShoppingCart,
-  OpenDrawerMenu,
-  Stats,
-} from '../../components';
+import {CustomIcon, FABGoBackButton, Stats} from '../../components';
 import {RestaurantService} from '../../../services/restaurant/restaurant.service';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ProductsList} from './products/products-list';
 import {useCartStore, useUIStore} from '../../../store';
-import BottomSheet, {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {globalColors} from '../../theme/styles';
 
 export const RestaurantScreen = () => {
@@ -73,7 +62,39 @@ export const RestaurantScreen = () => {
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
       }}>
-      <TouchableOpacity
+      <Pressable
+        onPress={() => navigation.goBack()}
+        style={{
+          height: 45,
+          zIndex: 999,
+          width: 45,
+          borderRadius: 500,
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          alignItems: 'center',
+          top: 30,
+          left: 30,
+          position: 'absolute',
+        }}>
+        <CustomIcon fill="black" name="arrow-back" />
+      </Pressable>
+      <Pressable
+        onPress={() => navigation.navigate('ProductsCartScreen')}
+        style={{
+          height: 45,
+          zIndex: 999,
+          width: 45,
+          borderRadius: 500,
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          alignItems: 'center',
+          top: 30,
+          right: 30,
+          position: 'absolute',
+        }}>
+        <CustomIcon fill="black" name="shopping-cart" />
+      </Pressable>
+      {/* <Toucha bleOpacity
         style={[
           {
             zIndex: 99999999999999,
@@ -96,15 +117,14 @@ export const RestaurantScreen = () => {
             elevation: 5,
           },
         ]}
-        onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}>
         <CustomIcon white={!isDarkMode ? true : false} name="menu-2-outline" />
-      </TouchableOpacity>
-
+      </TouchableOpacity> */}
       <ScrollView>
         <View
           style={{
             height: height * 0.3,
-            marginBottom: height * 0.1,
+            marginBottom: height * 0.07,
+            zIndex: -10,
           }}>
           <Image
             style={{width: '100%', height: '100%'}}
@@ -124,7 +144,10 @@ export const RestaurantScreen = () => {
             borderWidth: 6,
             overflow: 'hidden',
           }}>
-          <Image style={{height: 100, width: 100}} source={{uri: image_url}} />
+          <Image
+            style={{height: 100, width: 100, zIndex: -10}}
+            source={{uri: image_url}}
+          />
         </View>
 
         <View style={{marginHorizontal: 20}}>

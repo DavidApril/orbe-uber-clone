@@ -6,7 +6,7 @@ import {useAuthStore, useCouponStore, useUIStore} from '../../../store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParams} from '../../../interfaces';
 
-export const MyCouponsTab = () => {
+export const MyCouponsScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   const {isDarkMode} = useUIStore();
@@ -47,16 +47,6 @@ export const MyCouponsTab = () => {
               }}>
               <Text
                 style={{
-                  fontWeight: 'black',
-                  fontSize: 20,
-                  color: !isDarkMode
-                    ? globalColors.fontColor.textColor
-                    : globalColors.fontColor.textColorDark,
-                }}>
-                {userByUid?.cliente.name},
-              </Text>
-              <Text
-                style={{
                   fontSize: 28,
                   fontWeight: 'bold',
                   color: !isDarkMode
@@ -71,9 +61,9 @@ export const MyCouponsTab = () => {
                     paddingHorizontal: 10,
                     fontSize: 50,
                   }}>
-                  45
+                  {userByUid?.cupons.length}
                 </Text>{' '}
-                creditos
+                cupón por usar
               </Text>
             </View>
             <FlatList
@@ -92,7 +82,7 @@ export const MyCouponsTab = () => {
                 onPressDelete={() => setCouponToUse(null)}
                 couponSelected={couponToUse}
                 onPress={() => {
-                  navigation.goBack();
+                  navigation.navigate('ProductsCartScreen');
                 }}
               />
             )}

@@ -19,16 +19,16 @@ export const FABGoBackButton = ({fill, style}: Props) => {
     <TouchableOpacity
       style={[
         {
-          zIndex: 99999999999999,
-          position: 'absolute',
-          borderRadius: 100,
-          height: 45,
+          zIndex: 999,
           width: 45,
+          borderRadius: 500,
+          justifyContent: 'center',
+          alignItems: 'center',
           top: 30,
           left: 30,
-          justifyContent: 'center',
+          position: 'absolute',
+          height: 45,
           backgroundColor: globalColors.primaryColors.primary,
-          alignItems: 'center',
           shadowOpacity: 0.3,
           shadowOffset: {
             height: 0.27,
