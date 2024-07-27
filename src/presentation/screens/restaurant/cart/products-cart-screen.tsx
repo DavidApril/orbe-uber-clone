@@ -1,29 +1,17 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Pressable,
-  FlatList,
-  ScrollView,
-  Modal,
-  useWindowDimensions,
-} from 'react-native';
+import {useMemo, useRef, useState} from 'react';
+import {View, Text, FlatList, useWindowDimensions} from 'react-native';
 
 import {RootStackParams} from '../../../../interfaces';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useCartStore, useUIStore} from '../../../../store';
 import {
   CartItem,
-  FAB,
   FABGoBackButton,
-  FABShoppingCart,
-  OpenDrawerMenu,
   PaymentControllers,
 } from '../../../components';
 import {globalColors} from '../../../theme/styles';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {List} from '@ui-kitten/components';
+import {Divider} from '@ui-kitten/components';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'ProductsCartScreen'> {}
@@ -35,7 +23,7 @@ export const ProductsCartScreen = ({navigation}: Props) => {
   const {cart, getSummaryInformation} = useCartStore();
   const {itemsInCart, subTotal, tax, total} = getSummaryInformation();
 
-  const snapPoints = useMemo(() => ['6%', '55%'], []);
+  const snapPoints = useMemo(() => ['15%', '80%'], []);
   const summaryBottomSheetRef = useRef<BottomSheet>(null);
 
   return (
@@ -106,12 +94,33 @@ export const ProductsCartScreen = ({navigation}: Props) => {
           borderTopRightRadius: 50,
           borderTopLeftRadius: 50,
           backgroundColor: isDarkMode
-            ? globalColors.neutralColors.backgroundDark
-            : globalColors.neutralColors.background,
+            ? globalColors.grayScale.black
+            : globalColors.grayScale.white,
         }}
         style={{borderTopRightRadius: 100}}
         snapPoints={snapPoints}>
-        <View style={{height: height * 0.8}}>
+        <View
+          style={{
+            height: height * 0.8,
+            backgroundColor: isDarkMode
+              ? globalColors.grayScale.black
+              : globalColors.grayScale.white,
+          }}>
+          <Text
+            style={{
+              paddingLeft: 30,
+              marginVertical: 20,
+              fontSize: 30,
+              fontWeight: 'bold',
+              color: isDarkMode
+                ? globalColors.fontColor.textColorHeaderDark
+                : globalColors.fontColor.textColorHeader,
+            }}>
+            Paga aquí
+          </Text>
+
+          <Divider style={{marginVertical: 10}} />
+
           <PaymentControllers
             itemsInCart={itemsInCart}
             shipping={shipping}

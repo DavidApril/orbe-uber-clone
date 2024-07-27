@@ -57,11 +57,7 @@ export const CartItem = ({item}: Props) => {
           }}
         />
 
-        {/* 
-      <View
-        style={{
-          backgroundColor: 'white',
-        }}></View> */}
+        
 
         <View>
           <Text

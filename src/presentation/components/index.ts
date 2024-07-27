@@ -6,10 +6,10 @@ export * from './ui/open-drawer';
 export * from './ui/open-drawer';
 export * from './ui/fab-go-back-screen';
 export * from './ui/avatar-chat';
-export * from './ui/status-button'
-export * from './ui/coupon-card'
-export * from './ui/type-writter'
-export * from './ui/chat-writting'
+export * from './ui/status-button';
+export * from './ui/coupon-card';
+export * from './ui/type-writter';
+export * from './ui/chat-writting';
 
 export * from './bottom-tabs/custom-bottom-tabs';
 
@@ -27,6 +27,8 @@ export * from './restaurants/restaurant-card';
 export * from './restaurants/product-card';
 export * from './restaurants/cart/cart-item';
 export * from './restaurants/cart/fab-shopping-cart';
+export * from './restaurants/cart/cart-quantity-selector';
+export * from './restaurants/coupons/buy-coupon-selected';
 export * from './restaurants/stats';
 
 export * from './bottom-sheets/bs-add-credit-card';

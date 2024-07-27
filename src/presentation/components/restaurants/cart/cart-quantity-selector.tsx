@@ -2,7 +2,7 @@ import {Button, ButtonGroup} from '@ui-kitten/components';
 import React, {useEffect} from 'react';
 import {Pressable, StyleProp, Text, View, ViewStyle} from 'react-native';
 import {useCartStore, useUIStore} from '../../../../store';
-import {globalColors} from '../../../theme/styles';
+import {globalColors, grayScale} from '../../../theme/styles';
 import {CartProduct} from '../../../../interfaces';
 
 interface Props {
@@ -13,6 +13,8 @@ interface Props {
 export const CartQuantitySelector = ({product}: Props) => {
   const {isDarkMode} = useUIStore();
   const {updateProductQuantity, removeProduct} = useCartStore();
+
+  console.log({product})
 
   return (
     <View
@@ -56,7 +58,7 @@ export const CartQuantitySelector = ({product}: Props) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={{fontWeight: 'bold'}}>{product?.quantity}</Text>
+        <Text style={{fontWeight: 'bold', color: grayScale.white}}>{product?.quantity}</Text>
       </View>
       <Pressable
         onPress={() => updateProductQuantity(+1, product)}

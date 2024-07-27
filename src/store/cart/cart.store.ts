@@ -123,11 +123,12 @@ export const useCartStore = create<State>()((set, get) => ({
         ) {
           return {
             ...item,
-            quantity: Math.max((productItem.quantity += quantity), 0),
+            quantity: (productItem.quantity += quantity),
           };
         }
         return item;
       });
+
       set({cart: updateCartProducts, cartNews: true});
     } else {
       get().addProductToCart(productItem!.product);

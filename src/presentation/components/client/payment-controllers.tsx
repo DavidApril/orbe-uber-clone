@@ -1,17 +1,20 @@
+import {Divider, Radio, RadioGroup, Text} from '@ui-kitten/components';
+import React, {useEffect, useState} from 'react';
+import {Pressable, useWindowDimensions, View} from 'react-native';
+import {currencyFormat, parseDate} from '../../../utils';
+import {useCouponStore, useUIStore} from '../../../store';
 import {
-  Button,
-  Divider,
-  Input,
-  Radio,
-  RadioGroup,
-  Text,
-} from '@ui-kitten/components';
-import React, {useState} from 'react';
-import {useWindowDimensions, View} from 'react-native';
+  fontColor,
+  globalColors,
+  globalDimensions,
+  grayScale,
+  neutralColors,
+  stateColors,
+} from '../../theme/styles';
 import {CustomIcon} from '../ui/custom-icon';
-import {currencyFormat} from '../../../utils';
-import {useUIStore} from '../../../store';
-import {globalColors} from '../../theme/styles';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParams} from '../../../interfaces';
 
 interface Props {
   subtotal: number;
@@ -22,87 +25,195 @@ interface Props {
 }
 
 export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const {width} = useWindowDimensions();
   const {isDarkMode} = useUIStore();
-
+  const {coupons, couponSelected, setCuponSelected} = useCouponStore();
   return (
-    <View
-      style={{
-        padding: 30,
-        backgroundColor: isDarkMode
-          ? globalColors.grayScale.black
-          : globalColors.grayScale.white,
-        width,
-        bottom: 0,
-      }}>
-      <Input
-        style={{borderRadius: 20}}
-        accessoryLeft={<CustomIcon fill="gray" name="award" />}
-        placeholder="Promo code"
-      />
+    couponSelected && (
+      <View
+        style={{
+          padding: 30,
+          backgroundColor: isDarkMode
+            ? globalColors.grayScale.black
+            : globalColors.grayScale.white,
+          width,
+          bottom: 0,
+        }}>
+        <View
+          style={{
+            height: 140,
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'row',
+            borderWidth: 10,
+            borderColor: isDarkMode
+              ? globalColors.neutralColors.backgroundDarkAlpha
+              : neutralColors.backgroundAlpha,
+            backgroundColor: isDarkMode
+              ? globalColors.neutralColors.backgroundDarkAlpha
+              : neutralColors.backgroundAlpha,
+            borderRadius: globalDimensions.borderRadiusButtom,
+            position: 'relative',
+          }}>
+          <Pressable
+            style={{
+              height: 120,
+              width: '100%',
+              borderWidth: 2,
+              borderColor: stateColors.success,
 
-      <Divider style={{marginVertical: 20}} />
-
-      <Text style={{}}>Subtotal: {currencyFormat(subtotal)}</Text>
-      <Text style={{}}>Envío: {currencyFormat(shipping)} </Text>
-
-      <Divider style={{marginVertical: 10}} />
-
-      <Text style={{}}>
-        Total:{' '}
-        <Text style={{fontWeight: 'bold', fontSize: 24, color: 'black'}}>
-          {currencyFormat(total ?? 0)}
-        </Text>
-      </Text>
-
-      <View style={{flexDirection: 'column', gap: 10, marginVertical: 10}}>
-        <View>
-          <RadioGroup
-            selectedIndex={selectedIndex}
-            onChange={index => setSelectedIndex(index)}
-            style={{flexDirection: 'row', gap: 10}}>
-            <Radio
+              right: 0,
+              borderRadius: globalDimensions.borderRadiusButtom,
+              backgroundColor: isDarkMode
+                ? neutralColors.backgroundDark
+                : neutralColors.background,
+            }}>
+            <Text
               style={{
-                flex: 1,
-                paddingVertical: 20,
-                paddingHorizontal: 20,
-                borderRadius: 10,
-                shadowColor: '#717171',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.18,
-                shadowRadius: 4.59,
-                elevation: 2,
-                backgroundColor: 'white',
+                fontSize: 18,
+                fontWeight: 'bold',
+                paddingTop: 50,
+                paddingLeft: 20,
+                color: stateColors.error,
               }}>
-              <Text>Crédito</Text>
-            </Radio>
-            <Radio
+              {couponSelected?.name}
+            </Text>
+            <View
               style={{
-                flex: 1,
-                paddingVertical: 20,
                 paddingHorizontal: 20,
-                borderRadius: 10,
-                shadowColor: '#717171',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.18,
-                shadowRadius: 4.59,
-                elevation: 2,
-                backgroundColor: 'white',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}>
-              <Text>Efectivo</Text>
-            </Radio>
-          </RadioGroup>
+              <Text
+                style={{
+                  color: isDarkMode
+                    ? fontColor.textColorDark
+                    : fontColor.textColor,
+                }}>
+                {parseDate(couponSelected?.endDate)}
+              </Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: isDarkMode
+                    ? fontColor.textColorDark
+                    : fontColor.textColor,
+                }}>
+                {couponSelected.cupon_type}
+              </Text>
+            </View>
+            <View style={{position: 'absolute', right: 14, top: 14}}>
+              <CustomIcon fill={stateColors.warning} name="award" />
+            </View>
+          </Pressable>
         </View>
 
-        <Button status="success">Pagar</Button>
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <Pressable
+            onPress={() => navigation.navigate('CouponsScreen')}
+            style={{
+              borderRadius: globalDimensions.borderRadiusButtom,
+              paddingHorizontal: 30,
+              paddingTop: 10,
+              width: 180,
+              flex: 0,
+            }}>
+            <Text
+              style={{
+                textAlign: 'right',
+                color: isDarkMode
+                  ? stateColors.warning
+                  : fontColor.textColorHeader,
+              }}>
+              Ver cupones
+            </Text>
+          </Pressable>
+        </View>
+
+        <Divider style={{marginVertical: 20}} />
+
+        <Text style={{}}>Subtotal: {currencyFormat(subtotal)}</Text>
+        <Text style={{}}>Envío: {currencyFormat(shipping)} </Text>
+
+        <Divider style={{marginVertical: 10}} />
+
+        <Text style={{fontWeight: 'bold'}}>
+          Total:{' '}
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 24,
+              color: isDarkMode
+                ? globalColors.fontColor.textColorHeaderDark
+                : globalColors.fontColor.textColorHeader,
+            }}>
+            {currencyFormat(total ?? 0)}
+          </Text>
+        </Text>
+
+        <View style={{flexDirection: 'column', gap: 10, marginVertical: 10}}>
+          <View>
+            <RadioGroup
+              selectedIndex={selectedIndex}
+              onChange={index => setSelectedIndex(index)}
+              style={{flexDirection: 'row', gap: 10}}>
+              <Radio
+                style={{
+                  flex: 1,
+                  paddingVertical: 20,
+                  paddingHorizontal: 20,
+                  borderRadius: 10,
+                  shadowColor: '#717171',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.18,
+                  shadowRadius: 4.59,
+                  elevation: 2,
+                  backgroundColor: isDarkMode
+                    ? globalColors.neutralColors.backgroundDarkAlpha
+                    : globalColors.neutralColors.backgroundAlpha,
+                }}>
+                <Text>Crédito</Text>
+              </Radio>
+              <Radio
+                style={{
+                  flex: 1,
+                  paddingVertical: 20,
+                  paddingHorizontal: 20,
+                  borderRadius: 10,
+                  shadowColor: '#717171',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.18,
+                  shadowRadius: 4.59,
+                  elevation: 2,
+                  backgroundColor: isDarkMode
+                    ? globalColors.neutralColors.backgroundDarkAlpha
+                    : globalColors.neutralColors.backgroundAlpha,
+                }}>
+                <Text>Efectivo</Text>
+              </Radio>
+            </RadioGroup>
+          </View>
+
+          <Pressable
+            style={{
+              backgroundColor: globalColors.stateColors.success,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 20,
+              borderRadius: globalDimensions.borderRadiusButtom,
+            }}>
+            <Text style={{fontSize: 17}}>Pagar</Text>
+          </Pressable>
+        </View>
       </View>
-    </View>
+    )
   );
 };

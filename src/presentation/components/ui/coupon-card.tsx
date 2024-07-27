@@ -1,22 +1,35 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import {useUIStore} from '../../../store';
+import {Pressable, Text, View} from 'react-native';
+import {useCouponStore, useUIStore} from '../../../store';
 import {globalColors, globalStyles} from '../../theme/styles';
+import {Coupon} from '../../../interfaces';
 
-export const CouponCard = () => {
+interface Props {
+  height?: number;
+  width?: number;
+  coupon: Coupon;
+}
+
+export const CouponCard = ({height, width, coupon}: Props) => {
   const {isDarkMode} = useUIStore();
+  const {setCuponSelected, couponSelected} = useCouponStore();
+
+  const isCouponSelected = couponSelected?.id === coupon.id;
 
   return (
-    <View
+    <Pressable
+      onPress={() => setCuponSelected(coupon)}
       style={[
         {
           marginVertical: 38,
           position: 'relative',
           borderRadius: 30,
+          transform: [{scale: !isCouponSelected ? 0.9 : 1}],
+
           flex: 1,
-          width: 340,
+          width: width ?? 340,
           backgroundColor: globalColors.stateColors.success,
-          height: 230,
+          height: height ?? 230,
           marginRight: 30,
         },
         globalStyles.boxShadow,
@@ -36,10 +49,10 @@ export const CouponCard = () => {
       />
       <View style={{marginLeft: 50, marginTop: 80}}>
         <Text style={{fontSize: 18, fontWeight: 'bold', letterSpacing: 2}}>
-          Nescafe
+          {coupon.name}
         </Text>
-        <Text style={{fontSize: 18}}>Café Mocha</Text>
+        <Text style={{fontSize: 18}}>{coupon.description}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };

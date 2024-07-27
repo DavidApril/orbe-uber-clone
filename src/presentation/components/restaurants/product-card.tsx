@@ -1,5 +1,5 @@
 import {Button, Text} from '@ui-kitten/components/ui';
-import {Image, useColorScheme, View} from 'react-native';
+import {Image, Pressable, useColorScheme, View} from 'react-native';
 import {StorageService} from '../../../services';
 import {ProductRestaurant, RootStackParams} from '../../../interfaces';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -10,7 +10,6 @@ import {useCartStore, useUIStore} from '../../../store';
 import {useState} from 'react';
 import {LoadingScreen} from '../../screens';
 import {globalColors} from '../../theme/styles';
-import {TouchableOpacity} from '@gorhom/bottom-sheet';
 
 interface Props {
   product: ProductRestaurant;
@@ -34,7 +33,7 @@ export const ProductCard = ({product}: Props) => {
   }
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => {
         setProductSelected(product);
         navigation.navigate('ProductItemScreen');
@@ -54,7 +53,7 @@ export const ProductCard = ({product}: Props) => {
           shadowOpacity: 0.25,
           shadowRadius: 3.84,
 
-          elevation: 5,
+          elevation: 2,
           width: 220,
           // justifyContent: 'center',
           padding: 20,
@@ -123,6 +122,6 @@ export const ProductCard = ({product}: Props) => {
           <CustomIcon white name={!isAddedToCart ? 'plus' : 'checkmark'} />
         </Button>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };

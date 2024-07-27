@@ -1,12 +1,37 @@
-import React from 'react';
-import {FlatList, ScrollView, Text, View} from 'react-native';
-import {globalColors} from '../../theme/styles';
-import {CouponCard, FABGoBackButton} from '../../components';
-import {useAuthStore, useUIStore} from '../../../store';
+import React, {useEffect} from 'react';
+import {FlatList, Pressable, Text, View} from 'react-native';
+import {
+  globalColors,
+  globalDimensions,
+  neutralColors,
+  stateColors,
+} from '../../theme/styles';
+import {
+  BuyCouponSelected,
+  CouponCard,
+  CustomIcon,
+  FABGoBackButton,
+} from '../../components';
+import {useAuthStore, useCouponStore, useUIStore} from '../../../store';
+import {CouponService} from '../../../services';
 
 export const CouponsScreen = () => {
   const {isDarkMode} = useUIStore();
   const {userByUid} = useAuthStore();
+  const {coupons, setCoupons, couponSelected, setCuponSelected} =
+    useCouponStore();
+
+  const getCoupons = async () => {
+    const response = await CouponService.getCoupons();
+    return response;
+  };
+
+  useEffect(() => {
+    getCoupons().then(coupons => {
+      setCoupons(coupons);
+    });
+  }, []);
+
   return (
     <>
       <View
@@ -30,8 +55,6 @@ export const CouponsScreen = () => {
             <View
               style={{
                 height: 100,
-                justifyContent: 'flex-end',
-
                 gap: 10,
               }}>
               <Text
@@ -66,9 +89,11 @@ export const CouponsScreen = () => {
               </Text>
             </View>
             <FlatList
-              horizontal
-              data={['1', '2', '3']}
-              renderItem={() => <CouponCard />}></FlatList>
+              data={coupons}
+              style={{height: 300}}
+              renderItem={({item}) => <CouponCard coupon={item} />}></FlatList>
+
+            {couponSelected && <BuyCouponSelected />}
           </View>
         </View>
       </View>

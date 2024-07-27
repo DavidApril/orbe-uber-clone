@@ -7,3 +7,4 @@ export * from './driver/driver.service';
 export * from './storage/storage.service';
 export * from './restaurant/restaurant.service';
 export * from './chatbot/chatbot.service';
+export * from './coupon/coupon.service'
