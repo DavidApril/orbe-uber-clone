@@ -82,6 +82,8 @@ export const globalColors = {
 
 export const globalDimensions = {
   borderRadiusButtom: 20,
+  paddingScreen: 30,
+  paddingTopRestaurantScreens: 150,
 };
 
 export const globalStyles = StyleSheet.create({

@@ -11,7 +11,7 @@ import {RestaurantService} from '../../../services/restaurant/restaurant.service
 import {ScrollView} from 'react-native-gesture-handler';
 import {ProductsList} from './products/products-list';
 import {useCartStore, useUIStore} from '../../../store';
-import {globalColors} from '../../theme/styles';
+import {fontColor, globalColors, globalDimensions} from '../../theme/styles';
 
 export const RestaurantScreen = () => {
   const {height, width} = useWindowDimensions();
@@ -62,100 +62,82 @@ export const RestaurantScreen = () => {
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
       }}>
-      <Pressable
-        onPress={() => navigation.goBack()}
+      <View
         style={{
-          height: 45,
-          zIndex: 999,
-          width: 45,
-          borderRadius: 500,
-          backgroundColor: 'white',
-          justifyContent: 'center',
-          alignItems: 'center',
-          top: 30,
-          left: 30,
-          position: 'absolute',
+          marginVertical: 30,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
         }}>
-        <CustomIcon fill="black" name="arrow-back" />
-      </Pressable>
-      <Pressable
-        onPress={() => navigation.navigate('ProductsCartScreen')}
-        style={{
-          height: 45,
-          zIndex: 999,
-          width: 45,
-          borderRadius: 500,
-          backgroundColor: 'white',
-          justifyContent: 'center',
-          alignItems: 'center',
-          top: 30,
-          right: 30,
-          position: 'absolute',
-        }}>
-        <CustomIcon fill="black" name="shopping-cart" />
-      </Pressable>
-      {/* <Toucha bleOpacity
-        style={[
-          {
-            zIndex: 99999999999999,
-            position: 'absolute',
-            borderRadius: 100,
+        <Pressable
+          onPress={() => navigation.goBack()}
+          style={{
             height: 45,
+            zIndex: 999,
             width: 45,
+            borderRadius: 500,
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignItems: 'center',
             top: 30,
             left: 30,
-            justifyContent: 'center',
-            backgroundColor: !isDarkMode
-              ? globalColors.primaryColors.primary
-              : '',
-            alignItems: 'center',
-            shadowOpacity: 0.3,
-            shadowOffset: {
-              height: 0.27,
-              width: 4.5,
-            },
-            elevation: 5,
-          },
-        ]}
-        <CustomIcon white={!isDarkMode ? true : false} name="menu-2-outline" />
-      </TouchableOpacity> */}
-      <ScrollView>
-        <View
-          style={{
-            height: height * 0.3,
-            marginBottom: height * 0.07,
-            zIndex: -10,
           }}>
-          <Image
-            style={{width: '100%', height: '100%'}}
-            source={{uri: image_url ?? ''}}
-          />
-        </View>
-        <View
+          <CustomIcon fill="black" name="arrow-back" />
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.navigate('ProductsCartScreen')}
           style={{
-            height: 100,
-            width: 100,
+            height: 45,
+            zIndex: 999,
+            width: 45,
+            borderRadius: 500,
             backgroundColor: 'white',
-            position: 'absolute',
-            borderRadius: 100,
-            transform: [{translateY: height * 0.25}],
-            marginLeft: 20,
-            borderColor: 'white',
-            borderWidth: 6,
-            overflow: 'hidden',
+            justifyContent: 'center',
+            alignItems: 'center',
+            top: 30,
+            right: 30,
           }}>
-          <Image
-            style={{height: 100, width: 100, zIndex: -10}}
-            source={{uri: image_url}}
-          />
+          <CustomIcon fill="black" name="shopping-cart" />
+        </Pressable>
+      </View>
+
+      <ScrollView>
+        <View style={{flexDirection: 'row', justifyContent: 'center', marginVertical: 50}}>
+          <View
+            style={{
+              height: 180,
+              width: 180,
+              backgroundColor: 'white',
+              borderRadius: 100,
+              marginLeft: 20,
+              borderColor: 'white',
+              borderWidth: 6,
+              overflow: 'hidden',
+            }}>
+            <Image
+              style={{height: 180, width: 180, zIndex: -10}}
+              source={{uri: image_url}}
+            />
+          </View>
         </View>
 
-        <View style={{marginHorizontal: 20}}>
-          <Text style={{fontWeight: 'bold', fontSize: 35}}>
+        <View style={{marginHorizontal: 60, marginVertical: 15}}>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 35,
+              color: isDarkMode
+                ? fontColor.textColorHeaderDark
+                : fontColor.textColorDark,
+            }}>
             {restaurantSelected.name}
           </Text>
 
-          <Text>{restaurantSelected.description}</Text>
+          <Text
+            style={{
+              color: isDarkMode ? fontColor.textColorDark : fontColor.textColor,
+            }}>
+            {restaurantSelected.description}
+          </Text>
 
           <View
             style={{

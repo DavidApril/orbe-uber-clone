@@ -16,7 +16,7 @@ import {
 import {useState} from 'react';
 import {StorageService} from '../../../services';
 import {CLIENT, DRIVER} from '../../../interfaces';
-import {globalColors} from '../../theme/styles';
+import {fontColor, globalColors, globalDimensions} from '../../theme/styles';
 
 export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const {logout, userByUid, role} = useAuthStore();
@@ -121,16 +121,24 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               height: 150,
               justifyContent: 'center',
               alignItems: 'center',
-              gap: 10,
+              flexDirection: 'column',
+              gap: 50,
             }}>
-            <Text style={{fontSize: 18}}>Esta seguro de cerrar sesion?</Text>
+            <Text
+              style={{
+                fontSize: 18,
+                color: isDarkMode
+                  ? fontColor.textColorHeaderDark
+                  : fontColor.textColorHeaderDark,
+              }}>
+              Esta seguro de cerrar sesion?
+            </Text>
             <View style={{flexDirection: 'row', gap: 10}}>
               <Pressable
                 style={{
                   padding: 10,
-                  borderRadius: 10,
-                  backgroundColor: '#00c1f1',
-                  borderColor: '#00c1f1',
+                  borderRadius: globalDimensions.borderRadiusButtom,
+                  paddingHorizontal: 20,
                 }}
                 onPress={() => setModal(false)}>
                 <Text style={{color: 'white'}}>Cancelar</Text>
@@ -138,14 +146,16 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               <Pressable
                 style={{
                   padding: 10,
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  borderColor: '#00c1f1',
+                  borderRadius: globalDimensions.borderRadiusButtom,
+                  paddingHorizontal: 20,
+                  backgroundColor: globalColors.stateColors.error,
                 }}
                 onPress={() => {
                   logout(), setModal(false);
                 }}>
-                <Text style={{color: '#00c1f1'}}>Cerrar sesion</Text>
+                <Text style={{color: 'white', fontWeight: 'bold'}}>
+                  Cerrar sesion
+                </Text>
               </Pressable>
             </View>
           </View>
