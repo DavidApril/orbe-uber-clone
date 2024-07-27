@@ -27,7 +27,7 @@ export const App = () => {
             ...DefaultTheme,
             colors: {
               ...DefaultTheme.colors,
-              primary: globalColors.primary,
+              primary: globalColors.primaryColors.primary,
             },
           }}>
           <AuthProvider>
