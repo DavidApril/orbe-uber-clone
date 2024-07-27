@@ -32,9 +32,10 @@ export const ProductsCartScreen = ({navigation}: Props) => {
   const [shipping] = useState(3000);
   const {height} = useWindowDimensions();
   const {isDarkMode} = useUIStore();
-  const {cart, getSummaryInformation, getTotalItems} = useCartStore();
+  const {cart, getSummaryInformation} = useCartStore();
   const {itemsInCart, subTotal, tax, total} = getSummaryInformation();
 
+  const snapPoints = useMemo(() => ['6%', '55%'], []);
   const summaryBottomSheetRef = useRef<BottomSheet>(null);
 
   return (
@@ -48,8 +49,8 @@ export const ProductsCartScreen = ({navigation}: Props) => {
         justifyContent: 'space-between',
       }}>
       <FABGoBackButton />
-      <View style={{paddingHorizontal: 30}}>
-        <View style={{marginBottom: 20}}>
+      <View style={{}}>
+        <View style={{marginBottom: 20, marginHorizontal: 30}}>
           <Text
             style={{
               fontSize: 25,
@@ -71,11 +72,11 @@ export const ProductsCartScreen = ({navigation}: Props) => {
         </View>
         <View
           style={{
-            height: height * 0.8,
+            height: height * 0.74,
             borderTopLeftRadius: 40,
             borderTopRightRadius: 40,
             width: '100%',
-            padding: 5,
+            padding: 30,
             backgroundColor: isDarkMode
               ? globalColors.neutralColors.backgroundDarkAlpha
               : globalColors.neutralColors.backgroundAlpha,
@@ -85,10 +86,41 @@ export const ProductsCartScreen = ({navigation}: Props) => {
           </ScrollView> */}
           <FlatList
             data={cart}
+            style={{
+              gap: 10,
+              flexDirection: 'column',
+            }}
             renderItem={({item}) => <CartItem item={item} />}
           />
         </View>
       </View>
+
+      <BottomSheet
+        ref={summaryBottomSheetRef}
+        backgroundStyle={{
+          backgroundColor: isDarkMode
+            ? globalColors.neutralColors.backgroundDark
+            : globalColors.neutralColors.background,
+        }}
+        handleStyle={{
+          borderTopRightRadius: 50,
+          borderTopLeftRadius: 50,
+          backgroundColor: isDarkMode
+            ? globalColors.neutralColors.backgroundDark
+            : globalColors.neutralColors.background,
+        }}
+        style={{borderTopRightRadius: 100}}
+        snapPoints={snapPoints}>
+        <View style={{height: height * 0.8}}>
+          <PaymentControllers
+            itemsInCart={itemsInCart}
+            shipping={shipping}
+            subtotal={subTotal}
+            tax={tax}
+            total={total}
+          />
+        </View>
+      </BottomSheet>
     </View>
   );
 };

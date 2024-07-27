@@ -10,6 +10,8 @@ import React, {useState} from 'react';
 import {useWindowDimensions, View} from 'react-native';
 import {CustomIcon} from '../ui/custom-icon';
 import {currencyFormat} from '../../../utils';
+import {useUIStore} from '../../../store';
+import {globalColors} from '../../theme/styles';
 
 interface Props {
   subtotal: number;
@@ -21,18 +23,16 @@ interface Props {
 
 export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const {height, width} = useWindowDimensions();
+  const {width} = useWindowDimensions();
+  const {isDarkMode} = useUIStore();
 
   return (
     <View
       style={{
-        zIndex: 999999999999,
-        padding: 20,
-        borderTopRightRadius: 40,
-        borderTopLeftRadius: 40,
-        backgroundColor: 'white',
-        position: 'absolute',
-        height: height * 0.4,
+        padding: 30,
+        backgroundColor: isDarkMode
+          ? globalColors.grayScale.black
+          : globalColors.grayScale.white,
         width,
         bottom: 0,
       }}>

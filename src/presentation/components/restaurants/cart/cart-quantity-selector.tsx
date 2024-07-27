@@ -12,7 +12,7 @@ interface Props {
 
 export const CartQuantitySelector = ({product}: Props) => {
   const {isDarkMode} = useUIStore();
-  const { updateProductQuantity} = useCartStore();
+  const {updateProductQuantity, removeProduct} = useCartStore();
 
   return (
     <View
@@ -30,7 +30,13 @@ export const CartQuantitySelector = ({product}: Props) => {
         justifyContent: 'space-between',
       }}>
       <Pressable
-        onPress={() => updateProductQuantity(-1, product)}
+        onPress={() => {
+          if (product.quantity > 0) {
+            updateProductQuantity(-1, product);
+          } else {
+            removeProduct(product);
+          }
+        }}
         style={{paddingHorizontal: 10}}>
         <Text
           style={{
