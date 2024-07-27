@@ -108,6 +108,7 @@ export const LoginScreen = ({navigation}: Props) => {
               {/* Button */}
               <Layout>
                 <Button
+                  status='info'
                   disabled={isLoading}
                   onPress={() => handleSubmit()}
                   appearance="ghost">

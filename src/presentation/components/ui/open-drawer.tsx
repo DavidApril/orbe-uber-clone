@@ -18,6 +18,7 @@ export const OpenDrawerMenu = ({top = 20, left, right}: Props) => {
 
   return (
     <FAB
+      white
       iconName="menu-2-outline"
       onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
       style={{

@@ -7,7 +7,7 @@ export const grayScale = {
 };
 
 export const primaryColors = {
-  primary: '#3498db',
+  primary: '#3fc1f2',
   primaryLight: '#5dade2',
   primaryDark: '#2e86c1',
   primaryText: '#ffffff',

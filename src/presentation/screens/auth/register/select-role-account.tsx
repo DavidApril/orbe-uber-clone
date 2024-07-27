@@ -20,6 +20,8 @@ export const SelectRoleAccount = ({roles, setRole}: Props) => {
       style={{
         flexDirection: 'column',
         gap: 20,
+        height: '100%',
+        justifyContent: 'center'
       }}>
       {roles.map(role => (
         <Layout
@@ -63,7 +65,7 @@ export const SelectRoleAccount = ({roles, setRole}: Props) => {
           <Layout style={{justifyContent: 'center'}}>
             <Button
               onPress={() => setRole(role.name)}
-              status="success"
+              status="primary"
               appearance="ghost">
               Seleccionar
             </Button>

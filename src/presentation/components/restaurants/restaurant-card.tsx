@@ -31,8 +31,8 @@ export const RestaurantCard = ({
         flexDirection: 'column',
         alignItems: 'center',
         flex: 1,
-        height: 270,
-        width: 220,
+        height: 290,
+        width: 250,
         paddingTop: 25,
         position: 'relative',
       }}>

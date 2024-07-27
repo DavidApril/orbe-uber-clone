@@ -70,14 +70,14 @@ export const BottomTapNavigationClientDelivery = () => {
         }}
         component={ChatBotScreen}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="SettingsScreen"
         options={{
           // icon name
           title: 'settings-outline',
         }}
         component={SettingsScreen}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };

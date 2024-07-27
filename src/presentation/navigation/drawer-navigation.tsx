@@ -6,6 +6,7 @@ import {useColorScheme} from 'react-native';
 
 import {RootStackParams} from '../../interfaces';
 import {TopTapNavigationClientDelivery} from './top-tap-wallet-navigation';
+import { SettingsScreen } from '../screens';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
@@ -46,6 +47,16 @@ export function DrawerNavigation() {
         }}
         name="WalletScreen"
         component={TopTapNavigationClientDelivery}
+      />
+      <Screen 
+        name='SettingsScreen'
+        options={{
+          headerShown: true,
+          // drawerIcon: ({color}) => (
+          //   <CustomIcon fill={color} name='settings-outline' />
+          // )
+        }}
+        component={SettingsScreen}
       />
     </Navigator>
   );
