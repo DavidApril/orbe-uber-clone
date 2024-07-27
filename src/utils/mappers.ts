@@ -1,5 +1,4 @@
-import {ParamListBase} from '@react-navigation/native';
-import {CLIENT, DRIVER, DELIVERY, RootStackParams} from '../interfaces';
+import {CLIENT, DRIVER, DELIVERY} from '../interfaces';
 import {
   HomeClientDeliveryScreen,
   HomeDeliveryScreen,

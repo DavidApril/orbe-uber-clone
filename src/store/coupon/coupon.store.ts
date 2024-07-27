@@ -4,9 +4,13 @@ import {CouponService} from '../../services';
 
 interface CouponState {
   coupons: Coupon[];
+  myCoupons: Coupon[];
   couponSelected: Coupon | null;
+  couponToUse: Coupon | null;
 
+  setCouponToUse: (coupon: Coupon | null) => void;
   setCuponSelected: (coupon: Coupon | null) => void;
+  setMyCoupons: (coupon: Coupon[]) => void;
   addNewCoupon: (coupon: Coupon) => void;
   removeCoupon: (couponToRemove: Coupon) => void;
   setCoupons: (coupons: Coupon[]) => void;
@@ -15,8 +19,12 @@ interface CouponState {
 
 export const useCouponStore = create<CouponState>()((set, get) => ({
   coupons: [],
+  myCoupons: [],
+  couponToUse: null,
   couponSelected: null,
 
+  setCouponToUse: couponToUse => set({couponToUse}),
+  setMyCoupons: myCoupons => set({myCoupons}),
   addNewCoupon: coupon => set({coupons: [...get().coupons, coupon]}),
   removeCoupon: couponToRemove => {
     const {coupons} = get();

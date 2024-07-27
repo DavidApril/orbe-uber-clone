@@ -6,6 +6,7 @@ import {CustomDrawerContent, CustomIcon} from '../components';
 import {RootStackParams} from '../../interfaces';
 import {CouponsScreen, ProductsCartScreen} from '../screens';
 import {useUIStore} from '../../store';
+import { TopTapCouponsNavigation } from './top-tap-coupons-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
@@ -55,8 +56,8 @@ export function DrawerNavigation() {
           },
           drawerIcon: ({color}) => <CustomIcon fill={color} name="award" />,
         }}
-        name="WalletScreen"
-        component={CouponsScreen}
+        name="CouponsScreen"
+        component={TopTapCouponsNavigation}
       />
 
       <Screen
@@ -70,7 +71,7 @@ export function DrawerNavigation() {
             <CustomIcon fill={color} name="credit-card" />
           ),
         }}
-        name="CouponsScreen"
+        name="WalletScreen"
         component={CouponsScreen}
       />
     </Navigator>

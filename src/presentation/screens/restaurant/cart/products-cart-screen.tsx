@@ -69,67 +69,68 @@ export const ProductsCartScreen = ({navigation}: Props) => {
               ? globalColors.neutralColors.backgroundDarkAlpha
               : globalColors.neutralColors.backgroundAlpha,
           }}>
-          {/* <ScrollView style={{padding: 15}}>
-            <CartItem />
-          </ScrollView> */}
-          <FlatList
-            data={cart}
-            style={{
-              gap: 10,
-              flexDirection: 'column',
-            }}
-            renderItem={({item}) => <CartItem item={item} />}
-          />
+          {cart.length > 0 ? (
+            <FlatList
+              data={cart}
+              style={{
+                gap: 10,
+                flexDirection: 'column',
+              }}
+              renderItem={({item}) => <CartItem item={item} />}
+            />
+          ) : (
+            <Text>No hay productos en el carrito.</Text>
+          )}
         </View>
       </View>
 
-      <BottomSheet
-        ref={summaryBottomSheetRef}
-        backgroundStyle={{
-          backgroundColor: isDarkMode
-            ? globalColors.neutralColors.backgroundDark
-            : globalColors.neutralColors.background,
-        }}
-        handleStyle={{
-          borderTopRightRadius: 50,
-          borderTopLeftRadius: 50,
-          backgroundColor: isDarkMode
-            ? globalColors.grayScale.black
-            : globalColors.grayScale.white,
-        }}
-        style={{borderTopRightRadius: 100}}
-        snapPoints={snapPoints}>
-        <View
-          style={{
-            height: height * 0.8,
+        <BottomSheet
+          ref={summaryBottomSheetRef}
+          backgroundStyle={{
+            backgroundColor: isDarkMode
+              ? globalColors.neutralColors.backgroundDark
+              : globalColors.neutralColors.background,
+          }}
+          handleStyle={{
+            borderTopRightRadius: 50,
+            borderTopLeftRadius: 50,
             backgroundColor: isDarkMode
               ? globalColors.grayScale.black
               : globalColors.grayScale.white,
-          }}>
-          <Text
+          }}
+          style={{borderTopRightRadius: 100}}
+          snapPoints={snapPoints}>
+          <View
             style={{
-              paddingLeft: 30,
-              marginVertical: 20,
-              fontSize: 30,
-              fontWeight: 'bold',
-              color: isDarkMode
-                ? globalColors.fontColor.textColorHeaderDark
-                : globalColors.fontColor.textColorHeader,
+              height: height * 0.8,
+              backgroundColor: isDarkMode
+                ? globalColors.grayScale.black
+                : globalColors.grayScale.white,
             }}>
-            Paga aquí
-          </Text>
+            <Text
+              style={{
+                paddingLeft: 30,
+                marginVertical: 20,
+                fontSize: 30,
+                fontWeight: 'bold',
+                color: isDarkMode
+                  ? globalColors.fontColor.textColorHeaderDark
+                  : globalColors.fontColor.textColorHeader,
+              }}>
+              Paga aquí
+            </Text>
 
-          <Divider style={{marginVertical: 10}} />
+            <Divider style={{marginVertical: 10}} />
 
-          <PaymentControllers
-            itemsInCart={itemsInCart}
-            shipping={shipping}
-            subtotal={subTotal}
-            tax={tax}
-            total={total}
-          />
-        </View>
-      </BottomSheet>
+            <PaymentControllers
+              itemsInCart={itemsInCart}
+              shipping={shipping}
+              subtotal={subTotal}
+              tax={tax}
+              total={total}
+            />
+          </View>
+        </BottomSheet>
     </View>
   );
 };

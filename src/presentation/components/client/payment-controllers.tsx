@@ -29,34 +29,34 @@ export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const {width} = useWindowDimensions();
   const {isDarkMode} = useUIStore();
-  const {coupons, couponSelected, setCuponSelected} = useCouponStore();
+  const {coupons, setCuponSelected, couponToUse} = useCouponStore();
   return (
-    couponSelected && (
+    <View
+      style={{
+        padding: 30,
+        backgroundColor: isDarkMode
+          ? globalColors.grayScale.black
+          : globalColors.grayScale.white,
+        width,
+        bottom: 0,
+      }}>
       <View
         style={{
-          padding: 30,
+          height: 140,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+          borderWidth: 10,
+          borderColor: isDarkMode
+            ? globalColors.neutralColors.backgroundDarkAlpha
+            : neutralColors.backgroundAlpha,
           backgroundColor: isDarkMode
-            ? globalColors.grayScale.black
-            : globalColors.grayScale.white,
-          width,
-          bottom: 0,
+            ? globalColors.neutralColors.backgroundDarkAlpha
+            : neutralColors.backgroundAlpha,
+          borderRadius: globalDimensions.borderRadiusButtom,
+          position: 'relative',
         }}>
-        <View
-          style={{
-            height: 140,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-            borderWidth: 10,
-            borderColor: isDarkMode
-              ? globalColors.neutralColors.backgroundDarkAlpha
-              : neutralColors.backgroundAlpha,
-            backgroundColor: isDarkMode
-              ? globalColors.neutralColors.backgroundDarkAlpha
-              : neutralColors.backgroundAlpha,
-            borderRadius: globalDimensions.borderRadiusButtom,
-            position: 'relative',
-          }}>
+        {couponToUse ? (
           <Pressable
             style={{
               height: 120,
@@ -78,7 +78,7 @@ export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
                 paddingLeft: 20,
                 color: stateColors.error,
               }}>
-              {couponSelected?.name}
+              {couponToUse?.name}
             </Text>
             <View
               style={{
@@ -92,7 +92,7 @@ export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
                     ? fontColor.textColorDark
                     : fontColor.textColor,
                 }}>
-                {parseDate(couponSelected?.endDate)}
+                {parseDate(couponToUse?.endDate)}
               </Text>
               <Text
                 style={{
@@ -101,119 +101,125 @@ export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
                     ? fontColor.textColorDark
                     : fontColor.textColor,
                 }}>
-                {couponSelected.cupon_type}
+                {couponToUse.cupon_type}
               </Text>
             </View>
             <View style={{position: 'absolute', right: 14, top: 14}}>
               <CustomIcon fill={stateColors.warning} name="award" />
             </View>
           </Pressable>
-        </View>
+        ) : (
+          <Text>No hay ningún cupón en uso</Text>
+        )}
+      </View>
 
-        <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <Pressable
-            onPress={() => navigation.navigate('CouponsScreen')}
-            style={{
-              borderRadius: globalDimensions.borderRadiusButtom,
-              paddingHorizontal: 30,
-              paddingTop: 10,
-              width: 180,
-              flex: 0,
-            }}>
-            <Text
-              style={{
-                textAlign: 'right',
-                color: isDarkMode
-                  ? stateColors.warning
-                  : fontColor.textColorHeader,
-              }}>
-              Ver cupones
-            </Text>
-          </Pressable>
-        </View>
-
-        <Divider style={{marginVertical: 20}} />
-
-        <Text style={{}}>Subtotal: {currencyFormat(subtotal)}</Text>
-        <Text style={{}}>Envío: {currencyFormat(shipping)} </Text>
-
-        <Divider style={{marginVertical: 10}} />
-
-        <Text style={{fontWeight: 'bold'}}>
-          Total:{' '}
+      <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+        <Pressable
+          onPress={() => navigation.navigate('CouponsScreen')}
+          style={{
+            borderRadius: globalDimensions.borderRadiusButtom,
+            paddingHorizontal: 30,
+            paddingTop: 10,
+            width: 180,
+            flex: 0,
+          }}>
           <Text
             style={{
-              fontWeight: 'bold',
-              fontSize: 24,
+              textAlign: 'right',
               color: isDarkMode
-                ? globalColors.fontColor.textColorHeaderDark
-                : globalColors.fontColor.textColorHeader,
+                ? stateColors.warning
+                : fontColor.textColorHeader,
             }}>
-            {currencyFormat(total ?? 0)}
+            Ver cupones
           </Text>
-        </Text>
-
-        <View style={{flexDirection: 'column', gap: 10, marginVertical: 10}}>
-          <View>
-            <RadioGroup
-              selectedIndex={selectedIndex}
-              onChange={index => setSelectedIndex(index)}
-              style={{flexDirection: 'row', gap: 10}}>
-              <Radio
-                style={{
-                  flex: 1,
-                  paddingVertical: 20,
-                  paddingHorizontal: 20,
-                  borderRadius: 10,
-                  shadowColor: '#717171',
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.18,
-                  shadowRadius: 4.59,
-                  elevation: 2,
-                  backgroundColor: isDarkMode
-                    ? globalColors.neutralColors.backgroundDarkAlpha
-                    : globalColors.neutralColors.backgroundAlpha,
-                }}>
-                <Text>Crédito</Text>
-              </Radio>
-              <Radio
-                style={{
-                  flex: 1,
-                  paddingVertical: 20,
-                  paddingHorizontal: 20,
-                  borderRadius: 10,
-                  shadowColor: '#717171',
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.18,
-                  shadowRadius: 4.59,
-                  elevation: 2,
-                  backgroundColor: isDarkMode
-                    ? globalColors.neutralColors.backgroundDarkAlpha
-                    : globalColors.neutralColors.backgroundAlpha,
-                }}>
-                <Text>Efectivo</Text>
-              </Radio>
-            </RadioGroup>
-          </View>
-
-          <Pressable
-            style={{
-              backgroundColor: globalColors.stateColors.success,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: 20,
-              borderRadius: globalDimensions.borderRadiusButtom,
-            }}>
-            <Text style={{fontSize: 17}}>Pagar</Text>
-          </Pressable>
-        </View>
+        </Pressable>
       </View>
-    )
+
+      <Divider style={{marginVertical: 20}} />
+
+      <Text style={{}}>Descuento por cupón: {currencyFormat(subtotal)}</Text>
+
+      <Divider style={{marginVertical: 20}} />
+
+      <Text style={{}}>Subtotal: {currencyFormat(subtotal)}</Text>
+      <Text style={{}}>Envío: {currencyFormat(shipping)} </Text>
+
+      <Divider style={{marginVertical: 10}} />
+
+      <Text style={{fontWeight: 'bold'}}>
+        Total:{' '}
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 24,
+            color: isDarkMode
+              ? globalColors.fontColor.textColorHeaderDark
+              : globalColors.fontColor.textColorHeader,
+          }}>
+          {currencyFormat(total ?? 0)}
+        </Text>
+      </Text>
+
+      <View style={{flexDirection: 'column', gap: 10, marginVertical: 10}}>
+        <View>
+          <RadioGroup
+            selectedIndex={selectedIndex}
+            onChange={index => setSelectedIndex(index)}
+            style={{flexDirection: 'row', gap: 10}}>
+            <Radio
+              style={{
+                flex: 1,
+                paddingVertical: 20,
+                paddingHorizontal: 20,
+                borderRadius: 10,
+                shadowColor: '#717171',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.18,
+                shadowRadius: 4.59,
+                elevation: 2,
+                backgroundColor: isDarkMode
+                  ? globalColors.neutralColors.backgroundDarkAlpha
+                  : globalColors.neutralColors.backgroundAlpha,
+              }}>
+              <Text>Crédito</Text>
+            </Radio>
+            <Radio
+              style={{
+                flex: 1,
+                paddingVertical: 20,
+                paddingHorizontal: 20,
+                borderRadius: 10,
+                shadowColor: '#717171',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.18,
+                shadowRadius: 4.59,
+                elevation: 2,
+                backgroundColor: isDarkMode
+                  ? globalColors.neutralColors.backgroundDarkAlpha
+                  : globalColors.neutralColors.backgroundAlpha,
+              }}>
+              <Text>Efectivo</Text>
+            </Radio>
+          </RadioGroup>
+        </View>
+
+        <Pressable
+          style={{
+            backgroundColor: globalColors.stateColors.success,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: 20,
+            borderRadius: globalDimensions.borderRadiusButtom,
+          }}>
+          <Text style={{fontSize: 17}}>Pagar</Text>
+        </Pressable>
+      </View>
+    </View>
   );
 };

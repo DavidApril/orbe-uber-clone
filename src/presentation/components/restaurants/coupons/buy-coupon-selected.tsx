@@ -8,11 +8,24 @@ import {
   stateColors,
 } from '../../../theme/styles';
 import {CustomIcon} from '../../ui/custom-icon';
+import {Coupon} from '../../../../interfaces';
 
-export const BuyCouponSelected = () => {
+interface Props {
+  onPress: () => void;
+  bottomName: string;
+  couponSelected: Coupon;
+  onPressDelete: () => void;
+}
+
+export const BuyCouponSelected = ({
+  bottomName,
+  onPress,
+  couponSelected,
+  onPressDelete,
+}: Props) => {
   const {isDarkMode} = useUIStore();
-  const {user, userByUid} = useAuthStore();
-  const {couponSelected, setCuponSelected, buyCoupon} = useCouponStore();
+  const {userByUid} = useAuthStore();
+  const {couponToUse} = useCouponStore();
   return (
     <View
       style={{
@@ -31,7 +44,7 @@ export const BuyCouponSelected = () => {
         }}>
         <View style={{paddingHorizontal: 20, top: 15, position: 'relative'}}>
           <Pressable
-            onPress={() => setCuponSelected(null)}
+            onPress={onPressDelete}
             style={{
               position: 'absolute',
               right: -15,
@@ -47,10 +60,7 @@ export const BuyCouponSelected = () => {
           </Pressable>
 
           <Pressable
-            onPress={async () => {
-              // const {ok} = await buyCoupon(couponSelected!.id, user!.uid);
-              console.log(userByUid?.uid_firebase);
-            }}
+            onPress={onPress}
             style={{
               position: 'absolute',
               right: 40,
@@ -62,7 +72,7 @@ export const BuyCouponSelected = () => {
               alignItems: 'center',
               backgroundColor: stateColors.warning,
             }}>
-            <Text>Adquirir cupón</Text>
+            <Text>{bottomName}</Text>
           </Pressable>
 
           <Text style={{fontWeight: 'bold', color: stateColors.success}}>

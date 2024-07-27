@@ -1,3 +1,4 @@
 export * from './drawer-navigation';
 export * from './stack-navigation';
-export * from './bottom-tap-navigation'
+export * from './bottom-tap-navigation';
+export * from './top-tap-coupons-navigation';

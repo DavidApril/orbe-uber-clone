@@ -8,9 +8,10 @@ interface Props {
   height?: number;
   width?: number;
   coupon: Coupon;
+  onPress: () => void;
 }
 
-export const CouponCard = ({height, width, coupon}: Props) => {
+export const CouponCard = ({height, width, coupon, onPress}: Props) => {
   const {isDarkMode} = useUIStore();
   const {setCuponSelected, couponSelected} = useCouponStore();
 
@@ -18,7 +19,7 @@ export const CouponCard = ({height, width, coupon}: Props) => {
 
   return (
     <Pressable
-      onPress={() => setCuponSelected(coupon)}
+      onPress={onPress}
       style={[
         {
           marginVertical: 38,

@@ -25,7 +25,7 @@ export const PermissionsScreen = () => {
       <Button
         onPress={() => {
           navigation.navigate('HomeClientDeliveryScreen')
-          requestLocationPermission();
+          // requestLocationPermission();
         }}>
         Habilitar localización
       </Button>

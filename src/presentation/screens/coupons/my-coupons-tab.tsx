@@ -1,36 +1,24 @@
-import React, {useEffect} from 'react';
-import {FlatList, Pressable, Text, View} from 'react-native';
-import {
-  globalColors,
-  globalDimensions,
-  neutralColors,
-  stateColors,
-} from '../../theme/styles';
-import {
-  BuyCouponSelected,
-  CouponCard,
-  CustomIcon,
-  FABGoBackButton,
-} from '../../components';
+import React, {useEffect, useState} from 'react';
+import {FlatList, Text, View} from 'react-native';
+import {globalColors} from '../../theme/styles';
+import {BuyCouponSelected, CouponCard, FABGoBackButton} from '../../components';
 import {useAuthStore, useCouponStore, useUIStore} from '../../../store';
-import {CouponService} from '../../../services';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParams} from '../../../interfaces';
 
-export const CouponsScreen = () => {
+export const MyCouponsTab = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
+
   const {isDarkMode} = useUIStore();
   const {userByUid} = useAuthStore();
-  const {coupons, setCoupons, couponSelected, setCuponSelected, buyCoupon} =
+  const {myCoupons, setMyCoupons, setCouponToUse, couponToUse} =
     useCouponStore();
 
-  const getCoupons = async () => {
-    const response = await CouponService.getCoupons();
-    return response;
-  };
-
   useEffect(() => {
-    getCoupons().then(coupons => {
-      setCoupons(coupons);
-    });
-  }, []);
+    if (userByUid) {
+      setMyCoupons(userByUid.cupons);
+    }
+  }, [userByUid]);
 
   return (
     <>
@@ -89,26 +77,22 @@ export const CouponsScreen = () => {
               </Text>
             </View>
             <FlatList
-              data={coupons}
+              data={myCoupons}
               style={{height: 300}}
               renderItem={({item}) => (
                 <CouponCard
-                  onPress={() => setCuponSelected(item)}
+                  onPress={() => setCouponToUse(item)}
                   coupon={item}
                 />
               )}></FlatList>
 
-            {couponSelected && (
+            {couponToUse && (
               <BuyCouponSelected
-                couponSelected={couponSelected}
-                bottomName="Adquirir cupón"
-                onPressDelete={() => setCuponSelected(null)}
-                onPress={async () => {
-                  const {ok} = await buyCoupon(
-                    couponSelected!.id,
-                    userByUid!.uid_firebase,
-                  );
-                  console.log({ok});
+                bottomName="Utilizar cupón"
+                onPressDelete={() => setCouponToUse(null)}
+                couponSelected={couponToUse}
+                onPress={() => {
+                  navigation.goBack();
                 }}
               />
             )}
