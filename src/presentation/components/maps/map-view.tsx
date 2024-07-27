@@ -8,6 +8,7 @@ import {MapStyle} from '../../../config/const/map';
 import {GOOGLE_API_KEY} from '@env';
 import MapViewDirections from 'react-native-maps-directions';
 import {MapLightStyle} from '../../../config/const/map-light';
+import { Race } from '../../../store/client/client-driver-store';
 
 interface Props {
   driverPosition?: any;
@@ -18,12 +19,7 @@ interface Props {
   origin?: Location | null;
   showTraffic?: boolean;
   destination?: Location | null;
-  setRaceData?: React.Dispatch<
-    React.SetStateAction<{
-      distance: number;
-      duration: number;
-    } | null>
-  >;
+  setRaceData?: (location: Race | null) => void;
 }
 
 export const CustomMapView = ({

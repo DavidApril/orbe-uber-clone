@@ -1,37 +1,26 @@
 import {GOOGLE_API_KEY} from '@env';
-import {Button, Layout, Radio, Text} from '@ui-kitten/components';
+import {Button, Radio, Text} from '@ui-kitten/components';
 import {useState} from 'react';
-import {
-  Modal,
-  Pressable,
-  useColorScheme,
-  useWindowDimensions,
-} from 'react-native';
+import {Modal, Pressable, useWindowDimensions, View} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {Location} from '../../../interfaces';
-import {globalColors} from '../../theme/styles';
+import {globalColors, globalDimensions} from '../../theme/styles';
 import {CustomIcon} from '../ui/custom-icon';
+import {useUIStore} from '../../../store';
+import {useClientDriverStore} from '../../../store/client/client-driver-store';
 
-interface Props {
-  setOrigin: React.Dispatch<React.SetStateAction<Location | null>>;
-  setDestination: React.Dispatch<React.SetStateAction<Location | null>>;
-  setSearchingDriver: React.Dispatch<React.SetStateAction<boolean>>;
-  searchingDriver: boolean;
-  setPayWithCard: React.Dispatch<React.SetStateAction<boolean>>;
-  payWithCard: boolean;
-}
-
-export const SelectOriginDestination = ({
-  setOrigin,
-  setDestination,
-  setSearchingDriver,
-  searchingDriver,
-  payWithCard,
-  setPayWithCard,
-}: Props) => {
+export const SelectOriginDestination = () => {
   const {height, width} = useWindowDimensions();
+  const {isDarkMode} = useUIStore();
 
-  const colorScheme = useColorScheme();
+  const {
+    setOrigin,
+    setDestination,
+    setSearchingDriver,
+    searchingDriver,
+    payWithCard,
+    setPayWithCard,
+  } = useClientDriverStore();
 
   const [modalLocation, setModalLocation] = useState(false);
   const [modalDestiny, setModalDestiny] = useState(false);
@@ -39,7 +28,7 @@ export const SelectOriginDestination = ({
   const [inputDestiny, setInputDestiny] = useState('');
 
   return (
-    <Layout
+    <View
       style={{
         bottom: 0,
         zIndex: 9999,
@@ -50,7 +39,7 @@ export const SelectOriginDestination = ({
       <Text style={{fontWeight: 'bold', fontSize: 30}}>Selecciona</Text>
       <Text> dos puntos para buscar un conductor</Text>
 
-      <Layout style={{height: 20}}></Layout>
+      <View style={{height: 20}}></View>
 
       <Pressable
         style={{
@@ -64,8 +53,9 @@ export const SelectOriginDestination = ({
         }}>
         <Text
           style={{
-            color:
-              colorScheme === 'dark' ? globalColors.white : globalColors.black,
+            color: isDarkMode
+              ? globalColors.grayScale.white
+              : globalColors.grayScale.black,
           }}>
           {inputLocation || 'Lugar de recogida'}
         </Text>
@@ -87,12 +77,10 @@ export const SelectOriginDestination = ({
             alignItems: 'center',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
           }}>
-          <Layout
+          <View
             style={{
               width: width * 0.9,
               height: height * 0.6,
-              // backgroundColor: 'black',
-              // borderColor: '#20f',
               borderWidth: 1,
               borderRadius: 20,
               padding: 20,
@@ -108,9 +96,14 @@ export const SelectOriginDestination = ({
             }}>
             <GooglePlacesAutocomplete
               placeholder="Lugar de recogida"
-              textInputProps={{placeholderTextColor: 'white'}}
+              textInputProps={{
+                placeholderTextColor: isDarkMode
+                  ? globalColors.fontColor.textColorDark
+                  : globalColors.fontColor.textColor,
+              }}
               fetchDetails={true}
               enableHighAccuracyLocation
+              numberOfLines={5}
               debounce={300}
               styles={{
                 container: {
@@ -121,15 +114,20 @@ export const SelectOriginDestination = ({
                 },
                 row: {
                   padding: 13,
-                  height: 44,
+                  height: 100,
+                  backgroundColor: isDarkMode
+                    ? globalColors.neutralColors.backgroundDarkAlpha
+                    : globalColors.neutralColors.backgroundDarkAlpha,
                   flexDirection: 'row',
-                  borderRadius: 50,
+                  borderRadius: 12,
                   width: width * 0.75,
                   left: 10,
                   right: 10,
                 },
                 primaryText: {
-                  color: 'white',
+                  color: isDarkMode
+                    ? globalColors.fontColor.textColorHeaderDark
+                    : globalColors.fontColor.textColorDark,
                   fontSize: 16,
                   fontWeight: 'bold',
                 },
@@ -145,7 +143,6 @@ export const SelectOriginDestination = ({
                 },
                 poweredContainer: {
                   display: 'none',
-                  backgroundColor: 'white',
                 },
                 listView: {
                   backgroundColor: 'transparent',
@@ -168,7 +165,7 @@ export const SelectOriginDestination = ({
                 language: 'es',
               }}
             />
-          </Layout>
+          </View>
         </Pressable>
       </Modal>
 
@@ -184,14 +181,16 @@ export const SelectOriginDestination = ({
         }}>
         <Text
           style={{
-            color:
-              colorScheme === 'dark' ? globalColors.white : globalColors.black,
+            color: isDarkMode
+              ? globalColors.grayScale.white
+              : globalColors.grayScale.black,
           }}>
           {inputDestiny || 'Lugar de llegada'}
         </Text>
       </Pressable>
 
       <Modal
+        transparent={true}
         visible={modalDestiny}
         onRequestClose={() => {
           setModalDestiny(false);
@@ -206,7 +205,7 @@ export const SelectOriginDestination = ({
             alignItems: 'center',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
           }}>
-          <Layout
+          <View
             style={{
               width: width * 0.9,
               height: height * 0.5,
@@ -224,7 +223,11 @@ export const SelectOriginDestination = ({
             }}>
             <GooglePlacesAutocomplete
               placeholder="Lugar de llegada"
-              textInputProps={{placeholderTextColor: 'white'}}
+              textInputProps={{
+                placeholderTextColor: isDarkMode
+                  ? globalColors.fontColor.textColorDark
+                  : globalColors.fontColor.textColor,
+              }}
               fetchDetails={true}
               enableHighAccuracyLocation
               debounce={300}
@@ -237,15 +240,20 @@ export const SelectOriginDestination = ({
                 },
                 row: {
                   padding: 13,
-                  height: 44,
+                  height: 100,
+                  backgroundColor: isDarkMode
+                    ? globalColors.neutralColors.backgroundDarkAlpha
+                    : globalColors.neutralColors.backgroundDarkAlpha,
                   flexDirection: 'row',
-                  borderRadius: 50,
+                  borderRadius: 12,
                   width: width * 0.75,
                   left: 10,
                   right: 10,
                 },
                 primaryText: {
-                  color: 'white',
+                  color: isDarkMode
+                    ? globalColors.fontColor.textColorHeaderDark
+                    : globalColors.fontColor.textColorDark,
                   fontSize: 16,
                   fontWeight: 'bold',
                 },
@@ -265,6 +273,7 @@ export const SelectOriginDestination = ({
                 listView: {
                   backgroundColor: 'transparent',
                   zIndex: 9999,
+                  transform: [{translateY: height * 0}],
                 },
               }}
               onPress={(_, details = null) => {
@@ -282,28 +291,28 @@ export const SelectOriginDestination = ({
                 language: 'es',
               }}
             />
-            <Layout>
+            <View>
               <Pressable
                 onPress={() => {
                   setModalDestiny(false);
                 }}>
                 <Text>Cerrar</Text>
               </Pressable>
-            </Layout>
-          </Layout>
+            </View>
+          </View>
         </Pressable>
       </Modal>
 
-      <Layout style={{height: 20}}></Layout>
+      <View style={{height: 20}}></View>
 
-      <Layout>
+      <View>
         <Text style={{fontWeight: 'bold', fontSize: 20}}>Metodo de pago</Text>
-        <Layout
+        <View
           style={{
             flexDirection: 'row',
             gap: 10,
           }}>
-          <Layout
+          <View
             // onPress={() => setMethodPay('pse')}
             style={{
               marginVertical: 20,
@@ -330,9 +339,9 @@ export const SelectOriginDestination = ({
                 </Text>
               </Text>
             </Radio>
-          </Layout>
+          </View>
 
-          <Layout
+          <View
             style={{
               marginVertical: 20,
               paddingHorizontal: 20,
@@ -359,9 +368,9 @@ export const SelectOriginDestination = ({
                 </Text>
               </Text>
             </Radio>
-          </Layout>
-        </Layout>
-      </Layout>
+          </View>
+        </View>
+      </View>
 
       <Button
         disabled={!inputDestiny || !inputLocation}
@@ -374,265 +383,6 @@ export const SelectOriginDestination = ({
           {!searchingDriver ? 'Confirmar' : 'Cancelar'}
         </Text>
       </Button>
-    </Layout>
-    // <Layout
-    //   style={{
-    //     bottom: 0,
-    //     zIndex: 9999,
-    //     padding: 20,
-    //     gap: 10,
-    //     paddingTop: 40,
-    //   }}>
-    //   <Text style={{fontWeight: 'bold', fontSize: 30}}>
-    //     Selecciona
-    //     <Text> dos puntos para buscar un conductor</Text>
-    //   </Text>
-
-    //   <Layout style={{height: 20}}></Layout>
-
-    //   <Pressable
-    //     style={{
-    //       padding: 15,
-    //       borderRadius: 50,
-    //       backgroundColor: 'black',
-    //     }}
-    //     onPress={() => {
-    //       setModalLocation(true);
-    //     }}>
-    //     <Text style={{color: 'white'}}>
-    //       {inputLocation || 'Lugar de recogida'}
-    //     </Text>
-    //   </Pressable>
-
-    //   <Modal
-    //     transparent={true}
-    //     visible={modalLocation}
-    //     onRequestClose={() => {
-    //       setModalLocation(false);
-    //     }}>
-    //     <Pressable
-    //       onPress={() => {
-    //         setModalLocation(false);
-    //       }}
-    //       style={{
-    //         flex: 1,
-    //         justifyContent: 'center',
-    //         alignItems: 'center',
-    //         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    //       }}>
-    //       <Layout
-    //         style={{
-    //           width: width * 0.9,
-    //           height: height * 0.5,
-    //           // backgroundColor: 'black',
-    //           // borderColor: '#20f',
-    //           borderWidth: 1,
-    //           borderRadius: 20,
-    //           padding: 20,
-    //           alignItems: 'center',
-    //           shadowColor: '#000',
-    //           shadowOffset: {
-    //             width: 0,
-    //             height: 2,
-    //           },
-    //           shadowOpacity: 0.25,
-    //           shadowRadius: 4,
-    //           elevation: 5,
-    //         }}>
-    //         <GooglePlacesAutocomplete
-    //           placeholder="Lugar de recogida"
-    //           textInputProps={{placeholderTextColor: 'white'}}
-    //           fetchDetails={true}
-    //           enableHighAccuracyLocation
-    //           debounce={300}
-    //           styles={{
-    //             container: {
-    //               flex: 1,
-    //               width: '100%',
-    //               backgroundColor: 'transparent',
-    //               gap: 20,
-    //             },
-    //             row: {
-    //               padding: 13,
-    //               height: 44,
-    //               flexDirection: 'row',
-    //               borderRadius: 50,
-    //               width: width * 0.75,
-    //               left: 10,
-    //               right: 10,
-    //             },
-    //             primaryText: {
-    //               color: 'white',
-    //               fontSize: 16,
-    //               fontWeight: 'bold',
-    //             },
-    //             separator: {
-    //               height: 5,
-    //               backgroundColor: 'transparent',
-    //             },
-    //             textInput: {
-    //               borderRadius: 50,
-    //               backgroundColor: 'black',
-    //               color: 'white',
-    //               paddingHorizontal: 20,
-    //             },
-    //             poweredContainer: {
-    //               display: 'none',
-    //               backgroundColor: 'white',
-    //             },
-    //             listView: {
-    //               backgroundColor: 'transparent',
-    //               zIndex: 9999,
-    //               transform: [{translateY: height * 0}],
-    //             },
-    //           }}
-    //           onPress={(_, details = null) => {
-    //             if (details?.geometry.location) {
-    //               setOrigin({
-    //                 latitude: details?.geometry.location.lat,
-    //                 longitude: details?.geometry.location.lng,
-    //               });
-    //               setInputLocation(details.formatted_address || ''); // Actualiza el texto del input
-    //               setModalLocation(false); // Cierra el modal al seleccionar un lugar
-    //             }
-    //           }}
-    //           query={{
-    //             key: GOOGLE_API_KEY,
-    //             language: 'es',
-    //           }}
-    //         />
-    //       </Layout>
-    //     </Pressable>
-    //   </Modal>
-
-    //   <Pressable
-    //     style={{
-    //       padding: 15,
-    //       borderRadius: 50,
-    //       backgroundColor: 'black',
-    //     }}
-    //     onPress={() => {
-    //       setModalDestiny(true);
-    //     }}>
-    //     <Text style={{color: 'white'}}>
-    //       {inputDestiny || 'Lugar de llegada'}
-    //     </Text>
-    //   </Pressable>
-
-    //   <Modal
-    //     visible={modalDestiny}
-    //     onRequestClose={() => {
-    //       setModalDestiny(false);
-    //     }}>
-    //     <Pressable
-    //       onPress={() => {
-    //         setModalDestiny(false);
-    //       }}
-    //       style={{
-    //         flex: 1,
-    //         justifyContent: 'center',
-    //         alignItems: 'center',
-    //         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    //       }}>
-    //       <Layout
-    //         style={{
-    //           width: width * 0.9,
-    //           height: height * 0.5,
-    //           borderRadius: 20,
-    //           padding: 20,
-    //           alignItems: 'center',
-    //           shadowColor: '#000',
-    //           shadowOffset: {
-    //             width: 0,
-    //             height: 2,
-    //           },
-    //           shadowOpacity: 0.25,
-    //           shadowRadius: 4,
-    //           elevation: 5,
-    //         }}>
-    //         <GooglePlacesAutocomplete
-    //           placeholder="Lugar de llegada"
-    //           textInputProps={{placeholderTextColor: 'white'}}
-    //           fetchDetails={true}
-    //           enableHighAccuracyLocation
-    //           debounce={300}
-    //           styles={{
-    //             container: {
-    //               flex: 1,
-    //               width: '100%',
-    //               backgroundColor: 'transparent',
-    //               gap: 20,
-    //             },
-    //             row: {
-    //               padding: 13,
-    //               height: 44,
-    //               flexDirection: 'row',
-    //               borderRadius: 50,
-    //               width: width * 0.75,
-    //               left: 10,
-    //               right: 10,
-    //             },
-    //             primaryText: {
-    //               color: 'white',
-    //               fontSize: 16,
-    //               fontWeight: 'bold',
-    //             },
-    //             separator: {
-    //               height: 5,
-    //               backgroundColor: 'transparent',
-    //             },
-    //             textInput: {
-    //               borderRadius: 50,
-    //               backgroundColor: 'black',
-    //               color: 'white',
-    //               paddingHorizontal: 20,
-    //             },
-    //             poweredContainer: {
-    //               display: 'none',
-    //             },
-    //             listView: {
-    //               backgroundColor: 'transparent',
-    //               zIndex: 9999,
-    //             },
-    //           }}
-    //           onPress={(_, details = null) => {
-    //             if (details?.geometry.location) {
-    //               setDestination({
-    //                 latitude: details?.geometry.location.lat,
-    //                 longitude: details?.geometry.location.lng,
-    //               });
-    //               setInputDestiny(details.formatted_address || ''); // Actualiza el texto del input
-    //               setModalDestiny(false); // Cierra el modal al seleccionar un lugar
-    //             }
-    //           }}
-    //           query={{
-    //             key: GOOGLE_API_KEY,
-    //             language: 'es',
-    //           }}
-    //         />
-    //         <Layout>
-    //           <Pressable
-    //             onPress={() => {
-    //               setModalDestiny(false);
-    //             }}>
-    //             <Text>Cerrar</Text>
-    //           </Pressable>
-    //         </Layout>
-    //       </Layout>
-    //     </Pressable>
-    //   </Modal>
-
-    //   <Layout style={{height: 20}}></Layout>
-
-    //   <Button
-    //     disabled={!inputDestiny || !inputLocation}
-    //     onPress={() => {
-    //       setSearchingDriver(!searchingDriver);
-    //     }}
-    //     status="success"
-    //     appearance="ghost">
-    //     {!searchingDriver ? 'Confirmar' : 'Cancelar'}
-    //   </Button>
-    // </Layout>
+    </View>
   );
 };

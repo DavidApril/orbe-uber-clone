@@ -84,7 +84,7 @@ export const CouponsScreen = () => {
                     fontSize: 50,
                   }}>
                   45
-                </Text>{' '}
+                </Text>
                 creditos
               </Text>
             </View>

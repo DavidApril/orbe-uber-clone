@@ -34,6 +34,7 @@ export * from './restaurants/coupons/buy-coupon-selected';
 export * from './restaurants/stats';
 
 export * from './bottom-sheets/bs-add-credit-card';
+export * from './bottom-sheets/bs-select-origin-destination';
 
 export * from './wallet/credit-card';
 
