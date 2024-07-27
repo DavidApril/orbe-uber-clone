@@ -10,15 +10,14 @@ export const HeaderChatBot = () => {
     <Layout
       style={{
         flexDirection: 'row',
+
         gap: 15,
         marginTop: 15,
         marginHorizontal: 15,
         height: 90,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: !isDarkMode
-          ? globalColors.neutralColors.background
-          : globalColors.neutralColors.backgroundDark,
+        backgroundColor: 'transparent',
       }}>
       <View
         style={{

@@ -1,10 +1,7 @@
-
-
-import React, { useEffect, useRef } from 'react'
-import { Animated } from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Animated} from 'react-native';
 
 export const useAnimation = () => {
-
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -23,7 +20,7 @@ export const useAnimation = () => {
         toValue: 360,
         duration: 2000,
         useNativeDriver: true,
-      })
+      }),
     );
 
     rotateAnimation.start();
@@ -31,17 +28,15 @@ export const useAnimation = () => {
 
   const rotateInterpolation = rotateValue.interpolate({
     inputRange: [0, 360],
-    outputRange: ['0deg', '360deg']
+    outputRange: ['0deg', '360deg'],
   });
 
   const rotateStyle = {
-    transform: [{ rotate: rotateInterpolation }]
+    transform: [{rotate: rotateInterpolation}],
   };
 
   return {
-
     fadeAnim,
-    rotateStyle
-
-  }
-}
+    rotateStyle,
+  };
+};

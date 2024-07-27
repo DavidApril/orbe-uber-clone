@@ -44,7 +44,7 @@ export const neutralColors = {
   bottomTabContainerBackground: 'white',
   bottomTabContainerBackgroundDark: 'black',
 
-  textInputBackground: '#e8e8e8',
+  textInputBackground: '#d9d9d9',
   textInputBackgroundDark: 'black',
 
   placeholderColor: 'gray',

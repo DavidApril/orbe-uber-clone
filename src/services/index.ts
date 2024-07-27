@@ -4,6 +4,6 @@ export * from './location/location.service';
 export * from './users/users.service';
 export * from './races/races.service';
 export * from './driver/driver.service';
-export * from './storage/storage.service'
-export * from './restaurant/restaurant.service'
-
+export * from './storage/storage.service';
+export * from './restaurant/restaurant.service';
+export * from './chatbot/chatbot.service';

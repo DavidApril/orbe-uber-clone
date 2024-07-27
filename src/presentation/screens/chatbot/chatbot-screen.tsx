@@ -17,7 +17,7 @@ export const ChatBotScreen = () => {
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
       }}>
-      <ChatBotContainer></ChatBotContainer>
+      <ChatBotContainer/>
 
       <HeaderChatBot />
     </Layout>

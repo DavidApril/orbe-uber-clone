@@ -4,3 +4,4 @@ export * from './location/location.store';
 export * from './driver/driver.store'
 export * from './cart/cart.store'
 export * from './ui/ui'
+export * from './chatbot/chatbot.store'
