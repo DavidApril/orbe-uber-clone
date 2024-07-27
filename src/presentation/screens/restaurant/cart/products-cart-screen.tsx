@@ -1,5 +1,11 @@
 import {useMemo, useRef, useState} from 'react';
-import {View, Text, FlatList, useWindowDimensions} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  useWindowDimensions,
+  Pressable,
+} from 'react-native';
 
 import {RootStackParams} from '../../../../interfaces';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -9,7 +15,11 @@ import {
   FABGoBackButton,
   PaymentControllers,
 } from '../../../components';
-import {globalColors} from '../../../theme/styles';
+import {
+  globalColors,
+  globalDimensions,
+  stateColors,
+} from '../../../theme/styles';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {Divider} from '@ui-kitten/components';
 
@@ -79,11 +89,26 @@ export const ProductsCartScreen = ({navigation}: Props) => {
               renderItem={({item}) => <CartItem item={item} />}
             />
           ) : (
-            <Text>No hay productos en el carrito.</Text>
+            <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <Text>No hay productos en el carrito.</Text>
+              <Pressable
+                onPress={() => navigation.navigate('HomeClientDeliveryScreen')}
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 25,
+                  borderRadius: globalDimensions.borderRadiusButtom,
+                  backgroundColor: stateColors.warning,
+                  marginVertical: 10,
+                }}>
+                <Text style={{}}>Ver restaurantes</Text>
+              </Pressable>
+            </View>
           )}
         </View>
       </View>
 
+      {cart.length > 0 && (
         <BottomSheet
           ref={summaryBottomSheetRef}
           backgroundStyle={{
@@ -131,6 +156,7 @@ export const ProductsCartScreen = ({navigation}: Props) => {
             />
           </View>
         </BottomSheet>
+      )}
     </View>
   );
 };
