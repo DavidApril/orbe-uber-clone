@@ -4,8 +4,6 @@ import {
   ProductRestaurant,
   SingleRestaurantResponse,
 } from '../../interfaces';
-import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
-import {useCallback} from 'react';
 
 interface State {
   cart: CartProduct[];
@@ -28,9 +26,12 @@ interface State {
     itemsInCart: number;
   };
 
-  addProductToCart: (product: CartProduct) => void;
+  addProductToCart: (product: ProductRestaurant) => void;
   addProductToFavorites: (product: ProductRestaurant) => void;
-  updateProductQuantity: (productsCart: CartProduct) => void;
+  updateProductQuantity: (
+    quantity: number,
+    productsCart: CartProduct | undefined,
+  ) => void;
   removeProduct: (product: CartProduct) => void;
   removeFavorite: (product: ProductRestaurant) => void;
 }
@@ -68,23 +69,23 @@ export const useCartStore = create<State>()((set, get) => ({
       itemsInCart,
     };
   },
-  addProductToCart: (itemToAdd: CartProduct) => {
+  addProductToCart: itemToAdd => {
     const {cart} = get();
     const productInCart = cart.some(
       item =>
-        item.product.id === itemToAdd.product.id &&
-        item.product.name === itemToAdd.product.name,
+        item.product.id === itemToAdd.id &&
+        item.product.name === itemToAdd.name,
     );
 
     if (!productInCart) {
-      set({cart: [...cart, itemToAdd], cartNews: true});
+      set({cart: [...cart, {product: itemToAdd, quantity: 1}], cartNews: true});
       return;
     }
 
     const updatedCartProducts = cart.map(item => {
       if (
-        item.product.id === itemToAdd.product.id &&
-        item.product.name === itemToAdd.product.name
+        item.product.id === itemToAdd.id &&
+        item.product.name === itemToAdd.name
       ) {
         return {...item, quantity: item.quantity + item.quantity};
       }
@@ -112,21 +113,25 @@ export const useCartStore = create<State>()((set, get) => ({
     });
     set({favorites: updateFavorite});
   },
-  updateProductQuantity: itemToUpdate => {
+  updateProductQuantity: (quantity, productItem) => {
     const {cart} = get();
-    const updateCartProducts = cart.map(item => {
-      if (
-        item.product.id === itemToUpdate.product.id &&
-        item.product.name === itemToUpdate.product.name
-      ) {
-        return {
-          ...item,
-          quantity: Math.max((item.quantity += itemToUpdate.quantity), 0),
-        };
-      }
-      return item;
-    });
-    set({cart: updateCartProducts, cartNews: true});
+    if (productItem) {
+      const updateCartProducts = cart.map(item => {
+        if (
+          item.product.id === productItem.product.id &&
+          item.product.name === productItem.product.name
+        ) {
+          return {
+            ...item,
+            quantity: Math.max((productItem.quantity += quantity), 0),
+          };
+        }
+        return item;
+      });
+      set({cart: updateCartProducts, cartNews: true});
+    } else {
+      get().addProductToCart(productItem!.product);
+    }
   },
   removeProduct: (itemToRemove: CartProduct) => {
     const {cart} = get();

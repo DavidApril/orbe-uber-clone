@@ -7,6 +7,7 @@ import {
   FlatList,
   ScrollView,
   Modal,
+  useWindowDimensions,
 } from 'react-native';
 
 import {RootStackParams} from '../../../../interfaces';
@@ -29,21 +30,65 @@ interface Props
 
 export const ProductsCartScreen = ({navigation}: Props) => {
   const [shipping] = useState(3000);
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalConfirm, setModalConfirm] = useState(false);
+  const {height} = useWindowDimensions();
   const {isDarkMode} = useUIStore();
-  const {cart, getSummaryInformation} = useCartStore();
+  const {cart, getSummaryInformation, getTotalItems} = useCartStore();
   const {itemsInCart, subTotal, tax, total} = getSummaryInformation();
+
   const summaryBottomSheetRef = useRef<BottomSheet>(null);
 
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: !isDarkMode
-          ? globalColors.neutralColors.background
+        backgroundColor: isDarkMode
+          ? globalColors.neutralColors.backgroundDark
           : globalColors.neutralColors.background,
-      }}></View>
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}>
+      <FABGoBackButton />
+      <View style={{paddingHorizontal: 30}}>
+        <View style={{marginBottom: 20}}>
+          <Text
+            style={{
+              fontSize: 25,
+              color: !isDarkMode
+                ? globalColors.fontColor.textColorHeader
+                : globalColors.fontColor.textColorHeaderDark,
+            }}>
+            Productos
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              color: !isDarkMode
+                ? globalColors.fontColor.textColor
+                : globalColors.fontColor.textColorDark,
+            }}>
+            Una lista de todos los productos en el carrito.
+          </Text>
+        </View>
+        <View
+          style={{
+            height: height * 0.8,
+            borderTopLeftRadius: 40,
+            borderTopRightRadius: 40,
+            width: '100%',
+            padding: 5,
+            backgroundColor: isDarkMode
+              ? globalColors.neutralColors.backgroundDarkAlpha
+              : globalColors.neutralColors.backgroundAlpha,
+          }}>
+          {/* <ScrollView style={{padding: 15}}>
+            <CartItem />
+          </ScrollView> */}
+          <FlatList
+            data={cart}
+            renderItem={({item}) => <CartItem item={item} />}
+          />
+        </View>
+      </View>
+    </View>
   );
 };

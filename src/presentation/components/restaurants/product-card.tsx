@@ -107,11 +107,12 @@ export const ProductCard = ({product}: Props) => {
             if (isAddedToCart) {
               removeProduct({product: product, quantity: -1});
             } else {
-              addProductToCart({product: product, quantity: 1});
+              addProductToCart(product);
             }
           }}
           status="success"
           style={{
+            zIndex: 999999999,
             height: 15,
             width: 15,
             borderRadius: 50,
