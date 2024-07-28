@@ -14,6 +14,7 @@ export * from './ui/custom-view';
 export * from './ui/custom-view-alpha';
 export * from './ui/custom-text';
 export * from './ui/custom-text-header';
+export * from './ui/custom-modal';
 
 export * from './bottom-tabs/custom-bottom-tabs';
 
