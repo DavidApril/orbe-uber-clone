@@ -10,6 +10,7 @@ interface DriverState {
   // TODO: driverRquest Interface
   driverRequests: any[];
   raceData: Race | null;
+  // TODO: currentRequest Interface
   currentRequest: any;
   currentRaceAccepted: boolean;
 

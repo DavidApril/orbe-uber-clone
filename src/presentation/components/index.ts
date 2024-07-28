@@ -43,3 +43,6 @@ export * from './bottom-sheets/bs-select-origin-destination';
 export * from './wallet/credit-card';
 
 export * from './chatbot/header-chatbot';
+
+export * from './payments/transaction-item-traiding-down';
+export * from './payments/transaction-item-traiding-up ';

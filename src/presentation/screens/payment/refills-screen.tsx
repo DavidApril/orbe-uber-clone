@@ -7,6 +7,8 @@ import {
   CView,
   CViewAlpha,
   OpenDrawerMenu,
+  TransactionItemTraidingDown,
+  TransactionItemTraidingUp,
 } from '../../components';
 import {useUIStore} from '../../../store';
 import {
@@ -72,6 +74,10 @@ export const RefillsScreen = () => {
           </Pressable>
         </View>
       </CViewAlpha>
+      <TransactionItemTraidingDown />
+      <TransactionItemTraidingDown />
+      <TransactionItemTraidingUp />
+      <TransactionItemTraidingDown />
     </CView>
   );
 };
