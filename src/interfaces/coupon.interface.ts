@@ -6,6 +6,7 @@ export interface Coupon {
   cupon_type: string;
   description: string;
   endDate: Date;
+  value: number;
   name: string;
   startDate: Date;
   state: boolean;

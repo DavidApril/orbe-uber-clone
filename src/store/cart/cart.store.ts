@@ -19,11 +19,12 @@ interface State {
   setProductSelected: (product: ProductRestaurant) => void;
 
   getTotalItems: () => number;
-  getSummaryInformation: () => {
+  getSummaryInformation: (couponValue?: number) => {
     subTotal: number;
     tax: number;
     total: number;
     itemsInCart: number;
+    discount: number;
   };
 
   addProductToCart: (product: ProductRestaurant) => void;
@@ -52,7 +53,7 @@ export const useCartStore = create<State>()((set, get) => ({
     return cart.reduce((total, item) => total + item.quantity, 0);
   },
 
-  getSummaryInformation: () => {
+  getSummaryInformation: couponValue => {
     const {cart} = get();
     const subTotal = cart.reduce(
       (subTotal, item) => item.quantity * +item.product.priceUnitary + subTotal,
@@ -62,11 +63,14 @@ export const useCartStore = create<State>()((set, get) => ({
     const total = subTotal + tax;
     const itemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
 
+    const discount = couponValue ? (subTotal * couponValue) / 100 : 0;
+
     return {
       subTotal,
       tax,
       total,
       itemsInCart,
+      discount,
     };
   },
   addProductToCart: itemToAdd => {

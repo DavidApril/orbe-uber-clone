@@ -40,8 +40,11 @@ export const RestaurantScreen = () => {
     const products = await RestaurantService.getProducts(
       restaurantSelected!.id,
     );
+    console.log(products.length)
     setProducts(products);
   };
+
+  console.log(restaurantSelected.id)
 
   useEffect(() => {
     setCartNews(true);

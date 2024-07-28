@@ -40,7 +40,7 @@ export const StackRestaurantNavigation = () => {
   return (
     <Navigator
       initialRouteName="HomeClientDeliveryScreen"
-      screenOptions={{headerShown: true}}>
+      screenOptions={{headerShown: false}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="HomeClientDeliveryScreen"

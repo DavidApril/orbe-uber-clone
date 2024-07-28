@@ -103,5 +103,4 @@ export class RestaurantService {
       return [];
     }
   };
-
 }
