@@ -1,6 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   FavoritesScreen,
+  HistoryTravels,
   HomeClientDeliveryScreen,
   HomeClientDriverScreen,
   HomeDriverScreen,
@@ -15,7 +16,6 @@ import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
 const Tab = createBottomTabNavigator<RootStackParams>();
 
 export const BottomTapNavigationClientDelivery = () => {
-
   return (
     <Tab.Navigator
       tabBar={props => <CustomBottomTabs {...props} />}
@@ -70,7 +70,6 @@ export const BottomTapNavigationClientDelivery = () => {
   );
 };
 export const BottomTapNavigationDriver = () => {
-
   return (
     <Tab.Navigator
       tabBar={props => <CustomBottomTabs {...props} />}
@@ -97,6 +96,15 @@ export const BottomTapNavigationDriver = () => {
         component={ProfileDriverScreen}
       />
 
+      <Tab.Screen
+        name="HistoryScreen"
+        options={{
+          headerShown: false,
+          // icon name
+          title: 'layers-outline',
+        }}
+        component={HistoryTravels}
+      />
       <Tab.Screen
         name="chatBotScreen"
         options={{

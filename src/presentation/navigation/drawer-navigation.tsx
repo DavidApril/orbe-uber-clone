@@ -15,7 +15,6 @@ const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 export function DrawerNavigation() {
   const {isDarkMode} = useUIStore();
   const {role} = useAuthStore();
-  console.log({role});
   return (
     <Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}

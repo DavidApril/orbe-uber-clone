@@ -64,7 +64,8 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                 ? globalColors.fontColor.textColorHeader
                 : globalColors.fontColor.textColorHeaderDark,
             }}>
-            {userByUid?.cliente.name}
+            {/* @ts-ignore */}
+            {role === CLIENT ? userByUid?.cliente.name : userByUid?.driver.name}
           </Text>
           <Text
             style={{
