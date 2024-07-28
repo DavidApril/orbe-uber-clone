@@ -34,7 +34,8 @@ export * from './settings/settings-screen';
 
 export * from './loading/loading-screen';
 
-export * from './histories/history-travels'
+export * from './historical/history-travels'
+export * from './historical/history-shopping-screen'
 
 export * from './coupons/coupons-screen'
 

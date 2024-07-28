@@ -25,4 +25,8 @@ export type RootStackParams = {
   ErrorScreen: undefined;
   HistoryScreen: undefined;
   RefillsScreen: undefined;
+
+  ShoppingHistoryScreen: undefined;
+  ShoppingHistoryItemScreen: undefined;
+  HistoryListScreen: undefined;
 };

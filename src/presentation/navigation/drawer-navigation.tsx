@@ -7,11 +7,13 @@ import {BottomTapNavigationClientDelivery} from './bottom-tap-navigation';
 import {
   CouponsScreen,
   ErrorScreen,
+  HistoryShoppingScreen,
   ProductsCartScreen,
   RefillsScreen,
 } from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
 import {BottomTapNavigationDriver} from './bottom-tab-nativagion-driver';
+import {ShoppingHistoryNavigator} from './shopping-history-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
@@ -55,6 +57,19 @@ export function DrawerNavigation() {
             }}
             name="ProductsCartScreen"
             component={ProductsCartScreen}
+          />
+
+          <Screen
+            options={{
+              title: 'Compras',
+              headerShown: false,
+              sceneContainerStyle: {
+                flex: 1,
+              },
+              drawerIcon: ({color}) => <CustomIcon fill={color} name="menu" />,
+            }}
+            name="HistoryScreen"
+            component={ShoppingHistoryNavigator}
           />
 
           <Screen
