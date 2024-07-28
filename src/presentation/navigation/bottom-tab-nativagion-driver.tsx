@@ -12,26 +12,25 @@ import {CustomBottomTabs} from '../components';
 import {useAuthStore} from '../../store';
 import {RootStackParams} from '../../interfaces';
 import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
-import {StackRestaurantNavigation} from './stack-restaurant-navigation';
 
 const Tab = createBottomTabNavigator<RootStackParams>();
 
-export const BottomTapNavigationClientDelivery = () => {
+export const BottomTapNavigationDriver = () => {
   return (
     <Tab.Navigator
       tabBar={props => <CustomBottomTabs {...props} />}
-      initialRouteName="HomeClientDeliveryScreen"
+      initialRouteName="HomeDriverScreen"
       screenOptions={{
         headerTransparent: true,
       }}>
       <Tab.Screen
-        name={`HomeClientDeliveryScreen`}
+        name={`HomeDriverScreen`}
         options={{
           // icon name
           title: 'home-outline',
           headerShown: false,
         }}
-        component={StackRestaurantNavigation}
+        component={HomeDriverScreen}
       />
       <Tab.Screen
         name="ProfileClientScreen"
@@ -40,23 +39,17 @@ export const BottomTapNavigationClientDelivery = () => {
           title: 'person-outline',
           headerShown: false,
         }}
-        component={ProfileClientScreen}
+        component={ProfileDriverScreen}
       />
+
       <Tab.Screen
-        name="HomeClientDriverScreen"
+        name="HistoryScreen"
         options={{
+          headerShown: false,
           // icon name
-          title: 'map-outline',
+          title: 'layers-outline',
         }}
-        component={HomeClientDriverScreen}
-      />
-      <Tab.Screen
-        name="favoritesScreen"
-        options={{
-          // icon name
-          title: 'heart',
-        }}
-        component={FavoritesScreen}
+        component={HistoryTravels}
       />
       <Tab.Screen
         name="chatBotScreen"

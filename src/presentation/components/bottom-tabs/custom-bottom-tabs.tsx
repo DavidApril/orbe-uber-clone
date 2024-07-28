@@ -30,6 +30,7 @@ export const CustomBottomTabs = ({
           zIndex: 99999999,
           justifyContent: 'space-around',
           alignItems: 'center',
+
           borderWidth: 0.5,
           borderColor: !isDarkMode
             ? globalColors.neutralColors.border
@@ -41,14 +42,12 @@ export const CustomBottomTabs = ({
         },
         globalStyles.boxShadow,
       ]}>
-      {!driverServiceIsActive ? (
+      {/* {!driverServiceIsActive ? (
         <Pressable
           onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}
           style={{
-            position: 'absolute',
-            zIndex: 999999,
-            right: -40,
-            transform: [{scale: 1.3}],
+            // position: 'absolute',
+            transform: [{scale: 5}],
           }}>
           <CustomIcon white name="power" />
         </Pressable>
@@ -63,7 +62,7 @@ export const CustomBottomTabs = ({
           }}>
           <Spinner status="basic" />
         </Pressable>
-      )}
+      )} */}
       {state.routes.map((route, index) => {
         return (
           <CustomBottomTabItem

@@ -3,10 +3,7 @@ import {globalColors} from '../theme/styles';
 import {CustomDrawerContent, CustomIcon} from '../components';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../interfaces';
 import {useAuthStore, useUIStore} from '../../store';
-import {
-  BottomTapNavigationClientDelivery,
-  BottomTapNavigationDriver,
-} from './bottom-tap-navigation';
+import {BottomTapNavigationClientDelivery} from './bottom-tap-navigation';
 import {
   CouponsScreen,
   ErrorScreen,
@@ -14,6 +11,7 @@ import {
   RefillsScreen,
 } from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
+import {BottomTapNavigationDriver} from './bottom-tab-nativagion-driver';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 

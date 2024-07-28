@@ -29,7 +29,7 @@ export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const {width} = useWindowDimensions();
   const {isDarkMode} = useUIStore();
-  const {coupons, setCuponSelected, couponToUse} = useCouponStore();
+  const {couponToUse} = useCouponStore();
   return (
     <View
       style={{
@@ -219,6 +219,7 @@ export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
           }}>
           <Text style={{fontSize: 17}}>Pagar</Text>
         </Pressable>
+
       </View>
     </View>
   );

@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect,  } from 'react';
 import {
   useAuthStore,
   useDriverStore,
@@ -18,18 +18,18 @@ import {useSocket} from '../../../hooks';
 import {Button, Layout, List, Spinner} from '@ui-kitten/components';
 import {
   Pressable,
-  Text,
-  TouchableOpacity,
+
   useColorScheme,
   View,
 } from 'react-native';
-import {orbeApi} from '../../../config/api';
-import {Location, RootStackParams} from '../../../interfaces';
-import {globalColors, globalDimensions} from '../../theme/styles';
+
+import {RootStackParams} from '../../../interfaces';
+import {globalColors, stateColors} from '../../theme/styles';
 import {currencyFormat} from '../../../utils';
 import {RacesService} from '../../../services';
 import {StackScreenProps} from '@react-navigation/stack';
 import {DrawerActions} from '@react-navigation/native';
+import {API_SOCKET_URL} from '@env';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'ProductsCartScreen'> {}
@@ -38,8 +38,10 @@ export const HomeDriverScreen = ({navigation}: Props) => {
   const colorScheme = useColorScheme();
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const {socket} = useSocket(`ws://orbeapi.devzeros.com:3001/location`);
+  const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
   const {addBalance, increaseTrips} = useProfileDriverStore();
+
+  console.log(`${API_SOCKET_URL}/location`)
   const {isDarkMode} = useUIStore();
 
   const {
@@ -76,6 +78,7 @@ export const HomeDriverScreen = ({navigation}: Props) => {
   }, []);
 
   const sendDriverLocation = () => {
+    console.log('enviando');
     socket.emit('location-driver', {
       id: user?.uid,
       longitud: lastKnownLocation?.longitude,
@@ -84,15 +87,15 @@ export const HomeDriverScreen = ({navigation}: Props) => {
   };
 
   useEffect(() => {
+    console.log({online});
+  }, [online]);
+
+  useEffect(() => {
     if (!driverServiceIsActive) return;
     const driverLocationInterval = setInterval(() => {
       sendDriverLocation();
     }, 2000);
-
-    return () => {
-      socket.off();
-      clearInterval(driverLocationInterval);
-    };
+    return () => clearInterval(driverLocationInterval);
   }, [driverServiceIsActive]);
 
   if (lastKnownLocation === null) {
@@ -138,41 +141,26 @@ export const HomeDriverScreen = ({navigation}: Props) => {
       {!analyzingRace ? (
         <Pressable
           style={{
-            bottom: 10,
             position: 'absolute',
-            height: 95,
+            zIndex: 999999,
+            top: 120,
+            left: 30,
+            borderRadius: 20,
+            right: 30,
+            bottom: 120,
+            opacity: !driverServiceIsActive ? 0.8 : 0.4,
+            backgroundColor: 'black',
             justifyContent: 'center',
             alignItems: 'center',
-            left: '70%',
-            right: 10,
-            backgroundColor: driverServiceIsActive
-              ? globalColors.stateColors.success
-              : globalColors.stateColors.error,
-            borderRadius: globalDimensions.borderRadiusButtom,
-            borderWidth: 0,
           }}
           onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}>
-          {/* {!driverServiceIsActive ? (
-            <Pressable
-              onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}
-              style={{
-                position: 'absolute',
-                zIndex: 999999,
-                right: 25,
-                transform: [{scale: 1.3}],
-              }}>
-              <CustomIcon white name="power" />
-            </Pressable>
-          ) : (
-            <View
-              style={{
-                position: 'absolute',
-                right: 25,
-                transform: [{scale: 1.3}],
-              }}>
-              <Spinner status="basic" />
-            </View>
-          )} */}
+          <View style={{transform: [{scale: !driverServiceIsActive ? 4 : 2}]}}>
+            {!driverServiceIsActive ? (
+              <CustomIcon fill={stateColors.error} name="power" />
+            ) : (
+              <Spinner />
+            )}
+          </View>
         </Pressable>
       ) : (
         <>

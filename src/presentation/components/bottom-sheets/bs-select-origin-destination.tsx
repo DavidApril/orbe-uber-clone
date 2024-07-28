@@ -18,7 +18,7 @@ import {globalColors} from '../../theme/styles';
 export const BSSelectOriginDestination = () => {
   const SearchingDriverBottomSheetRef = useRef<BottomSheet>(null);
 
-  const snapPoints = useMemo(() => ['20%', '50%', '80%'], []);
+  const snapPoints = useMemo(() => ['20%', '90%'], []);
 
   const {height, width} = useWindowDimensions();
 

@@ -21,6 +21,8 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
     SingleRestaurantResponse[] | null
   >(null);
 
+  console.log({restaurants});
+
   const getRestaurants = async () => {
     const restaurants = await RestaurantService.getRestaurants();
     if (restaurants) {
@@ -121,6 +123,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
           </View>
 
           <OpenDrawerMenu />
+
         </View>
       ) : (
         <View>

@@ -15,10 +15,14 @@ import {
 } from 'react-native';
 import {useState} from 'react';
 import {StorageService} from '../../../services';
-import {CLIENT, DRIVER} from '../../../interfaces';
+import {CLIENT, DRIVER, RootStackParams} from '../../../interfaces';
 import {fontColor, globalColors, globalDimensions} from '../../theme/styles';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
+
   const {logout, userByUid, role} = useAuthStore();
   const {height} = useWindowDimensions();
   const [modal, setModal] = useState<boolean>(false);
@@ -152,6 +156,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                   backgroundColor: globalColors.stateColors.error,
                 }}
                 onPress={() => {
+                  navigation.navigate('LoginScreen');
                   logout(), setModal(false);
                 }}>
                 <Text style={{color: 'white', fontWeight: 'bold'}}>
