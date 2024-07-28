@@ -7,7 +7,12 @@ import {
   BottomTapNavigationClientDelivery,
   BottomTapNavigationDriver,
 } from './bottom-tap-navigation';
-import {CouponsScreen, ErrorScreen, ProductsCartScreen} from '../screens';
+import {
+  CouponsScreen,
+  ErrorScreen,
+  ProductsCartScreen,
+  RefillsScreen,
+} from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
@@ -78,8 +83,8 @@ export function DrawerNavigation() {
                 <CustomIcon fill={color} name="credit-card" />
               ),
             }}
-            name="WalletScreen"
-            component={CouponsScreen}
+            name="RefillsScreen"
+            component={RefillsScreen}
           />
         </>
       )}
@@ -109,8 +114,8 @@ export function DrawerNavigation() {
                 <CustomIcon fill={color} name="credit-card" />
               ),
             }}
-            name="WalletScreen"
-            component={CouponsScreen}
+            name="RefillsScreen"
+            component={RefillsScreen}
           />
         </>
       )}

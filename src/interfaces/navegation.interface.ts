@@ -24,4 +24,5 @@ export type RootStackParams = {
   chatBotScreen: undefined;
   ErrorScreen: undefined;
   HistoryScreen: undefined;
+  RefillsScreen: undefined;
 };

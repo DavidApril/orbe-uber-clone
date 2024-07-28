@@ -2,7 +2,7 @@ import React from 'react';
 import {globalColors, globalDimensions} from '../../theme/styles';
 import {Pressable, Text, useColorScheme, View} from 'react-native';
 
-export const StatusButton = () => {
+export const StatusButton = ({isActive}: {isActive: boolean}) => {
   const colorSchema = useColorScheme();
 
   return (
@@ -24,7 +24,9 @@ export const StatusButton = () => {
           height: 5,
           width: 5,
           borderRadius: 100,
-          backgroundColor: globalColors.stateColors.success,
+          backgroundColor: isActive
+            ? globalColors.stateColors.success
+            : globalColors.stateColors.error,
         }}
       />
       <Text

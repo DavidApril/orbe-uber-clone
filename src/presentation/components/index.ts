@@ -10,6 +10,10 @@ export * from './ui/status-button';
 export * from './ui/coupon-card';
 export * from './ui/type-writter';
 export * from './ui/chat-writting';
+export * from './ui/custom-view';
+export * from './ui/custom-view-alpha';
+export * from './ui/custom-text';
+export * from './ui/custom-text-header';
 
 export * from './bottom-tabs/custom-bottom-tabs';
 

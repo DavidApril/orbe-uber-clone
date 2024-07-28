@@ -84,6 +84,7 @@ export const globalDimensions = {
   borderRadiusButtom: 20,
   paddingScreen: 30,
   paddingTopRestaurantScreens: 150,
+  cardBorderRadius: 15,
 };
 
 export const globalStyles = StyleSheet.create({

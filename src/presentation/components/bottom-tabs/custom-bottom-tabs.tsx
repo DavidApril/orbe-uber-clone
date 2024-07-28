@@ -1,9 +1,11 @@
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
-import {Layout} from '@ui-kitten/components';
-import {useWindowDimensions} from 'react-native';
+import {Layout, Spinner} from '@ui-kitten/components';
+import {Pressable, useWindowDimensions} from 'react-native';
 import {globalColors, globalStyles} from '../../theme/styles';
 import {CustomBottomTabItem} from './custom-bottom-tab-item';
-import {useUIStore} from '../../../store';
+import {useDriverStore, useUIStore} from '../../../store';
+import {CustomIcon} from '../ui/custom-icon';
+import {View} from 'react-native';
 
 export const CustomBottomTabs = ({
   state,
@@ -13,6 +15,7 @@ export const CustomBottomTabs = ({
 }: BottomTabBarProps) => {
   const {isDarkMode} = useUIStore();
   const {height} = useWindowDimensions();
+  const {driverServiceIsActive, setDriverServiceIsActive} = useDriverStore();
   return (
     <Layout
       style={[
@@ -24,6 +27,7 @@ export const CustomBottomTabs = ({
           bottom: 0,
           borderRadius: 20,
           gap: 20,
+          zIndex: 99999999,
           justifyContent: 'space-around',
           alignItems: 'center',
           borderWidth: 0.5,
@@ -37,6 +41,29 @@ export const CustomBottomTabs = ({
         },
         globalStyles.boxShadow,
       ]}>
+      {!driverServiceIsActive ? (
+        <Pressable
+          onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}
+          style={{
+            position: 'absolute',
+            zIndex: 999999,
+            right: -40,
+            transform: [{scale: 1.3}],
+          }}>
+          <CustomIcon white name="power" />
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}
+          style={{
+            position: 'absolute',
+            right: -40,
+
+            transform: [{scale: 1.3}],
+          }}>
+          <Spinner status="basic" />
+        </Pressable>
+      )}
       {state.routes.map((route, index) => {
         return (
           <CustomBottomTabItem

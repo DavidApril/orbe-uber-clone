@@ -101,22 +101,7 @@ export const HomeDriverScreen = ({navigation}: Props) => {
 
   return (
     <View style={{flex: 1}}>
-      <Pressable
-        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-        style={{
-          height: 45,
-          zIndex: 999,
-          width: 45,
-          borderRadius: 500,
-          backgroundColor: 'white',
-          justifyContent: 'center',
-          position: 'absolute',
-          alignItems: 'center',
-          top: 30,
-          left: 30,
-        }}>
-        <CustomIcon fill="black" name="menu-2" />
-      </Pressable>
+      <OpenDrawerMenu />
       {driverRequests.length > 0 && driverServiceIsActive && (
         <List
           style={{
@@ -167,11 +152,12 @@ export const HomeDriverScreen = ({navigation}: Props) => {
             borderWidth: 0,
           }}
           onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}>
-          {!driverServiceIsActive ? (
+          {/* {!driverServiceIsActive ? (
             <Pressable
               onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}
               style={{
                 position: 'absolute',
+                zIndex: 999999,
                 right: 25,
                 transform: [{scale: 1.3}],
               }}>
@@ -186,7 +172,7 @@ export const HomeDriverScreen = ({navigation}: Props) => {
               }}>
               <Spinner status="basic" />
             </View>
-          )}
+          )} */}
         </Pressable>
       ) : (
         <>
