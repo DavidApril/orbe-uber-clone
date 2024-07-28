@@ -25,7 +25,7 @@ import {
 } from 'react-native';
 import {orbeApi} from '../../../config/api';
 import {Location, RootStackParams} from '../../../interfaces';
-import {globalColors} from '../../theme/styles';
+import {globalColors, globalDimensions} from '../../theme/styles';
 import {currencyFormat} from '../../../utils';
 import {RacesService} from '../../../services';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -151,25 +151,43 @@ export const HomeDriverScreen = ({navigation}: Props) => {
       />
 
       {!analyzingRace ? (
-        <Button
+        <Pressable
           style={{
-            bottom: 20,
+            bottom: 10,
             position: 'absolute',
-            left: 40,
-            right: 40,
-            backgroundColor: globalColors.primary,
-            borderRadius: 100,
+            height: 95,
+            justifyContent: 'center',
+            alignItems: 'center',
+            left: '70%',
+            right: 10,
+            backgroundColor: driverServiceIsActive
+              ? globalColors.stateColors.success
+              : globalColors.stateColors.error,
+            borderRadius: globalDimensions.borderRadiusButtom,
             borderWidth: 0,
           }}
           onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}>
           {!driverServiceIsActive ? (
-            <Text>Activar servicios</Text>
+            <Pressable
+              onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}
+              style={{
+                position: 'absolute',
+                right: 25,
+                transform: [{scale: 1.3}],
+              }}>
+              <CustomIcon white name="power" />
+            </Pressable>
           ) : (
-            <>
+            <View
+              style={{
+                position: 'absolute',
+                right: 25,
+                transform: [{scale: 1.3}],
+              }}>
               <Spinner status="basic" />
-            </>
+            </View>
           )}
-        </Button>
+        </Pressable>
       ) : (
         <>
           <Layout
