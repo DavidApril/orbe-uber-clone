@@ -27,9 +27,14 @@ export const HomeClientDriverScreen = () => {
     setNearbyDrivers,
     setRaceData,
   } = useClientDriverStore();
-  const {socket} = useSocket(`${API_SOCKET_URL}/location-client`);
-  const {socket: raceWaitsSocket} = useSocket(`${API_SOCKET_URL}/client-driver-wait`,
-);
+  const {socket, online} = useSocket(`${API_SOCKET_URL}/location-client`);
+  const {socket: raceWaitsSocket} = useSocket(
+    `${API_SOCKET_URL}/client-driver-wait`,
+  );
+
+  useEffect(() => {
+    console.log(online);
+  }, [online]);
 
   const checkout = async () => {};
 
@@ -47,7 +52,7 @@ export const HomeClientDriverScreen = () => {
         latitud: lastKnownLocation?.latitude,
       };
       socket.emit('message-client', payload);
-    }, 1000);
+    }, 5000);
 
     return () => clearInterval(sendClientLocation);
   }, [lastKnownLocation]);

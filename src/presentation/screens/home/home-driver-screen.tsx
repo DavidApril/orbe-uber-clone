@@ -28,7 +28,6 @@ import {globalColors, stateColors} from '../../theme/styles';
 import {currencyFormat} from '../../../utils';
 import {RacesService} from '../../../services';
 import {StackScreenProps} from '@react-navigation/stack';
-import {DrawerActions} from '@react-navigation/native';
 import {API_SOCKET_URL} from '@env';
 
 interface Props
@@ -41,7 +40,6 @@ export const HomeDriverScreen = ({navigation}: Props) => {
   const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
   const {addBalance, increaseTrips} = useProfileDriverStore();
 
-  console.log(`${API_SOCKET_URL}/location`)
   const {isDarkMode} = useUIStore();
 
   const {
@@ -85,10 +83,6 @@ export const HomeDriverScreen = ({navigation}: Props) => {
       latitud: lastKnownLocation?.latitude,
     });
   };
-
-  useEffect(() => {
-    console.log({online});
-  }, [online]);
 
   useEffect(() => {
     if (!driverServiceIsActive) return;

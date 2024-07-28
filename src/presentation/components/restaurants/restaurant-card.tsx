@@ -7,15 +7,18 @@ import {Text} from 'react-native';
 import {globalColors} from '../../theme/styles';
 import {FAB} from '../ui/floating-action-button';
 import {useCartStore, useUIStore} from '../../../store';
+import {useEffect} from 'react';
 
 export const RestaurantCard = ({
   restaurant,
 }: {
   restaurant: SingleRestaurantResponse;
 }) => {
-  const image_url = StorageService.getPhotoByFilename(
-    restaurant.attachments[0]?.image_url,
-  );
+  let image_url = restaurant.attachments[0]?.image_url;
+
+  useEffect(() => {
+    image_url = restaurant.attachments[0]?.image_url;
+  }, [restaurant]);
 
   const {setRestaurantSelected} = useCartStore();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
@@ -64,7 +67,7 @@ export const RestaurantCard = ({
             borderRadius: 100,
             height: 100,
           }}
-          source={{uri: image_url ?? ''}}
+          source={{uri: StorageService.getPhotoByFilename(image_url)}}
         />
       )}
 

@@ -12,7 +12,7 @@ export class StorageService {
   };
 
   static getPhotoByFilename = (filename: string) => {
-    const src = `${API_URL}/${API_PREFIX}/storage?fileName=${filename}`;
+    const src = `https://orbeapi.devzeros.com/${API_PREFIX}/storage?fileName=${filename}`;
     return src;
   };
 }
