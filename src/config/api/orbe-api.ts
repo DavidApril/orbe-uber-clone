@@ -9,12 +9,12 @@ const orbeApi = axios.create({
   },
 });
 
-orbeApi.interceptors.request.use(config => {
-  const token = useAuthStore.getState().token;
-  if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`;
-  }
-  return config;
-});
+// orbeApi.interceptors.request.use(config => {
+//   const token = useAuthStore.getState().token;
+//   if (token) {
+//     config.headers['Authorization'] = `Bearer ${token}`;
+//   }
+//   return config;
+// });
 
 export {orbeApi};

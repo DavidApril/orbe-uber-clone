@@ -3,12 +3,11 @@ import {
   FavoritesScreen,
   HomeClientDeliveryScreen,
   HomeClientDriverScreen,
+  HomeDriverScreen,
   ProfileClientScreen,
+  ProfileDriverScreen,
 } from '../screens';
 import {CustomBottomTabs} from '../components';
-import {
-  profileRoutesByRoleMapper,
-} from '../../utils/mappers';
 import {useAuthStore} from '../../store';
 import {RootStackParams} from '../../interfaces';
 import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
@@ -16,7 +15,6 @@ import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
 const Tab = createBottomTabNavigator<RootStackParams>();
 
 export const BottomTapNavigationClientDelivery = () => {
-  const {role} = useAuthStore();
 
   return (
     <Tab.Navigator
@@ -41,7 +39,7 @@ export const BottomTapNavigationClientDelivery = () => {
           title: 'person-outline',
           headerShown: false,
         }}
-        component={profileRoutesByRoleMapper(role!) ?? ProfileClientScreen}
+        component={ProfileClientScreen}
       />
       <Tab.Screen
         name="HomeClientDriverScreen"
@@ -59,6 +57,46 @@ export const BottomTapNavigationClientDelivery = () => {
         }}
         component={FavoritesScreen}
       />
+      <Tab.Screen
+        name="chatBotScreen"
+        options={{
+          headerShown: false,
+          // icon name
+          title: 'message-circle-outline',
+        }}
+        component={ChatBotScreen}
+      />
+    </Tab.Navigator>
+  );
+};
+export const BottomTapNavigationDriver = () => {
+
+  return (
+    <Tab.Navigator
+      tabBar={props => <CustomBottomTabs {...props} />}
+      initialRouteName="HomeClientDeliveryScreen"
+      screenOptions={{
+        headerTransparent: true,
+      }}>
+      <Tab.Screen
+        name={`HomeDriverScreen`}
+        options={{
+          // icon name
+          title: 'home-outline',
+          headerShown: false,
+        }}
+        component={HomeDriverScreen}
+      />
+      <Tab.Screen
+        name="ProfileClientScreen"
+        options={{
+          // icon name
+          title: 'person-outline',
+          headerShown: false,
+        }}
+        component={ProfileDriverScreen}
+      />
+
       <Tab.Screen
         name="chatBotScreen"
         options={{

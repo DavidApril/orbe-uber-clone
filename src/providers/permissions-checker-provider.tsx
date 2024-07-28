@@ -12,10 +12,10 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
 
   useEffect(() => {
     if (locationStatus === 'granted' && status === 'authorized') {
-      if (role === DRIVER) {
-        navigation.navigate('HomeDriverScreen');
-      } else if (role === CLIENT) {
+      if (role === CLIENT) {
         navigation.navigate('HomeClientDeliveryScreen');
+      } else if (role === DRIVER) {
+        navigation.navigate('HomeDriverScreen');
       } else if (role === DELIVERY) {
         navigation.navigate('HomeDeliveryScreen');
       }

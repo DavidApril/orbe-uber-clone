@@ -33,3 +33,5 @@ export * from './settings/settings-screen';
 export * from './loading/loading-screen';
 
 export * from './coupons/coupons-screen'
+
+export * from './error/error-screen'

@@ -1,10 +1,13 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {globalColors} from '../theme/styles';
 import {CustomDrawerContent, CustomIcon} from '../components';
-import {CLIENT, RootStackParams} from '../../interfaces';
+import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../interfaces';
 import {useAuthStore, useUIStore} from '../../store';
-import {BottomTapNavigationClientDelivery} from './bottom-tap-navigation';
-import {CouponsScreen, ProductsCartScreen} from '../screens';
+import {
+  BottomTapNavigationClientDelivery,
+  BottomTapNavigationDriver,
+} from './bottom-tap-navigation';
+import {CouponsScreen, ErrorScreen, ProductsCartScreen} from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
@@ -12,6 +15,7 @@ const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 export function DrawerNavigation() {
   const {isDarkMode} = useUIStore();
   const {role} = useAuthStore();
+  console.log({role});
   return (
     <Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
@@ -80,6 +84,52 @@ export function DrawerNavigation() {
           />
         </>
       )}
+
+      {role === DRIVER && (
+        <Screen
+          options={{
+            title: 'Inicio',
+            headerShown: false,
+            sceneContainerStyle: {
+              flex: 1,
+            },
+            drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
+          }}
+          name="HomeScreen"
+          component={BottomTapNavigationDriver}
+        />
+      )}
+
+      {role === DELIVERY && (
+        <Screen
+          options={{
+            title: 'Inicio',
+            headerShown: false,
+            sceneContainerStyle: {
+              flex: 1,
+            },
+            drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
+          }}
+          name="HomeDriverScreen"
+          component={BottomTapNavigationDriver}
+        />
+      )}
+
+      {role !== DELIVERY || DRIVER || CLIENT}
+      {
+        <Screen
+          options={{
+            title: 'Inicio',
+            headerShown: false,
+            sceneContainerStyle: {
+              flex: 1,
+            },
+            drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
+          }}
+          name="ErrorScreen"
+          component={ErrorScreen}
+        />
+      }
     </Navigator>
   );
 }

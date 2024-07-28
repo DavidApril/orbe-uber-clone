@@ -4,7 +4,7 @@ import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {useColorScheme} from 'react-native';
 import {AuthProvider, PermissionsCheckerProvider} from './src/providers';
-import {DrawerNavigation, StackNavigator} from './src/presentation/navigation';
+import {StackNavigator} from './src/presentation/navigation';
 import {globalColors} from './src/presentation/theme/styles';
 import {useUIStore} from './src/store';
 import {useEffect} from 'react';
