@@ -12,7 +12,7 @@ import {
   RefillsScreen,
 } from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
-import {BottomTapNavigationDriver} from './bottom-tab-nativagion-driver';
+import {BottomTapNavigationDriver} from './bottom-tab-navigation-driver';
 import {ShoppingHistoryNavigator} from './shopping-history-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();

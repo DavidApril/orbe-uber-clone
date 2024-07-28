@@ -29,4 +29,5 @@ export type RootStackParams = {
   ShoppingHistoryScreen: undefined;
   ShoppingHistoryItemScreen: undefined;
   HistoryListScreen: undefined;
+  CheckoutScreen: undefined;
 };

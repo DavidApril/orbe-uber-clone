@@ -17,6 +17,7 @@ export * from './restaurant/favorites-screen';
 export * from './payment/my-cards-tab';
 export * from './payment/my-balance-tab';
 export * from './payment/refills-screen';
+export * from './payment/checkout-screen';
 
 export * from './permissions/permissions-screen';
 

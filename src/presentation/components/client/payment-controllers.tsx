@@ -25,7 +25,8 @@ interface Props {
 }
 
 export const PaymentControllers = ({shipping}: Props) => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
+  const navigation =
+    useNavigation<StackNavigationProp<RootStackParams, 'ProductsCartScreen'>>();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const {width} = useWindowDimensions();
   const {isDarkMode} = useUIStore();
@@ -225,6 +226,7 @@ export const PaymentControllers = ({shipping}: Props) => {
         </View>
 
         <Pressable
+          onPress={() => navigation.navigate('CheckoutScreen')}
           style={{
             backgroundColor: globalColors.stateColors.success,
             justifyContent: 'center',
