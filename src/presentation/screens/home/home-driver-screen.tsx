@@ -1,69 +1,69 @@
 import {useEffect, useState} from 'react';
 import {
   useAuthStore,
+  useDriverStore,
   useLocationStore,
   useProfileDriverStore,
+  useUIStore,
 } from '../../../store';
 import {
   ClientInformationCard,
+  CustomIcon,
   CustomMapView,
   FAB,
   OpenDrawerMenu,
 } from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
+import {Button, Layout, List, Spinner} from '@ui-kitten/components';
 import {
-  Button,
-  Icon,
-  Layout,
-  List,
-  ListItem,
-  Spinner,
-} from '@ui-kitten/components';
-import {Text, useColorScheme} from 'react-native';
+  Pressable,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from 'react-native';
 import {orbeApi} from '../../../config/api';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParams, Location} from '../../../interfaces';
+import {Location, RootStackParams} from '../../../interfaces';
 import {globalColors} from '../../theme/styles';
 import {currencyFormat} from '../../../utils';
 import {RacesService} from '../../../services';
+import {StackScreenProps} from '@react-navigation/stack';
+import {DrawerActions} from '@react-navigation/native';
 
-export const HomeDriverScreen = () => {
+interface Props
+  extends StackScreenProps<RootStackParams, 'ProductsCartScreen'> {}
+
+export const HomeDriverScreen = ({navigation}: Props) => {
   const colorScheme = useColorScheme();
-
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const [driverRequests, setDriveRequests] = useState<any[]>([]);
-  const [driverServiceIsActive, setDriverServiceIsActive] =
-    useState<boolean>(false);
   const {socket} = useSocket(`ws://orbeapi.devzeros.com:3001/location`);
-  const [data, setData] = useState<any>();
-  const [origin, setOrigin] = useState<Location | null>(null);
-  const [destination, setDestination] = useState<Location | null>(null);
-  const [analyzingRace, setAnalyzingRace] = useState<boolean>(false);
-  const [raceData, setRaceData] = useState<{
-    distance: number;
-    duration: number;
-  } | null>(null);
-  const [currentRequest, setCurrentRequest] = useState<any>();
-  const [currentRaceAccepted, setCurrentRaceAccepted] = useState<any>(null);
   const {addBalance, increaseTrips} = useProfileDriverStore();
-  useEffect(() => {
-    const fetchData = async (uid: string) => {
-      const res = await orbeApi.get(`/worker/getDriversByUid?uid=${uid}`);
-      setData(res.data.data.driver);
-    };
-    if (user?.uid) {
-      fetchData(user?.uid);
-    }
-  }, []);
+  const {isDarkMode} = useUIStore();
+
+  const {
+    driverServiceIsActive,
+    setDriverServiceIsActive,
+    origin,
+    destination,
+    analyzingRace,
+    setAnalyzingRace,
+    currentRaceAccepted,
+    currentRequest,
+    driverRequests,
+    raceData,
+    setCurrentRaceAccepted,
+    setRaceData,
+    setDriverRequests,
+  } = useDriverStore();
 
   useEffect(() => {
     socket.on('driver-request', data => {
       // console.log(data.client_request)
       data.client_request.forEach((request: any) => {
         if (request.coordinates) {
-          setDriveRequests([...driverRequests, request]);
+          setDriverRequests([...driverRequests, request]);
         }
       });
     });
@@ -95,23 +95,28 @@ export const HomeDriverScreen = () => {
     };
   }, [driverServiceIsActive]);
 
-  function onActiveServicePress() {
-    setDriverServiceIsActive(!driverServiceIsActive);
-  }
-
-  function analyzeRace() {
-    setAnalyzingRace(true);
-    setDriverServiceIsActive(false);
-  }
-
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
   }
 
   return (
-    <>
-      <OpenDrawerMenu left={20} />
-
+    <View style={{flex: 1}}>
+      <Pressable
+        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+        style={{
+          height: 45,
+          zIndex: 999,
+          width: 45,
+          borderRadius: 500,
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          position: 'absolute',
+          alignItems: 'center',
+          top: 30,
+          left: 30,
+        }}>
+        <CustomIcon fill="black" name="menu-2" />
+      </Pressable>
       {driverRequests.length > 0 && driverServiceIsActive && (
         <List
           style={{
@@ -132,13 +137,7 @@ export const HomeDriverScreen = () => {
           }}
           data={driverRequests}
           renderItem={({item: request}) => (
-            <ClientInformationCard
-              setCurrentRequest={setCurrentRequest}
-              analyzeRace={analyzeRace}
-              request={request}
-              setOrigin={setOrigin}
-              setDestination={setDestination}
-            />
+            <ClientInformationCard request={request} />
           )}
         />
       )}
@@ -162,7 +161,7 @@ export const HomeDriverScreen = () => {
             borderRadius: 100,
             borderWidth: 0,
           }}
-          onPress={onActiveServicePress}>
+          onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}>
           {!driverServiceIsActive ? (
             <Text>Activar servicios</Text>
           ) : (
@@ -270,6 +269,6 @@ export const HomeDriverScreen = () => {
           )}
         </>
       )}
-    </>
+    </View>
   );
 };

@@ -1,26 +1,46 @@
 import {create} from 'zustand';
+import {Location} from '../../interfaces';
+import {Race} from '../client/client-driver-store';
 
-interface ProfileDriveState {
-  uidDriver: string | null;
+interface DriverState {
+  driverServiceIsActive: boolean;
+  origin: Location | null;
+  destination: Location | null;
+  analyzingRace: boolean;
+  // TODO: driverRquest Interface
+  driverRequests: any[];
+  raceData: Race | null;
+  currentRequest: any;
+  currentRaceAccepted: boolean;
 
-  balance: number;
-  trips: number;
-  addBalance: (add: number) => void;
-  subtractBalance: (subtract: number) => void;
-
-  increaseTrips: () => void;
-  decreaseTrips: () => void;
+  setDriverServiceIsActive: (value: boolean) => void;
+  setOrigin: (position: Location | null) => void;
+  setDestination: (position: Location | null) => void;
+  setAnalyzingRace: (value: boolean) => void;
+  setRaceData: (value: Race | null) => void;
+  setDriverRequests: (driverRequests: any) => void;
+  // TODO: currentRequest Interface
+  setCurrentRequest: (currentRequest: any) => void;
+  setCurrentRaceAccepted: (value: boolean) => void;
 }
 
-export const useProfileDriverStore = create<ProfileDriveState>()(set => ({
-  uidDriver: null,
+export const useDriverStore = create<DriverState>()(set => ({
+  driverServiceIsActive: false,
+  origin: null,
+  destination: null,
+  analyzingRace: false,
+  driverRequests: [],
+  raceData: null,
+  currentRequest: false,
+  currentRaceAccepted: false,
 
-  balance: 0,
-  trips: 0,
-  addBalance: value => set(state => ({balance: state.balance + value})),
-  subtractBalance: value =>
-    set(state => ({balance: Math.max(state.balance - value, 0)})),
-
-  increaseTrips: () => set(state => ({trips: state.trips + 1})),
-  decreaseTrips: () => set(state => ({trips: Math.max(state.trips - 1, 0)})),
+  setDriverServiceIsActive: driverServiceIsActive =>
+    set({driverServiceIsActive}),
+  setOrigin: position => set({origin: position}),
+  setDestination: position => set({destination: position}),
+  setAnalyzingRace: value => set({analyzingRace: value}),
+  setRaceData: value => set({raceData: value}),
+  setDriverRequests: driverRequests => set({driverRequests}),
+  setCurrentRequest: currentRequest => set({currentRequest}),
+  setCurrentRaceAccepted: value => set({currentRaceAccepted: value}),
 }));

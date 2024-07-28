@@ -99,7 +99,7 @@ export const CustomMapView = ({
         ref={map => (mapRef.current = map!)}
         showsUserLocation={showsUserLocation}
         provider={Platform.OS === 'ios' ? undefined : PROVIDER_GOOGLE}
-        style={{flex: 1}}
+        style={{flex: 1, zIndex: -10}}
         onTouchStart={() => setIsFollowingUser(false)}
         region={{
           latitude: cameraLocation.current.latitude,

@@ -85,18 +85,34 @@ export function DrawerNavigation() {
       )}
 
       {role === DRIVER && (
-        <Screen
-          options={{
-            title: 'Inicio',
-            headerShown: false,
-            sceneContainerStyle: {
-              flex: 1,
-            },
-            drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
-          }}
-          name="HomeScreen"
-          component={BottomTapNavigationDriver}
-        />
+        <>
+          <Screen
+            options={{
+              title: 'Inicio',
+              headerShown: false,
+              sceneContainerStyle: {
+                flex: 1,
+              },
+              drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
+            }}
+            name="HomeScreen"
+            component={BottomTapNavigationDriver}
+          />
+          <Screen
+            options={{
+              title: 'Recargas',
+              headerShown: false,
+              sceneContainerStyle: {
+                flex: 1,
+              },
+              drawerIcon: ({color}) => (
+                <CustomIcon fill={color} name="credit-card" />
+              ),
+            }}
+            name="WalletScreen"
+            component={CouponsScreen}
+          />
+        </>
       )}
 
       {role === DELIVERY && (
@@ -113,22 +129,6 @@ export function DrawerNavigation() {
           component={BottomTapNavigationDriver}
         />
       )}
-
-      {role !== DELIVERY || DRIVER || CLIENT}
-      {
-        <Screen
-          options={{
-            title: 'Inicio',
-            headerShown: false,
-            sceneContainerStyle: {
-              flex: 1,
-            },
-            drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
-          }}
-          name="ErrorScreen"
-          component={ErrorScreen}
-        />
-      }
     </Navigator>
   );
 }

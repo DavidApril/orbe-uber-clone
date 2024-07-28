@@ -1,30 +1,24 @@
 import {Button, Layout, Text} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
-import {Location} from '../../../interfaces';
 import {UserService} from '../../../services';
+import {useDriverStore} from '../../../store';
 
 interface Props {
   request: any;
-  setOrigin: React.Dispatch<React.SetStateAction<Location | null>>;
-  setDestination: React.Dispatch<React.SetStateAction<Location | null>>;
-  setCurrentRequest: any;
-  analyzeRace: any;
 }
 
-export const ClientInformationCard = ({
-  request,
-  setDestination,
-  setOrigin,
-  setCurrentRequest,
-  analyzeRace,
-}: Props) => {
-  const [raceData, setRaceData] = useState<any>(null);
+export const ClientInformationCard = ({request}: Props) => {
+  const [raceData] = useState<any>(request.coordinates);
   const [client, setClient] = useState<any>(null);
 
-  useEffect(() => {
-    setRaceData(request.coordinates);
-  }, []);
+  const {
+    setCurrentRequest,
+    setDestination,
+    setOrigin,
+    setAnalyzingRace,
+    setDriverServiceIsActive,
+  } = useDriverStore();
 
   useEffect(() => {
     setCurrentRequest(request);
@@ -127,7 +121,8 @@ export const ClientInformationCard = ({
           style={{borderRadius: 100}}
           status="warning"
           onPress={() => {
-            analyzeRace();
+            setAnalyzingRace(true);
+            setDriverServiceIsActive(false);
           }}>
           Analizar carrera
         </Button>
