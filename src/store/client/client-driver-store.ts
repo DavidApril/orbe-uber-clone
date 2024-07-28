@@ -21,7 +21,10 @@ interface ClientDriverStore {
   setDestination: (position: Location | null) => void;
   setPayWithCard: (value: boolean) => void;
   setNearbyDrivers: (nearbyDrivers: DriverResponseByUidData[]) => void;
-  createRequest: (id_driver: string) => Promise<any>;
+  createRequest: (
+    id_driver: string,
+    uid_user: string,
+  ) => Promise<{ok: boolean}>;
   setRaceData: (raceData: Race | null) => void;
   setCurrentDriverAcceptRace: (value: boolean) => void;
 }
@@ -43,34 +46,33 @@ export const useClientDriverStore = create<ClientDriverStore>()((set, get) => ({
   setCurrentDriverAcceptRace: currentDriverAcceptRace =>
     set({currentDriverAcceptRace}),
   setRaceData: raceData => set({raceData}),
-  createRequest: async (id_driver: string, uid_user: string) => {
-    const {origin, destination, nearbyDrivers} = get();
+  createRequest: async (
+    id_driver: string,
+    uid_user: string,
+  ): Promise<{ok: boolean}> => {
+    const {origin, destination} = get();
 
-    if (!origin || !destination) return;
-
-    const response = await RacesService.createRequest({
-      id_client: uid_user,
-      id_driver: id_driver,
-      origin: {
-        latitude: origin?.latitude,
-        longitude: origin?.longitude,
-      },
-      destination: {
-        latitude: destination?.latitude,
-        longitude: destination?.longitude,
-      },
-    });
-
-    raceWaitsSocket.emit('waiting-request', {idRequest: response.data.id});
-
-    const driver = nearbyDrivers?.filter(
-      (driver: any) => driver.id === id_driver,
-    );
-
-    if (driver) {
-      setCurrentDriver(driver[0]);
+    if (!origin || !destination) {
+      return {ok: false};
     }
 
-    return response;
+    try {
+      await RacesService.createRequest({
+        id_client: uid_user,
+        id_driver: id_driver,
+        origin: {
+          latitude: origin?.latitude,
+          longitude: origin?.longitude,
+        },
+        destination: {
+          latitude: destination?.latitude,
+          longitude: destination?.longitude,
+        },
+      });
+      return {ok: true};
+    } catch (error) {
+      console.log({error});
+      return {ok: false};
+    }
   },
 }));

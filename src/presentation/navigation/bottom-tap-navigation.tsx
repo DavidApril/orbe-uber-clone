@@ -8,9 +8,7 @@ import {
 import {CustomBottomTabs} from '../components';
 import {
   profileRoutesByRoleMapper,
-  routesHomeByRoleMapper,
 } from '../../utils/mappers';
-import {HomeClientScreen} from '../screens/home/home-client-screen';
 import {useAuthStore} from '../../store';
 import {RootStackParams} from '../../interfaces';
 import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';

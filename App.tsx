@@ -4,7 +4,7 @@ import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {useColorScheme} from 'react-native';
 import {AuthProvider, PermissionsCheckerProvider} from './src/providers';
-import {DrawerNavigation} from './src/presentation/navigation';
+import {DrawerNavigation, StackNavigator} from './src/presentation/navigation';
 import {globalColors} from './src/presentation/theme/styles';
 import {useUIStore} from './src/store';
 import {useEffect} from 'react';
@@ -37,8 +37,8 @@ export const App = () => {
           }}>
           <AuthProvider>
             <PermissionsCheckerProvider>
-              {/* <StackNavigator /> */}
-              <DrawerNavigation />
+              <StackNavigator />
+              {/* <DrawerNavigation /> */}
               {/* <BottomTapNavigationClientDelivery /> */}
             </PermissionsCheckerProvider>
           </AuthProvider>

@@ -22,7 +22,8 @@ import {
   ProductsCartScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
-import { BottomTapNavigationClientDelivery } from './bottom-tap-navigation';
+import {BottomTapNavigationClientDelivery} from './bottom-tap-navigation';
+import {DrawerNavigation} from './drawer-navigation';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -38,7 +39,6 @@ export const StackNavigator = () => {
   return (
     <Navigator
       initialRouteName="LoadingScreen"
-      
       screenOptions={{headerShown: true}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
@@ -85,53 +85,7 @@ export const StackNavigator = () => {
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="PermissionsScreen"
-        component={PermissionsScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="HomeDriverScreen"
-        component={HomeDriverScreen}
-      />
-      <Screen
-      
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="HomeClientDeliveryScreen"
-        component={BottomTapNavigationClientDelivery}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="RestaurantScreen"
-        component={RestaurantScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="ProductsCartScreen"
-        component={ProductsCartScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="ProductItemScreen"
-        component={ProductItemScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="HomeDeliveryScreen"
-        component={HomeDeliveryScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Perfil'}}
-        name="ProfileClientScreen"
-        component={ProfileClientScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Perfil'}}
-        name="ProfileDriverScreen"
-        component={ProfileDriverScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Configuracion'}}
-        name="SettingsScreen"
-        component={SettingsScreen}
+        component={DrawerNavigation}
       />
     </Navigator>
   );

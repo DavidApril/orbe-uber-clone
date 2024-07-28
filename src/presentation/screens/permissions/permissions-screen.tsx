@@ -10,22 +10,21 @@ export const PermissionsScreen = () => {
 
   const {role} = useAuthStore();
 
-  // useEffect(() => {
-  //   if (locationStatus === 'granted' && role === DRIVER) {
-  //     navigation.navigate('HomeDriverScreen');
-  //   } else if (locationStatus === 'granted' && role === CLIENT) {
-  //     navigation.navigate('HomeDeliveryScreen');
-  //   } else if (locationStatus === 'granted' && role === DELIVERY) {
-  //     navigation.navigate('HomeDeliveryScreen');
-  //   }
-  // }, [locationStatus, role]);
+  useEffect(() => {
+    if (locationStatus === 'granted' && role === DRIVER) {
+      navigation.navigate('HomeDriverScreen');
+    } else if (locationStatus === 'granted' && role === CLIENT) {
+      navigation.navigate('HomeDeliveryScreen');
+    } else if (locationStatus === 'granted' && role === DELIVERY) {
+      navigation.navigate('HomeDeliveryScreen');
+    }
+  }, [locationStatus, role]);
 
   return (
     <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Button
         onPress={() => {
-          navigation.navigate('HomeClientDeliveryScreen')
-          // requestLocationPermission();
+          requestLocationPermission();
         }}>
         Habilitar localización
       </Button>

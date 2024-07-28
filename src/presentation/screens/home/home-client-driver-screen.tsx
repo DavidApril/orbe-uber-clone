@@ -16,6 +16,8 @@ export const HomeClientDriverScreen = () => {
   const {user} = useAuthStore();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {lastKnownLocation, getLocation} = useLocationStore();
+  const [currentDriver, setCurrentDriver] = useState<any>(null);
+
   const {
     origin,
     destination,
@@ -25,11 +27,9 @@ export const HomeClientDriverScreen = () => {
     setNearbyDrivers,
     setRaceData,
   } = useClientDriverStore();
-
   const {socket} = useSocket(`${API_SOCKET_URL}/location-client`);
-  const {socket: raceWaitsSocket} = useSocket(
-    `ws://orbeapi.devzeros.com:3001/client-driver-wait`,
-  );
+  const {socket: raceWaitsSocket} = useSocket(`${API_SOCKET_URL}/client-driver-wait`,
+);
 
   const checkout = async () => {};
 
@@ -67,8 +67,6 @@ export const HomeClientDriverScreen = () => {
       getLocation();
     }
   }, []);
-
-  const [currentDriver, setCurrentDriver] = useState<any>(null);
 
   useEffect(() => {
     raceWaitsSocket.on('request-response', response => {
