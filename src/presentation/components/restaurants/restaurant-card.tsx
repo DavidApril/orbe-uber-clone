@@ -1,4 +1,4 @@
-import {Image, Pressable, useColorScheme} from 'react-native';
+import {Image, Modal, Pressable, useColorScheme} from 'react-native';
 import {StorageService} from '../../../services';
 import {RootStackParams, SingleRestaurantResponse} from '../../../interfaces';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -7,7 +7,7 @@ import {Text} from 'react-native';
 import {globalColors} from '../../theme/styles';
 import {FAB} from '../ui/floating-action-button';
 import {useCartStore, useUIStore} from '../../../store';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 
 export const RestaurantCard = ({
   restaurant,
@@ -24,6 +24,15 @@ export const RestaurantCard = ({
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {isDarkMode} = useUIStore();
 
+  const [modal, setModal] = useState<boolean>(false)
+
+  const handleModalTimeOut = () => {
+    setModal(true)
+    setTimeout(() => {
+      setModal(false)
+    }, 3000)
+  }
+
   return (
     <Pressable
       onPress={() => {
@@ -35,8 +44,8 @@ export const RestaurantCard = ({
         marginRight: 5,
         alignItems: 'center',
         flex: 1,
-        height: 270,
-        width: 220,
+        height: 300,
+        width: 270,
         paddingTop: 25,
         position: 'relative',
       }}>
@@ -44,10 +53,10 @@ export const RestaurantCard = ({
         white={!isDarkMode ? true : false}
         iconName="heart"
         style={{
-          right: 20,
-          bottom: 20,
+          right: 15,
+          bottom: 15,
         }}
-        onPress={() => {}}></FAB>
+        onPress={handleModalTimeOut}></FAB>
 
       <View
         style={{
@@ -99,6 +108,13 @@ export const RestaurantCard = ({
           {restaurant.description}
         </Text>
       </View>
+      <Modal visible={modal} animationType='fade' transparent onRequestClose={() => setModal(false)}>
+        <Pressable onPress={() => setModal(false)} style={{ backgroundColor: '#0009', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ width: '85%', height: 250, borderRadius: 25, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
+            <Text style={{ color: globalColors.primaryColors.primary, fontSize: 26, fontWeight: 'bold', textAlign: 'center' }}>Producto añadido con exito a favoritos</Text>
+          </View>
+        </Pressable>
+      </Modal>
     </Pressable>
   );
 };

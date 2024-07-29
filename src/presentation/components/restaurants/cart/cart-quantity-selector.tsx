@@ -54,7 +54,7 @@ export const CartQuantitySelector = ({product}: Props) => {
           height: 30,
           width: 30,
           borderRadius: 10,
-          backgroundColor: 'black',
+          backgroundColor: globalColors.primaryColors.primary,
           justifyContent: 'center',
           alignItems: 'center',
         }}>

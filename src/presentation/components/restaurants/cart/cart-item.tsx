@@ -44,7 +44,7 @@ export const CartItem = ({item}: Props) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <CustomIcon name="trash" />
+          <CustomIcon fill={globalColors.primaryColors.primary} name="trash" />
         </Pressable>
 
         <Image

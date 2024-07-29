@@ -24,7 +24,8 @@ export const ProfileClientScreen = () => {
 
   const image_url = StorageService.getPhotoByFilename(userByUid!.cliente.photo);
 
-  return (
+  return <>
+    <OpenDrawerMenu />
     <ScrollView
       style={{flex: 1, height, backgroundColor: 'red', position: 'relative'}}>
       <View
@@ -152,5 +153,5 @@ export const ProfileClientScreen = () => {
         </View>
       </View>
     </ScrollView>
-  );
+  </>
 };

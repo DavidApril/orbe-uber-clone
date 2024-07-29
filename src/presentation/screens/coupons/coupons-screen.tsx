@@ -11,6 +11,7 @@ import {
   CouponCard,
   CustomIcon,
   FABGoBackButton,
+  OpenDrawerMenu,
 } from '../../components';
 import {useAuthStore, useCouponStore, useUIStore} from '../../../store';
 import {CouponService} from '../../../services';
@@ -41,7 +42,7 @@ export const CouponsScreen = () => {
             ? globalColors.neutralColors.background
             : globalColors.neutralColors.backgroundDark,
         }}>
-        <FABGoBackButton />
+        <OpenDrawerMenu />
         <View
           style={{
             flex: 1,
@@ -75,15 +76,13 @@ export const CouponsScreen = () => {
                     ? globalColors.fontColor.textColorHeader
                     : globalColors.fontColor.textColorHeaderDark,
                 }}>
-                Tienes{' '}
+                Tienes{'  '}
                 <Text
                   style={{
-                    color: globalColors.stateColors.warning,
-                    marginHorizontal: 10,
-                    paddingHorizontal: 10,
+                    color: globalColors.primaryColors.primary,
                     fontSize: 50,
                   }}>
-                  45
+                  45{' '}
                 </Text>
                 creditos
               </Text>

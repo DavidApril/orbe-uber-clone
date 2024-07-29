@@ -1,5 +1,5 @@
 import {Layout} from '@ui-kitten/components';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {globalColors, globalDimensions, globalStyles} from '../../theme/styles';
 import {
   ScrollView,
@@ -18,9 +18,10 @@ import {ChatbotResponse} from '../../../interfaces';
 
 import {ChatIsWritting} from '../ui/chat-writting';
 
-export const ChatBotContainer = () => {
+export const ChatBotContainer = ({writingTrue, writingFalse}: any) => {
   const {height, width} = useWindowDimensions();
   const {isDarkMode} = useUIStore();
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const [prompt, setPrompt] = useState<string>('');
 
@@ -28,6 +29,18 @@ export const ChatBotContainer = () => {
   const {chat_history, setNewMessage} = useChatbotStore();
 
   const [loadingAnswer, setLoadingAnswer] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({ animated: true });
+    }
+  }, [chat_history, loadingAnswer]);
+
+  if (loadingAnswer) {
+    writingTrue()
+  } else {
+    writingFalse()
+  }
 
   const handleSendMessage = async () => {
     setNewMessage({
@@ -59,36 +72,60 @@ export const ChatBotContainer = () => {
     <Layout
       style={[
         {
-          flexDirection: 'column-reverse',
-          bottom: 0,
-          paddingBottom: height * 0.13,
-          padding: 15,
-          position: 'relative',
+          height: height * 0.88,
+          flexDirection: 'column',
+          paddingHorizontal: 30,
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          backgroundColor: isDarkMode 
+          ? globalColors.neutralColors.backgroundDarkAlpha 
+          : globalColors.neutralColors.backgroundAlpha
         },
         globalStyles.boxShadow,
       ]}>
       <View
         style={{
-          position: 'absolute',
-          height: height * 0.8,
-          borderTopLeftRadius: 60,
-          borderTopRightRadius: 60,
           backgroundColor: !isDarkMode
             ? globalColors.neutralColors.backgroundAlpha
             : globalColors.neutralColors.backgroundDarkAlpha,
-          bottom: 0,
-          left: 0,
-          right: 0,
           width: width,
+          flexDirection: 'column',
+          justifyContent: 'center'
         }}
       />
+
+      <View style={{ height: '85%', position: 'absolute', left: 30, top: 10, justifyContent: 'center' }}>
+        <ScrollView
+          ref={scrollViewRef}
+          style={{
+            gap: 10,
+            // backgroundColor: 'black',
+            flexDirection: 'column',
+            width: '100%',
+          }}
+          onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+          >
+          {chat_history?.map((data, index) => {
+            if (data.role === 'assistant') {
+              return <ReceiveMessage key={index} message={data.text} />;
+            } else if (data.role === 'user') {
+              return <SendMessage key={index} message={data.text} />;
+            }
+          })}
+          {loadingAnswer && <ChatIsWritting />}
+        </ScrollView>
+      </View>
+
 
       <View
         style={{
           flexDirection: 'row',
           gap: 10,
           alignItems: 'center',
-          paddingTop: 15,
+          justifyContent: 'center',
+          position: 'absolute',
+          left: 30,
+          bottom: 50,
         }}>
         <TextInput
           onChangeText={setPrompt}
@@ -109,16 +146,16 @@ export const ChatBotContainer = () => {
         />
 
         <TouchableOpacity
-          disabled={loadingAnswer}
+          disabled={loadingAnswer || prompt.length === 0}
           onPress={handleSendMessage}
           style={{
             height: 55,
             width: 55,
-            backgroundColor: !loadingAnswer
-              ? globalColors.stateColors.success
+            backgroundColor: !loadingAnswer && prompt.length > 0
+              ? globalColors.primaryColors.primary
               : isDarkMode
               ? globalColors.neutralColors.backgroundDarkAlpha
-              : globalColors.neutralColors.backgroundDark,
+              : globalColors.neutralColors.borderDark,
             borderRadius: 100,
             justifyContent: 'center',
             alignItems: 'center',
@@ -128,32 +165,6 @@ export const ChatBotContainer = () => {
             name="paper-plane-outline"
           />
         </TouchableOpacity>
-      </View>
-
-      <View style={{flexDirection: 'column', gap: 10}}>
-        <ScrollView
-          style={{
-            gap: 10,
-            // backgroundColor: 'black',
-            flexDirection: 'column-reverse',
-            height: height * 0.6,
-            borderTopLeftRadius: 60,
-            borderTopRightRadius: 60,
-            flex: 1,
-            width: '100%',
-            left: 0,
-            position: 'absolute',
-            bottom: 0,
-          }}>
-          {chat_history?.map((data, index) => {
-            if (data.role === 'assistant') {
-              return <ReceiveMessage key={index} message={data.text} />;
-            } else if (data.role === 'user') {
-              return <SendMessage key={index} message={data.text} />;
-            }
-          })}
-          {loadingAnswer && <ChatIsWritting />}
-        </ScrollView>
       </View>
     </Layout>
   );

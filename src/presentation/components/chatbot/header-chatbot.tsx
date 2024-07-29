@@ -2,23 +2,27 @@ import {Layout, Text} from '@ui-kitten/components';
 import {globalColors} from '../../theme/styles';
 import {Image, useColorScheme, View} from 'react-native';
 import {useUIStore} from '../../../store';
+import { OpenDrawerMenu } from '../ui/open-drawer';
 
-export const HeaderChatBot = () => {
+export const HeaderChatBot = ({writing}: any) => {
   const colorScheme = useColorScheme();
   const {isDarkMode} = useUIStore();
+
   return (
     <Layout
       style={{
         flexDirection: 'row',
-
+        zIndex: 99,
         gap: 15,
-        marginTop: 15,
-        marginHorizontal: 15,
-        height: 90,
+        paddingHorizontal: 20,
+        height: '10%',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: 'transparent',
+        backgroundColor: isDarkMode 
+        ? globalColors.neutralColors.backgroundDarkAlpha 
+        : globalColors.neutralColors.backgroundAlpha,
       }}>
+      <OpenDrawerMenu />
       <View
         style={{
           margin: 5,
@@ -32,6 +36,7 @@ export const HeaderChatBot = () => {
             alignItems: 'center',
             flex: 1,
             gap: 5,
+            paddingLeft: 70
           }}>
           <Image
             style={{
@@ -61,7 +66,7 @@ export const HeaderChatBot = () => {
                     ? globalColors.fontColor.textColorDark
                     : globalColors.fontColor.textColor,
               }}>
-              Chatbot
+              {writing}
             </Text>
           </View>
         </View>

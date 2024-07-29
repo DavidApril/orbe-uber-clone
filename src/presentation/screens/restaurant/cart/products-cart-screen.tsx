@@ -13,6 +13,7 @@ import {useCartStore, useUIStore} from '../../../../store';
 import {
   CartItem,
   FABGoBackButton,
+  OpenDrawerMenu,
   PaymentControllers,
 } from '../../../components';
 import {
@@ -36,7 +37,8 @@ export const ProductsCartScreen = ({navigation}: Props) => {
   const snapPoints = useMemo(() => ['28%', '100%'], []);
   const summaryBottomSheetRef = useRef<BottomSheet>(null);
 
-  return (
+  return <>
+    <OpenDrawerMenu />
     <View
       style={{
         flex: 1,
@@ -44,17 +46,18 @@ export const ProductsCartScreen = ({navigation}: Props) => {
           ? globalColors.neutralColors.backgroundDark
           : globalColors.neutralColors.background,
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+        paddingTop: 50
       }}>
-      <FABGoBackButton />
-      <View style={{}}>
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <View style={{marginBottom: 20, marginHorizontal: 30}}>
           <Text
             style={{
               fontSize: 25,
+              fontWeight: 'bold',
               color: !isDarkMode
-                ? globalColors.fontColor.textColorHeader
-                : globalColors.fontColor.textColorHeaderDark,
+                ? globalColors.primaryColors.primary
+                : globalColors.primaryColors.primary,
             }}>
             Productos
           </Text>
@@ -91,17 +94,21 @@ export const ProductsCartScreen = ({navigation}: Props) => {
           ) : (
             <View
               style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <Text>No hay productos en el carrito.</Text>
+                <Text style={{
+                  fontSize: 20, fontWeight: 'bold', color: !isDarkMode
+                    ? globalColors.neutralColors.backgroundDarkAlpha
+                    : globalColors.neutralColors.backgroundAlpha,
+                }}>No hay productos en el carrito.</Text>
               <Pressable
                 onPress={() => navigation.navigate('HomeClientDeliveryScreen')}
                 style={{
                   paddingVertical: 10,
                   paddingHorizontal: 25,
                   borderRadius: globalDimensions.borderRadiusButtom,
-                  backgroundColor: stateColors.warning,
+                  backgroundColor: globalColors.primaryColors.primary,
                   marginVertical: 10,
                 }}>
-                <Text style={{}}>Ver restaurantes</Text>
+                <Text style={{color: '#eee'}}>Ver restaurantes</Text>
               </Pressable>
             </View>
           )}
@@ -158,5 +165,5 @@ export const ProductsCartScreen = ({navigation}: Props) => {
         </BottomSheet>
       )}
     </View>
-  );
+    </>
 };

@@ -149,9 +149,8 @@ export const PaymentControllers = ({shipping}: Props) => {
           <Text
             style={{
               textAlign: 'right',
-              color: isDarkMode
-                ? stateColors.warning
-                : fontColor.textColorHeader,
+              color: globalColors.primaryColors.primary,
+              fontWeight: 'bold'
             }}>
             Ver cupones
           </Text>
@@ -242,13 +241,13 @@ export const PaymentControllers = ({shipping}: Props) => {
         <Pressable
           onPress={() => navigation.navigate('CheckoutScreen')}
           style={{
-            backgroundColor: globalColors.stateColors.success,
+            backgroundColor: globalColors.primaryColors.primary,
             justifyContent: 'center',
             alignItems: 'center',
             paddingVertical: 20,
             borderRadius: globalDimensions.borderRadiusButtom,
           }}>
-          <Text style={{fontSize: 17}}>Pagar</Text>
+          <Text style={{fontSize: 17, color: globalColors.neutralColors.background}}>Pagar</Text>
         </Pressable>
       </View>
     </View>

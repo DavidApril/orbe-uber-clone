@@ -14,13 +14,14 @@ export const CustomBottomTabs = ({
   insets,
 }: BottomTabBarProps) => {
   const {isDarkMode} = useUIStore();
-  const {height} = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const {driverServiceIsActive, setDriverServiceIsActive} = useDriverStore();
   return (
     <Layout
       style={[
         {
           height: height * 0.1,
+          width: width * 0.95,
           margin: 10,
           flexDirection: 'row',
           position: 'absolute',
@@ -38,7 +39,7 @@ export const CustomBottomTabs = ({
           paddingHorizontal: 20,
           backgroundColor: !isDarkMode
             ? globalColors.neutralColors.bottomTabContainerBackground
-            : globalColors.neutralColors.bottomTabContainerBackgroundDark,
+            : globalColors.neutralColors.bottomTabBackgroundDark,
         },
         globalStyles.boxShadow,
       ]}>

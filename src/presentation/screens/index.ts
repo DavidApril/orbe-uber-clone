@@ -40,4 +40,6 @@ export * from './historical/history-shopping-screen'
 
 export * from './coupons/coupons-screen'
 
+export * from './chatbot/chatbot-screen'
+
 export * from './error/error-screen'

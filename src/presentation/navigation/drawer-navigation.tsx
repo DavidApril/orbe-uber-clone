@@ -3,16 +3,9 @@ import {globalColors} from '../theme/styles';
 import {CustomDrawerContent, CustomIcon} from '../components';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../interfaces';
 import {useAuthStore, useUIStore} from '../../store';
-import {BottomTapNavigationClientDelivery} from './bottom-tap-navigation';
-import {
-  CouponsScreen,
-  ErrorScreen,
-  HistoryShoppingScreen,
-  ProductsCartScreen,
-  RefillsScreen,
-} from '../screens';
+import {BottomTapNavigationClientDelivery, BottomTapNavigationDriver} from './bottom-tap-navigation';
+import {ProductsCartScreen, RefillsScreen, ChatBotScreen} from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
-import {BottomTapNavigationDriver} from './bottom-tab-navigation-driver';
 import {ShoppingHistoryNavigator} from './shopping-history-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
@@ -25,7 +18,7 @@ export function DrawerNavigation() {
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerType: 'back',
-        drawerInactiveTintColor: !isDarkMode ? 'black' : 'white',
+        drawerInactiveTintColor: !isDarkMode ? '#444' : 'white',
         drawerActiveTintColor: globalColors.primaryColors.primary,
         drawerItemStyle: {
           borderRadius: 50,
@@ -98,6 +91,18 @@ export function DrawerNavigation() {
             }}
             name="RefillsScreen"
             component={RefillsScreen}
+          />
+          <Screen
+            name="ChatBotScreen"
+            options={{
+              headerShown: false,
+              // icon name
+              title: 'Orbe chat',
+              drawerIcon: ({color}) => (
+                <CustomIcon fill={color} name="message-circle-outline" />
+              ),
+            }}
+            component={ChatBotScreen}
           />
         </>
       )}

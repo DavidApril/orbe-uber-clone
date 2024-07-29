@@ -18,6 +18,7 @@ export const ReceiveMessage = ({message}: {message: string}) => {
         borderBottomRightRadius: 40,
         padding: 20,
         marginBottom: 10,
+        marginRight: 40
         // opacity: fadeAnim,
       }}>
       <Text style={{fontSize: 16, color: globalColors.grayScale.white}}>

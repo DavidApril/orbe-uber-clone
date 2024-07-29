@@ -1,7 +1,7 @@
 import {MaterialTopTabBarProps} from '@react-navigation/material-top-tabs';
 import {TouchableOpacity, View} from 'react-native';
 import {CustomIcon} from '../ui/custom-icon';
-import {neutralColors} from '../../theme/styles';
+import {neutralColors, primaryColors} from '../../theme/styles';
 import {useUIStore} from '../../../store';
 
 export const CustomTopBar = ({
@@ -10,6 +10,8 @@ export const CustomTopBar = ({
   navigation,
   position,
 }: MaterialTopTabBarProps) => {
+
+  const {isDarkMode} = useUIStore();
   return (
     <View style={{flexDirection: 'row'}}>
       {state.routes.map((route, index) => {
@@ -65,7 +67,7 @@ export const CustomTopBar = ({
                   : neutralColors.backgroundAlpha,
                 padding: 10,
               }}>
-              <CustomIcon fill="white" name={iconName || 'award'} />
+              <CustomIcon fill={primaryColors.primary} name={iconName || 'award'} />
             </View>
           </TouchableOpacity>
         );

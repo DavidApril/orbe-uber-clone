@@ -1,4 +1,3 @@
-export * from './bottom-tab-navigation-driver'
 export * from './bottom-tap-navigation'
 export * from './drawer-navigation'
 export * from './shopping-history-navigation'

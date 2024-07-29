@@ -109,7 +109,7 @@ export const ProductCard = ({product}: Props) => {
               addProductToCart(product);
             }
           }}
-          status="success"
+          status="primary"
           style={{
             zIndex: 999999999,
             height: 15,

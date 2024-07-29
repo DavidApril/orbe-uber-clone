@@ -10,6 +10,7 @@ import {
   RegisterDriverScreen,
   RegisterClientScreen,
   RegisterDeliveryScreen,
+  RestaurantScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 import {DrawerNavigation} from './drawer-navigation';

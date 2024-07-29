@@ -46,7 +46,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
         height,
-        padding: 20,
+        padding: 10,
         overflow: 'hidden',
       }}>
       <View
