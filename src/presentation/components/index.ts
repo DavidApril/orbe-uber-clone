@@ -46,8 +46,7 @@ export * from './wallet/credit-card';
 
 export * from './chatbot/header-chatbot';
 
-export * from './payments/transaction-item-traiding-down';
-export * from './payments/transaction-item-traiding-up ';
+export * from './payments/transaction-item';
 export * from './payments/credit-cart-selector';
 
 export * from './modals/modal-paying-loader'

@@ -1,7 +1,9 @@
 import {orbeApi} from '../../config/api';
 import {
   GetPayMethodsUserResponse,
+  GetTransactionsByUserResponse,
   ICreditCard,
+  ITransaction,
   PaymentDetails,
   PayWithCardResponse,
   PayWithCardResponseData,
@@ -9,6 +11,9 @@ import {
 
 export class PaymentService {
   static PREFIX: string = 'pay';
+
+  static take: number = 5;
+
   static async getPayMethod() {}
 
   static async cardCreditPayment(
@@ -37,16 +42,21 @@ export class PaymentService {
   }
   static async getTransactionById() {}
   static async getTransactions() {}
-  static async getTransactionsByUser(): Promise<any> {
+  
+  static async getTransactionsByUser(
+    user_uid: string,
+    take = this.take,
+    skip = 0,
+  ): Promise<ITransaction[]> {
     try {
-      const {data: response}: {data: any} = await orbeApi.get(
-        `pay/getTransactionsByUser`,
-      );
-
-      return response;
+      const {data: response}: {data: GetTransactionsByUserResponse} =
+        await orbeApi.get(
+          `${this.PREFIX}/getTransactionsByUser?user_uid=${user_uid}&take=${take}&skip=${skip}`,
+        );
+      return response.data;
     } catch (error) {
       console.log({error});
-      return;
+      return [];
     }
   }
 }

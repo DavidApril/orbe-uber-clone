@@ -69,3 +69,28 @@ export interface GetPayMethodsUserResponse extends ResponseInterface {
 export interface ICreditCard {
   token: string;
 }
+
+export interface GetTransactionsByUserResponse extends ResponseInterface {
+  data: ITransaction[];
+}
+
+export interface ITransaction {
+  id: number;
+  created_date: Date;
+  updated_date: Date;
+  delete_date: null;
+  description: string;
+  typeTransaction: string;
+  payMethod: string;
+  TotalTransaction: string;
+  detailsPayment: DetailsPayment[];
+}
+
+export interface DetailsPayment {
+  id: number;
+  created_date: Date;
+  updated_date: Date;
+  delete_date: null;
+  key: string;
+  value: string;
+}
