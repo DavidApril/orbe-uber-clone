@@ -29,7 +29,7 @@ export const CouponCard = ({height, width, coupon, onPress}: Props) => {
 
           flex: 1,
           width: width ?? 340,
-          backgroundColor: globalColors.stateColors.success,
+          backgroundColor: globalColors.primaryColors.primary,
           height: height ?? 230,
           marginRight: 30,
         },

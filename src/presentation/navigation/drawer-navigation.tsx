@@ -14,6 +14,7 @@ import {
   RefillsScreen,
 } from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
+import { ChatBotScreen } from '../screens/chatbot/chatbot-screen';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
@@ -25,7 +26,7 @@ export function DrawerNavigation() {
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerType: 'back',
-        drawerInactiveTintColor: !isDarkMode ? 'black' : 'white',
+        drawerInactiveTintColor: !isDarkMode ? '#444' : 'white',
         drawerActiveTintColor: globalColors.primaryColors.primary,
         drawerItemStyle: {
           borderRadius: 50,
@@ -85,6 +86,18 @@ export function DrawerNavigation() {
             }}
             name="RefillsScreen"
             component={RefillsScreen}
+          />
+          <Screen
+            name="chatBotScreen"
+            options={{
+              headerShown: false,
+              // icon name
+              title: 'Orbe chat',
+              drawerIcon: ({color}) => (
+                <CustomIcon fill={color} name="message-circle-outline" />
+              ),
+            }}
+            component={ChatBotScreen}
           />
         </>
       )}

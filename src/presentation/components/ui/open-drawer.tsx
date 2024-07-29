@@ -29,14 +29,18 @@ export const OpenDrawerMenu = ({style}: Props) => {
         zIndex: 999,
         width: 45,
         borderRadius: 500,
-        backgroundColor: 'white',
+        backgroundColor: isDarkMode
+        ? globalColors.neutralColors.backgroundDarkAlpha
+        : globalColors.neutralColors.backgroundAlpha,
         justifyContent: 'center',
         position: 'absolute',
         alignItems: 'center',
-        top: 30,
-        left: 30,
+        top: 20,
+        left: 20,
+        borderWidth: 1,
+        borderColor: globalColors.primaryColors.primary
       }}>
-      <CustomIcon fill="black" name="menu-2" />
+      <CustomIcon fill={globalColors.primaryColors.primary} name="menu-2" />
     </Pressable>
   );
 };

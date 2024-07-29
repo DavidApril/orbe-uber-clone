@@ -46,6 +46,7 @@ export const BottomTapNavigationClientDelivery = () => {
         options={{
           // icon name
           title: 'map-outline',
+          headerShown: false
         }}
         component={HomeClientDriverScreen}
       />
@@ -54,17 +55,9 @@ export const BottomTapNavigationClientDelivery = () => {
         options={{
           // icon name
           title: 'heart',
+          headerShown: false
         }}
         component={FavoritesScreen}
-      />
-      <Tab.Screen
-        name="chatBotScreen"
-        options={{
-          headerShown: false,
-          // icon name
-          title: 'message-circle-outline',
-        }}
-        component={ChatBotScreen}
       />
     </Tab.Navigator>
   );

@@ -13,14 +13,13 @@ export const SendMessage = ({message}: Props) => {
   return (
     <View
       style={{
-        backgroundColor: !isDarkMode
-          ? globalColors.neutralColors.messageChatBackground
-          : globalColors.neutralColors.messageChatBackgroundDark,
+        backgroundColor: globalColors.primaryColors.primary,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         borderBottomLeftRadius: 40,
         padding: 20,
         marginBottom: 10,
+        marginLeft: 40
         
       }}>
       <Text

@@ -32,7 +32,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {DrawerActions} from '@react-navigation/native';
 
 interface Props
-  extends StackScreenProps<RootStackParams, 'ProductsCartScreen'> {}
+  extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 
 export const HomeDriverScreen = ({navigation}: Props) => {
   const colorScheme = useColorScheme();
@@ -112,8 +112,8 @@ export const HomeDriverScreen = ({navigation}: Props) => {
             right: 5,
             backgroundColor:
               colorScheme === 'dark'
-                ? globalColors.themeDark
-                : globalColors.themeLight,
+                ? globalColors.primaryColors.primaryDark
+                : globalColors.primaryColors.primaryLight,
             borderRadius: 30,
             marginBottom: 5,
             paddingHorizontal: 20,

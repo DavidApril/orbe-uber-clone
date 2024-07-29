@@ -6,20 +6,21 @@ export const ChatIsWritting = () => {
   return (
     <View
       style={{
-        backgroundColor: 'white',
-        width: 40,
-        height: 20,
+        backgroundColor: '#ccc',
+        width: '25%',
+        height: '100%',
         borderRadius: 50,
+        padding: 5,
       }}>
       <Typewriter
         style={{
           width: 'auto',
-          // padding: 5,
           fontSize: 15,
           justifyContent: 'center',
           textAlign: 'center',
           textAlignVertical: 'center',
           alignItems: 'center',
+          color: 'white'
         }}
         delay={100}
         text="..."
