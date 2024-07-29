@@ -2,7 +2,12 @@ import {Divider, Radio, RadioGroup, Text} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
 import {Pressable, useWindowDimensions, View} from 'react-native';
 import {currencyFormat, parseDate} from '../../../utils';
-import {useCartStore, useCouponStore, useUIStore} from '../../../store';
+import {
+  useCartStore,
+  useCouponStore,
+  usePaymentStore,
+  useUIStore,
+} from '../../../store';
 import {
   fontColor,
   globalColors,
@@ -32,12 +37,21 @@ export const PaymentControllers = ({shipping}: Props) => {
   const {isDarkMode} = useUIStore();
   const {couponToUse} = useCouponStore();
   const {getSummaryInformation} = useCartStore();
-
   const {
     subTotal: subtotal,
     total,
     discount,
   } = getSummaryInformation(couponToUse?.value);
+
+  const {setPayWithCard} = usePaymentStore();
+
+  useEffect(() => {
+    if (selectedIndex === 0) {
+      setPayWithCard(true);
+    } else {
+      setPayWithCard(false);
+    }
+  }, [selectedIndex]);
 
   return (
     <View

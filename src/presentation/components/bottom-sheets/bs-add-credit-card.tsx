@@ -6,26 +6,34 @@ import {fontColor, neutralColors} from '../../theme/styles';
 import {
   useAuthStore,
   useCartStore,
+  useCouponStore,
   usePaymentStore,
   useUIStore,
 } from '../../../store';
-import {Pressable, ScrollView, TextInput, View} from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  TextInput,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import {Formik} from 'formik';
 import {PaymentService} from '../../../services';
 import {CText} from '../ui/custom-text';
 
-interface Props {
-  addRef: React.RefObject<BottomSheetMethods>;
-}
-
 export const BSAddCreditCard = () => {
   const addTarjetBottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['1%', '75%'], []);
+  const {height} = useWindowDimensions();
+  const snapPoints = useMemo(() => ['1%', height * 0.85], []);
 
   const {isDarkMode} = useUIStore();
   const {userByUid} = useAuthStore();
-  const {setIsPaying, setAddTarjetBottomSheetRef} = usePaymentStore();
-  const {cart} = useCartStore();
+  const {setIsPaying, setAddTarjetBottomSheetRef, payWithCard} =
+    usePaymentStore();
+  const {couponToUse} = useCouponStore();
+  const {cart, getSummaryInformation} = useCartStore();
+
+  const {total} = getSummaryInformation(couponToUse?.value);
 
   const initialValues = {
     name: '',
@@ -36,35 +44,63 @@ export const BSAddCreditCard = () => {
 
   const handleAddCard = async (values: typeof initialValues) => {
     setIsPaying(true);
-    await PaymentService.cardCreditPayment({
-      value: '50000',
+
+    console.log('sending', {
+      value: total.toString(),
       docType: 'CC',
-      docNumber: '123456789',
-      name: 'Juan',
-      lastName: 'Pérez',
-      email: 'juan.perez@example.com',
-      cellPhone: '3001234567',
-      phone: '1234567',
-      cardNumber: '123323123123123',
+      docNumber: userByUid?.cliente.id.toString(),
+      name: userByUid?.cliente.name,
+      lastName: 'Apellido',
+      email: userByUid?.email,
+      cellPhone: userByUid?.cliente.phone,
+      phone: userByUid?.cliente.phone,
+      cardNumber: values.numberCard,
       cardExpYear: '2025',
-      cardExpMonth: '12',
-      cardCvc: '123',
+      cardExpMonth: ' 12',
+      cardCvc: values.CVC,
       dues: '12',
       userUid: userByUid?.uid_firebase,
       description: 'Pago de prueba',
       typeTransaction: 'Compra',
-      methodPay: 'Tarjeta de Crédito',
+      methodPay: payWithCard ? 'Tarjeta de Crédito' : 'Efectivo',
       details: cart.map(itemInCart => ({
         key: itemInCart.product.name,
         value: itemInCart.quantity.toString(),
       })),
     });
 
+    const response = await PaymentService.cardCreditPayment({
+      value: total.toString(),
+      docType: 'CC',
+      docNumber: userByUid?.cliente.id.toString(),
+      name: userByUid?.cliente.name,
+      lastName: 'Apellido',
+      email: userByUid?.email,
+      cellPhone: userByUid?.cliente.phone,
+      phone: userByUid?.cliente.phone,
+      cardNumber: values.numberCard,
+      cardExpYear: '2025',
+      cardExpMonth: ' 12',
+      cardCvc: values.CVC,
+      dues: '12',
+      userUid: userByUid?.uid_firebase,
+      description: 'Pago de prueba',
+      typeTransaction: 'Compra',
+      methodPay: payWithCard ? 'Tarjeta de Crédito' : 'Efectivo',
+      details: cart.map(itemInCart => ({
+        key: itemInCart.product.name,
+        value: itemInCart.quantity.toString(),
+      })),
+    });
+
+    console.log({response});
+    console.log(userByUid?.uid_firebase);
+
     setIsPaying(false);
   };
 
   useEffect(() => {
-    setAddTarjetBottomSheetRef(addTarjetBottomSheetRef)
+    setAddTarjetBottomSheetRef(addTarjetBottomSheetRef);
   }, [addTarjetBottomSheetRef]);
 
   return (

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {CTextHeader} from '../ui/custom-text-header';
 import {
   Image,
@@ -13,19 +13,18 @@ import {CViewAlpha} from '../ui/custom-view-alpha';
 import {CustomIcon} from '../ui/custom-icon';
 import {globalDimensions} from '../../theme/styles';
 import {usePaymentStore} from '../../../store';
+import {CText} from '../ui/custom-text';
 
 interface Props {
   onAddButtonPress: () => void;
-  horizontal: boolean;
+  horizontal?: boolean;
 }
 
 export const CreditCardSelector = ({
   onAddButtonPress,
   horizontal = true,
 }: Props) => {
-  const [isSelected, setIsSelected] = useState();
-
-  const {creditCardsTokens, creditCardsSelected} = usePaymentStore();
+  const {creditCardsTokens} = usePaymentStore();
 
   useEffect(() => {
     console.log({creditCardsTokens});
@@ -33,13 +32,13 @@ export const CreditCardSelector = ({
 
   return (
     <ScrollView style={{marginHorizontal: 30, position: 'relative', flex: 1}}>
-      <CTextHeader style={{fontWeight: '100', fontSize: 20}}>
+      <CTextHeader style={{fontWeight: '100', fontSize: 20, marginBottom: 15}}>
         Método de pago
       </CTextHeader>
 
       <View
         style={{
-          height: creditCardsTokens.length === 0 ? 500 : 500,
+          height: creditCardsTokens.length === 0 ? 200 : 500,
           width: '100%',
           flex: 1,
         }}>
@@ -50,6 +49,9 @@ export const CreditCardSelector = ({
             height: 390,
             alignSelf: 'center',
           }}>
+          {creditCardsTokens.length === 0 && (
+            <CText style={{marginTop: 30}}>No hay métodos agregados...</CText>
+          )}
           <FlatList
             horizontal={horizontal}
             data={creditCardsTokens}

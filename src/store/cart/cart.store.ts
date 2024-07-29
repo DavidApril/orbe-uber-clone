@@ -60,10 +60,10 @@ export const useCartStore = create<State>()((set, get) => ({
       0,
     );
     const tax = subTotal * 0.15;
-    const total = subTotal + tax;
     const itemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
-
+    
     const discount = couponValue ? (subTotal * couponValue) / 100 : 0;
+    const total = subTotal + tax - discount;
 
     return {
       subTotal,

@@ -15,15 +15,13 @@ export const MyCardsScreen = () => {
     if (userByUid) {
       PaymentService.GetPayMethodsUser(userByUid?.uid_firebase).then(
         cardsTokens => {
-          // setCreditCardsTokens(cardsTokens)
+          setCreditCardsTokens(cardsTokens)
         },
       );
     }
   }, [userByUid]);
 
-  useEffect(() => {
-    console.log({creditCardsTokens});
-  }, [creditCardsTokens]);
+
 
   return (
     <CView
@@ -32,16 +30,14 @@ export const MyCardsScreen = () => {
         flex: 1,
         flexDirection: 'column',
       }}>
-      <ScrollView style={{flex: 1}}>
-        <CreditCardSelector
-          horizontal={false}
-          onAddButtonPress={() => addTarjetBottomSheetRef?.current?.expand()}
-        />
+      <CreditCardSelector
+        horizontal={false}
+        onAddButtonPress={() => addTarjetBottomSheetRef?.current?.expand()}
+      />
 
-        <BSAddCreditCard />
+      <BSAddCreditCard />
 
-        <View style={{height: 300}} />
-      </ScrollView>
+      <View style={{height: 300}} />
     </CView>
   );
 };

@@ -7,6 +7,8 @@ export interface PaymentState {
   isPaying: boolean;
   creditCardsSelected: ICreditCard | null;
 
+  payWithCard: boolean;
+
   addTarjetBottomSheetRef: React.RefObject<BottomSheetMethods> | null;
 
   pay: () => Promise<void>;
@@ -15,20 +17,24 @@ export interface PaymentState {
   setCreditCardsTokens: (tokens: ICreditCard[]) => void;
   setAddTarjetBottomSheetRef: (value: any) => void;
   setCreditCardsSelected: (creditCard: ICreditCard) => void;
+  setPayWithCard: (value: boolean) => void;
 }
 
 const storeApi: StateCreator<PaymentState> = (set, get) => ({
-  creditCardsTokens: [{token: '456'}, {token: '123'}],
+  payWithCard: false,
+  creditCardsTokens: [],
   isPaying: false,
   addTarjetBottomSheetRef: null,
-  creditCardsSelected: {token: '123'},
+  creditCardsSelected: null,
 
   pay: async () => {},
   setIsPaying: value => set({isPaying: value}),
   setCreditCardsTokens: tokens => set({creditCardsTokens: tokens}),
   setAddTarjetBottomSheetRef: (value: any) =>
     set({addTarjetBottomSheetRef: value}),
-  setCreditCardsSelected: (creditCard: ICreditCard | null) => set({ creditCardsSelected: creditCard}),
+  setCreditCardsSelected: (creditCard: ICreditCard | null) =>
+    set({creditCardsSelected: creditCard}),
+  setPayWithCard: value => set({payWithCard: value}),
 });
 
 export const usePaymentStore = create<PaymentState>()(storeApi);
