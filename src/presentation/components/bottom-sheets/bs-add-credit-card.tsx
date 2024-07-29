@@ -1,16 +1,21 @@
 import BottomSheet from '@gorhom/bottom-sheet';
+import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import {Button, CheckBox, Input, Layout, Text} from '@ui-kitten/components';
-import {useMemo, useRef} from 'react';
+import {useEffect, useMemo, useRef} from 'react';
 
-export const BSAddCreditCard = () => {
-  const addTarjetBottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['75%'], []);
+interface Props {
+  ref: React.RefObject<BottomSheetMethods>;
+}
+
+export const BSAddCreditCard = ({ref}: Props) => {
+  
+  const snapPoints = useMemo(() => ['1%', '75%'], []);
+  useEffect(() => {
+    ref.current?.forceClose();
+  }, []);
 
   return (
-    <BottomSheet
-      enablePanDownToClose={true}
-      ref={addTarjetBottomSheetRef}
-      snapPoints={snapPoints}>
+    <BottomSheet enablePanDownToClose={true} ref={ref} snapPoints={snapPoints}>
       <Layout style={{margin: 30}}>
         <Layout style={{flexDirection: 'column', gap: 10}}>
           <Text style={{fontSize: 18}}>Nombre</Text>

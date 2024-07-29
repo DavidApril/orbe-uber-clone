@@ -81,6 +81,7 @@ export const globalColors = {
 };
 
 export const globalDimensions = {
+  paddingTopCheckoutScreens: 130,
   borderRadiusButtom: 20,
   paddingScreen: 30,
   paddingTopRestaurantScreens: 150,

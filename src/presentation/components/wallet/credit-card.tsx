@@ -22,6 +22,7 @@ export const CreditCard = ({selected}: Props) => {
     <View
       style={[
         {
+          opacity: 0.8,
           backgroundColor: isDarkMode ? 'black' : 'white',
           overflow: 'visible',
           padding: 15,
