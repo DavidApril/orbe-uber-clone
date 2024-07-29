@@ -3,31 +3,40 @@ export type RootStackParams = {
   LoginScreen: undefined;
   HomeScreen: undefined;
   RegisterScreen: undefined;
+
+  RegisterDriverScreen: undefined;
+  RegisterClientScreen: undefined;
+  RegisterDeliveryScreen: undefined;
+
   PermissionsScreen: undefined;
-  HomeClientDriverScreen: undefined;
+
   HomeClientDeliveryScreen: undefined;
-  HomeDriverScreen: undefined;
-  HomeDeliveryScreen: undefined;
+
+  RestaurantScreen: undefined;
   ProductsCartScreen: undefined;
   ProductItemScreen: undefined;
-  RestaurantScreen: undefined;
-  RegisterDriverScreen: undefined;
-  CouponsScreen: undefined;
-  MyCouponsScreen: undefined;
-  WalletScreen: undefined;
-  RegisterClientScreen: undefined;
-  favoritesScreen: undefined;
-  RegisterDeliveryScreen: undefined;
-  ProfileDriverScreen: undefined;
-  ProfileClientScreen: undefined;
-  SettingsScreen: undefined;
-  chatBotScreen: undefined;
-  ErrorScreen: undefined;
-  HistoryScreen: undefined;
-  RefillsScreen: undefined;
-
+  CheckoutScreen: undefined;
   ShoppingHistoryScreen: undefined;
   ShoppingHistoryItemScreen: undefined;
+  RefillsScreen: undefined;
+  ChatBotScreen: undefined;
+
+  MyCardsScreen: undefined
+
+  ProfileClientScreen: undefined;
+
+  HomeClientDriverScreen: undefined;
+  HomeDriverScreen: undefined;
+  HomeDeliveryScreen: undefined;
+
+  CouponsScreen: undefined;
+  MyCouponsScreen: undefined;
+  favoritesScreen: undefined;
+
+  ProfileDriverScreen: undefined;
+
+  SettingsScreen: undefined;
+  ErrorScreen: undefined;
+  HistoryScreen: undefined;
   HistoryListScreen: undefined;
-  CheckoutScreen: undefined;
 };

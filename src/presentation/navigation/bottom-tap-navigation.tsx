@@ -1,18 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {
-  FavoritesScreen,
-  HistoryTravels,
-  HomeClientDeliveryScreen,
-  HomeClientDriverScreen,
-  HomeDriverScreen,
-  ProfileClientScreen,
-  ProfileDriverScreen,
-} from '../screens';
+import {FavoritesScreen, HomeClientDriverScreen} from '../screens';
 import {CustomBottomTabs} from '../components';
-import {useAuthStore} from '../../store';
 import {RootStackParams} from '../../interfaces';
 import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
 import {StackRestaurantNavigation} from './stack-restaurant-navigation';
+import {TopTabClientProfileNavigation} from './top-tab-client-profile';
 
 const Tab = createBottomTabNavigator<RootStackParams>();
 
@@ -40,7 +32,7 @@ export const BottomTapNavigationClientDelivery = () => {
           title: 'person-outline',
           headerShown: false,
         }}
-        component={ProfileClientScreen}
+        component={TopTabClientProfileNavigation}
       />
       <Tab.Screen
         name="HomeClientDriverScreen"
@@ -59,7 +51,7 @@ export const BottomTapNavigationClientDelivery = () => {
         component={FavoritesScreen}
       />
       <Tab.Screen
-        name="chatBotScreen"
+        name="ChatBotScreen"
         options={{
           headerShown: false,
           // icon name

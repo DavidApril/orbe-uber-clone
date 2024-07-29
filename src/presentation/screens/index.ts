@@ -14,8 +14,8 @@ export * from './restaurant/cart/products-cart-screen';
 export * from './restaurant/restaurant-screen';
 export * from './restaurant/favorites-screen';
 
-export * from './payment/my-cards-tab';
-export * from './payment/my-balance-tab';
+export * from './payment/my-cards-screen';
+export * from './payment/my-balance-screen';
 export * from './payment/refills-screen';
 export * from './payment/checkout-screen';
 

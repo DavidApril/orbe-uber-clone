@@ -48,3 +48,4 @@ export * from './chatbot/header-chatbot';
 
 export * from './payments/transaction-item-traiding-down';
 export * from './payments/transaction-item-traiding-up ';
+export * from './payments/credit-cart-selector';
