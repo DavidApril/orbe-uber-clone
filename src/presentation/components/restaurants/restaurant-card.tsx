@@ -31,8 +31,8 @@ export const RestaurantCard = ({
         flexDirection: 'column',
         alignItems: 'center',
         flex: 1,
-        height: 270,
-        width: 220,
+        height: 300,
+        width: 270,
         paddingTop: 25,
         position: 'relative',
       }}>
@@ -40,8 +40,8 @@ export const RestaurantCard = ({
         white={!isDarkMode ? true : false}
         iconName="heart"
         style={{
-          right: 20,
-          bottom: 20,
+          right: 15,
+          bottom: 15,
         }}
         onPress={() => {}}></FAB>
 

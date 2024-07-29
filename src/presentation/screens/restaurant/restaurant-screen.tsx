@@ -16,7 +16,7 @@ import {fontColor, globalColors, globalDimensions} from '../../theme/styles';
 export const RestaurantScreen = () => {
   const {height, width} = useWindowDimensions();
 
-  const navigation = useNavigation<NavigationProp<RootStackParams>>();
+  const navigation = useNavigation<NavigationProp<RootStackParams, 'RestaurantScreen'>>();
   const {cart, setCartNews, restaurantSelected} = useCartStore();
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export const RestaurantScreen = () => {
       }}>
       <View
         style={{
-          marginVertical: 30,
+          marginVertical: 15,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
@@ -81,7 +81,7 @@ export const RestaurantScreen = () => {
             top: 30,
             left: 30,
           }}>
-          <CustomIcon fill="black" name="arrow-back" />
+          <CustomIcon fill={globalColors.primaryColors.primary} name="arrow-back" />
         </Pressable>
         <Pressable
           onPress={() => navigation.navigate('ProductsCartScreen')}
@@ -96,7 +96,7 @@ export const RestaurantScreen = () => {
             top: 30,
             right: 30,
           }}>
-          <CustomIcon fill="black" name="shopping-cart" />
+          <CustomIcon fill={globalColors.primaryColors.primary} name="shopping-cart" />
         </Pressable>
       </View>
 
@@ -108,7 +108,6 @@ export const RestaurantScreen = () => {
               width: 180,
               backgroundColor: 'white',
               borderRadius: 100,
-              marginLeft: 20,
               borderColor: 'white',
               borderWidth: 6,
               overflow: 'hidden',

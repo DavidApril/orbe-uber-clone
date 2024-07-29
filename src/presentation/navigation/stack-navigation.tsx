@@ -87,6 +87,11 @@ export const StackNavigator = () => {
         name="PermissionsScreen"
         component={DrawerNavigation}
       />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
+        name="RestaurantScreen"
+        component={RestaurantScreen}
+      />
     </Navigator>
   );
 };

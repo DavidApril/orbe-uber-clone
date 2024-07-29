@@ -16,8 +16,7 @@ export const Stats = () => {
       }}>
       <View style={{flexDirection: 'column'}}>
         <Text
-          status="success"
-          style={{fontWeight: 'bold', textAlign: 'center', fontSize: 18}}>
+          style={{fontWeight: 'bold', color: globalColors.primaryColors.primary, textAlign: 'center', fontSize: 18}}>
           15.34k
         </Text>
         <Text style={{textAlign: 'center'}}>ventas</Text>
@@ -32,8 +31,7 @@ export const Stats = () => {
 
       <View style={{flexDirection: 'column'}}>
         <Text
-          status="success"
-          style={{fontWeight: 'bold', textAlign: 'center', fontSize: 18}}>
+          style={{fontWeight: 'bold', color: globalColors.primaryColors.primary, textAlign: 'center', fontSize: 18}}>
           15.34k
         </Text>
         <Text style={{textAlign: 'center'}}>Seguidores</Text>
@@ -48,8 +46,7 @@ export const Stats = () => {
 
       <View style={{flexDirection: 'column'}}>
         <Text
-          status="success"
-          style={{fontWeight: 'bold', textAlign: 'center', fontSize: 18}}>
+          style={{fontWeight: 'bold', color: globalColors.primaryColors.primary, textAlign: 'center', fontSize: 18}}>
           15.34k
         </Text>
         <Text style={{textAlign: 'center'}}>Productos</Text>
