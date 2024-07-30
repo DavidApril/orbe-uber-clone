@@ -46,9 +46,9 @@ import {API_URL} from '@env';
 interface Props extends StackScreenProps<RootStackParams, 'CheckoutScreen'> {}
 
 export const CheckoutScreen = ({navigation}: Props) => {
+  const { userByUid } = useAuthStore();
   const {cart, getSummaryInformation} = useCartStore();
   const {couponToUse} = useCouponStore();
-  const {isDarkMode} = useUIStore();
   const {total, discount, subTotal, itemsInCart, tax} = getSummaryInformation(
     couponToUse?.value,
   );
@@ -61,14 +61,23 @@ export const CheckoutScreen = ({navigation}: Props) => {
     addTarjetBottomSheetRef,
     pay,
     payWithCard,
+    setCreditCardsTokens,
   } = usePaymentStore();
 
-  const {userByUid} = useAuthStore();
+  useEffect(() => {
+    if (userByUid) {
+      PaymentService.GetPayMethodsUser(userByUid?.uid_firebase).then(
+        cardsTokens => {
+          setCreditCardsTokens(cardsTokens);
+        },
+      );
+    }
+  }, [userByUid]);
 
   const handleAddCard = async () => {
     console.log({API_URL});
     let paymentDetailsDto: PaymentDetails = {
-      value: total.toString(),
+      value: total < 100000 ? total.toString() : ' 100000',
       docType: 'CC',
       docNumber: '123456789',
       name: 'jon',
@@ -84,8 +93,11 @@ export const CheckoutScreen = ({navigation}: Props) => {
       dues: '1',
       methodPay: 'TC',
       typeTransaction: 'Travel',
-      description: 'app pago 3',
-      details: [],
+      description: 'Pago por productos',
+      details: cart.map(item => ({
+        key: item.product.name,
+        value: item.quantity.toString(),
+      })),
     };
 
     if (creditCardsSelected) {
@@ -97,11 +109,7 @@ export const CheckoutScreen = ({navigation}: Props) => {
           tokenCard: creditCardsSelected.tokenCard,
         },
       };
-    } 
-
-    console.log(paymentDetailsDto);
-
-    // console.log(paymentDetailsDto);
+    }
 
     setIsPaying(true);
     await pay(paymentDetailsDto);

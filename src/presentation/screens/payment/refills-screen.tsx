@@ -15,20 +15,22 @@ import {
   CustomIcon,
   CView,
   CViewAlpha,
+  ModalPaying,
   ModalRefill,
   OpenDrawerMenu,
   TransactionItem,
 } from '../../components';
-import {usePaymentStore, useUIStore} from '../../../store';
+import {useCouponStore, usePaymentStore, useUIStore} from '../../../store';
 import {globalColors, globalDimensions, stateColors} from '../../theme/styles';
-import {parseNumberToText, parseTextToNumber} from '../../../utils';
 
 export const RefillsScreen = () => {
   const {isDarkMode} = useUIStore();
   const [isOpenRefillModal, setIsOpenRefillModals] = useState<boolean>(false);
-  const [refillValue, setRefillValue] = useState<number>(0);
 
-  const {transactionsByUser, creditCardsTokens} = usePaymentStore();
+  const {transactionsByUser} = usePaymentStore();
+
+  const {points} = useCouponStore();
+
   return (
     <ScrollView
       style={{
@@ -61,8 +63,8 @@ export const RefillsScreen = () => {
               <CustomIcon name="trending-up-outline" />
             </CView>
             <CTextHeader style={{fontSize: 35, fontWeight: 'bold'}}>
-              1.430.300
-              <CText style={{fontSize: 18, fontWeight: 'normal'}}>cop</CText>
+              {points}
+              <CText style={{fontSize: 18, fontWeight: 'normal'}}>pts.</CText>
             </CTextHeader>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
@@ -101,6 +103,8 @@ export const RefillsScreen = () => {
           isOpenRefillModal={isOpenRefillModal}
           setIsOpenRefillModals={setIsOpenRefillModals}
         />
+
+        <ModalPaying />
       </CView>
     </ScrollView>
   );

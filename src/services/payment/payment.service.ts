@@ -18,15 +18,13 @@ export class PaymentService {
 
   static async rechagePoints(payment: PaymentDetails) {
     try {
-      const {data: response}: {data: any} = await orbeApi.post(
-        `${this.PREFIX}/rechargePoints`,
-        payment,
-      );
+      const {data: response}: {data: PayWithCardResponseData} =
+        await orbeApi.post(`/pay/rechargePoints`, payment);
 
-      console.log(response)
-
+      return response;
     } catch (error) {
       console.log({error});
+      return [];
     }
   }
 

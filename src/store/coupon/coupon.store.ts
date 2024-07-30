@@ -7,6 +7,7 @@ interface CouponState {
   myCoupons: Coupon[];
   couponSelected: Coupon | null;
   couponToUse: Coupon | null;
+  points: number;
 
   setCouponToUse: (coupon: Coupon | null) => void;
   setCuponSelected: (coupon: Coupon | null) => void;
@@ -15,6 +16,8 @@ interface CouponState {
   removeCoupon: (couponToRemove: Coupon) => void;
   setCoupons: (coupons: Coupon[]) => void;
   buyCoupon: (idCoupon: number, uidUser: string) => Promise<{ok: boolean}>;
+  addPoints: (pointsToAdd: number) => void;
+  removePoints: (pointsToRemove: number) => void;
 }
 
 export const useCouponStore = create<CouponState>()((set, get) => ({
@@ -22,6 +25,7 @@ export const useCouponStore = create<CouponState>()((set, get) => ({
   myCoupons: [],
   couponToUse: null,
   couponSelected: null,
+  points: 0,
 
   setCouponToUse: couponToUse => set({couponToUse}),
   setMyCoupons: myCoupons => set({myCoupons}),
@@ -44,4 +48,6 @@ export const useCouponStore = create<CouponState>()((set, get) => ({
       return {ok: false};
     }
   },
+  addPoints: points => set({points: Math.trunc((get().points += points))}),
+  removePoints: points => set({points: Math.trunc((get().points -= points))}),
 }));

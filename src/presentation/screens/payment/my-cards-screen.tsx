@@ -8,20 +8,17 @@ import {View} from 'react-native';
 
 export const MyCardsScreen = () => {
   const {userByUid} = useAuthStore();
-  const {creditCardsTokens, setCreditCardsTokens, addTarjetBottomSheetRef} =
-    usePaymentStore();
+  const {setCreditCardsTokens, addTarjetBottomSheetRef} = usePaymentStore();
 
   useEffect(() => {
     if (userByUid) {
       PaymentService.GetPayMethodsUser(userByUid?.uid_firebase).then(
         cardsTokens => {
-          setCreditCardsTokens(cardsTokens)
+          setCreditCardsTokens(cardsTokens);
         },
       );
     }
   }, [userByUid]);
-
-
 
   return (
     <CView

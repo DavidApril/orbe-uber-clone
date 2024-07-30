@@ -88,6 +88,8 @@ export interface ITransaction {
   detailsPayment: DetailsPayment[];
 }
 
+
+
 export interface DetailsPayment {
   id: number;
   created_date: Date;
@@ -101,4 +103,12 @@ export interface MethodCard {
   id: number;
   bank: string;
   tokenCard: string;
+}
+
+export interface RechargePointsResponse {
+  data:     number;
+  duration: string;
+  isArray:  boolean;
+  method:   string;
+  path:     string;
 }

@@ -6,10 +6,17 @@ import {parseNumberToText, parseTextToNumber} from '../../../utils';
 import {globalColors, stateColors} from '../../theme/styles';
 import {CTextHeader} from '../ui/custom-text-header';
 import {CreditCard} from '../wallet/credit-card';
-import {useAuthStore, usePaymentStore, useUIStore} from '../../../store';
+import {
+  useAuthStore,
+  useCartStore,
+  useCouponStore,
+  usePaymentStore,
+  useUIStore,
+} from '../../../store';
 import {Spinner} from '@ui-kitten/components';
 import {ModalPaying} from './modal-paying-loader';
-import {PaymentService} from '../../../services';
+import {ConfigurationService, PaymentService} from '../../../services';
+import {PaymentDetails} from '../../../interfaces';
 
 interface Props {
   isOpenRefillModal: boolean;
@@ -23,33 +30,70 @@ export const ModalRefill = ({
   const {isDarkMode} = useUIStore();
 
   const {userByUid} = useAuthStore();
-  const [isRecharging, setIsRecharging] = useState<boolean>(false);
-  const {rechargeValue, setRechargeValue, creditCardsTokens} =
-    usePaymentStore();
+  const {
+    rechargeValue,
+    setRechargeValue,
+    creditCardsTokens,
+    creditCardsSelected,
+    isPaying,
+    setIsPaying,
+    payWithCard,
+  } = usePaymentStore();
+
+  const {cart} = useCartStore();
+
+  const {points, addPoints} = useCouponStore();
+
+  useEffect(() => {
+    console.log(points);
+  }, [points]);
 
   const handleRecharge = async () => {
-    setIsRecharging(true);
-    await PaymentService.rechagePoints({
-      value: '50000',
+    setIsPaying(true);
+
+    let paymentDetailsDto: PaymentDetails = {
+      value: +rechargeValue < +100000 ? rechargeValue.toString() : '100000',
       docType: 'CC',
       docNumber: '123456789',
-      name: 'Juan',
-      lastName: 'Pérez',
-      email: 'juan.perez@example.com',
-      cellPhone: '3001234567',
-      phone: '1234567',
-      cardNumber: '123323123123123',
-      cardExpYear: '2025',
-      cardExpMonth: '12',
-      cardCvc: '123',
-      dues: '12',
+      lastName: 'doe',
+      email: 'jondoe@hotmail.com',
+      name: 'jon',
+      cellPhone: '0000000000',
+      phone: '0000000',
+      cardNumber: '',
+      cardExpYear: '',
+      cardExpMonth: ' ',
+      cardCvc: '',
       userUid: userByUid?.uid_firebase,
-      description: 'Pago de prueba',
-      typeTransaction: 'Compra',
-      methodPay: 'Tarjeta de Crédito',
+      dues: '1',
+      methodPay: 'TC',
+      typeTransaction: 'Travel',
+      description: 'Recarga',
       details: [],
-    });
-    // setIsRecharging(false);
+    };
+
+    if (creditCardsSelected) {
+      paymentDetailsDto = {
+        ...paymentDetailsDto,
+        payment: {
+          bank: creditCardsSelected.bank,
+          id: creditCardsSelected.id,
+          tokenCard: creditCardsSelected.tokenCard,
+        },
+      };
+    }
+
+    const response = await PaymentService.rechagePoints(paymentDetailsDto);
+    try {
+      if (response.data === 1) {
+        const response = await ConfigurationService.getConfigurationById('1');
+        addPoints(+rechargeValue / response.value)
+      }
+    } catch (error) {
+      console.log({error});
+    }
+
+    setIsPaying(false);
   };
 
   return (
@@ -124,6 +168,7 @@ export const ModalRefill = ({
         <ModalPaying />
 
         <Pressable
+          // disabled={isPaying || !creditCardsSelected}
           onPress={handleRecharge}
           style={{
             overflow: 'hidden',
@@ -133,8 +178,9 @@ export const ModalRefill = ({
             alignItems: 'center',
             marginVertical: 20,
             backgroundColor: stateColors.success,
+            opacity: isPaying || !creditCardsSelected ? 0.5 : 1,
           }}>
-          {isRecharging ? (
+          {isPaying ? (
             <Spinner status="basic" />
           ) : (
             <Text style={{fontWeight: 'bold', fontSize: 17}}>Recargar</Text>
