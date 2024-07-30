@@ -67,7 +67,9 @@ export interface GetPayMethodsUserResponse extends ResponseInterface {
 }
 
 export interface ICreditCard {
-  token: string;
+  id: number;
+  bank: string;
+  tokenCard: string;
 }
 
 export interface GetTransactionsByUserResponse extends ResponseInterface {
@@ -93,4 +95,10 @@ export interface DetailsPayment {
   delete_date: null;
   key: string;
   value: string;
+}
+
+export interface MethodCard {
+  id: number;
+  bank: string;
+  tokenCard: string;
 }

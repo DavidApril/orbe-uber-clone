@@ -20,6 +20,8 @@ import {
 import {Formik} from 'formik';
 import {PaymentService} from '../../../services';
 import {CText} from '../ui/custom-text';
+import {API_URL} from '@env';
+import {MethodCard, PaymentDetails} from '../../../interfaces';
 
 export const BSAddCreditCard = () => {
   const addTarjetBottomSheetRef = useRef<BottomSheet>(null);
@@ -27,13 +29,7 @@ export const BSAddCreditCard = () => {
   const snapPoints = useMemo(() => ['1%', height * 0.85], []);
 
   const {isDarkMode} = useUIStore();
-  const {userByUid} = useAuthStore();
-  const {setIsPaying, setAddTarjetBottomSheetRef, payWithCard} =
-    usePaymentStore();
-  const {couponToUse} = useCouponStore();
-  const {cart, getSummaryInformation} = useCartStore();
-
-  const {total} = getSummaryInformation(couponToUse?.value);
+  const {setIsPaying, setAddTarjetBottomSheetRef, pay} = usePaymentStore();
 
   const initialValues = {
     name: '',
@@ -44,58 +40,7 @@ export const BSAddCreditCard = () => {
 
   const handleAddCard = async (values: typeof initialValues) => {
     setIsPaying(true);
-
-    console.log('sending', {
-      value: total.toString(),
-      docType: 'CC',
-      docNumber: userByUid?.cliente.id.toString(),
-      name: userByUid?.cliente.name,
-      lastName: 'Apellido',
-      email: userByUid?.email,
-      cellPhone: userByUid?.cliente.phone,
-      phone: userByUid?.cliente.phone,
-      cardNumber: values.numberCard,
-      cardExpYear: '2025',
-      cardExpMonth: ' 12',
-      cardCvc: values.CVC,
-      dues: '12',
-      userUid: userByUid?.uid_firebase,
-      description: 'Pago de prueba',
-      typeTransaction: 'Compra',
-      methodPay: payWithCard ? 'Tarjeta de Crédito' : 'Efectivo',
-      details: cart.map(itemInCart => ({
-        key: itemInCart.product.name,
-        value: itemInCart.quantity.toString(),
-      })),
-    });
-
-    const response = await PaymentService.cardCreditPayment({
-      value: total.toString(),
-      docType: 'CC',
-      docNumber: userByUid?.cliente.id.toString(),
-      name: userByUid?.cliente.name,
-      lastName: 'Apellido',
-      email: userByUid?.email,
-      cellPhone: userByUid?.cliente.phone,
-      phone: userByUid?.cliente.phone,
-      cardNumber: values.numberCard,
-      cardExpYear: '2025',
-      cardExpMonth: ' 12',
-      cardCvc: values.CVC,
-      dues: '12',
-      userUid: userByUid?.uid_firebase,
-      description: 'Pago de prueba',
-      typeTransaction: 'Compra',
-      methodPay: payWithCard ? 'Tarjeta de Crédito' : 'Efectivo',
-      details: cart.map(itemInCart => ({
-        key: itemInCart.product.name,
-        value: itemInCart.quantity.toString(),
-      })),
-    });
-
-    console.log({response});
-    console.log(userByUid?.uid_firebase);
-
+    // await pay();
     setIsPaying(false);
   };
 

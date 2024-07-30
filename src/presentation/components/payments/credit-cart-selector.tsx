@@ -24,11 +24,7 @@ export const CreditCardSelector = ({
   onAddButtonPress,
   horizontal = true,
 }: Props) => {
-  const {creditCardsTokens} = usePaymentStore();
-
-  useEffect(() => {
-    console.log({creditCardsTokens});
-  }, []);
+  const {creditCardsTokens, setCreditCardsSelected} = usePaymentStore();
 
   return (
     <ScrollView style={{marginHorizontal: 30, position: 'relative', flex: 1}}>
@@ -62,7 +58,10 @@ export const CreditCardSelector = ({
         </View>
 
         <Pressable
-          onPress={() => onAddButtonPress()}
+          onPress={() => {
+            onAddButtonPress()
+            setCreditCardsSelected(null)
+          }}
           style={{
             height: 80,
             flex: 1,

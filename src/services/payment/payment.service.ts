@@ -10,18 +10,32 @@ import {
 } from '../../interfaces';
 
 export class PaymentService {
-  static PREFIX: string = 'pay';
+  static PREFIX: string = '/pay';
 
-  static take: number = 5;
+  static take: number = 10;
 
   static async getPayMethod() {}
+
+  static async rechagePoints(payment: PaymentDetails) {
+    try {
+      const {data: response}: {data: any} = await orbeApi.post(
+        `${this.PREFIX}/rechargePoints`,
+        payment,
+      );
+
+      console.log(response)
+
+    } catch (error) {
+      console.log({error});
+    }
+  }
 
   static async cardCreditPayment(
     payment: PaymentDetails,
   ): Promise<PayWithCardResponseData | null> {
     try {
       const {data: response}: {data: PayWithCardResponse} = await orbeApi.post(
-        `${this.PREFIX}/cardCreditPayment`,
+        `/pay/cardCreditPayment`,
         payment,
       );
       return response.data;
@@ -42,7 +56,7 @@ export class PaymentService {
   }
   static async getTransactionById() {}
   static async getTransactions() {}
-  
+
   static async getTransactionsByUser(
     user_uid: string,
     take = this.take,

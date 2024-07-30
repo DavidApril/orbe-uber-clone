@@ -313,13 +313,11 @@ export const SelectOriginDestination = () => {
             gap: 10,
           }}>
           <View
-            // onPress={() => setMethodPay('pse')}
             style={{
               marginVertical: 20,
               paddingHorizontal: 20,
               paddingVertical: 15,
               borderRadius: 5,
-              // borderWidth: 1,
             }}>
             <Radio onChange={() => setPayWithCard(true)} checked={payWithCard}>
               <Text

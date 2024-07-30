@@ -21,7 +21,7 @@ export const CreditCard = ({creditCard}: Props) => {
 
   const {isDarkMode} = useUIStore();
 
-  const isSelected = creditCard.token === creditCardsSelected?.token;
+  const isSelected = creditCard.id === creditCardsSelected?.id;
 
   return (
     <Pressable style={{flexDirection: 'row'}}>

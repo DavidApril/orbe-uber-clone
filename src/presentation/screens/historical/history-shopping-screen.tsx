@@ -1,9 +1,6 @@
 import React, {useEffect} from 'react';
 
 import {
-  CText,
-  CTextHeader,
-  CustomIcon,
   CView,
   OpenDrawerMenu,
   TextHeaderScreen,

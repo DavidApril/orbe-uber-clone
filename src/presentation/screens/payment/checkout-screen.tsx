@@ -38,9 +38,10 @@ import {
 } from '../../../store';
 import {currencyFormat, parseNumberToText} from '../../../utils';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParams} from '../../../interfaces';
+import {PaymentDetails, RootStackParams} from '../../../interfaces';
 import {Spinner} from '@ui-kitten/components';
 import {PaymentService} from '../../../services';
+import {API_URL} from '@env';
 
 interface Props extends StackScreenProps<RootStackParams, 'CheckoutScreen'> {}
 
@@ -48,7 +49,6 @@ export const CheckoutScreen = ({navigation}: Props) => {
   const {cart, getSummaryInformation} = useCartStore();
   const {couponToUse} = useCouponStore();
   const {isDarkMode} = useUIStore();
-
   const {total, discount, subTotal, itemsInCart, tax} = getSummaryInformation(
     couponToUse?.value,
   );
@@ -57,44 +57,54 @@ export const CheckoutScreen = ({navigation}: Props) => {
     isPaying,
     setIsPaying,
     creditCardsTokens,
+    creditCardsSelected,
     addTarjetBottomSheetRef,
+    pay,
     payWithCard,
   } = usePaymentStore();
+
   const {userByUid} = useAuthStore();
 
-  const initialValues = {
-    name: '',
-    numberCard: '',
-    expirationDate: '',
-    CVC: '',
-  };
-
-  const handleAddCard = async (values: typeof initialValues) => {
-    setIsPaying(true);
-    await PaymentService.cardCreditPayment({
-      value: '50000',
+  const handleAddCard = async () => {
+    console.log({API_URL});
+    let paymentDetailsDto: PaymentDetails = {
+      value: total.toString(),
       docType: 'CC',
       docNumber: '123456789',
-      name: 'Juan',
-      lastName: 'Pérez',
-      email: 'juan.perez@example.com',
-      cellPhone: '3001234567',
-      phone: '1234567',
-      cardNumber: '123323123123123',
-      cardExpYear: '2025',
-      cardExpMonth: '12',
+      name: 'jon',
+      lastName: 'doe',
+      email: 'jondoe@hotmail.com',
+      cellPhone: '0000000000',
+      phone: '0000000',
+      cardNumber: '',
+      cardExpYear: '',
+      cardExpMonth: ' ',
       cardCvc: '123',
-      dues: '12',
-      userUid: userByUid?.uid_firebase,
-      description: 'Pago de prueba',
-      typeTransaction: 'Compra',
-      methodPay: 'Tarjeta de Crédito',
-      details: cart.map(itemInCart => ({
-        key: itemInCart.product.name,
-        value: itemInCart.quantity.toString(),
-      })),
-    });
+      userUid: 'wmr4VwQyQQTpJSQLgZmiClncNci2',
+      dues: '1',
+      methodPay: 'TC',
+      typeTransaction: 'Travel',
+      description: 'app pago 3',
+      details: [],
+    };
 
+    if (creditCardsSelected) {
+      paymentDetailsDto = {
+        ...paymentDetailsDto,
+        payment: {
+          bank: creditCardsSelected.bank,
+          id: creditCardsSelected.id,
+          tokenCard: creditCardsSelected.tokenCard,
+        },
+      };
+    } 
+
+    console.log(paymentDetailsDto);
+
+    // console.log(paymentDetailsDto);
+
+    setIsPaying(true);
+    await pay(paymentDetailsDto);
     setIsPaying(false);
   };
 
@@ -269,12 +279,12 @@ export const CheckoutScreen = ({navigation}: Props) => {
 
         <BSAddCreditCard />
 
-        {creditCardsTokens.length > 0 && (
+        {creditCardsTokens.length > 0 && creditCardsSelected && (
           <Pressable
             disabled={
               isPaying || (payWithCard && creditCardsTokens.length === 0)
             }
-            // onPress={handlePay}
+            onPress={() => handleAddCard()}
             style={{
               backgroundColor: stateColors.success,
               opacity:
