@@ -14,8 +14,6 @@ export const CartQuantitySelector = ({product}: Props) => {
   const {isDarkMode} = useUIStore();
   const {updateProductQuantity, removeProduct} = useCartStore();
 
-  console.log({product})
-
   return (
     <View
       style={{

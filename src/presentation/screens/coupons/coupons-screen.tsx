@@ -103,11 +103,11 @@ export const CouponsScreen = () => {
                 bottomName="Adquirir cupón"
                 onPressDelete={() => setCuponSelected(null)}
                 onPress={async () => {
-                  const {ok} = await buyCoupon(
+                  await buyCoupon(
                     couponSelected!.id,
                     userByUid!.uid_firebase,
                   );
-                  console.log({ok});
+    
                 }}
               />
             )}

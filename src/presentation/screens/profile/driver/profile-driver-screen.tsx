@@ -26,7 +26,6 @@ export const ProfileDriverScreen = () => {
   const image_url = StorageService.getPhotoByFilename(
     userByUid?.driver.imageUrl,
   );
-  console.log({image_url});
 
   return (
     <ScrollView

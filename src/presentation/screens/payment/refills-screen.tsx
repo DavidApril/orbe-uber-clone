@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Pressable,
@@ -20,14 +20,31 @@ import {
   OpenDrawerMenu,
   TransactionItem,
 } from '../../components';
-import {useCouponStore, usePaymentStore, useUIStore} from '../../../store';
+import {
+  useAuthStore,
+  useCouponStore,
+  usePaymentStore,
+  useUIStore,
+} from '../../../store';
 import {globalColors, globalDimensions, stateColors} from '../../theme/styles';
+import {PaymentService} from '../../../services';
 
 export const RefillsScreen = () => {
   const {isDarkMode} = useUIStore();
+  const {userByUid} = useAuthStore();
   const [isOpenRefillModal, setIsOpenRefillModals] = useState<boolean>(false);
+  const {transactionsByUser, setTransactionsByUser} = usePaymentStore();
 
-  const {transactionsByUser} = usePaymentStore();
+  const getTransactionsByUser = async (user_uid: string) => {
+    const transactions = await PaymentService.getTransactionsByUser(user_uid);
+    setTransactionsByUser(transactions);
+  };
+
+  useEffect(() => {
+    if (userByUid) {
+      getTransactionsByUser(userByUid?.uid_firebase);
+    }
+  }, [userByUid]);
 
   const {points} = useCouponStore();
 

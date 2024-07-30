@@ -33,10 +33,6 @@ export const HistoryShoppingScreen = ({navigation}: Props) => {
     }
   }, [userByUid]);
 
-  useEffect(() => {
-    console.log({transactionsByUser});
-  }, [transactionsByUser]);
-
   return (
     <CView style={{flex: 1}}>
       <OpenDrawerMenu />

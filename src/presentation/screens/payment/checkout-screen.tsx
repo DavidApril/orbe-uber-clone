@@ -75,7 +75,7 @@ export const CheckoutScreen = ({navigation}: Props) => {
   }, [userByUid]);
 
   const handleAddCard = async () => {
-    console.log({API_URL});
+
     let paymentDetailsDto: PaymentDetails = {
       value: total < 100000 ? total.toString() : ' 100000',
       docType: 'CC',

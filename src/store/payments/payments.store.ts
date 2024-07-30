@@ -40,8 +40,7 @@ const storeApi: StateCreator<PaymentState> = (set, get) => ({
   rechargeValue: '0',
 
   pay: async payment => {
-    const response = await PaymentService.cardCreditPayment(payment);
-    console.log({response});
+    await PaymentService.cardCreditPayment(payment);
   },
   setIsPaying: value => set({isPaying: value}),
   setCreditCardsTokens: tokens => set({creditCardsTokens: tokens}),

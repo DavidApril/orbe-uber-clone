@@ -38,10 +38,6 @@ export const ProductItemScreen = ({navigation}: Props) => {
     setCartNews
   } = useCartStore();
 
-  useEffect(() => {
-    console.log({favorites});
-  }, [isFavorite]);
-
   const [productInCart, setProductInCart] = useState<CartProduct | null>(null);
 
   useEffect(() => {

@@ -13,9 +13,6 @@ export class ChatbotService {
           chat_history: [''],
         },
       );
-
-      console.log({response});
-
       return response;
     } catch (error) {
       console.log({error});

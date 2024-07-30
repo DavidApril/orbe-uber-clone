@@ -33,10 +33,6 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
     getRestaurants();
   }, []);
 
-  useEffect(() => {
-    console.log({isDarkMode});
-  }, [isDarkMode]);
-
   const {height, width} = useWindowDimensions();
   return (
     <>
