@@ -7,8 +7,7 @@ import {Text} from 'react-native';
 import {globalColors} from '../../theme/styles';
 import {FAB} from '../ui/floating-action-button';
 import {useCartStore, useUIStore} from '../../../store';
-import { useState } from 'react';
-import { Layout } from '@ui-kitten/components';
+import {useEffect, useState} from 'react';
 import { useRestaurantStore } from '../../../store/restaurant/restaurant.store';
 
 export const RestaurantCard = ({
@@ -16,11 +15,12 @@ export const RestaurantCard = ({
 }: {
   restaurant: SingleRestaurantResponse;
 }) => {
-  const image_url = StorageService.getPhotoByFilename(
-    restaurant.attachments[0]?.image_url,
-  );
+  let image_url = restaurant.attachments[0]?.image_url;
 
-  // const addProductToFavorites = useCartStore(store => store.addProductToCart);
+  useEffect(() => {
+    image_url = restaurant.attachments[0]?.image_url;
+  }, [restaurant]);
+
   const {setRestaurantSelected} = useCartStore();
   const {addRestaurantToFavorites} = useRestaurantStore()
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
@@ -44,6 +44,7 @@ export const RestaurantCard = ({
       }}
       style={{
         flexDirection: 'column',
+        marginRight: 5,
         alignItems: 'center',
         flex: 1,
         height: 300,
@@ -79,7 +80,7 @@ export const RestaurantCard = ({
             borderRadius: 100,
             height: 100,
           }}
-          source={{uri: image_url ?? ''}}
+          source={{uri: StorageService.getPhotoByFilename(image_url)}}
         />
       )}
 
@@ -112,9 +113,9 @@ export const RestaurantCard = ({
       </View>
       <Modal visible={modal} animationType='fade' transparent onRequestClose={() => setModal(false)}>
         <Pressable onPress={() => setModal(false)} style={{ backgroundColor: '#0009', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-          <Layout style={{ width: '85%', height: 250, borderRadius: 25, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
+          <View style={{ width: '85%', height: 250, borderRadius: 25, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
             <Text style={{ color: globalColors.primaryColors.primary, fontSize: 26, fontWeight: 'bold', textAlign: 'center' }}>Producto añadido con exito a favoritos</Text>
-          </Layout>
+          </View>
         </Pressable>
       </Modal>
     </Pressable>

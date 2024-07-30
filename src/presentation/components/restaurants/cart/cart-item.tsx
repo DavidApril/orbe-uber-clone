@@ -6,6 +6,7 @@ import {useCartStore, useUIStore} from '../../../../store';
 import {CustomIcon} from '../../ui/custom-icon';
 import {CartQuantitySelector} from './cart-quantity-selector';
 import {StorageService} from '../../../../services';
+import {currencyFormat} from '../../../../utils';
 
 interface Props {
   item?: CartProduct;
@@ -57,8 +58,6 @@ export const CartItem = ({item}: Props) => {
           }}
         />
 
-        
-
         <View>
           <Text
             style={{
@@ -78,7 +77,7 @@ export const CartItem = ({item}: Props) => {
                 ? globalColors.fontColor.textColorDark
                 : globalColors.fontColor.textColor,
             }}>
-            {item?.product.category}
+            {currencyFormat(+item?.product.priceUnitary)}
           </Text>
         </View>
 

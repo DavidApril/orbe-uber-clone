@@ -2,16 +2,15 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   FavoritesScreen,
   HistoryTravels,
-  HomeClientDeliveryScreen,
   HomeClientDriverScreen,
   HomeDriverScreen,
-  ProfileClientScreen,
   ProfileDriverScreen,
 } from '../screens';
 import {CustomBottomTabs} from '../components';
-import {useAuthStore} from '../../store';
 import {RootStackParams} from '../../interfaces';
 import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
+import {StackRestaurantNavigation} from './stack-restaurant-navigation';
+import {TopTabClientProfileNavigation} from './top-tab-client-profile';
 
 const Tab = createBottomTabNavigator<RootStackParams>();
 
@@ -30,7 +29,7 @@ export const BottomTapNavigationClientDelivery = () => {
           title: 'home-outline',
           headerShown: false,
         }}
-        component={HomeClientDeliveryScreen}
+        component={StackRestaurantNavigation}
       />
       <Tab.Screen
         name="ProfileClientScreen"
@@ -39,14 +38,14 @@ export const BottomTapNavigationClientDelivery = () => {
           title: 'person-outline',
           headerShown: false,
         }}
-        component={ProfileClientScreen}
+        component={TopTabClientProfileNavigation}
       />
       <Tab.Screen
         name="HomeClientDriverScreen"
         options={{
           // icon name
           title: 'map-outline',
-          headerShown: false
+          headerShown: false,
         }}
         component={HomeClientDriverScreen}
       />
@@ -55,13 +54,14 @@ export const BottomTapNavigationClientDelivery = () => {
         options={{
           // icon name
           title: 'heart',
-          headerShown: false
+          headerShown: false,
         }}
         component={FavoritesScreen}
       />
     </Tab.Navigator>
   );
 };
+
 export const BottomTapNavigationDriver = () => {
   return (
     <Tab.Navigator
@@ -99,7 +99,7 @@ export const BottomTapNavigationDriver = () => {
         component={HistoryTravels}
       />
       <Tab.Screen
-        name="chatBotScreen"
+        name="ChatBotScreen"
         options={{
           headerShown: false,
           // icon name

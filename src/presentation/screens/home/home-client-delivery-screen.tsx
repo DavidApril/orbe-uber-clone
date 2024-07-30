@@ -121,6 +121,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
           </View>
 
           <OpenDrawerMenu />
+
         </View>
       ) : (
         <View>

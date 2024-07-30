@@ -83,7 +83,7 @@ export const ProfileClientScreen = () => {
           </View>
 
           <View style={{flexDirection: 'row', gap: 20}}>
-            <StatusButton />
+            <StatusButton isActive />
 
             <View
               style={{

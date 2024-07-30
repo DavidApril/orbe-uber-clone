@@ -3,18 +3,10 @@ import {globalColors} from '../theme/styles';
 import {CustomDrawerContent, CustomIcon} from '../components';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../interfaces';
 import {useAuthStore, useUIStore} from '../../store';
-import {
-  BottomTapNavigationClientDelivery,
-  BottomTapNavigationDriver,
-} from './bottom-tap-navigation';
-import {
-  CouponsScreen,
-  ErrorScreen,
-  ProductsCartScreen,
-  RefillsScreen,
-} from '../screens';
+import {BottomTapNavigationClientDelivery, BottomTapNavigationDriver} from './bottom-tap-navigation';
+import {ProductsCartScreen, RefillsScreen, ChatBotScreen} from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
-import { ChatBotScreen } from '../screens/chatbot/chatbot-screen';
+import {ShoppingHistoryNavigator} from './shopping-history-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
@@ -62,6 +54,19 @@ export function DrawerNavigation() {
 
           <Screen
             options={{
+              title: 'Compras',
+              headerShown: false,
+              sceneContainerStyle: {
+                flex: 1,
+              },
+              drawerIcon: ({color}) => <CustomIcon fill={color} name="menu" />,
+            }}
+            name="HistoryScreen"
+            component={ShoppingHistoryNavigator}
+          />
+
+          <Screen
+            options={{
               title: 'Cupones',
               headerShown: false,
               sceneContainerStyle: {
@@ -88,7 +93,7 @@ export function DrawerNavigation() {
             component={RefillsScreen}
           />
           <Screen
-            name="chatBotScreen"
+            name="ChatBotScreen"
             options={{
               headerShown: false,
               // icon name

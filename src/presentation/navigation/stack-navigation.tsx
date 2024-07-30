@@ -4,25 +4,15 @@ import {
 } from '@react-navigation/stack';
 
 import {
-  HomeDriverScreen,
-  HomeClientDriverScreen,
-  HomeDeliveryScreen,
   LoadingScreen,
   LoginScreen,
-  PermissionsScreen,
   RegisterScreen,
   RegisterDriverScreen,
   RegisterClientScreen,
-  ProfileClientScreen,
-  ProfileDriverScreen,
-  SettingsScreen,
   RegisterDeliveryScreen,
-  ProductItemScreen,
   RestaurantScreen,
-  ProductsCartScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
-import {BottomTapNavigationClientDelivery} from './bottom-tap-navigation';
 import {DrawerNavigation} from './drawer-navigation';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
@@ -86,11 +76,6 @@ export const StackNavigator = () => {
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="PermissionsScreen"
         component={DrawerNavigation}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="RestaurantScreen"
-        component={RestaurantScreen}
       />
     </Navigator>
   );

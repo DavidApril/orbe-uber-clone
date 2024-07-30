@@ -34,7 +34,7 @@ export const ProductsCartScreen = ({navigation}: Props) => {
   const {cart, getSummaryInformation} = useCartStore();
   const {itemsInCart, subTotal, tax, total} = getSummaryInformation();
 
-  const snapPoints = useMemo(() => ['15%', '80%'], []);
+  const snapPoints = useMemo(() => ['28%', '100%'], []);
   const summaryBottomSheetRef = useRef<BottomSheet>(null);
 
   return <>

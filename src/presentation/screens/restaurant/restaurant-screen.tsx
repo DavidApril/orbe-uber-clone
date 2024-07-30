@@ -40,8 +40,11 @@ export const RestaurantScreen = () => {
     const products = await RestaurantService.getProducts(
       restaurantSelected!.id,
     );
+    console.log(products.length)
     setProducts(products);
   };
+
+  console.log(restaurantSelected.id)
 
   useEffect(() => {
     setCartNews(true);
@@ -66,6 +69,7 @@ export const RestaurantScreen = () => {
         style={{
           marginVertical: 15,
           flexDirection: 'row',
+          overflow: 'visible',
           justifyContent: 'space-between',
         }}>
         <Pressable
@@ -101,7 +105,12 @@ export const RestaurantScreen = () => {
       </View>
 
       <ScrollView>
-        <View style={{flexDirection: 'row', justifyContent: 'center', marginVertical: 50}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginVertical: 50,
+          }}>
           <View
             style={{
               height: 180,
@@ -186,7 +195,7 @@ export const RestaurantScreen = () => {
 
         <ProductsList products={products} />
 
-        <View style={{height: 20}}></View>
+        <View style={{height: 100}}></View>
       </ScrollView>
     </View>
   );

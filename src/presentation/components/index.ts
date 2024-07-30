@@ -14,6 +14,8 @@ export * from './ui/custom-view';
 export * from './ui/custom-view-alpha';
 export * from './ui/custom-text';
 export * from './ui/custom-text-header';
+export * from './ui/custom-modal';
+export * from './ui/text-header-screen';
 
 export * from './bottom-tabs/custom-bottom-tabs';
 
@@ -44,5 +46,8 @@ export * from './wallet/credit-card';
 
 export * from './chatbot/header-chatbot';
 
-export * from './payments/transaction-item-traiding-down';
-export * from './payments/transaction-item-traiding-up ';
+export * from './payments/transaction-item';
+export * from './payments/credit-cart-selector';
+
+export * from './modals/modal-paying-loader';
+export * from './modals/modal-refill';

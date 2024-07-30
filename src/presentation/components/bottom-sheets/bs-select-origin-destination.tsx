@@ -18,7 +18,7 @@ import {globalColors} from '../../theme/styles';
 export const BSSelectOriginDestination = () => {
   const SearchingDriverBottomSheetRef = useRef<BottomSheet>(null);
 
-  const snapPoints = useMemo(() => ['20%', '50%', '80%'], []);
+  const snapPoints = useMemo(() => ['25%', '90%'], []);
 
   const {height, width} = useWindowDimensions();
 
@@ -115,6 +115,8 @@ export const BSSelectOriginDestination = () => {
               <View
                 style={{
                   backgroundColor: 'transparent',
+                  justifyContent: 'center',
+                  flex: 1,
                 }}>
                 <Pressable
                   style={{
@@ -123,7 +125,7 @@ export const BSSelectOriginDestination = () => {
                     borderRadius: 50,
                   }}
                   onPress={() => setSearchingDriver(false)}>
-                  <Text>Cancelar búsqueda</Text>
+                  <Text style={{textAlign: 'center'}}>Cancelar búsqueda</Text>
                 </Pressable>
               </View>
             )}

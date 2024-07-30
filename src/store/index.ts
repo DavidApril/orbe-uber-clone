@@ -8,3 +8,4 @@ export * from './ui/ui';
 export * from './chatbot/chatbot.store';
 export * from './coupon/coupon.store';
 export * from './coupon/coupon.store';
+export * from './payments/payments.store';

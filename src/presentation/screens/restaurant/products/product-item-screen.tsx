@@ -146,7 +146,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
       <View
         style={{
           position: 'absolute',
-          bottom: 14,
+          bottom: 130,
           flex: 1,
           flexDirection: 'row',
           justifyContent: 'center',

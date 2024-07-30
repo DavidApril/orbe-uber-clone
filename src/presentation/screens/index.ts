@@ -14,9 +14,10 @@ export * from './restaurant/cart/products-cart-screen';
 export * from './restaurant/restaurant-screen';
 export * from './restaurant/favorites-screen';
 
-export * from './payment/my-cards-tab';
-export * from './payment/my-balance-tab';
+export * from './payment/my-cards-screen';
+export * from './payment/my-balance-screen';
 export * from './payment/refills-screen';
+export * from './payment/checkout-screen';
 
 export * from './permissions/permissions-screen';
 
@@ -34,8 +35,11 @@ export * from './settings/settings-screen';
 
 export * from './loading/loading-screen';
 
-export * from './histories/history-travels'
+export * from './historical/history-travels'
+export * from './historical/history-shopping-screen'
 
 export * from './coupons/coupons-screen'
+
+export * from './chatbot/chatbot-screen'
 
 export * from './error/error-screen'

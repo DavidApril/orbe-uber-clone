@@ -2,7 +2,12 @@ import {Divider, Radio, RadioGroup, Text} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
 import {Pressable, useWindowDimensions, View} from 'react-native';
 import {currencyFormat, parseDate} from '../../../utils';
-import {useCouponStore, useUIStore} from '../../../store';
+import {
+  useCartStore,
+  useCouponStore,
+  usePaymentStore,
+  useUIStore,
+} from '../../../store';
 import {
   fontColor,
   globalColors,
@@ -24,12 +29,30 @@ interface Props {
   tax: number;
 }
 
-export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
+export const PaymentControllers = ({shipping}: Props) => {
+  const navigation =
+    useNavigation<StackNavigationProp<RootStackParams, 'ProductsCartScreen'>>();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const {width} = useWindowDimensions();
   const {isDarkMode} = useUIStore();
-  const {coupons, setCuponSelected, couponToUse} = useCouponStore();
+  const {couponToUse} = useCouponStore();
+  const {getSummaryInformation} = useCartStore();
+  const {
+    subTotal: subtotal,
+    total,
+    discount,
+  } = getSummaryInformation(couponToUse?.value);
+
+  const {setPayWithCard} = usePaymentStore();
+
+  useEffect(() => {
+    if (selectedIndex === 0) {
+      setPayWithCard(true);
+    } else {
+      setPayWithCard(false);
+    }
+  }, [selectedIndex]);
+
   return (
     <View
       style={{
@@ -101,7 +124,7 @@ export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
                     ? fontColor.textColorDark
                     : fontColor.textColor,
                 }}>
-                {couponToUse.cupon_type}
+                {couponToUse.value}%
               </Text>
             </View>
             <View style={{position: 'absolute', right: 14, top: 14}}>
@@ -134,11 +157,18 @@ export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
         </Pressable>
       </View>
 
-      <Divider style={{marginVertical: 20}} />
-
-      <Text style={{}}>Descuento por cupón: {currencyFormat(subtotal)}</Text>
-
-      <Divider style={{marginVertical: 20}} />
+      {discount !== 0 && (
+        <>
+          <Divider style={{marginVertical: 20}} />
+          <Text>
+            Descuento por cupón:{' '}
+            <Text style={{color: stateColors.warning, fontWeight: 'bold'}}>
+              {currencyFormat(discount)}
+            </Text>
+          </Text>
+          <Divider style={{marginVertical: 20}} />
+        </>
+      )}
 
       <Text style={{}}>Subtotal: {currencyFormat(subtotal)}</Text>
       <Text style={{}}>Envío: {currencyFormat(shipping)} </Text>
@@ -209,6 +239,7 @@ export const PaymentControllers = ({subtotal, total, shipping}: Props) => {
         </View>
 
         <Pressable
+          onPress={() => navigation.navigate('CheckoutScreen')}
           style={{
             backgroundColor: globalColors.primaryColors.primary,
             justifyContent: 'center',

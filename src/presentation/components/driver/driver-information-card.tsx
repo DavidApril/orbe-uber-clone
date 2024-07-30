@@ -1,9 +1,12 @@
-import {Button, Layout, Spinner, Text} from '@ui-kitten/components';
+import {Button, Spinner, Text} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
-import {DriverService} from '../../../services';
+import {DriverService, StorageService} from '../../../services';
 import {currencyFormat} from '../../../utils';
-import {globalColors} from '../../theme/styles';
+import {globalColors, globalDimensions} from '../../theme/styles';
+import {Image, View} from 'react-native';
+import {useUIStore} from '../../../store';
+import {CViewAlpha} from '../ui/custom-view-alpha';
 
 interface Props {
   driver: any;
@@ -20,6 +23,7 @@ export const DriverInformationCard = ({
 }: Props) => {
   const [driverData, setDriverData] = useState<any>();
   const [loadingRequest, setLoadingRequest] = useState<boolean>(false);
+  const {isDarkMode} = useUIStore();
 
   const getDriverData = async () => {
     const response = await DriverService.getDriverByUserUid(driver.id);
@@ -39,18 +43,17 @@ export const DriverInformationCard = ({
   }, []);
 
   return (
-    <Layout style={{marginHorizontal: 30}}>
-      <Layout style={{flexDirection: 'column', gap: 10}}>
-        <Layout style={{height: 1, backgroundColor: '#dedad9'}}></Layout>
-
-        <Layout
+    <CViewAlpha
+      style={{margin: 30, borderRadius: globalDimensions.cardBorderRadius}}>
+      <View style={{flexDirection: 'column', gap: 10, margin: 20}}>
+        <View
           style={{
             height: 100,
             flexDirection: 'row',
             justifyContent: 'space-between',
             gap: 20,
           }}>
-          <Layout
+          <View
             style={{
               height: 80,
               width: 80,
@@ -58,33 +61,38 @@ export const DriverInformationCard = ({
               justifyContent: 'center',
               backgroundColor: 'black',
             }}>
-            {/* <Image/> */}
-          </Layout>
+            <Image
+              style={{height: 80, width: 80, borderRadius: 50}}
+              source={{
+                uri: StorageService.getPhotoByFilename('product/image.png')
+              }}
+            />
+          </View>
 
-          <Layout style={{flexDirection: 'column'}}>
+          <View style={{flexDirection: 'column'}}>
             <Text style={{fontWeight: 'bold', fontSize: 18}}>
               {driverData?.driver.name + ' ' + driverData?.driver.lastName}
             </Text>
             <Text>{driverData?.driver.identification}</Text>
-          </Layout>
+          </View>
 
-          <Layout
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
             }}>
             <Text>(4.8)</Text>
-          </Layout>
-        </Layout>
+          </View>
+        </View>
 
-        <Layout
+        <View
           style={{
             flexDirection: 'row',
             marginBottom: 10,
             justifyContent: 'center',
           }}>
-          <Layout
+          <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -97,17 +105,17 @@ export const DriverInformationCard = ({
               }}>
               {currencyFormat(Math.ceil(raceData.distance * 850 + 4600))}
             </Text>
-          </Layout>
-        </Layout>
+          </View>
+        </View>
 
-        <Layout
+        <View
           style={{
             height: 100,
             flexDirection: 'row',
             justifyContent: 'center',
             gap: 20,
           }}>
-          <Layout>
+          <View>
             <Text>Distancia</Text>
             <Text
               style={{
@@ -116,9 +124,9 @@ export const DriverInformationCard = ({
               }}>
               {Math.ceil(raceData.distance)} Km
             </Text>
-          </Layout>
+          </View>
 
-          <Layout>
+          <View>
             <Text>Tiempo</Text>
             <Text
               style={{
@@ -127,12 +135,12 @@ export const DriverInformationCard = ({
               }}>
               {Math.ceil(raceData.duration)} Min
             </Text>
-          </Layout>
-        </Layout>
+          </View>
+        </View>
 
-        <Layout style={{height: 1, backgroundColor: '#dedad9'}}></Layout>
+        <View style={{height: 1, backgroundColor: '#dedad9'}}></View>
         {/* Información de contacto */}
-        <Layout
+        <View
           style={{
             flexDirection: 'column',
             gap: 20,
@@ -141,12 +149,12 @@ export const DriverInformationCard = ({
             Detalle de contácto
           </Text>
 
-          <Layout
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Layout style={{flexDirection: 'row', gap: 10}}>
+            <View style={{flexDirection: 'row', gap: 10}}>
               <Button
                 status="success"
                 style={{width: 40, height: 40, borderRadius: 50}}>
@@ -157,19 +165,19 @@ export const DriverInformationCard = ({
                 style={{width: 40, height: 40, borderRadius: 50}}>
                 <CustomIcon white name="message-circle-outline" />
               </Button>
-            </Layout>
+            </View>
 
             <Text>+57 {driverData?.driver.phone}</Text>
 
             {/* <Button style={{borderRadius: 60, paddingHorizontal: 50}}>
               Ver perfil
             </Button> */}
-          </Layout>
-          <Layout style={{height: 1, backgroundColor: '#dedad9'}}></Layout>
+          </View>
+          <View style={{height: 1, backgroundColor: '#dedad9'}}></View>
 
           {/* Create request  */}
           {currentDriverAcceptRace == null && (
-            <Layout
+            <View
               style={{
                 flexDirection: 'row',
                 gap: 10,
@@ -194,11 +202,11 @@ export const DriverInformationCard = ({
                   </Text>
                 )}
               </Button>
-            </Layout>
+            </View>
           )}
 
           {currentDriverAcceptRace && (
-            <Layout
+            <View
               style={{
                 flex: 1,
                 paddingVertical: 15,
@@ -215,10 +223,10 @@ export const DriverInformationCard = ({
                 }}>
                 En camino
               </Text>
-            </Layout>
+            </View>
           )}
-        </Layout>
-      </Layout>
-    </Layout>
+        </View>
+      </View>
+    </CViewAlpha>
   );
 };
