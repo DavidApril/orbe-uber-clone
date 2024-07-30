@@ -11,6 +11,7 @@ import {
   CheckoutScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
+import { TopTapOrdersNavigations } from './top-tap-orders-navigation';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -57,6 +58,11 @@ export const StackRestaurantNavigation = () => {
         options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
         name="CheckoutScreen"
         component={CheckoutScreen}
+      />
+      <Screen
+        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
+        name="OrderScreen"
+        component={TopTapOrdersNavigations}
       />
     </Navigator>
   );

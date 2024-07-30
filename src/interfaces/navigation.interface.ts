@@ -22,7 +22,7 @@ export type RootStackParams = {
   RefillsScreen: undefined;
   ChatBotScreen: undefined;
 
-  MyCardsScreen: undefined
+  MyCardsScreen: undefined;
 
   ProfileClientScreen: undefined;
 
@@ -40,4 +40,9 @@ export type RootStackParams = {
   ErrorScreen: undefined;
   HistoryScreen: undefined;
   HistoryListScreen: undefined;
+
+  OrderScreen: undefined;
+  PreparingOrderScreen: undefined;
+  OrderTrackingScreen: undefined;
+  OrderArrival: undefined;
 };

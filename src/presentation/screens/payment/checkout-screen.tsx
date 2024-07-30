@@ -1,8 +1,5 @@
-import React, {useEffect, useMemo, useRef} from 'react';
 import {
   BSAddCreditCard,
-  CModal,
-  CreditCard,
   CreditCardSelector,
   CText,
   CTextHeader,
@@ -12,36 +9,18 @@ import {
   ModalPaying,
   OpenDrawerMenu,
 } from '../../components';
-import {
-  fontColor,
-  globalDimensions,
-  neutralColors,
-  stateColors,
-} from '../../theme/styles';
-import {
-  FlatList,
-  Image,
-  ImageBackground,
-  Modal,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {globalDimensions, stateColors} from '../../theme/styles';
+import {Pressable, ScrollView, Text, View} from 'react-native';
 import {
   useAuthStore,
   useCartStore,
   useCouponStore,
   usePaymentStore,
-  useUIStore,
 } from '../../../store';
 import {currencyFormat, parseNumberToText} from '../../../utils';
 import {StackScreenProps} from '@react-navigation/stack';
 import {PaymentDetails, RootStackParams} from '../../../interfaces';
 import {Spinner} from '@ui-kitten/components';
-import {PaymentService} from '../../../services';
-import {API_URL} from '@env';
 
 interface Props extends StackScreenProps<RootStackParams, 'CheckoutScreen'> {}
 
@@ -100,8 +79,10 @@ export const CheckoutScreen = ({navigation}: Props) => {
     }
 
     setIsPaying(true);
-    await pay(paymentDetailsDto);
+    // await pay(paymentDetailsDto);
     setIsPaying(false);
+
+    navigation.navigate('OrderScreen');
   };
 
   return (

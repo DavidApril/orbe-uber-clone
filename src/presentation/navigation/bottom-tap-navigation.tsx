@@ -24,7 +24,7 @@ export const BottomTapNavigationClient = () => {
         headerTransparent: true,
       }}>
       <Tab.Screen
-        name={`HomeClientDeliveryScreen`}
+        name={`HomeScreen`}
         options={{
           // icon name
           title: 'home-outline',
