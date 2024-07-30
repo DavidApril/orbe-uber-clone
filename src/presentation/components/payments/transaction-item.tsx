@@ -1,7 +1,7 @@
 import {CViewAlpha} from '../ui/custom-view-alpha';
 import {Pressable, View} from 'react-native';
 import {CustomIcon} from '../ui/custom-icon';
-import {globalColors} from '../../theme/styles';
+import {globalColors, stateColors} from '../../theme/styles';
 import {CText} from '../ui/custom-text';
 import {CTextHeader} from '../ui/custom-text-header';
 import {ITransaction, RootStackParams} from '../../../interfaces';
@@ -9,7 +9,7 @@ import {currencyFormat} from '../../../utils';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import {usePaymentStore} from '../../../store';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 
 interface Props {
   index: number;
@@ -22,11 +22,9 @@ export const TransactionItem = ({transaction, index}: Props) => {
       StackNavigationProp<RootStackParams, 'ShoppingHistoryScreen'>
     >();
 
-  const {transactionSelected, setTransactionSelected} = usePaymentStore();
+  const {setTransactionSelected} = usePaymentStore();
 
-  useEffect(() => {
-    console.log(transaction);
-  }, [transactionSelected]);
+  const isRecharge = transaction.description === 'Recarga';
 
   return (
     <Pressable
@@ -50,9 +48,9 @@ export const TransactionItem = ({transaction, index}: Props) => {
             flexDirection: 'row',
           }}>
           <CustomIcon
-            fill={globalColors.stateColors.error}
+            fill={isRecharge ? stateColors.success : stateColors.error}
             height={17}
-            name="trending-down-outline"
+            name={isRecharge ? 'trending-up-outline' : 'trending-down-outline'}
           />
           <View>
             <CTextHeader style={{fontWeight: 'bold'}}>

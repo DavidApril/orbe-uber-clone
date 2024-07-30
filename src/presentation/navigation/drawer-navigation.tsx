@@ -7,6 +7,7 @@ import {BottomTapNavigationClientDelivery, BottomTapNavigationDriver} from './bo
 import {ProductsCartScreen, RefillsScreen, ChatBotScreen} from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
 import {ShoppingHistoryNavigator} from './shopping-history-navigation';
+import { StackRechargeNavigation } from './stack-recharge-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
@@ -90,7 +91,7 @@ export function DrawerNavigation() {
               ),
             }}
             name="RefillsScreen"
-            component={RefillsScreen}
+            component={StackRechargeNavigation}
           />
           <Screen
             name="ChatBotScreen"

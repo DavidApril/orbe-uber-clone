@@ -38,8 +38,6 @@ export const App = () => {
           <AuthProvider>
             <PermissionsCheckerProvider>
               <StackNavigator />
-              {/* <DrawerNavigation /> */}
-              {/* <BottomTapNavigationClientDelivery /> */}
             </PermissionsCheckerProvider>
           </AuthProvider>
         </NavigationContainer>
