@@ -42,7 +42,7 @@ export const CreditCardSelector = ({
           style={{
             position: 'absolute',
             flex: 1,
-            height: 390,
+            height: creditCardsTokens.length === 0 ? 390 : 480,
             alignSelf: 'center',
           }}>
           {creditCardsTokens.length === 0 && (
@@ -57,36 +57,38 @@ export const CreditCardSelector = ({
           />
         </View>
 
-        <Pressable
-          onPress={() => {
-            onAddButtonPress()
-            setCreditCardsSelected(null)
-          }}
-          style={{
-            height: 80,
-            flex: 1,
-            position: 'absolute',
-            zIndex: 999,
-            bottom: 15,
-            left: 15,
-            right: 15,
-          }}>
-          <CViewAlpha
+        {creditCardsTokens.length === 0 && (
+          <Pressable
+            onPress={() => {
+              onAddButtonPress();
+              setCreditCardsSelected(null);
+            }}
             style={{
-              borderRadius: 10,
-              opacity: 0.7,
+              height: 80,
               flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-              gap: 10,
+              position: 'absolute',
+              zIndex: 999,
+              bottom: 15,
+              left: 15,
+              right: 15,
             }}>
-            <CustomIcon name="plus-circle-outline" />
-            <CTextHeader style={{fontWeight: 'bold', letterSpacing: 1}}>
-              AÑADIR
-            </CTextHeader>
-          </CViewAlpha>
-        </Pressable>
+            <CViewAlpha
+              style={{
+                borderRadius: 10,
+                opacity: 0.7,
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <CustomIcon name="plus-circle-outline" />
+              <CTextHeader style={{fontWeight: 'bold', letterSpacing: 1}}>
+                AÑADIR
+              </CTextHeader>
+            </CViewAlpha>
+          </Pressable>
+        )}
 
         <ImageBackground
           style={{

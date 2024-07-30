@@ -1,16 +1,12 @@
 import React, {useEffect} from 'react';
-import {FlatList, Pressable, Text, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import {
   globalColors,
-  globalDimensions,
-  neutralColors,
-  stateColors,
+
 } from '../../theme/styles';
 import {
   BuyCouponSelected,
   CouponCard,
-  CustomIcon,
-  FABGoBackButton,
   OpenDrawerMenu,
 } from '../../components';
 import {useAuthStore, useCouponStore, useUIStore} from '../../../store';

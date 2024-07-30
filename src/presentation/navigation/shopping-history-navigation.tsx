@@ -23,7 +23,7 @@ import {
   HistoryShoppingScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
-import {BottomTapNavigationClientDelivery} from './bottom-tap-navigation';
+import {BottomTapNavigationClient} from './bottom-tap-navigation';
 import {DrawerNavigation} from './drawer-navigation';
 import {ShoppingHistoryItemScreen} from '../screens/historical/history-shopping-item-screen';
 

@@ -3,17 +3,29 @@ import {globalColors} from '../theme/styles';
 import {CustomDrawerContent, CustomIcon} from '../components';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../interfaces';
 import {useAuthStore, useUIStore} from '../../store';
-import {BottomTapNavigationClientDelivery, BottomTapNavigationDriver} from './bottom-tap-navigation';
-import {ProductsCartScreen, RefillsScreen, ChatBotScreen} from '../screens';
+import {
+  BottomTapNavigationClient,
+  BottomTapNavigationDelivery,
+  BottomTapNavigationDriver,
+} from './bottom-tap-navigation';
+import {
+  ProductsCartScreen,
+  RefillsScreen,
+  ChatBotScreen,
+  LoginScreen,
+  PermissionsScreen,
+} from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
 import {ShoppingHistoryNavigator} from './shopping-history-navigation';
-import { StackRechargeNavigation } from './stack-recharge-navigation';
+import {StackRechargeNavigation} from './stack-recharge-navigation';
+import {StackNavigator} from './stack-navigation';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
 export function DrawerNavigation() {
   const {isDarkMode} = useUIStore();
   const {role} = useAuthStore();
+
   return (
     <Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
@@ -35,7 +47,7 @@ export function DrawerNavigation() {
               headerShown: false,
             }}
             name="HomeScreen"
-            component={BottomTapNavigationClientDelivery}
+            component={BottomTapNavigationClient}
           />
 
           <Screen
@@ -105,6 +117,15 @@ export function DrawerNavigation() {
             }}
             component={ChatBotScreen}
           />
+          <Screen
+            name="LoginScreen"
+            options={{
+              headerShown: false,
+              title: 'Cerrar sesión',
+              drawerIcon: ({color}) => <CustomIcon fill={color} name="power" />,
+            }}
+            component={StackNavigator}
+          />
         </>
       )}
 
@@ -124,6 +145,18 @@ export function DrawerNavigation() {
           />
           <Screen
             options={{
+              title: 'Compras',
+              headerShown: false,
+              sceneContainerStyle: {
+                flex: 1,
+              },
+              drawerIcon: ({color}) => <CustomIcon fill={color} name="menu" />,
+            }}
+            name="HistoryScreen"
+            component={ShoppingHistoryNavigator}
+          />
+          <Screen
+            options={{
               title: 'Recargas',
               headerShown: false,
               sceneContainerStyle: {
@@ -140,19 +173,60 @@ export function DrawerNavigation() {
       )}
 
       {role === DELIVERY && (
-        <Screen
-          options={{
-            title: 'Inicio',
-            headerShown: false,
-            sceneContainerStyle: {
-              flex: 1,
-            },
-            drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
-          }}
-          name="HomeDriverScreen"
-          component={BottomTapNavigationDriver}
-        />
+        <>
+          <Screen
+            options={{
+              title: 'Inicio',
+              headerShown: false,
+              sceneContainerStyle: {
+                flex: 1,
+              },
+              drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
+            }}
+            name="HomeScreen"
+            component={BottomTapNavigationDelivery}
+          />
+          <Screen
+            options={{
+              title: 'Compras',
+              headerShown: false,
+              sceneContainerStyle: {
+                flex: 1,
+              },
+              drawerIcon: ({color}) => <CustomIcon fill={color} name="menu" />,
+            }}
+            name="HistoryScreen"
+            component={ShoppingHistoryNavigator}
+          />
+          <Screen
+            options={{
+              title: 'Recargas',
+              headerShown: false,
+              sceneContainerStyle: {
+                flex: 1,
+              },
+              drawerIcon: ({color}) => (
+                <CustomIcon fill={color} name="credit-card" />
+              ),
+            }}
+            name="RefillsScreen"
+            component={RefillsScreen}
+          />
+        </>
       )}
+
+      <Screen
+        options={{
+          title: 'Permisos',
+          headerShown: false,
+          sceneContainerStyle: {
+            flex: 1,
+          },
+          drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
+        }}
+        name="PermissionsScreen"
+        component={PermissionsScreen}
+      />
     </Navigator>
   );
 }

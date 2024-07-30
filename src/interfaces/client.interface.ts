@@ -12,7 +12,7 @@ export interface ClientRegisterForm {
   image?: string;
 }
 
-export interface ClientResponseByUid {
+export interface UserResponseByUid {
   id: number;
   created_date: Date;
   updated_date: Date;
@@ -23,13 +23,34 @@ export interface ClientResponseByUid {
   state: boolean;
   email_verify: boolean;
   roles: any[];
-  delivery: null;
-  cliente: Cliente;
+  cliente: Cliente | null;
   cupons: Coupon[];
-  driver: null;
+  driver: Driver | null;
+  points: number
+  delivery: Delivery | null;
 }
 
 export interface Cliente {
+  id: number;
+  created_date: Date;
+  updated_date: Date;
+  delete_date: null;
+  name: string;
+  phone: string;
+  photo: string;
+}
+
+export interface Driver {
+  id: number;
+  created_date: Date;
+  updated_date: Date;
+  delete_date: null;
+  name: string;
+  phone: string;
+  photo: string;
+}
+
+export interface Delivery {
   id: number;
   created_date: Date;
   updated_date: Date;

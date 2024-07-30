@@ -1,12 +1,8 @@
 import BottomSheet from '@gorhom/bottom-sheet';
-import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import {CheckBox, Text} from '@ui-kitten/components';
 import {useEffect, useMemo, useRef} from 'react';
 import {fontColor, neutralColors} from '../../theme/styles';
 import {
-  useAuthStore,
-  useCartStore,
-  useCouponStore,
   usePaymentStore,
   useUIStore,
 } from '../../../store';
@@ -18,10 +14,8 @@ import {
   View,
 } from 'react-native';
 import {Formik} from 'formik';
-import {PaymentService} from '../../../services';
+
 import {CText} from '../ui/custom-text';
-import {API_URL} from '@env';
-import {MethodCard, PaymentDetails} from '../../../interfaces';
 
 export const BSAddCreditCard = () => {
   const addTarjetBottomSheetRef = useRef<BottomSheet>(null);
@@ -29,7 +23,8 @@ export const BSAddCreditCard = () => {
   const snapPoints = useMemo(() => ['1%', height * 0.85], []);
 
   const {isDarkMode} = useUIStore();
-  const {setIsPaying, setAddTarjetBottomSheetRef, pay} = usePaymentStore();
+  const {setIsPaying, setAddTarjetBottomSheetRef, pay, creditCardsTokens} =
+    usePaymentStore();
 
   const initialValues = {
     name: '',
@@ -136,27 +131,29 @@ export const BSAddCreditCard = () => {
                 </CheckBox>
               </View>
 
-              <Pressable
-                onPress={() => handleSubmit()}
-                style={{
-                  flex: 1,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 10,
-                  backgroundColor: isDarkMode
-                    ? neutralColors.backgroundDark
-                    : neutralColors.background,
-                }}>
-                <Text
+              {creditCardsTokens.length === 0 && (
+                <Pressable
+                  onPress={() => handleSubmit()}
                   style={{
-                    color: isDarkMode
-                      ? fontColor.textColor
-                      : fontColor.textColorDark,
+                    flex: 1,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 10,
+                    backgroundColor: isDarkMode
+                      ? neutralColors.backgroundDark
+                      : neutralColors.background,
                   }}>
-                  Añadir
-                </Text>
-              </Pressable>
+                  <Text
+                    style={{
+                      color: isDarkMode
+                        ? fontColor.textColor
+                        : fontColor.textColorDark,
+                    }}>
+                    Añadir
+                  </Text>
+                </Pressable>
+              )}
             </>
           )}
         </Formik>

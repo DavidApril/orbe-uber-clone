@@ -1,4 +1,4 @@
-import {RegisterDeliveryForm} from './register-client-form';
+import {RegisterDeliveryForm} from './register-delivery-form';
 import {useAuthStore} from '../../../../../store';
 import {SectionDisplayEditDataDelivery} from './section-display-edit-data-delivery';
 import {SectionCamera} from '../section-camera';

@@ -1,4 +1,5 @@
 export type RootStackParams = {
+  SessionModuleScreen: undefined;
   LoadingScreen: undefined;
   LoginScreen: undefined;
   HomeScreen: undefined;
@@ -25,7 +26,7 @@ export type RootStackParams = {
 
   ProfileClientScreen: undefined;
 
-  HomeClientDriverScreen: undefined;
+  HomeClientScreen: undefined;
   HomeDriverScreen: undefined;
   HomeDeliveryScreen: undefined;
 

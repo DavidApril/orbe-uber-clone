@@ -91,34 +91,38 @@ export class UserService {
     delivery: DeliveryRegisterForm,
     image_url: string,
   ) => {
-    const {user} = await createUserWithEmailAndPassword(
-      auth,
-      delivery.email,
-      delivery.password,
-    );
+    try {
+      const {user} = await createUserWithEmailAndPassword(
+        auth,
+        delivery.email,
+        delivery.password,
+      );
 
-    const {data} = await orbeApi.post('/worker/create', {
-      email: delivery.email,
-      password: delivery.password,
-      uid: user.uid,
-      createWithEmailAndPassword: false,
-      delivery: {
-        identification: delivery.identification,
-        name: delivery.firstName,
-        lastName: delivery.lastName,
-        phone: delivery.lastName,
-        imageUrl: image_url,
-        documents: [],
-        vehicles: [],
-      },
-      roles: [
-        {
-          name: DELIVERY,
+      const {data} = await orbeApi.post('/worker/create', {
+        email: delivery.email,
+        password: delivery.password,
+        uid: user.uid,
+        createWithEmailAndPassword: false,
+        delivery: {
+          identification: delivery.identification,
+          name: delivery.firstName,
+          lastName: delivery.lastName,
+          phone: delivery.lastName,
+          imageUrl: image_url,
+          documents: [],
+          vehicles: [],
         },
-      ],
-    });
+        roles: [
+          {
+            name: DELIVERY,
+          },
+        ],
+      });
 
-    return data;
+      return data;
+    } catch (error) {
+      console.log({error})
+    }
   };
 
   static getClientByUid = async (

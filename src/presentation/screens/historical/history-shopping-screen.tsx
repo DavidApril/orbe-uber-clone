@@ -18,20 +18,7 @@ interface Props
 
 export const HistoryShoppingScreen = ({navigation}: Props) => {
   const {isDarkMode} = useUIStore();
-  const {userByUid} = useAuthStore();
-
-  const {transactionsByUser, setTransactionsByUser} = usePaymentStore();
-
-  const getTransactionsByUser = async (user_uid: string) => {
-    const transactions = await PaymentService.getTransactionsByUser(user_uid);
-    setTransactionsByUser(transactions);
-  };
-
-  useEffect(() => {
-    if (userByUid) {
-      getTransactionsByUser(userByUid?.uid_firebase);
-    }
-  }, [userByUid]);
+  const {transactionsByUser} = usePaymentStore();
 
   return (
     <CView style={{flex: 1}}>

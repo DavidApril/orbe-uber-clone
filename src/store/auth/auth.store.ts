@@ -4,13 +4,14 @@ import {
   AuthStatus,
   CLIENT,
   ClientRegisterForm,
-  ClientResponseByUid,
   DELIVERY,
   DeliveryRegisterForm,
   DRIVER,
   DriverRegisterForm,
+  UserResponseByUid,
 } from '../../interfaces';
 import {AuthService, UserService} from '../../services';
+import { API_URL } from '@env';
 
 export interface AuthState {
   status: AuthStatus;
@@ -21,13 +22,15 @@ export interface AuthState {
     | DriverRegisterForm
     | ClientRegisterForm
     | DeliveryRegisterForm
-    | null;
+    | any;
   image_url: string | null;
-  userByUid: ClientResponseByUid | null;
+  userByUid: UserResponseByUid | null;
 
   setUserByUid: (user: ClientResponseByUid) => void;
   setRole: (role: DRIVER | CLIENT | DELIVERY) => void;
-  setRegisterForm: (form: DriverRegisterForm) => void;
+  setRegisterForm: (
+    form: DriverRegisterForm & ClientRegisterForm & DeliveryRegisterForm,
+  ) => void;
   registerImage: (image_url: string) => void;
   login: (email: string, password: string) => Promise<{ok: boolean}>;
   logout: () => void;
@@ -55,10 +58,12 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
   login: async (email: string, password: string) => {
     try {
       const {user, token} = await AuthService.login(email, password);
-
+      console.log(user.uid)
       const userByUID = await UserService.getClientByUid(user.uid);
 
       set({userByUid: userByUID});
+
+      console.log({userByUID})
 
       if (userByUID != null) {
         if (!!userByUID.cliente) {
@@ -69,6 +74,7 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
           set({role: DELIVERY});
         }
       }
+
 
       set({status: 'authorized', token, user});
       return {ok: true};

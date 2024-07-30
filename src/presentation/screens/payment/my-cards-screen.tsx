@@ -1,24 +1,10 @@
 import {BSAddCreditCard, CreditCardSelector, CView} from '../../components';
 
-import {useAuthStore, usePaymentStore} from '../../../store';
-import {useEffect} from 'react';
-import {PaymentService} from '../../../services';
-import {ScrollView} from 'react-native';
+import {usePaymentStore} from '../../../store';
 import {View} from 'react-native';
 
 export const MyCardsScreen = () => {
-  const {userByUid} = useAuthStore();
-  const {setCreditCardsTokens, addTarjetBottomSheetRef} = usePaymentStore();
-
-  useEffect(() => {
-    if (userByUid) {
-      PaymentService.GetPayMethodsUser(userByUid?.uid_firebase).then(
-        cardsTokens => {
-          setCreditCardsTokens(cardsTokens);
-        },
-      );
-    }
-  }, [userByUid]);
+  const {addTarjetBottomSheetRef} = usePaymentStore();
 
   return (
     <CView

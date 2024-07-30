@@ -46,7 +46,7 @@ import {API_URL} from '@env';
 interface Props extends StackScreenProps<RootStackParams, 'CheckoutScreen'> {}
 
 export const CheckoutScreen = ({navigation}: Props) => {
-  const { userByUid } = useAuthStore();
+  const {userByUid} = useAuthStore();
   const {cart, getSummaryInformation} = useCartStore();
   const {couponToUse} = useCouponStore();
   const {total, discount, subTotal, itemsInCart, tax} = getSummaryInformation(
@@ -61,35 +61,23 @@ export const CheckoutScreen = ({navigation}: Props) => {
     addTarjetBottomSheetRef,
     pay,
     payWithCard,
-    setCreditCardsTokens,
   } = usePaymentStore();
 
-  useEffect(() => {
-    if (userByUid) {
-      PaymentService.GetPayMethodsUser(userByUid?.uid_firebase).then(
-        cardsTokens => {
-          setCreditCardsTokens(cardsTokens);
-        },
-      );
-    }
-  }, [userByUid]);
-
   const handleAddCard = async () => {
-
     let paymentDetailsDto: PaymentDetails = {
-      value: total < 100000 ? total.toString() : ' 100000',
+      value: total < 100000 ? total.toString() : '100000',
       docType: 'CC',
       docNumber: '123456789',
       name: 'jon',
       lastName: 'doe',
-      email: 'jondoe@hotmail.com',
-      cellPhone: '0000000000',
-      phone: '0000000',
+      email: userByUid?.email,
+      cellPhone: userByUid?.cliente?.phone,
+      phone: userByUid?.cliente?.phone,
       cardNumber: '',
       cardExpYear: '',
       cardExpMonth: ' ',
       cardCvc: '123',
-      userUid: 'wmr4VwQyQQTpJSQLgZmiClncNci2',
+      userUid: userByUid?.uid_firebase,
       dues: '1',
       methodPay: 'TC',
       typeTransaction: 'Travel',

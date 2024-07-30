@@ -1,5 +1,5 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Animated, useWindowDimensions} from 'react-native';
 import {Button, Input, Layout, Spinner, Text} from '@ui-kitten/components';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -9,13 +9,18 @@ import {globalColors} from '../../../theme/styles';
 import {Formik} from 'formik';
 import {RootStackParams} from '../../../../interfaces';
 import * as Yup from 'yup';
+import { useAnimation } from '../../../../hooks';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
 export const LoginScreen = ({navigation}: Props) => {
-  const {login} = useAuthStore();
+  const {login, logout} = useAuthStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {height} = useWindowDimensions();
+
+  useEffect(() => {
+    logout();
+  }, []);
 
   const initialValues = {
     email: '',
@@ -33,6 +38,8 @@ export const LoginScreen = ({navigation}: Props) => {
     setIsLoading(false);
   }
 
+  const { rotateStyle } = useAnimation();
+
   return (
     <Layout style={{flex: 1}}>
       <ScrollView style={{marginHorizontal: 30}}>
@@ -49,7 +56,7 @@ export const LoginScreen = ({navigation}: Props) => {
                 height: 80,
                 width: 80,
               },
-              // rotateStyle,
+              rotateStyle,
             ]}
             source={require('../../../../assets/loading.png')}
           />

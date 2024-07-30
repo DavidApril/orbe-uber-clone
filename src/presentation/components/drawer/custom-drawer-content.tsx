@@ -1,27 +1,26 @@
 import {
   DrawerContentComponentProps,
   DrawerItemList,
+  DrawerNavigationProp,
 } from '@react-navigation/drawer';
-import {Button, Layout} from '@ui-kitten/components';
+import {Button} from '@ui-kitten/components';
 import {useAuthStore, useUIStore} from '../../../store';
 import {
   Image,
   Modal,
   Pressable,
   Text,
-  useColorScheme,
   useWindowDimensions,
   View,
 } from 'react-native';
 import {useState} from 'react';
 import {StorageService} from '../../../services';
-import {CLIENT, DRIVER, RootStackParams} from '../../../interfaces';
+import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../../interfaces';
 import {fontColor, globalColors, globalDimensions} from '../../theme/styles';
 import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
 
 export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
+  const navigation = useNavigation<DrawerNavigationProp<RootStackParams>>();
 
   const {logout, userByUid, role} = useAuthStore();
   const {height} = useWindowDimensions();
@@ -32,10 +31,11 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
   if (userByUid) {
     if (role === CLIENT) {
-      image_url = StorageService.getPhotoByFilename(userByUid?.cliente.photo);
+      image_url = StorageService.getPhotoByFilename(userByUid!.cliente!.photo);
     } else if (role === DRIVER) {
-      // @ts-ignore
-      image_url = StorageService.getPhotoByFilename(userByUid!.driver.photo);
+      image_url = StorageService.getPhotoByFilename(userByUid!.driver!.photo);
+    } else if (role === DELIVERY) {
+      image_url = StorageService.getPhotoByFilename(userByUid!.delivery!.photo);
     }
   }
 
@@ -68,8 +68,12 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                 ? globalColors.fontColor.textColorHeader
                 : globalColors.fontColor.textColorHeaderDark,
             }}>
-            {/* @ts-ignore */}
-            {role === CLIENT ? userByUid?.cliente.name : userByUid?.driver.name}
+            {userByUid !== null &&
+              (role === DRIVER
+                ? userByUid.driver!.name
+                : role === DELIVERY
+                ? userByUid.delivery!.name
+                : role === CLIENT && userByUid.cliente!.name)}
           </Text>
           <Text
             style={{
@@ -156,7 +160,10 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                   backgroundColor: globalColors.stateColors.error,
                 }}
                 onPress={() => {
-                  navigation.navigate('LoginScreen');
+                  navigation.reset({
+                    index: 0,
+                    routes: [{name: 'LoginScreen'}],
+                  });
                   logout(), setModal(false);
                 }}>
                 <Text style={{color: 'white', fontWeight: 'bold'}}>
