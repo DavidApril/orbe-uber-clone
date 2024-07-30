@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {
   useAuthStore,
-  useDriverStore,
+  useDeliveryStore,
   useLocationStore,
   useProfileDriverStore,
   useUIStore,
@@ -37,27 +37,27 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
   const {isDarkMode} = useUIStore();
 
   const {
-    driverServiceIsActive,
-    setDriverServiceIsActive,
+    deliveryServiceIsActive,
+    setDeliveryServiceIsActive,
     origin,
     destination,
     analyzingRace,
     setAnalyzingRace,
     currentRaceAccepted,
     currentRequest,
-    driverRequests,
+    deliveryRequests,
     raceData,
     setCurrentRaceAccepted,
     setRaceData,
-    setDriverRequests,
-  } = useDriverStore();
+    setDeliveryRequests,
+  } = useDeliveryStore();
 
   useEffect(() => {
     socket.on('driver-request', data => {
       // console.log(data.client_request)
       data.client_request.forEach((request: any) => {
         if (request.coordinates) {
-          setDriverRequests([...driverRequests, request]);
+          setDeliveryRequests([...deliveryRequests, request]);
         }
       });
     });
@@ -79,12 +79,12 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
   };
 
   useEffect(() => {
-    if (!driverServiceIsActive) return;
+    if (!deliveryServiceIsActive) return;
     const driverLocationInterval = setInterval(() => {
       sendDriverLocation();
     }, 2000);
     return () => clearInterval(driverLocationInterval);
-  }, [driverServiceIsActive]);
+  }, [deliveryServiceIsActive]);
 
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
@@ -93,7 +93,7 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
   return (
     <View style={{flex: 1}}>
       <OpenDrawerMenu />
-      {driverRequests.length > 0 && driverServiceIsActive && (
+      {deliveryRequests.length > 0 && deliveryServiceIsActive && (
         <List
           style={{
             position: 'absolute',
@@ -111,7 +111,7 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
             paddingVertical: 10,
             // alignItems: 'center',
           }}
-          data={driverRequests}
+          data={deliveryRequests}
           renderItem={({item: request}) => (
             <ClientInformationCard request={request} />
           )}
@@ -136,14 +136,15 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
             borderRadius: 20,
             right: 30,
             bottom: 120,
-            opacity: !driverServiceIsActive ? 0.8 : 0.4,
+            opacity: !deliveryServiceIsActive ? 0.8 : 0.4,
             backgroundColor: 'black',
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}>
-          <View style={{transform: [{scale: !driverServiceIsActive ? 4 : 2}]}}>
-            {!driverServiceIsActive ? (
+          onPress={() => setDeliveryServiceIsActive(!deliveryServiceIsActive)}>
+          <View
+            style={{transform: [{scale: !deliveryServiceIsActive ? 4 : 2}]}}>
+            {!deliveryServiceIsActive ? (
               <CustomIcon fill={stateColors.error} name="power" />
             ) : (
               <Spinner />
@@ -205,7 +206,7 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
               }}>
               <Button
                 onPress={() => {
-                  setDriverServiceIsActive(true);
+                  setDeliveryServiceIsActive(true);
                   setAnalyzingRace(false);
                 }}
                 status="danger"
