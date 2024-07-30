@@ -57,7 +57,8 @@ export const TransactionItem = ({transaction, index}: Props) => {
               {transaction.description}
             </CTextHeader>
             <CText style={{fontWeight: 'bold'}}>
-              - {currencyFormat(+transaction.TotalTransaction)}
+              {isRecharge ? '+ ' : '- '}
+              {currencyFormat(+transaction.TotalTransaction)}
             </CText>
           </View>
         </View>

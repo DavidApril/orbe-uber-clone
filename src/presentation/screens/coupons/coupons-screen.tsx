@@ -19,8 +19,14 @@ import {CouponService} from '../../../services';
 export const CouponsScreen = () => {
   const {isDarkMode} = useUIStore();
   const {userByUid} = useAuthStore();
-  const {coupons, setCoupons, couponSelected, setCuponSelected, buyCoupon} =
-    useCouponStore();
+  const {
+    coupons,
+    setCoupons,
+    couponSelected,
+    setCuponSelected,
+    buyCoupon,
+    points,
+  } = useCouponStore();
 
   const getCoupons = async () => {
     const response = await CouponService.getCoupons();
@@ -82,7 +88,7 @@ export const CouponsScreen = () => {
                     color: globalColors.primaryColors.primary,
                     fontSize: 50,
                   }}>
-                  45{' '}
+                  {points}{' '}
                 </Text>
                 creditos
               </Text>
@@ -103,11 +109,7 @@ export const CouponsScreen = () => {
                 bottomName="Adquirir cupón"
                 onPressDelete={() => setCuponSelected(null)}
                 onPress={async () => {
-                  await buyCoupon(
-                    couponSelected!.id,
-                    userByUid!.uid_firebase,
-                  );
-    
+                  await buyCoupon(couponSelected!.id, userByUid!.uid_firebase);
                 }}
               />
             )}
