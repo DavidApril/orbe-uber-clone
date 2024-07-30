@@ -3,13 +3,14 @@ import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { globalColors } from '../../theme/styles';
 import { OpenDrawerMenu } from '../../components';
-import { useCartStore, useUIStore } from '../../../store';
+import { useUIStore } from '../../../store';
+import { useRestaurantStore } from '../../../store/restaurant/restaurant.store';
 
 export const FavoritesScreen = () => {
   const {isDarkMode} = useUIStore();
-  const favorites = useCartStore(state => state.favorites);
+  const favorites = useRestaurantStore(state => state.favorites);
   const {width, height} = useWindowDimensions()
-  console.log('this is favorites products', favorites)
+  console.log('this is favorites restaurants', favorites)
   return (
     <Layout style={{
       justifyContent: 'center', 

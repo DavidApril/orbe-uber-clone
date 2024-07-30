@@ -9,6 +9,7 @@ import {FAB} from '../ui/floating-action-button';
 import {useCartStore, useUIStore} from '../../../store';
 import { useState } from 'react';
 import { Layout } from '@ui-kitten/components';
+import { useRestaurantStore } from '../../../store/restaurant/restaurant.store';
 
 export const RestaurantCard = ({
   restaurant,
@@ -19,8 +20,9 @@ export const RestaurantCard = ({
     restaurant.attachments[0]?.image_url,
   );
 
-  const addProductToFavorites = useCartStore(store => store.addProductToCart);
+  // const addProductToFavorites = useCartStore(store => store.addProductToCart);
   const {setRestaurantSelected} = useCartStore();
+  const {addRestaurantToFavorites} = useRestaurantStore()
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {isDarkMode} = useUIStore();
 
@@ -29,6 +31,7 @@ export const RestaurantCard = ({
   const handleModalTimeOut = () => {
     setModal(true)
     setTimeout(() => {
+      addRestaurantToFavorites
       setModal(false)
     }, 3000)
   }
