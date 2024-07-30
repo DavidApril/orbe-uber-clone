@@ -61,7 +61,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
       <Pressable
         onPress={() => navigation.goBack()}
         style={globalStyles.FABBackButton}>
-        <CustomIcon name="arrow-back" />
+        <CustomIcon fill={globalColors.neutralColors.backgroundAlpha} name="arrow-back" />
       </Pressable>
 
       <Pressable
@@ -76,7 +76,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
             style={{
               height: 14,
               width: 14,
-              backgroundColor: globalColors.stateColors.success,
+              backgroundColor: globalColors.stateColors.error,
               position: 'absolute',
               top: 0,
               right: 0,
@@ -84,7 +84,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
             }}
           />
         )}
-        <CustomIcon name="shopping-cart-outline" />
+        <CustomIcon fill={globalColors.neutralColors.backgroundAlpha} name="shopping-cart-outline" />
       </Pressable>
 
       <View
@@ -157,6 +157,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
+            alignItems: 'center',
             gap: 20,
             flex: 1,
           }}>
@@ -171,15 +172,14 @@ export const ProductItemScreen = ({navigation}: Props) => {
             }}>
             {currencyFormat(+item.priceUnitary)}
           </Text>
-          <Button
-            style={{borderRadius: 50}}
+          <Pressable
+            style={{borderRadius: 50, backgroundColor: globalColors.primaryColors.primary, paddingVertical: 25, paddingHorizontal: 35}}
             onPress={() => {
               addProductToCart(item);
             }}
-            disabled={!!productInCart}
-            status="success">
-            <Text>AÑADIR AL CARRITO</Text>
-          </Button>
+            disabled={!!productInCart}>
+            <Text style={{ color: 'white' }}>AÑADIR AL CARRITO</Text>
+          </Pressable>
           <Pressable
             onPress={() => {
               setIsFavorite(!isFavorite);

@@ -1,16 +1,16 @@
 import {Layout, Text} from '@ui-kitten/components';
 import React from 'react';
-import {ProductRestaurant} from '../../../../interfaces';
-import {ProductCard} from '../../../components';
+import {SingleRestaurantResponse} from '../../../interfaces';
+import {RestaurantCard} from '../../components';
 import {FlatList, View} from 'react-native';
-import { globalColors } from '../../../theme/styles';
+import { globalColors } from '../../theme/styles';
 
 interface Props {
-  products: ProductRestaurant[];
+  restaurant: SingleRestaurantResponse[];
   title: string
 }
 
-export const ProductsList = ({products, title}: Props) => {
+export const RestaurantsList = ({restaurant, title}: Props) => {
   return (
     <View style={{paddingHorizontal: 20}}>
       <Text style={{marginVertical: 10, fontWeight: 'bold', fontSize: 25, color: globalColors.primaryColors.primary}}>
@@ -19,11 +19,11 @@ export const ProductsList = ({products, title}: Props) => {
 
       <View style={{flexDirection: 'row', gap: 10, flexWrap: 'wrap'}}>
         <FlatList
-          data={products}
+          data={restaurant}
           horizontal
           style={{paddingBottom: 15}}
           renderItem={({item, index}) => (
-            <ProductCard key={index} product={item} />
+            <RestaurantCard key={index} restaurant={item} />
           )}
         />
       </View>

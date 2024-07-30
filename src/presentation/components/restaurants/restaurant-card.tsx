@@ -31,7 +31,7 @@ export const RestaurantCard = ({
   const handleModalTimeOut = () => {
     setModal(true)
     setTimeout(() => {
-      addRestaurantToFavorites
+      addRestaurantToFavorites(restaurant)
       setModal(false)
     }, 3000)
   }

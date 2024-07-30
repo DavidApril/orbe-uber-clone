@@ -1,31 +1,44 @@
 import {Layout, Text} from '@ui-kitten/components';
 import React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { ScrollView, useWindowDimensions } from 'react-native';
 import { globalColors } from '../../theme/styles';
 import { OpenDrawerMenu } from '../../components';
-import { useUIStore } from '../../../store';
+import { useCartStore, useUIStore } from '../../../store';
 import { useRestaurantStore } from '../../../store/restaurant/restaurant.store';
+import { ProductsList } from './products/products-list';
+import { RestaurantsList } from './restaurants-list';
 
 export const FavoritesScreen = () => {
   const {isDarkMode} = useUIStore();
-  const favorites = useRestaurantStore(state => state.favorites);
+  const restaurantFavorites = useRestaurantStore(state => state.favorites);
+  const productFavorites = useCartStore(state => state.favorites);
   const {width, height} = useWindowDimensions()
-  console.log('this is favorites restaurants', favorites)
+  console.log('this is favorites restaurants', restaurantFavorites)
+  console.log('this is favorites products', productFavorites)
   return (
     <Layout style={{
-      justifyContent: 'center', 
+      justifyContent: restaurantFavorites.length || productFavorites.length > 0 ? 'flex-start' : 'center', 
       backgroundColor: isDarkMode
         ? globalColors.neutralColors.backgroundDark
         : globalColors.neutralColors.background, 
-      alignItems: 'center', 
-      height: height
+      alignItems: 'flex-start', 
+      height: height * 0.85,
+      width: width,
+      paddingTop: 120,
     }}>
       <OpenDrawerMenu />
       {
-        favorites.length > 0 ? (
-          favorites.map(() => (
-            <Text>Hola</Text>
-          ))
+        restaurantFavorites.length || productFavorites.length > 0 ? (
+            <ScrollView style={{ gap: 250, backgroundColor: 'transparent', }}>
+              <Layout style={{ backgroundColor: 'transparent', paddingHorizontal: 10, minHeight: 200, width: '100%' }}>
+                {restaurantFavorites.length ? (<Text style={{ color: globalColors.primaryColors.primary, fontSize: 30, fontWeight: '600' }}>Restaurantes Favoritos:</Text>) : (<Text style={{ color: globalColors.primaryColors.primary, fontSize: 30, fontWeight: '600' }}>No hay restaurantes favoritos.</Text>)}
+                <RestaurantsList restaurant={restaurantFavorites} title={''} />
+              </Layout>
+              <Layout style={{ backgroundColor: 'transparent', paddingHorizontal: 10, minHeight: 200 }}>
+                {productFavorites.length ? (<Text style={{ color: globalColors.primaryColors.primary, fontSize: 30, fontWeight: '600' }}>Productos Favoritos:</Text>) : (<Text style={{ color: globalColors.primaryColors.primary, fontSize: 30, fontWeight: '600' }}>No hay productos favoritos.</Text>)}
+                <ProductsList products={productFavorites} title='' />
+              </Layout>
+            </ScrollView>
         ) : (
         <Text style={{ fontSize: 24, fontWeight: 'bold', color: globalColors.primaryColors.primary }}>Aqui estaran tus favoritos</Text>
         )

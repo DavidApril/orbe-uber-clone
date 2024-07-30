@@ -193,7 +193,7 @@ export const RestaurantScreen = () => {
           <Stats />
         </View>
 
-        <ProductsList products={products} />
+        <ProductsList products={products} title={'Productos'} />
 
         <View style={{height: 100}}></View>
       </ScrollView>
