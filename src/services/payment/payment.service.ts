@@ -12,7 +12,7 @@ import {
 export class PaymentService {
   static PREFIX: string = '/pay';
 
-  static take: number = 100;
+  static take: number = 1000;
 
   static async getPayMethod() {}
 

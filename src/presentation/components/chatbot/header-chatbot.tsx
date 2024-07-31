@@ -2,7 +2,6 @@ import {Layout, Text} from '@ui-kitten/components';
 import {globalColors} from '../../theme/styles';
 import {Image, useColorScheme, View} from 'react-native';
 import {useChatbotStore, useUIStore} from '../../../store';
-import {OpenDrawerMenu} from '../ui/open-drawer';
 
 export const HeaderChatBot = () => {
   const colorScheme = useColorScheme();

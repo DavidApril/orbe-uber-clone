@@ -8,7 +8,7 @@ import {globalColors} from '../../theme/styles';
 import {FAB} from '../ui/floating-action-button';
 import {useCartStore, useUIStore} from '../../../store';
 import {useEffect, useState} from 'react';
-import { useRestaurantStore } from '../../../store/restaurant/restaurant.store';
+import {useRestaurantStore} from '../../../store/restaurant/restaurant.store';
 
 export const RestaurantCard = ({
   restaurant,
@@ -22,19 +22,19 @@ export const RestaurantCard = ({
   }, [restaurant]);
 
   const {setRestaurantSelected} = useCartStore();
-  const {addRestaurantToFavorites} = useRestaurantStore()
+  const {addRestaurantToFavorites} = useRestaurantStore();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {isDarkMode} = useUIStore();
 
-  const [modal, setModal] = useState<boolean>(false)
+  const [modal, setModal] = useState<boolean>(false);
 
   const handleModalTimeOut = () => {
-    setModal(true)
+    setModal(true);
     setTimeout(() => {
-      addRestaurantToFavorites(restaurant)
-      setModal(false)
-    }, 3000)
-  }
+      addRestaurantToFavorites(restaurant);
+      setModal(false);
+    }, 3000);
+  };
 
   return (
     <Pressable
@@ -111,10 +111,38 @@ export const RestaurantCard = ({
           {restaurant.description}
         </Text>
       </View>
-      <Modal visible={modal} animationType='fade' transparent onRequestClose={() => setModal(false)}>
-        <Pressable onPress={() => setModal(false)} style={{ backgroundColor: '#0009', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ width: '85%', height: 250, borderRadius: 25, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
-            <Text style={{ color: globalColors.primaryColors.primary, fontSize: 26, fontWeight: 'bold', textAlign: 'center' }}>Producto añadido con exito a favoritos</Text>
+      <Modal
+        visible={modal}
+        animationType="fade"
+        transparent
+        onRequestClose={() => setModal(false)}>
+        <Pressable
+          onPress={() => setModal(false)}
+          style={{
+            backgroundColor: '#0009',
+            width: '100%',
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              width: '85%',
+              height: 250,
+              borderRadius: 25,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingHorizontal: 20,
+            }}>
+            <Text
+              style={{
+                color: globalColors.primaryColors.primary,
+                fontSize: 26,
+                fontWeight: '100',
+                textAlign: 'center',
+              }}>
+              Producto añadido con exito a favoritos
+            </Text>
           </View>
         </Pressable>
       </Modal>

@@ -85,13 +85,6 @@ export const SelectOriginDestination = () => {
               borderRadius: 20,
               padding: 20,
               alignItems: 'center',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 4,
               elevation: 5,
             }}>
             <GooglePlacesAutocomplete
@@ -109,7 +102,7 @@ export const SelectOriginDestination = () => {
                 container: {
                   flex: 1,
                   width: '100%',
-                  backgroundColor: 'transparent',
+                  opacity: 0.3,
                   gap: 20,
                 },
                 row: {
@@ -117,7 +110,7 @@ export const SelectOriginDestination = () => {
                   height: 100,
                   backgroundColor: isDarkMode
                     ? globalColors.neutralColors.backgroundDarkAlpha
-                    : globalColors.neutralColors.backgroundDarkAlpha,
+                    : globalColors.neutralColors.backgroundAlpha,
                   flexDirection: 'row',
                   borderRadius: 12,
                   width: width * 0.75,
@@ -213,13 +206,6 @@ export const SelectOriginDestination = () => {
               padding: 20,
               alignItems: 'center',
               shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 4,
-              elevation: 5,
             }}>
             <GooglePlacesAutocomplete
               placeholder="Lugar de llegada"

@@ -1,4 +1,4 @@
-import {useAuthStore} from '../../../../store';
+import {useAuthStore, useCouponStore} from '../../../../store';
 import {StorageService} from '../../../../services';
 import {globalColors, globalDimensions} from '../../../theme/styles';
 import {
@@ -22,136 +22,121 @@ export const ProfileClientScreen = () => {
     return <LoadingScreen />;
   }
 
-  const image_url = StorageService.getPhotoByFilename(userByUid!.cliente.photo);
+  const image_url = StorageService.getPhotoByFilename(userByUid.cliente!.photo);
 
-  return <>
-    <OpenDrawerMenu />
-    <ScrollView
-      style={{flex: 1, height, backgroundColor: 'red', position: 'relative'}}>
-      <View
-        style={{
-          backgroundColor:
-            colorSchema === 'light'
-              ? globalColors.neutralColors.background
-              : globalColors.neutralColors.backgroundDark,
-          flex: 1,
-          paddingHorizontal: 50,
-          paddingTop: 130,
-          height,
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
+  return (
+    <>
+      <OpenDrawerMenu />
+      <ScrollView
+        style={{flex: 1, height, backgroundColor: 'red', position: 'relative'}}>
         <View
           style={{
-            flexDirection: 'column',
-            gap: 10,
-            alignItems: 'center',
+            backgroundColor:
+              colorSchema === 'light'
+                ? globalColors.neutralColors.background
+                : globalColors.neutralColors.backgroundDark,
             flex: 1,
+            paddingHorizontal: 50,
+            paddingTop: 130,
+            height,
+            flexDirection: 'column',
+            alignItems: 'center',
           }}>
           <View
             style={{
-              height: 200,
-              width: 200,
-              borderWidth: 10,
-              borderColor:
-                colorSchema === 'light'
-                  ? globalColors.neutralColors.border
-                  : globalColors.stateColors.success,
-              backgroundColor: 'white',
-              borderRadius: 100,
-              overflow: 'hidden',
+              flexDirection: 'column',
+              gap: 10,
+              alignItems: 'center',
+              flex: 1,
             }}>
-            <Image
-              style={{height: 200, width: 200}}
-              source={{uri: image_url}}
-            />
-          </View>
-
-          <View style={{justifyContent: 'center', marginVertical: 10}}>
-            <Text style={{textAlign: 'center'}}>{userByUid.cliente.phone}</Text>
-            <Text
-              style={{
-                fontSize: 38,
-                textAlign: 'center',
-                color:
-                  colorSchema === 'light'
-                    ? globalColors.fontColor.textColorHeader
-                    : globalColors.fontColor.textColorHeaderDark,
-              }}>
-              {userByUid.cliente.name}
-            </Text>
-          </View>
-
-          <View style={{flexDirection: 'row', gap: 20}}>
-            <StatusButton isActive />
-
             <View
               style={{
-                height: '100%',
-                width: 1,
-                backgroundColor: globalColors.grayScale.gray,
-                borderRadius: 50,
-              }}
-            />
+                height: 200,
+                width: 200,
+                borderWidth: 10,
+                borderColor:
+                  colorSchema === 'light'
+                    ? globalColors.neutralColors.border
+                    : globalColors.stateColors.success,
+                backgroundColor: 'white',
+                borderRadius: 100,
+                overflow: 'hidden',
+              }}>
+              <Image
+                style={{height: 200, width: 200}}
+                source={{uri: image_url}}
+              />
+            </View>
 
-            <View style={{justifyContent: 'center'}}>
+            <View style={{justifyContent: 'center', marginVertical: 10}}>
+              <Text style={{textAlign: 'center'}}>
+                {userByUid.cliente!.phone}
+              </Text>
               <Text
                 style={{
+                  fontSize: 38,
+                  textAlign: 'center',
                   color:
                     colorSchema === 'light'
-                      ? globalColors.fontColor.textColor
-                      : globalColors.fontColor.textColorDark,
+                      ? globalColors.fontColor.textColorHeader
+                      : globalColors.fontColor.textColorHeaderDark,
                 }}>
-                {userByUid.cliente?.created_date &&
-                  parseDate(userByUid.cliente?.created_date)}
+                {userByUid.cliente!.name}
               </Text>
             </View>
-          </View>
 
-          <View style={{flexDirection: 'row', gap: 10}}>
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                // width: width * 0.4,
-                borderRadius: globalDimensions.borderRadiusButtom,
-                backgroundColor:
-                  colorSchema === 'light'
-                    ? globalColors.neutralColors.backgroundAlpha
-                    : globalColors.neutralColors.backgroundDarkAlpha,
-                flex: 1,
-              }}>
-              <Text>
-                <Text style={{fontSize: 40, fontWeight: 'bold'}}>32</Text> pts.
-              </Text>
+            <View style={{flexDirection: 'row', gap: 20}}>
+              <StatusButton isActive />
+
+              <View
+                style={{
+                  height: '100%',
+                  width: 1,
+                  backgroundColor: globalColors.grayScale.gray,
+                  borderRadius: 50,
+                }}
+              />
+
+              <View style={{justifyContent: 'center'}}>
+                <Text
+                  style={{
+                    color:
+                      colorSchema === 'light'
+                        ? globalColors.fontColor.textColor
+                        : globalColors.fontColor.textColorDark,
+                  }}>
+                  {userByUid.cliente?.created_date &&
+                    parseDate(userByUid.cliente?.created_date)}
+                </Text>
+              </View>
             </View>
-            <View
-              style={{
-                flex: 1,
-                marginVertical: 20,
-                justifyContent: 'center',
-                padding: 30,
-                width: width * 0.4,
-                borderRadius: globalDimensions.borderRadiusButtom,
-                backgroundColor:
-                  colorSchema === 'light'
-                    ? globalColors.neutralColors.backgroundAlpha
-                    : globalColors.neutralColors.backgroundDarkAlpha,
-              }}>
-              <Text>Balance</Text>
-              <Text>
+
+            <View style={{flexDirection: 'row', gap: 10}}>
+              <View
+                style={{
+                  flex: 1,
+                  marginVertical: 20,
+                  justifyContent: 'center',
+                  padding: 30,
+                  width: width * 0.4,
+                  borderRadius: globalDimensions.borderRadiusButtom,
+                  backgroundColor:
+                    colorSchema === 'light'
+                      ? globalColors.neutralColors.backgroundAlpha
+                      : globalColors.neutralColors.backgroundDarkAlpha,
+                }}>
+                <Text>Puntos</Text>
                 <Text
                   numberOfLines={0}
                   style={{fontSize: 28, fontWeight: 'bold'}}>
                   {/* {currencyFormat(5000)} */}
-                  834.000
-                </Text>{' '}
-                cop
-              </Text>
+                  {Math.trunc(userByUid.points)}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
-  </>
+      </ScrollView>
+    </>
+  );
 };

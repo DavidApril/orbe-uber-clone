@@ -3,6 +3,8 @@ import {CheckBox, Text} from '@ui-kitten/components';
 import {useEffect, useMemo, useRef} from 'react';
 import {fontColor, neutralColors} from '../../theme/styles';
 import {
+  useAuthStore,
+  useCartStore,
   usePaymentStore,
   useUIStore,
 } from '../../../store';
@@ -16,15 +18,23 @@ import {
 import {Formik} from 'formik';
 
 import {CText} from '../ui/custom-text';
+import {PaymentDetails} from '../../../interfaces';
 
 export const BSAddCreditCard = () => {
   const addTarjetBottomSheetRef = useRef<BottomSheet>(null);
   const {height} = useWindowDimensions();
   const snapPoints = useMemo(() => ['1%', height * 0.85], []);
-
+  const {userByUid} = useAuthStore();
   const {isDarkMode} = useUIStore();
-  const {setIsPaying, setAddTarjetBottomSheetRef, pay, creditCardsTokens} =
-    usePaymentStore();
+  const {getSummaryInformation, cart} = useCartStore();
+  const {total} = getSummaryInformation();
+  const {
+    setIsPaying,
+    setAddTarjetBottomSheetRef,
+    pay,
+    creditCardsTokens,
+    creditCardsSelected,
+  } = usePaymentStore();
 
   const initialValues = {
     name: '',
@@ -34,8 +44,43 @@ export const BSAddCreditCard = () => {
   };
 
   const handleAddCard = async (values: typeof initialValues) => {
+    let paymentDetailsDto: PaymentDetails = {
+      value: total.toString(),
+      docType: 'CC',
+      docNumber: '123456789',
+      name: 'jon',
+      lastName: 'doe',
+      email: userByUid?.email,
+      cellPhone: userByUid?.cliente?.phone,
+      phone: userByUid?.cliente?.phone,
+      cardNumber: '4575623182290326',
+      cardExpYear: '2025',
+      cardExpMonth: '12',
+      cardCvc: '123',
+      userUid: userByUid?.uid_firebase,
+      dues: '1',
+      methodPay: 'TC',
+      typeTransaction: 'Travel',
+      description: 'Pago por productos',
+      details: cart.map(item => ({
+        key: item.product.name,
+        value: item.quantity.toString(),
+      })),
+    };
+
+    if (creditCardsSelected) {
+      paymentDetailsDto = {
+        ...paymentDetailsDto,
+        payment: {
+          bank: creditCardsSelected.bank,
+          id: creditCardsSelected.id,
+          tokenCard: creditCardsSelected.tokenCard,
+        },
+      };
+    }
+
     setIsPaying(true);
-    // await pay();
+    await pay(paymentDetailsDto);
     setIsPaying(false);
   };
 

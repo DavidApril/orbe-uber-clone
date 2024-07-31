@@ -39,7 +39,6 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     }
   }
 
-  console.log("df",{image_url})
 
   return (
     <View

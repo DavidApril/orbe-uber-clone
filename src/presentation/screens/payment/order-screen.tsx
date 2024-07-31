@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {CTextHeader, CView, TextHeaderScreen} from '../../components';
+import {
+  CTextHeader,
+  CView,
+  FABGoBackButton,
+  OpenDrawerMenu,
+  TextHeaderScreen,
+} from '../../components';
 import {useSocket} from '../../../hooks';
 import {API_SOCKET_URL} from '@env';
 import {Spinner} from '@ui-kitten/components';
@@ -15,6 +21,9 @@ export const OrderScreen = () => {
 
   return (
     <CView style={{flex: 1}}>
+      <OpenDrawerMenu />
+      <FABGoBackButton />
+
       <TextHeaderScreen
         title="Comunicandose con el restaurante"
         description="En unos minutos tendrás respuesta... "

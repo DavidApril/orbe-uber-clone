@@ -18,11 +18,13 @@ import {CText} from '../ui/custom-text';
 interface Props {
   onAddButtonPress: () => void;
   horizontal?: boolean;
+  showAddButton: boolean;
 }
 
 export const CreditCardSelector = ({
   onAddButtonPress,
   horizontal = true,
+  showAddButton = false,
 }: Props) => {
   const {creditCardsTokens, setCreditCardsSelected} = usePaymentStore();
 
@@ -57,7 +59,7 @@ export const CreditCardSelector = ({
           />
         </View>
 
-        {creditCardsTokens.length === 0 && (
+        {showAddButton && (
           <Pressable
             onPress={() => {
               onAddButtonPress();

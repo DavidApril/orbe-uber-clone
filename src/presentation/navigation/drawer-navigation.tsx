@@ -8,13 +8,7 @@ import {
   BottomTapNavigationDelivery,
   BottomTapNavigationDriver,
 } from './bottom-tap-navigation';
-import {
-  ProductsCartScreen,
-  RefillsScreen,
-  ChatBotScreen,
-  LoginScreen,
-  PermissionsScreen,
-} from '../screens';
+import {ProductsCartScreen, RefillsScreen, ChatBotScreen} from '../screens';
 import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
 import {ShoppingHistoryNavigator} from './shopping-history-navigation';
 import {StackRechargeNavigation} from './stack-recharge-navigation';
@@ -49,7 +43,6 @@ export function DrawerNavigation() {
             name="HomeScreen"
             component={BottomTapNavigationClient}
           />
-
           <Screen
             options={{
               title: 'Mi carrito',

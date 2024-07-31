@@ -12,7 +12,6 @@ import {
   fontColor,
   globalColors,
   globalDimensions,
-  grayScale,
   neutralColors,
   stateColors,
 } from '../../theme/styles';
@@ -21,15 +20,7 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '../../../interfaces';
 
-interface Props {
-  subtotal: number;
-  total: number;
-  shipping: number;
-  itemsInCart: number;
-  tax: number;
-}
-
-export const PaymentControllers = ({shipping}: Props) => {
+export const PaymentControllers = () => {
   const navigation =
     useNavigation<StackNavigationProp<RootStackParams, 'ProductsCartScreen'>>();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -39,6 +30,7 @@ export const PaymentControllers = ({shipping}: Props) => {
   const {getSummaryInformation} = useCartStore();
   const {
     subTotal: subtotal,
+    tax,
     total,
     discount,
   } = getSummaryInformation(couponToUse?.value);
@@ -150,7 +142,7 @@ export const PaymentControllers = ({shipping}: Props) => {
             style={{
               textAlign: 'right',
               color: globalColors.primaryColors.primary,
-              fontWeight: 'bold'
+              fontWeight: 'bold',
             }}>
             Ver cupones
           </Text>
@@ -170,8 +162,8 @@ export const PaymentControllers = ({shipping}: Props) => {
         </>
       )}
 
+      <Text style={{}}>IVA: {currencyFormat(tax)}</Text>
       <Text style={{}}>Subtotal: {currencyFormat(subtotal)}</Text>
-      <Text style={{}}>Envío: {currencyFormat(shipping)} </Text>
 
       <Divider style={{marginVertical: 10}} />
 
@@ -247,7 +239,13 @@ export const PaymentControllers = ({shipping}: Props) => {
             paddingVertical: 20,
             borderRadius: globalDimensions.borderRadiusButtom,
           }}>
-          <Text style={{fontSize: 17, color: globalColors.neutralColors.background}}>Pagar</Text>
+          <Text
+            style={{
+              fontSize: 17,
+              color: globalColors.neutralColors.background,
+            }}>
+            Pagar
+          </Text>
         </Pressable>
       </View>
     </View>

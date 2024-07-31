@@ -12,62 +12,55 @@ export const FavoritesScreen = () => {
   const {isDarkMode} = useUIStore();
   const restaurantFavorites = useRestaurantStore(state => state.favorites);
   const productFavorites = useCartStore(state => state.favorites);
-  const {width, height} = useWindowDimensions();
-  console.log('this is favorites restaurants', restaurantFavorites);
-  console.log('this is favorites products', productFavorites);
+  const {width} = useWindowDimensions();
   return (
     <Layout
       style={{
-        justifyContent:
-          restaurantFavorites.length || productFavorites.length > 0
-            ? 'flex-start'
-            : 'center',
+        flex: 1,
+        justifyContent: 'center',
         backgroundColor: isDarkMode
           ? globalColors.neutralColors.backgroundDark
           : globalColors.neutralColors.background,
         alignItems: 'flex-start',
-        height: height * 0.85,
         width: width,
-        paddingTop: 120,
       }}>
       <OpenDrawerMenu />
       {restaurantFavorites.length || productFavorites.length > 0 ? (
-        <ScrollView style={{gap: 250, backgroundColor: 'transparent'}}>
-          <Layout
-            style={{
-              backgroundColor: 'transparent',
-              paddingHorizontal: 10,
-              minHeight: 200,
-              width: '100%',
-            }}>
-            <TextHeaderScreen
-              title="Restaurantes"
-              description="restaurantes favoritos"
-            />
-            <RestaurantsList restaurant={restaurantFavorites} title={''} />
-          </Layout>
-          <Layout
-            style={{
-              backgroundColor: 'transparent',
-              paddingHorizontal: 10,
-              minHeight: 200,
-            }}>
-            <TextHeaderScreen
-              title="Productos"
-              description="productos favoritos"
-            />
-            <ProductsList products={productFavorites} title="" />
-          </Layout>
+        <ScrollView
+          style={{gap: 250, backgroundColor: 'transparent', width: '100%'}}>
+          {restaurantFavorites.length && (
+            <Layout
+              style={{
+                backgroundColor: 'transparent',
+                paddingHorizontal: 10,
+                // minHeight: 200,
+                width: '100%',
+              }}>
+              <TextHeaderScreen
+                title="Restaurantes"
+                description="restaurantes favoritos"
+              />
+              <RestaurantsList restaurant={restaurantFavorites} title={''} />
+            </Layout>
+          )}
+
+          {productFavorites.length > 0 && (
+            <Layout
+              style={{
+                backgroundColor: 'transparent',
+                paddingHorizontal: 10,
+                minHeight: 200,
+              }}>
+              <TextHeaderScreen
+                title="Productos"
+                description="productos favoritos"
+              />
+              <ProductsList products={productFavorites} title="" />
+            </Layout>
+          )}
         </ScrollView>
       ) : (
-        <Text
-          style={{
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: globalColors.primaryColors.primary,
-          }}>
-          Aqui estaran tus favoritos
-        </Text>
+        <TextHeaderScreen title="No hay Productos o Restaurantes en favoritos" />
       )}
     </Layout>
   );

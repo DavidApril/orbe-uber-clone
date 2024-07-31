@@ -31,7 +31,7 @@ import {PaymentService, UserService} from '../../../services';
 
 export const RefillsScreen = () => {
   const {isDarkMode} = useUIStore();
-  const {userByUid, user} = useAuthStore();
+  const {user} = useAuthStore();
   const [isOpenRefillModal, setIsOpenRefillModals] = useState<boolean>(false);
   const {transactionsByUser, setTransactionsByUser} = usePaymentStore();
 
@@ -41,6 +41,9 @@ export const RefillsScreen = () => {
     if (user) {
       UserService.getClientByUid(user?.uid).then(userByUid => {
         addPoints(userByUid.points);
+        PaymentService.getTransactionsByUser(userByUid.uid_firebase).then(
+          transactions => setTransactionsByUser(transactions),
+        );
       });
     }
   }, [points]);

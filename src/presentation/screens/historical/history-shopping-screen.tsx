@@ -17,8 +17,15 @@ interface Props
   extends StackScreenProps<RootStackParams, 'ShoppingHistoryScreen'> {}
 
 export const HistoryShoppingScreen = ({navigation}: Props) => {
-  const {isDarkMode} = useUIStore();
-  const {transactionsByUser} = usePaymentStore();
+  // const {isDarkMode} = useUIStore();
+  const {transactionsByUser, setTransactionsByUser} = usePaymentStore();
+  const {userByUid} = useAuthStore();
+
+  useEffect(() => {
+    PaymentService.getTransactionsByUser(userByUid!.uid_firebase).then(
+      transactions => setTransactionsByUser(transactions),
+    );
+  }, []);
 
   return (
     <CView style={{flex: 1}}>

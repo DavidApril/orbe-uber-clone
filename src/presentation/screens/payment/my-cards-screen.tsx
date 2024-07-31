@@ -14,6 +14,7 @@ export const MyCardsScreen = () => {
         flexDirection: 'column',
       }}>
       <CreditCardSelector
+        showAddButton
         horizontal={false}
         onAddButtonPress={() => addTarjetBottomSheetRef?.current?.expand()}
       />

@@ -9,7 +9,7 @@ import {
 } from '../store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../interfaces';
-import {PaymentService} from '../services';
+import {PaymentService, UserService} from '../services';
 
 export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   const {status} = useAuthStore();
@@ -18,10 +18,10 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   const {userByUid} = useAuthStore();
-  const {addPoints} = useCouponStore();
+  const {addPoints, points} = useCouponStore();
   const {setTransactionsByUser, setCreditCardsTokens} = usePaymentStore();
-  const {keyboardHeight, setKeyboardHeight} = useUIStore();
-  
+  const {setKeyboardHeight} = useUIStore();
+
   useEffect(() => {
     if (userByUid) {
       PaymentService.GetPayMethodsUser(userByUid?.uid_firebase).then(
@@ -30,13 +30,9 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
       PaymentService.getTransactionsByUser(userByUid.uid_firebase).then(
         transactions => setTransactionsByUser(transactions),
       );
-      PaymentService.getTransactionsByUser(userByUid.uid_firebase).then(
-        transaction => setTransactionsByUser(transaction),
-      );
-
       addPoints(userByUid.points);
     }
-  }, [userByUid]);
+  }, [userByUid, points]);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener(

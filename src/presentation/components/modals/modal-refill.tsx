@@ -37,10 +37,7 @@ export const ModalRefill = ({
     creditCardsSelected,
     isPaying,
     setIsPaying,
-    payWithCard,
   } = usePaymentStore();
-
-  const {cart} = useCartStore();
 
   const {points, addPoints} = useCouponStore();
 
@@ -52,7 +49,7 @@ export const ModalRefill = ({
     setIsPaying(true);
 
     let paymentDetailsDto: PaymentDetails = {
-      value: +rechargeValue < +100000 ? rechargeValue.toString() : '100000',
+      value: rechargeValue,
       docType: 'CC',
       docNumber: '123456789',
       lastName: 'doe',
@@ -84,10 +81,11 @@ export const ModalRefill = ({
     }
 
     const response = await PaymentService.rechagePoints(paymentDetailsDto);
+    
     try {
       if (response.data === 1) {
         const response = await ConfigurationService.getConfigurationById('1');
-        addPoints(+rechargeValue / response.value)
+        addPoints(+rechargeValue / response.value);
       }
     } catch (error) {
       console.log({error});
