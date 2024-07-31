@@ -57,5 +57,5 @@ export interface Delivery {
   delete_date: null;
   name: string;
   phone: string;
-  photo: string;
+  imageUrl: string;
 }

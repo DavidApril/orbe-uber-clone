@@ -31,13 +31,15 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
   if (userByUid) {
     if (role === CLIENT) {
-      image_url = StorageService.getPhotoByFilename(userByUid!.cliente!.photo);
+      image_url = StorageService.getPhotoFromCache(userByUid!.cliente!.photo);
     } else if (role === DRIVER) {
-      image_url = StorageService.getPhotoByFilename(userByUid!.driver!.photo);
+      image_url = StorageService.getPhotoFromCache(userByUid!.driver!.photo);
     } else if (role === DELIVERY) {
-      image_url = StorageService.getPhotoByFilename(userByUid!.delivery!.photo);
+      image_url = StorageService.getPhotoFromCache(userByUid!.delivery!.imageUrl);
     }
   }
+
+  console.log("df",{image_url})
 
   return (
     <View

@@ -12,9 +12,10 @@ import {
 import {LoadingScreen} from '../../loading/loading-screen';
 import {OpenDrawerMenu, StatusButton} from '../../../components';
 import {parseDate} from '../../../../utils';
+import {DRIVER} from '../../../../interfaces';
 
 export const ProfileDriverScreen = () => {
-  const {userByUid} = useAuthStore();
+  const {userByUid, role} = useAuthStore();
   const {height, width} = useWindowDimensions();
   const colorSchema = useColorScheme();
   const {driverServiceIsActive} = useDriverStore();
@@ -24,7 +25,7 @@ export const ProfileDriverScreen = () => {
   }
 
   const image_url = StorageService.getPhotoByFilename(
-    userByUid?.driver.imageUrl,
+    role === DRIVER ? userByUid?.driver!.photo : userByUid.delivery!.imageUrl,
   );
 
   return (
@@ -71,7 +72,11 @@ export const ProfileDriverScreen = () => {
           </View>
 
           <View style={{justifyContent: 'center', marginVertical: 10}}>
-            <Text style={{textAlign: 'center'}}>{userByUid?.driver.phone}</Text>
+            <Text style={{textAlign: 'center'}}>
+              {role === DRIVER
+                ? userByUid.driver?.phone
+                : userByUid.delivery?.phone}
+            </Text>
             <Text
               style={{
                 fontSize: 38,
@@ -81,7 +86,9 @@ export const ProfileDriverScreen = () => {
                     ? globalColors.fontColor.textColorHeader
                     : globalColors.fontColor.textColorHeaderDark,
               }}>
-              {userByUid?.driver.name}
+              {role === DRIVER
+                ? userByUid.driver?.name
+                : userByUid.delivery?.name}
             </Text>
           </View>
 

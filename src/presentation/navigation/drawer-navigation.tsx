@@ -188,7 +188,7 @@ export function DrawerNavigation() {
           />
           <Screen
             options={{
-              title: 'Compras',
+              title: 'Ordenes',
               headerShown: false,
               sceneContainerStyle: {
                 flex: 1,
@@ -198,35 +198,8 @@ export function DrawerNavigation() {
             name="HistoryScreen"
             component={ShoppingHistoryNavigator}
           />
-          <Screen
-            options={{
-              title: 'Recargas',
-              headerShown: false,
-              sceneContainerStyle: {
-                flex: 1,
-              },
-              drawerIcon: ({color}) => (
-                <CustomIcon fill={color} name="credit-card" />
-              ),
-            }}
-            name="RefillsScreen"
-            component={RefillsScreen}
-          />
         </>
       )}
-
-      <Screen
-        options={{
-          title: 'Permisos',
-          headerShown: false,
-          sceneContainerStyle: {
-            flex: 1,
-          },
-          drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
-        }}
-        name="PermissionsScreen"
-        component={PermissionsScreen}
-      />
     </Navigator>
   );
 }

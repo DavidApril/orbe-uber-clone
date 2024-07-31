@@ -108,7 +108,7 @@ export class UserService {
           name: delivery.firstName,
           lastName: delivery.lastName,
           phone: delivery.lastName,
-          imageUrl: image_url,
+          imageUrl: `profile/${image_url}`,
           documents: [],
           vehicles: [],
         },
