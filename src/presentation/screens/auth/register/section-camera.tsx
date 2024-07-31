@@ -19,7 +19,7 @@ export const SectionCamera = () => {
         <Button
           onPress={async () => {
             const photo = await CameraAdapter.getPictureFromLibrary();
-            registerImage(photo[0].split('/').reverse()[0]);
+            registerImage(photo[0]);
           }}
           accessoryLeft={<CustomIcon white name="image-outline" />}>
           Subir una foto
@@ -28,7 +28,7 @@ export const SectionCamera = () => {
         <Button
           onPress={async () => {
             const photo = await CameraAdapter.takePicture();
-            registerImage(photo[0].split('/').reverse()[0]);
+            registerImage(photo[0]);
           }}
           accessoryLeft={<CustomIcon white name="camera-outline" />}>
           Tomar una foto

@@ -15,4 +15,9 @@ export class StorageService {
     const src = `https://orbeapi.devzeros.com/${API_PREFIX}/storage?fileName=${filename}`;
     return src;
   };
+
+  static getPhotoFromCache = (filename: string) => {
+    const src = `file:///data/user/0/com.orbe.www/cache/${filename}`
+    return src
+  }
 }

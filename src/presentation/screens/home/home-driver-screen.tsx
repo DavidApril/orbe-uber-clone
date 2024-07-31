@@ -1,4 +1,4 @@
-import {useEffect,  } from 'react';
+import {useEffect} from 'react';
 import {
   useAuthStore,
   useDriverStore,
@@ -7,6 +7,7 @@ import {
   useUIStore,
 } from '../../../store';
 import {
+  ActiveServicesButton,
   ClientInformationCard,
   CustomIcon,
   CustomMapView,
@@ -16,12 +17,7 @@ import {
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
 import {Button, Layout, List, Spinner} from '@ui-kitten/components';
-import {
-  Pressable,
-
-  useColorScheme,
-  View,
-} from 'react-native';
+import {Pressable, useColorScheme, View} from 'react-native';
 
 import {RootStackParams} from '../../../interfaces';
 import {globalColors, stateColors} from '../../theme/styles';
@@ -30,8 +26,7 @@ import {RacesService} from '../../../services';
 import {StackScreenProps} from '@react-navigation/stack';
 import {API_SOCKET_URL} from '@env';
 
-interface Props
-  extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 
 export const HomeDriverScreen = ({navigation}: Props) => {
   const colorScheme = useColorScheme();
@@ -133,29 +128,11 @@ export const HomeDriverScreen = ({navigation}: Props) => {
       />
 
       {!analyzingRace ? (
-        <Pressable
-          style={{
-            position: 'absolute',
-            zIndex: 999999,
-            top: 120,
-            left: 30,
-            borderRadius: 20,
-            right: 30,
-            bottom: 120,
-            opacity: !driverServiceIsActive ? 0.8 : 0.4,
-            backgroundColor: 'black',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}>
-          <View style={{transform: [{scale: !driverServiceIsActive ? 4 : 2}]}}>
-            {!driverServiceIsActive ? (
-              <CustomIcon fill={stateColors.error} name="power" />
-            ) : (
-              <Spinner />
-            )}
-          </View>
-        </Pressable>
+        <ActiveServicesButton
+          isActive={driverServiceIsActive}
+          setIsActive={setDriverServiceIsActive}
+          onPress={() => {}}
+        />
       ) : (
         <>
           <Layout

@@ -1,8 +1,12 @@
-import {Button, Layout, Text} from '@ui-kitten/components';
+import {Button} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
 import {UserService} from '../../../services';
-import {useDriverStore} from '../../../store';
+import {useDeliveryStore, useUIStore} from '../../../store';
+import {Pressable, View, Text} from 'react-native';
+import {globalDimensions, neutralColors, stateColors} from '../../theme/styles';
+import {CTextHeader} from '../ui/custom-text-header';
+import {CText} from '../ui/custom-text';
 
 interface Props {
   request: any;
@@ -10,19 +14,15 @@ interface Props {
 
 export const ClientInformationCard = ({request}: Props) => {
   const [raceData] = useState<any>(request.coordinates);
-  const [client, setClient] = useState<any>(null);
+  const [setClient] = useState<any>(null);
+  const {isDarkMode} = useUIStore();
 
   const {
     setCurrentRequest,
     setDestination,
     setOrigin,
     setAnalyzingRace,
-    setDriverServiceIsActive,
-  } = useDriverStore();
-
-  useEffect(() => {
-    setCurrentRequest(request);
-  }, []);
+  } = useDeliveryStore();
 
   const getClient = async () => {
     const client = await UserService.getClientByUid(request.id_client);
@@ -47,27 +47,39 @@ export const ClientInformationCard = ({request}: Props) => {
   }, [raceData]);
 
   return (
-    <Layout style={{marginHorizontal: 10, borderRadius: 30, padding: 20}}>
-      <Layout
+    <View
+      style={{
+        marginHorizontal: 10,
+        opacity: 0.7,
+        borderRadius: 30,
+        padding: 20,
+        marginBottom: 10,
+        backgroundColor: isDarkMode
+          ? neutralColors.backgroundDark
+          : neutralColors.background,
+      }}>
+      <View
         style={{
           flexDirection: 'column',
           gap: 10,
         }}>
-        <Layout
+        <View
           style={{
             height: 1,
-            backgroundColor: '#dedad9',
+            backgroundColor: isDarkMode
+              ? neutralColors.borderDark
+              : neutralColors.border,
             marginTop: 10,
-          }}></Layout>
+          }}></View>
 
-        <Layout
+        <View
           style={{
             height: 100,
             flexDirection: 'row',
             justifyContent: 'space-between',
             gap: 20,
           }}>
-          <Layout
+          <View
             style={{
               height: 80,
               width: 80,
@@ -76,104 +88,64 @@ export const ClientInformationCard = ({request}: Props) => {
               backgroundColor: 'black',
             }}>
             {/* <Image/> */}
-          </Layout>
+          </View>
 
-          <Layout style={{flexDirection: 'column'}}>
-            <Text style={{fontWeight: 'bold', fontSize: 18}}>
-              {client?.cliente.name}
-            </Text>
-            <Text>{client?.email}</Text>
-          </Layout>
+          <View style={{flexDirection: 'column'}}>
+            <CTextHeader style={{fontWeight: 'bold', fontSize: 18}}>
+              El Sabor del Paraíso
+            </CTextHeader>
+            <CText>Cra54 #24 - 32, 450 Avenue </CText>
+          </View>
 
-          <Layout
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
             }}>
             <Text>(4.8)</Text>
-          </Layout>
-        </Layout>
+          </View>
+        </View>
 
-        {/* <Layout
+        <Pressable
           style={{
-            flexDirection: 'row',
-            marginBottom: 10,
+            flex: 1,
+            borderRadius: globalDimensions.borderRadiusButtom,
+            alignItems: 'center',
             justifyContent: 'center',
-          }}>
-          <Layout
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text>Tarifa</Text>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 25,
-              }}>
-              {currencyFormat(Math.ceil(raceData.distance * 850 + 4600))}
-            </Text>
-          </Layout>
-        </Layout> */}
-
-        <Button
-          style={{borderRadius: 100}}
-          status="warning"
+            backgroundColor: stateColors.success,
+            padding: 10,
+          }}
           onPress={() => {
             setAnalyzingRace(true);
-            setDriverServiceIsActive(false);
+            setCurrentRequest({ request: 0})
           }}>
-          Analizar carrera
-        </Button>
+          <CTextHeader>Analizar pedido</CTextHeader>
+        </Pressable>
 
-        {/* <Layout
+        <View
           style={{
-            height: 100,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            gap: 20,
-          }}>
-          <Layout>
-            <Text>Distancia</Text>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-              }}>
-              {Math.ceil(raceData.distance)} Km
-            </Text>
-          </Layout> */}
-
-        {/* <Layout>
-            <Text>Tiempo</Text>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-              }}>
-              {Math.ceil(raceData.duration)} Min
-            </Text>
-          </Layout>
-        </Layout> */}
-
-        <Layout style={{height: 1, backgroundColor: '#dedad9'}}></Layout>
+            height: 1,
+            backgroundColor: isDarkMode
+              ? neutralColors.borderDark
+              : neutralColors.border,
+          }}></View>
         {/* Información de contacto */}
-        <Layout
+        <View
           style={{
             flexDirection: 'column',
             gap: 20,
           }}>
-          <Text style={{fontWeight: 'bold', fontSize: 20}}>
+          <CTextHeader style={{fontWeight: 'bold', fontSize: 20}}>
             Detalle de contácto
-          </Text>
+          </CTextHeader>
 
-          <Layout
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Layout style={{flexDirection: 'row', gap: 10}}>
+            <View style={{flexDirection: 'row', gap: 10}}>
               <Button
                 status="success"
                 style={{width: 40, height: 40, borderRadius: 50}}>
@@ -184,12 +156,12 @@ export const ClientInformationCard = ({request}: Props) => {
                 style={{width: 40, height: 40, borderRadius: 50}}>
                 <CustomIcon white name="message-circle-outline" />
               </Button>
-            </Layout>
+            </View>
 
-            <Text>+57 {client?.cliente.phone}</Text>
-          </Layout>
-        </Layout>
-      </Layout>
-    </Layout>
+            <CText>+57 303442334</CText>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 };

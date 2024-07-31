@@ -1,18 +1,26 @@
 import {create} from 'zustand';
 import {Location} from '../../interfaces';
 import {Race} from '../client/client-driver-store';
+import {boolean} from 'yup';
 
 interface DeliveryState {
-  deliveryServiceIsActive: boolean;
   origin: Location | null;
   destination: Location | null;
-  analyzingRace: boolean;
-  // TODO: driverRquest Interface
-  deliveryRequests: any[];
+
   raceData: Race | null;
+
   // TODO: currentRequest Interface
   currentRequest: any;
+  // TODO: deliveryRequests Interface
+  deliveryRequests: any[];
+
+  productImage: string | null;
+
+  analyzingRace: boolean;
   currentRaceAccepted: boolean;
+  deliveryServiceIsActive: boolean;
+  deliveryArrived: boolean;
+  setDeliveryArrived: (value: boolean) => void;
 
   setDeliveryServiceIsActive: (value: boolean) => void;
   setOrigin: (position: Location | null) => void;
@@ -23,6 +31,7 @@ interface DeliveryState {
   // TODO: currentRequest Interface
   setCurrentRequest: (currentRequest: any) => void;
   setCurrentRaceAccepted: (value: boolean) => void;
+  setProductImage: (image: string | null) => void;
 }
 
 export const useDeliveryStore = create<DeliveryState>()(set => ({
@@ -34,6 +43,8 @@ export const useDeliveryStore = create<DeliveryState>()(set => ({
   raceData: null,
   currentRequest: false,
   currentRaceAccepted: false,
+  deliveryArrived: false,
+  productImage: null,
 
   setDeliveryServiceIsActive: deliveryServiceIsActive =>
     set({deliveryServiceIsActive}),
@@ -44,4 +55,6 @@ export const useDeliveryStore = create<DeliveryState>()(set => ({
   setDeliveryRequests: deliveryRequests => set({deliveryRequests}),
   setCurrentRequest: currentRequest => set({currentRequest}),
   setCurrentRaceAccepted: value => set({currentRaceAccepted: value}),
+  setDeliveryArrived: (value: boolean) => set({deliveryArrived: value}),
+  setProductImage: image => set({productImage: image}),
 }));
