@@ -8,19 +8,19 @@ import {CustomIcon} from '../../../components';
 import {globalColors} from '../../../theme/styles';
 import {Formik} from 'formik';
 import {RootStackParams} from '../../../../interfaces';
+import {useAnimation} from '../../../../hooks';
 import * as Yup from 'yup';
-import { useAnimation } from '../../../../hooks';
+
+import '../../../../config/i18n/i18n';
+import {useTranslation} from 'react-i18next';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
 export const LoginScreen = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {login, logout} = useAuthStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {height} = useWindowDimensions();
-
-  useEffect(() => {
-    logout();
-  }, []);
 
   const initialValues = {
     email: '',
@@ -38,7 +38,7 @@ export const LoginScreen = ({navigation}: Props) => {
     setIsLoading(false);
   }
 
-  const { rotateStyle } = useAnimation();
+  const {rotateStyle} = useAnimation();
 
   return (
     <Layout style={{flex: 1}}>
@@ -62,7 +62,7 @@ export const LoginScreen = ({navigation}: Props) => {
           />
 
           <Layout>
-            <Text category="h1">Ingresar</Text>
+            <Text category="h1">{t('welcome')}</Text>
             <Text category="p2">Por favor, ingrese para continuar</Text>
           </Layout>
         </Layout>
