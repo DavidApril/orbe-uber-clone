@@ -27,26 +27,23 @@ import {
   useUIStore,
 } from '../../../store';
 import {globalColors, globalDimensions, stateColors} from '../../theme/styles';
-import {PaymentService} from '../../../services';
+import {PaymentService, UserService} from '../../../services';
 
 export const RefillsScreen = () => {
   const {isDarkMode} = useUIStore();
-  const {userByUid} = useAuthStore();
+  const {userByUid, user} = useAuthStore();
   const [isOpenRefillModal, setIsOpenRefillModals] = useState<boolean>(false);
   const {transactionsByUser, setTransactionsByUser} = usePaymentStore();
 
-  const getTransactionsByUser = async (user_uid: string) => {
-    const transactions = await PaymentService.getTransactionsByUser(user_uid);
-    setTransactionsByUser(transactions);
-  };
+  const {points, addPoints} = useCouponStore();
 
   useEffect(() => {
-    if (userByUid) {
-      getTransactionsByUser(userByUid?.uid_firebase);
+    if (user) {
+      UserService.getClientByUid(user?.uid).then(userByUid => {
+        addPoints(userByUid.points);
+      });
     }
-  }, [userByUid]);
-
-  const {points} = useCouponStore();
+  }, [points]);
 
   return (
     <ScrollView

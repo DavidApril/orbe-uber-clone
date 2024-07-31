@@ -1,26 +1,25 @@
 import {Layout, Text} from '@ui-kitten/components';
 import {globalColors} from '../../theme/styles';
 import {Image, useColorScheme, View} from 'react-native';
-import {useUIStore} from '../../../store';
-import { OpenDrawerMenu } from '../ui/open-drawer';
+import {useChatbotStore, useUIStore} from '../../../store';
+import {OpenDrawerMenu} from '../ui/open-drawer';
 
-export const HeaderChatBot = ({writing}: any) => {
+export const HeaderChatBot = () => {
   const colorScheme = useColorScheme();
   const {isDarkMode} = useUIStore();
-
+  const {loadingAnswer} = useChatbotStore();
   return (
-    <Layout
+    <View
       style={{
         flexDirection: 'row',
-        zIndex: 99,
+        zIndex: 99999,
         gap: 15,
         paddingHorizontal: 20,
-        height: '10%',
-        justifyContent: 'flex-start',
+        height: 80,
         alignItems: 'center',
-        backgroundColor: isDarkMode 
-        ? globalColors.neutralColors.backgroundDarkAlpha 
-        : globalColors.neutralColors.backgroundAlpha,
+        backgroundColor: isDarkMode
+          ? globalColors.neutralColors.backgroundDarkAlpha
+          : globalColors.neutralColors.backgroundAlpha,
       }}>
       <OpenDrawerMenu />
       <View
@@ -36,7 +35,7 @@ export const HeaderChatBot = ({writing}: any) => {
             alignItems: 'center',
             flex: 1,
             gap: 5,
-            paddingLeft: 70
+            paddingLeft: 70,
           }}>
           <Image
             style={{
@@ -66,13 +65,13 @@ export const HeaderChatBot = ({writing}: any) => {
                     ? globalColors.fontColor.textColorDark
                     : globalColors.fontColor.textColor,
               }}>
-              {writing}
+              {loadingAnswer ? 'Escribiendo...' : 'chatbot'}
             </Text>
           </View>
         </View>
       </View>
 
       <View></View>
-    </Layout>
+    </View>
   );
 };

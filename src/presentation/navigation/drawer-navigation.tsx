@@ -145,7 +145,7 @@ export function DrawerNavigation() {
           />
           <Screen
             options={{
-              title: 'Compras',
+              title: 'Viajes',
               headerShown: false,
               sceneContainerStyle: {
                 flex: 1,

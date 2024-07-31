@@ -43,27 +43,6 @@ export const CustomBottomTabs = ({
         },
         globalStyles.boxShadow,
       ]}>
-      {/* {!driverServiceIsActive ? (
-        <Pressable
-          onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}
-          style={{
-            // position: 'absolute',
-            transform: [{scale: 5}],
-          }}>
-          <CustomIcon white name="power" />
-        </Pressable>
-      ) : (
-        <Pressable
-          onPress={() => setDriverServiceIsActive(!driverServiceIsActive)}
-          style={{
-            position: 'absolute',
-            right: -40,
-
-            transform: [{scale: 1.3}],
-          }}>
-          <Spinner status="basic" />
-        </Pressable>
-      )} */}
       {state.routes.map((route, index) => {
         return (
           <CustomBottomTabItem

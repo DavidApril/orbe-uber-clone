@@ -7,8 +7,7 @@ export const ChatIsWritting = () => {
     <View
       style={{
         backgroundColor: '#ccc',
-        width: '25%',
-        height: '100%',
+        width: '15%',
         borderRadius: 50,
         padding: 5,
       }}>

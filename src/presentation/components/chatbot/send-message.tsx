@@ -19,7 +19,8 @@ export const SendMessage = ({message}: Props) => {
         borderBottomLeftRadius: 40,
         padding: 20,
         marginBottom: 10,
-        marginLeft: 40
+        marginLeft: 40,
+        flex: 1,
         
       }}>
       <Text

@@ -95,7 +95,8 @@ export const BSSelectOriginDestination = () => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-              paddingHorizontal: 20,
+              paddingHorizontal: 30,
+              gap: 30,
             }}>
             {searchingDriver && nearbyDrivers?.length === 0 && (
               <View

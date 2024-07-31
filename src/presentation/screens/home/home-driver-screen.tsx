@@ -9,22 +9,21 @@ import {
 import {
   ActiveServicesButton,
   ClientInformationCard,
-  CustomIcon,
   CustomMapView,
   FAB,
   OpenDrawerMenu,
 } from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
-import {Button, Layout, List, Spinner} from '@ui-kitten/components';
-import {Pressable, useColorScheme, View} from 'react-native';
+import {Button, Layout, List} from '@ui-kitten/components';
+import {useColorScheme, View} from 'react-native';
 
 import {RootStackParams} from '../../../interfaces';
-import {globalColors, stateColors} from '../../theme/styles';
+import {globalColors} from '../../theme/styles';
 import {currencyFormat} from '../../../utils';
 import {RacesService} from '../../../services';
 import {StackScreenProps} from '@react-navigation/stack';
-import {API_SOCKET_URL} from '@env';
+
 
 interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 
@@ -32,10 +31,8 @@ export const HomeDriverScreen = ({navigation}: Props) => {
   const colorScheme = useColorScheme();
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
+  const {socket, online} = useSocket('ws://orbeapi.devzeros.com:3001/location');
   const {addBalance, increaseTrips} = useProfileDriverStore();
-
-  const {isDarkMode} = useUIStore();
 
   const {
     driverServiceIsActive,
@@ -55,7 +52,7 @@ export const HomeDriverScreen = ({navigation}: Props) => {
 
   useEffect(() => {
     socket.on('driver-request', data => {
-      // console.log(data.client_request)
+      console.log(data.client_request);
       data.client_request.forEach((request: any) => {
         if (request.coordinates) {
           setDriverRequests([...driverRequests, request]);
@@ -71,13 +68,16 @@ export const HomeDriverScreen = ({navigation}: Props) => {
   }, []);
 
   const sendDriverLocation = () => {
-    console.log('enviando');
     socket.emit('location-driver', {
       id: user?.uid,
       longitud: lastKnownLocation?.longitude,
       latitud: lastKnownLocation?.latitude,
     });
   };
+
+  useEffect(() => {
+    console.log({online});
+  }, [online]);
 
   useEffect(() => {
     if (!driverServiceIsActive) return;

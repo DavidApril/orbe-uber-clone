@@ -1,10 +1,11 @@
 import React, {PropsWithChildren, useEffect} from 'react';
-import {AppState} from 'react-native';
+import {AppState, Keyboard} from 'react-native';
 import {
   useAuthStore,
   useCouponStore,
   usePaymentStore,
   usePermissionStore,
+  useUIStore,
 } from '../store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../interfaces';
@@ -19,7 +20,8 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   const {userByUid} = useAuthStore();
   const {addPoints} = useCouponStore();
   const {setTransactionsByUser, setCreditCardsTokens} = usePaymentStore();
-
+  const {keyboardHeight, setKeyboardHeight} = useUIStore();
+  
   useEffect(() => {
     if (userByUid) {
       PaymentService.GetPayMethodsUser(userByUid?.uid_firebase).then(
@@ -28,9 +30,30 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
       PaymentService.getTransactionsByUser(userByUid.uid_firebase).then(
         transactions => setTransactionsByUser(transactions),
       );
-      addPoints(userByUid.points)
+      PaymentService.getTransactionsByUser(userByUid.uid_firebase).then(
+        transaction => setTransactionsByUser(transaction),
+      );
+
+      addPoints(userByUid.points);
     }
   }, [userByUid]);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      ({endCoordinates}) => {
+        setKeyboardHeight(endCoordinates.height);
+      },
+    );
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (locationStatus === 'granted' && status === 'authorized') {
