@@ -6,6 +6,7 @@ import {
   CustomIcon,
   CView,
   CViewAlpha,
+  FABGoBackButton,
   ModalPaying,
   OpenDrawerMenu,
 } from '../../components';
@@ -79,7 +80,7 @@ export const CheckoutScreen = ({navigation}: Props) => {
     }
 
     setIsPaying(true);
-    // await pay(paymentDetailsDto);
+    await pay(paymentDetailsDto);
     setIsPaying(false);
 
     navigation.navigate('OrderScreen');
@@ -89,22 +90,8 @@ export const CheckoutScreen = ({navigation}: Props) => {
     <CView style={{flex: 1}}>
       <ScrollView style={{flex: 1}}>
         <OpenDrawerMenu />
+        <FABGoBackButton />
 
-        <Pressable
-          onPress={() => navigation.goBack()}
-          style={{
-            position: 'absolute',
-            top: 30,
-            right: 30,
-            height: 45,
-            width: 45,
-            backgroundColor: 'white',
-            borderRadius: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <CustomIcon fill="black" name="arrow-back" />
-        </Pressable>
         <View
           style={{
             paddingHorizontal: 30,

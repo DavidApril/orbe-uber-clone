@@ -1,6 +1,12 @@
 import {Layout} from '@ui-kitten/components';
 import React, {useEffect, useRef, useState} from 'react';
-import {ChatIsWritting, CustomIcon, HeaderChatBot} from '../../components';
+import {
+  ChatIsWritting,
+  CustomIcon,
+  FABGoBackButton,
+  HeaderChatBot,
+  OpenDrawerMenu,
+} from '../../components';
 import {globalColors, globalDimensions, globalStyles} from '../../theme/styles';
 import {useChatbotStore, useUIStore} from '../../../store';
 import {
@@ -60,7 +66,7 @@ export const ChatBotScreen = () => {
     });
   }, [chat]);
   return (
-    <Layout
+    <View
       style={{
         height: '100%',
         flexDirection: 'column',
@@ -70,6 +76,8 @@ export const ChatBotScreen = () => {
           ? globalColors.neutralColors.background
           : globalColors.neutralColors.backgroundDark,
       }}>
+      <OpenDrawerMenu />
+      <FABGoBackButton />
       <HeaderChatBot />
 
       <View style={{flex: 1, width: '100%', justifyContent: 'space-between'}}>
@@ -134,6 +142,6 @@ export const ChatBotScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </Layout>
+    </View>
   );
 };

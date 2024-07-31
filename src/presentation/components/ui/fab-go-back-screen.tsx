@@ -1,9 +1,8 @@
 import React from 'react';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParams} from '../../../interfaces';
-import {StyleProp, useColorScheme, ViewStyle} from 'react-native';
-import {TouchableOpacity} from '@gorhom/bottom-sheet';
-import {globalColors} from '../../theme/styles';
+import {Pressable, StyleProp, ViewStyle} from 'react-native';
+import {globalStyles} from '../../theme/styles';
 import {CustomIcon} from './custom-icon';
 import {useUIStore} from '../../../store';
 
@@ -16,31 +15,24 @@ export const FABGoBackButton = ({fill, style}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {isDarkMode} = useUIStore();
   return (
-    <TouchableOpacity
+    <Pressable
+      onPress={() => navigation.goBack()}
       style={[
         {
-          zIndex: 999,
+          position: 'absolute',
+          top: 30,
+          right: 30,
+          height: 45,
           width: 45,
-          borderRadius: 500,
+          backgroundColor: 'white',
+          borderRadius: 50,
           justifyContent: 'center',
           alignItems: 'center',
-          top: 30,
-          left: 30,
-          position: 'absolute',
-          height: 45,
-          backgroundColor: globalColors.primaryColors.primary,
-          shadowOpacity: 0.3,
-          shadowOffset: {
-            height: 0.27,
-            width: 4.5,
-          },
-          elevation: 5,
+          zIndex: 9999,
         },
-        ,
-        style,
-      ]}
-      onPress={() => navigation.goBack()}>
-      <CustomIcon white={!isDarkMode} name="arrow-back" />
-    </TouchableOpacity>
+        globalStyles.boxShadow,
+      ]}>
+      <CustomIcon fill="black" name="arrow-back" />
+    </Pressable>
   );
 };

@@ -12,19 +12,16 @@ export const HeaderChatBot = () => {
     <View
       style={{
         flexDirection: 'row',
-        zIndex: 99999,
         gap: 15,
-        paddingHorizontal: 20,
-        height: 80,
+        paddingVertical: 15,
+
         alignItems: 'center',
         backgroundColor: isDarkMode
           ? globalColors.neutralColors.backgroundDarkAlpha
           : globalColors.neutralColors.backgroundAlpha,
       }}>
-      <OpenDrawerMenu />
       <View
         style={{
-          margin: 5,
           alignItems: 'center',
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -32,10 +29,11 @@ export const HeaderChatBot = () => {
         <View
           style={{
             flexDirection: 'row',
+            // justifyContent: 'center',
+            paddingLeft: 110,
             alignItems: 'center',
             flex: 1,
             gap: 5,
-            paddingLeft: 70,
           }}>
           <Image
             style={{
