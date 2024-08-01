@@ -6,16 +6,16 @@ import {
   HomeDeliveryScreen,
   HomeDriverScreen,
   ProfileDriverScreen,
-} from '../screens';
-import {CustomBottomTabs} from '../components';
-import {RootStackParams} from '../../interfaces';
-import {ChatBotScreen} from '../screens/chatbot/chatbot-screen';
-import {StackRestaurantNavigation} from './stack-restaurant-navigation';
-import {TopTabClientProfileNavigation} from './top-tab-client-profile';
+} from '..';
+import {CustomBottomTabs} from '../../components';
+import {RootStackParams} from '../../../interfaces';
+import {ChatBotScreen} from '../chatbot/chatbot-screen';
+import {StackRestaurantNavigation} from '../../navigation/stack-restaurant-navigation';
+import {TopTabClientProfileNavigation} from '../../navigation/top-tab-client-profile';
 
 const Tab = createBottomTabNavigator<RootStackParams>();
 
-export const BottomTapNavigationClient = () => {
+export const HomeScreen = () => {
   return (
     <Tab.Navigator
       tabBar={props => <CustomBottomTabs {...props} />}

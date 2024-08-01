@@ -8,22 +8,21 @@ import {
   PayWithCardResponse,
   PayWithCardResponseData,
 } from '../../interfaces';
+import { parseError } from '../../utils';
 
 export class PaymentService {
-  static PREFIX: string = '/pay';
+  static PREFIX: string = 'pay';
 
-  static take: number = 1000;
-
-  static async getPayMethod() {}
+  static take: number = 10;
 
   static async rechagePoints(payment: PaymentDetails) {
     try {
       const {data: response}: {data: PayWithCardResponseData} =
-        await orbeApi.post(`/pay/rechargePoints`, payment);
+        await orbeApi.post(`/${this.PREFIX}/rechargePoints`, payment);
 
       return response;
     } catch (error) {
-      console.log({error});
+      parseError(this.PREFIX + '/rechargePoints', error)
       return [];
     }
   }
@@ -33,27 +32,26 @@ export class PaymentService {
   ): Promise<PayWithCardResponseData | null> {
     try {
       const {data: response}: {data: PayWithCardResponse} = await orbeApi.post(
-        `/pay/cardCreditPayment`,
+        `/${this.PREFIX}/cardCreditPayment`,
         payment,
       );
       return response.data;
     } catch (error) {
-      console.log({error});
+      parseError(this.PREFIX + '/cardCreditPayment', error)
       return null;
     }
   }
+
   static async GetPayMethodsUser(user_uid: string): Promise<ICreditCard[]> {
     try {
       const {data: response}: {data: GetPayMethodsUserResponse} =
-        await orbeApi.get(`/pay/GetPayMethodsUser?user_uid=${user_uid}`);
+        await orbeApi.get(`/${this.PREFIX}/GetPayMethodsUser?user_uid=${user_uid}`);
       return response.data;
     } catch (error) {
       console.log(error);
       return [];
     }
   }
-  static async getTransactionById() {}
-  static async getTransactions() {}
 
   static async getTransactionsByUser(
     user_uid: string,
@@ -63,11 +61,11 @@ export class PaymentService {
     try {
       const {data: response}: {data: GetTransactionsByUserResponse} =
         await orbeApi.get(
-          `${this.PREFIX}/getTransactionsByUser?user_uid=${user_uid}&take=${take}&skip=${skip}`,
+          `/${this.PREFIX}/getTransactionsByUser?user_uid=${user_uid}&take=${take}&skip=${skip}`,
         );
       return response.data;
     } catch (error) {
-      console.log({error});
+      parseError(this.PREFIX + '/getTransactionsByUser', error)
       return [];
     }
   }

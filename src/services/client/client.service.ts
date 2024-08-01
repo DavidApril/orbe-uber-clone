@@ -1,16 +1,18 @@
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {orbeApi} from '../../config/api';
-import {ClientRegisterForm} from '../../interfaces';
+import {
+  CLIENT,
+  ClientRegisterForm,
+  ClientUpdatedForm,
+  CreateClienteResponse,
+} from '../../interfaces';
 import {auth} from '../../config/firebase/config';
+import {parseError} from '../../utils';
 
 export class ClientService {
-  static take: number = 6;
+  static PREFIX = 'user';
 
   static createClient = async (client: ClientRegisterForm) => {
-    if (!client.email || !client.password) {
-      return {message: 'Email or password not registered'};
-    }
-
     try {
       const {user} = await createUserWithEmailAndPassword(
         auth,
@@ -18,26 +20,77 @@ export class ClientService {
         client.password,
       );
 
-      const {data: response} = await orbeApi.post('/user/createClient', {
-        email: client.email,
-        password: client.password,
-        createWithEmailAndPassword: false,
-        uid: user.uid,
-        client: {
-          name: client.firstName + ' ' + client.lastName,
-          phone: client.phone,
-          photo: 'client.image',
-        },
-        roles: [
-          {
-            name: 'CLIENTE',
+      const {data: response}: {data: CreateClienteResponse} =
+        await orbeApi.post(`/${this.PREFIX}/createClient`, {
+          email: client.email,
+          password: client.password,
+          createWithEmailAndPassword: false,
+          uid: user.uid,
+          client: {
+            name: client.firstName + ' ' + client.lastName,
+            phone: client.phone,
+            photo: client.image,
           },
-        ],
-      });
+          roles: [
+            {
+              name: CLIENT,
+            },
+          ],
+        });
 
       return response.data;
     } catch (error) {
-      console.log(error);
+      parseError('createClient', error);
+    }
+  };
+
+  static getClientByEmail = async (email: string) => {
+    try {
+      // TODO: response interface
+      const {data: response}: {data: any} = await orbeApi.get(
+        `/${this.PREFIX}/getUserByUid?email=${email}`,
+      );
+
+      return response.data;
+    } catch (error) {
+      parseError('getUserByUid', error);
+
+      return undefined;
+    }
+  };
+
+  static getClientByUid = async (uid: string) => {
+    try {
+      // TODO: response interface
+      const {data: response} = await orbeApi.get(
+        `/${this.PREFIX}/getUserByUid?uid_firebase=${uid}`,
+      );
+
+      console.log({response});
+
+      return response.data;
+    } catch (error) {
+      parseError('getUserByUid', error);
+
+      return undefined;
+    }
+  };
+
+  static updateClient = async (clientUpdated: ClientUpdatedForm) => {
+    try {
+      // TODO: response interface
+      const {data: response} = await orbeApi.put(
+        `/${this.PREFIX}/updateClient`,
+        clientUpdated,
+      );
+
+      console.log({response});
+
+      return response.data;
+    } catch (error) {
+      parseError('updateClient', error);
+
+      return undefined;
     }
   };
 }

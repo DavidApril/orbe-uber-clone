@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {opacity} from 'react-native-reanimated/lib/typescript/Colors';
 
 export const grayScale = {
   black: 'black',
@@ -101,9 +102,32 @@ export const globalStyles = StyleSheet.create({
   },
 
   primaryButton: {
+    paddingHorizontal: 30,
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
+    flex: 1,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: primaryColors.primary,
+  },
+
+  primaryButtonDisable: {
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    flex: 1,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: primaryColors.primary,
+    opacity: 0.7,
+  },
+
+  primaryTextInput: {
+    borderWidth: 1,
+    paddingLeft: 15,
+    borderRadius: 10,
   },
 
   FABBackButton: {

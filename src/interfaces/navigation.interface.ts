@@ -5,12 +5,16 @@ export type RootStackParams = {
   HomeScreen: undefined;
   RegisterScreen: undefined;
 
+  RegisterWorkerScreen: undefined
+  RegisterUserDocumentsScreen: undefined
+  RegisterVehiclesDocumentsScreen: undefined
+
   RegisterDriverScreen: undefined;
   RegisterClientScreen: undefined;
   RegisterDeliveryScreen: undefined;
-
+  RegisterEditScreen: undefined;
   PermissionsScreen: undefined;
-
+  RegisterDocumentsScreen: undefined;
   HomeClientDeliveryScreen: undefined;
 
   RestaurantScreen: undefined;

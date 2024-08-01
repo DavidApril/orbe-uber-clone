@@ -43,14 +43,17 @@ export const StackNavigator = () => {
         component={LoginScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
+        options={{
+          cardStyleInterpolator: fadeAnimation,
+          headerShown: false,
+        }}
         name="RegisterScreen"
         component={RegisterScreen}
       />
       <Screen
         options={{
           cardStyleInterpolator: fadeAnimation,
-          title: 'Registro Driver',
+          headerShown: false,
         }}
         name="RegisterDriverScreen"
         component={RegisterDriverScreen}

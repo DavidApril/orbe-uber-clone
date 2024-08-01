@@ -26,7 +26,7 @@ export * from './payment/order-arrival';
 export * from './permissions/permissions-screen';
 
 export * from './auth/register/driver/register-driver-screen';
-export * from './auth/register/driver/register-driver-form';
+export * from './auth/register/driver/register-worker-screen';
 export * from './auth/register/driver/section-display-edit-data-driver';
 export * from './auth/register/client/register-client-screen';
 export * from './auth/register/delivery/register-delivery-screen';
@@ -39,13 +39,14 @@ export * from './settings/settings-screen';
 
 export * from './loading/loading-screen';
 
-export * from './historical/history-travels'
-export * from './historical/history-travel-item'
-export * from './historical/history-shopping-screen'
-export * from './historical/history-shopping-item-screen'
+export * from './historical/history-screen';
+export * from './historical/history-travels';
+export * from './historical/history-travel-item';
+export * from './historical/history-shopping-screen';
+export * from './historical/history-shopping-item-screen';
 
-export * from './coupons/coupons-screen'
+export * from './coupons/coupons-screen';
 
-export * from './chatbot/chatbot-screen'
+export * from './chatbot/chatbot-screen';
 
-export * from './error/error-screen'
+export * from './error/error-screen';

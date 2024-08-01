@@ -3,29 +3,10 @@ import {
   createStackNavigator,
 } from '@react-navigation/stack';
 
-import {
-  HomeDriverScreen,
-  HomeClientDriverScreen,
-  HomeDeliveryScreen,
-  LoadingScreen,
-  LoginScreen,
-  PermissionsScreen,
-  RegisterScreen,
-  RegisterDriverScreen,
-  RegisterClientScreen,
-  ProfileClientScreen,
-  ProfileDriverScreen,
-  SettingsScreen,
-  RegisterDeliveryScreen,
-  ProductItemScreen,
-  RestaurantScreen,
-  ProductsCartScreen,
-  HistoryShoppingScreen,
-} from '../screens';
-import {RootStackParams} from '../../interfaces';
-import {BottomTapNavigationClient} from './bottom-tap-navigation';
-import {DrawerNavigation} from './drawer-navigation';
-import {ShoppingHistoryItemScreen} from '../screens/historical/history-shopping-item-screen';
+import {HistoryShoppingScreen} from '..';
+import {RootStackParams} from '../../../interfaces';
+import {ShoppingHistoryItemScreen} from './history-shopping-item-screen';
+import {useAuthStore} from '../../../store';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -37,7 +18,9 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
   };
 };
 
-export const ShoppingHistoryNavigator = () => {
+export const HistoryScreen = () => {
+  const {role} = useAuthStore();
+
   return (
     <Navigator
       initialRouteName="HistoryListScreen"

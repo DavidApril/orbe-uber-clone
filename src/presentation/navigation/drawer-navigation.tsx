@@ -4,13 +4,13 @@ import {CustomDrawerContent, CustomIcon} from '../components';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../interfaces';
 import {useAuthStore, useUIStore} from '../../store';
 import {
-  BottomTapNavigationClient,
+  HomeScreen,
   BottomTapNavigationDelivery,
   BottomTapNavigationDriver,
-} from './bottom-tap-navigation';
+} from '../screens/home/home-screen';
 import {ProductsCartScreen, RefillsScreen, ChatBotScreen} from '../screens';
-import {TopTapCouponsNavigation} from './top-tap-coupons-navigation';
-import {ShoppingHistoryNavigator} from './shopping-history-navigation';
+import {CouponsScreen} from './top-tap-coupons-navigation';
+import {HistoryScreen} from '../screens';
 import {StackRechargeNavigation} from './stack-recharge-navigation';
 import {StackNavigator} from './stack-navigation';
 
@@ -41,7 +41,7 @@ export function DrawerNavigation() {
               headerShown: false,
             }}
             name="HomeScreen"
-            component={BottomTapNavigationClient}
+            component={HomeScreen}
           />
           <Screen
             options={{
@@ -68,7 +68,7 @@ export function DrawerNavigation() {
               drawerIcon: ({color}) => <CustomIcon fill={color} name="menu" />,
             }}
             name="HistoryScreen"
-            component={ShoppingHistoryNavigator}
+            component={HistoryScreen}
           />
 
           <Screen
@@ -81,7 +81,7 @@ export function DrawerNavigation() {
               drawerIcon: ({color}) => <CustomIcon fill={color} name="award" />,
             }}
             name="CouponsScreen"
-            component={TopTapCouponsNavigation}
+            component={CouponsScreen}
           />
 
           <Screen
@@ -146,7 +146,7 @@ export function DrawerNavigation() {
               drawerIcon: ({color}) => <CustomIcon fill={color} name="menu" />,
             }}
             name="HistoryScreen"
-            component={ShoppingHistoryNavigator}
+            component={HistoryScreen}
           />
           <Screen
             options={{
@@ -177,7 +177,7 @@ export function DrawerNavigation() {
               drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
             }}
             name="HomeScreen"
-            component={BottomTapNavigationDelivery}
+            component={HomeScreen}
           />
           <Screen
             options={{
@@ -189,7 +189,7 @@ export function DrawerNavigation() {
               drawerIcon: ({color}) => <CustomIcon fill={color} name="menu" />,
             }}
             name="HistoryScreen"
-            component={ShoppingHistoryNavigator}
+            component={HistoryScreen}
           />
         </>
       )}

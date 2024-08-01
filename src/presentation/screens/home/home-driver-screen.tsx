@@ -23,6 +23,7 @@ import {globalColors} from '../../theme/styles';
 import {currencyFormat} from '../../../utils';
 import {RacesService} from '../../../services';
 import {StackScreenProps} from '@react-navigation/stack';
+import { API_SOCKET_URL } from '@env';
 
 
 interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
@@ -31,7 +32,7 @@ export const HomeDriverScreen = ({navigation}: Props) => {
   const colorScheme = useColorScheme();
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const {socket, online} = useSocket('ws://orbeapi.devzeros.com:3001/location');
+  const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
   const {addBalance, increaseTrips} = useProfileDriverStore();
 
   const {
