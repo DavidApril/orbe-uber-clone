@@ -4,12 +4,9 @@ import {
   Pressable,
   ScrollView,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import {
-  CModal,
-  CreditCard,
   CText,
   CTextHeader,
   CustomIcon,
@@ -26,10 +23,10 @@ import {
   usePaymentStore,
   useUIStore,
 } from '../../../store';
-import {globalColors, globalDimensions, stateColors} from '../../theme/styles';
-import {PaymentService, UserService} from '../../../services';
+import {globalColors, globalDimensions} from '../../theme/styles';
+import {ClientService, PaymentService} from '../../../services';
 
-export const RefillsScreen = () => {
+export const RechargeScreen = () => {
   const {isDarkMode} = useUIStore();
   const {user} = useAuthStore();
   const [isOpenRefillModal, setIsOpenRefillModals] = useState<boolean>(false);
@@ -39,7 +36,7 @@ export const RefillsScreen = () => {
 
   useEffect(() => {
     if (user) {
-      UserService.getClientByUid(user?.uid).then(userByUid => {
+      ClientService.getClientByUid(user?.uid).then(userByUid => {
         addPoints(userByUid.points);
         PaymentService.getTransactionsByUser(userByUid.uid_firebase).then(
           transactions => setTransactionsByUser(transactions),

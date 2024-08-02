@@ -16,14 +16,6 @@ export class CouponService {
         endDate: new Date(),
         state: true,
       });
-      console.log({
-        name: 'Cupon 01',
-        description: 'descripción cupón 01',
-        cupon_type: 'discount',
-        startDate: new Date(),
-        endDate: new Date(),
-        state: true,
-      });
       return data;
     } catch (error) {
       parseError(this.PREFIX + '/createCupon', error);

@@ -8,7 +8,7 @@ import {
   BottomTapNavigationDelivery,
   BottomTapNavigationDriver,
 } from '../screens/home/home-screen';
-import {ProductsCartScreen, RefillsScreen, ChatBotScreen} from '../screens';
+import { ProductsCartScreen, ChatBotScreen, RechargeScreen, OrderScreen, RegisterScreen} from '../screens';
 import {CouponsScreen} from './top-tap-coupons-navigation';
 import {HistoryScreen} from '../screens';
 import {StackRechargeNavigation} from './stack-recharge-navigation';
@@ -95,7 +95,7 @@ export function DrawerNavigation() {
                 <CustomIcon fill={color} name="credit-card" />
               ),
             }}
-            name="RefillsScreen"
+            name="RechargeScreen"
             component={StackRechargeNavigation}
           />
           <Screen
@@ -159,8 +159,8 @@ export function DrawerNavigation() {
                 <CustomIcon fill={color} name="credit-card" />
               ),
             }}
-            name="RefillsScreen"
-            component={RefillsScreen}
+            name="RechargeScreen"
+            component={RechargeScreen}
           />
         </>
       )}

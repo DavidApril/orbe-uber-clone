@@ -70,8 +70,6 @@ export const RegisterWorkerForm = () => {
         image[0].uri.split('/').reverse()[0],
       );
 
-      console.log('all ok');
-
       navigation.navigate('RegisterUserDocumentsScreen');
     } catch (error) {
       parseError('error at upload image', error);
@@ -184,7 +182,7 @@ export const RegisterWorkerForm = () => {
                       borderRadius: 100,
                     }}
                     source={{
-                      uri: image,
+                      uri: StorageService.getPhotoFromCache(image),
                     }}
                   />
                 )}
@@ -200,14 +198,8 @@ export const RegisterWorkerForm = () => {
                   <CButton
                     label="Abrir cámara"
                     onPress={async () => {
-                      launchCamera({mediaType: 'photo'}, response => {
-                        if (response.didCancel) {
-                        } else if (response.errorCode) {
-                        } else {
-                          // @ts-ignore
-                          setImage(response.assets[0]);
-                        }
-                      });
+                      const picture = await CameraAdapter.takePicture();
+                      setImage(picture[0]);
                     }}
                   />
                 </View>

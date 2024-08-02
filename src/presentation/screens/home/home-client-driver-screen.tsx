@@ -26,15 +26,12 @@ export const HomeClientDriverScreen = () => {
     setCurrentDriverAcceptRace,
     setNearbyDrivers,
     setRaceData,
+    searchingDriver,
   } = useClientDriverStore();
   const {socket, online} = useSocket(`${API_SOCKET_URL}/location-client`);
   const {socket: raceWaitsSocket} = useSocket(
     `${API_SOCKET_URL}/client-driver-wait`,
   );
-
-  useEffect(() => {
-    console.log(online);
-  }, [online]);
 
   const checkout = async () => {};
 
@@ -45,20 +42,20 @@ export const HomeClientDriverScreen = () => {
   }, [payWithCard]);
 
   useEffect(() => {
-    const sendClientLocation = setInterval(() => {
-      const payload = {
-        id: user?.uid,
-        longitud: lastKnownLocation?.longitude,
-        latitud: lastKnownLocation?.latitude,
-      };
-      socket.emit('message-client', payload);
-    }, 5000);
-
-    return () => clearInterval(sendClientLocation);
+    const payload = {
+      id: user?.uid,
+      longitud: lastKnownLocation?.longitude,
+      latitud: lastKnownLocation?.latitude,
+    };
+    socket.emit('message-client', payload);
+    return () => {
+      socket.off();
+    };
   }, [lastKnownLocation]);
 
   useEffect(() => {
     socket.on('conductores-cercanos', data => {
+      console.log(data)
       setNearbyDrivers(data);
     });
 

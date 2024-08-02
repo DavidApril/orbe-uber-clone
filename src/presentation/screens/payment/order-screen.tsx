@@ -13,11 +13,6 @@ import {View} from 'react-native';
 
 export const OrderScreen = () => {
   const {socket, online} = useSocket('products-delivery');
-  console.log({API_SOCKET_URL});
-
-  useEffect(() => {
-    console.log({online});
-  }, [online]);
 
   return (
     <CView style={{flex: 1}}>

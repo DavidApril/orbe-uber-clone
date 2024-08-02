@@ -12,14 +12,13 @@ import {CustomIcon} from '../ui/custom-icon';
 import {DriverInformationCard} from '../worker/driver-information-card';
 import {useClientDriverStore} from '../../../store/client/client-driver-store';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {useUIStore} from '../../../store';
+import {useAuthStore, useUIStore} from '../../../store';
 import {globalColors} from '../../theme/styles';
 
 export const BSSelectOriginDestination = () => {
   const SearchingDriverBottomSheetRef = useRef<BottomSheet>(null);
-
+  const {userByUid} = useAuthStore();
   const snapPoints = useMemo(() => ['25%', '90%'], []);
-
   const {height, width} = useWindowDimensions();
 
   const {isDarkMode} = useUIStore();
@@ -159,7 +158,7 @@ export const BSSelectOriginDestination = () => {
                   key={driver.uid_firebase}
                   currentDriverAcceptRace={currentDriverAcceptRace}
                   createRequest={() => {
-                    createRequest(driver.id.toString());
+                    createRequest(driver.id.toString(), userByUid.uid_firebase);
                   }}
                   raceData={raceData}
                   driver={driver}

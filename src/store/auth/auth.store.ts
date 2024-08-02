@@ -6,11 +6,13 @@ import {
   ClientRegisterForm,
   DELIVERY,
   DRIVER,
+  GetClientByUidResponseData,
   WorkerDocument,
   WorkerRegisterForm,
   WorkerVehicle,
 } from '../../interfaces';
-import {AuthService, ClientService} from '../../services';
+import {AuthService, ClientService, WorkerService} from '../../services';
+import {parseError} from '../../utils';
 
 export interface AuthState {
   status: AuthStatus;
@@ -19,10 +21,10 @@ export interface AuthState {
   role: CLIENT | DELIVERY | DRIVER | null;
   registerForm: ClientRegisterForm | WorkerRegisterForm | any;
   image_url: string | null;
-  userByUid: UserResponseByUid | null;
+  userByUid: GetClientByUidResponseData | null;
   workerDocuments: WorkerDocument[];
   WorkerVehicle: WorkerVehicle | null;
-  setUserByUid: (user: ClientResponseByUid) => void;
+  setUserByUid: (user: GetClientByUidResponseData) => void;
   setRole: (role: DRIVER | CLIENT | DELIVERY) => void;
   setRegisterForm: (form: ClientRegisterForm & WorkerRegisterForm) => void;
   registerImage: (image_url: string) => void;
@@ -33,7 +35,7 @@ export interface AuthState {
   resetPassword: (actionCode: string, newPassword: string) => Promise<void>;
   googleSignIn: () => Promise<void>;
   addWorkerDocument: (document: WorkerDocument) => void;
-
+  // addVehicleDocument: (document: any) => void;
 }
 
 const storeApi: StateCreator<AuthState> = (set, get) => ({
@@ -56,19 +58,20 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
     set(state => ({
       workerDocuments: [...state.workerDocuments, document],
     })),
-  addVehicleDocument: document =>
-    set(state => ({
-      workerDocuments: [...state.workerDocuments, document],
-    })),
+  // addVehicleDocument: document =>
+  //   set(state => ({
+  //     WorkerVehicle: [...state.workerDocuments, document],
+  //   })),
+
   login: async (email: string, password: string) => {
     try {
       const {user, token} = await AuthService.login(email, password);
-      console.log(user);
+      console.log({token});
       const userByUID = await ClientService.getClientByUid(user.uid);
 
-      set({userByUid: userByUID});
+      if(!userByUID) throw new Error("error at get user by uid");
 
-      console.log({userByUID});
+      set({userByUid: userByUID});
 
       if (userByUID != null) {
         if (!!userByUID.cliente) {
@@ -83,7 +86,7 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
       set({status: 'authorized', token, user});
       return {ok: true};
     } catch (error) {
-      console.log({error});
+      parseError('auth/login', error);
       set({status: 'unauthorized', token: undefined, user: undefined});
       return {ok: false};
     }

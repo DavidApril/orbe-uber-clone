@@ -9,4 +9,5 @@ export * from './chatbot/chatbot.service';
 export * from './coupon/coupon.service';
 export * from './payment/payment.service';
 export * from './configurations/configurations-service';
-export * from './order/order.services';
+export * from './race/race.services';
+export * from './order/order.service';

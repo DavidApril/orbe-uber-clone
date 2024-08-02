@@ -47,12 +47,10 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
   } = useDeliveryStore();
 
   useEffect(() => {
-    console.log({productImage});
   }, [productImage]);
 
   useEffect(() => {
     socket.on('request-restaurant', data => {
-      console.log({data});
       // data.client_request.forEach((request: any) => {
       //   if (request.coordinates) {
       //     setDeliveryRequests([...deliveryRequests, request]);
@@ -68,7 +66,6 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
   }, []);
 
   const sendDeliveryLocation = () => {
-    console.log('enviando');
     // socket.emit('location-driver', {
     //   id: user?.uid,
     //   longitud: lastKnownLocation?.longitude,
@@ -125,7 +122,6 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
           isActive={deliveryServiceIsActive}
           setIsActive={setDeliveryServiceIsActive}
           onPress={() => {
-            console.log({deliveryRequests});
             setDeliveryRequests([0]);
           }}
         />

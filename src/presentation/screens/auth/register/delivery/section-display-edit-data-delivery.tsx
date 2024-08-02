@@ -16,7 +16,6 @@ export const SectionDisplayEditDataDelivery = () => {
 
     try {
       setIsLoading(true);
-      console.log({registerForm});
       await UserService.createDelivery(registerForm, image_url);
       await login(email, password);
       setIsLoading(false);

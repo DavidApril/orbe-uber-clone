@@ -9,6 +9,7 @@ import {
 import {
   ActiveServicesButton,
   ClientInformationCard,
+  ClientInformationCardDriver,
   CustomMapView,
   FAB,
   OpenDrawerMenu,
@@ -16,20 +17,18 @@ import {
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
 import {Button, Layout, List} from '@ui-kitten/components';
-import {useColorScheme, View} from 'react-native';
+import {FlatList, useColorScheme, View} from 'react-native';
 
 import {RootStackParams} from '../../../interfaces';
 import {globalColors} from '../../theme/styles';
 import {currencyFormat} from '../../../utils';
-import {RacesService} from '../../../services';
 import {StackScreenProps} from '@react-navigation/stack';
-import { API_SOCKET_URL } from '@env';
-
+import {API_SOCKET_URL} from '@env';
+import {OrderService, RaceService} from '../../../services';
 
 interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 
-export const HomeDriverScreen = ({navigation}: Props) => {
-  const colorScheme = useColorScheme();
+export const HomeDriverScreen = ({}: Props) => {
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
   const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
@@ -37,15 +36,15 @@ export const HomeDriverScreen = ({navigation}: Props) => {
 
   const {
     driverServiceIsActive,
-    setDriverServiceIsActive,
     origin,
     destination,
     analyzingRace,
-    setAnalyzingRace,
     currentRaceAccepted,
     currentRequest,
     driverRequests,
     raceData,
+    setDriverServiceIsActive,
+    setAnalyzingRace,
     setCurrentRaceAccepted,
     setRaceData,
     setDriverRequests,
@@ -53,7 +52,6 @@ export const HomeDriverScreen = ({navigation}: Props) => {
 
   useEffect(() => {
     socket.on('driver-request', data => {
-      console.log(data.client_request);
       data.client_request.forEach((request: any) => {
         if (request.coordinates) {
           setDriverRequests([...driverRequests, request]);
@@ -77,10 +75,6 @@ export const HomeDriverScreen = ({navigation}: Props) => {
   };
 
   useEffect(() => {
-    console.log({online});
-  }, [online]);
-
-  useEffect(() => {
     if (!driverServiceIsActive) return;
     const driverLocationInterval = setInterval(() => {
       sendDriverLocation();
@@ -96,26 +90,21 @@ export const HomeDriverScreen = ({navigation}: Props) => {
     <View style={{flex: 1}}>
       <OpenDrawerMenu />
       {driverRequests.length > 0 && driverServiceIsActive && (
-        <List
+        <FlatList
           style={{
             position: 'absolute',
             zIndex: 999,
             top: 80,
             left: 5,
             right: 5,
-            backgroundColor:
-              colorScheme === 'dark'
-                ? globalColors.primaryColors.primaryDark
-                : globalColors.primaryColors.primaryLight,
             borderRadius: 30,
             marginBottom: 5,
             paddingHorizontal: 20,
             paddingVertical: 10,
-            // alignItems: 'center',
           }}
           data={driverRequests}
           renderItem={({item: request}) => (
-            <ClientInformationCard request={request} />
+            <ClientInformationCardDriver request={request} />
           )}
         />
       )}
@@ -127,8 +116,8 @@ export const HomeDriverScreen = ({navigation}: Props) => {
         origin={analyzingRace ? origin : null}
         initialLocation={lastKnownLocation!}
       />
-
-      {!analyzingRace ? (
+      {/* !analyzingRace  !!!!  */}
+      {!analyzingRace &&  driverRequests.length === 0 ? (
         <ActiveServicesButton
           isActive={driverServiceIsActive}
           setIsActive={setDriverServiceIsActive}
@@ -198,7 +187,7 @@ export const HomeDriverScreen = ({navigation}: Props) => {
               </Button>
               <Button
                 onPress={async () => {
-                  const response = await RacesService.acceptRequest(
+                  const response = await RaceService.acceptOrder(
                     currentRequest.id_client,
                     currentRequest.id_driver,
                     currentRequest.id,

@@ -1,12 +1,12 @@
 import {orbeApi} from '../../config/api';
 import {parseError} from '../../utils';
 
-export class OrderService {
+export class RaceService {
   static PREFIX: string = 'request';
 
   static createOrder = async (config: {
-    id_delivery: string;
-    id_restaurant: string;
+    id_client: string;
+    id_driver: string;
     origin: {
       latitude: number;
       longitude: number;
@@ -29,8 +29,8 @@ export class OrderService {
           longitud: config.destination?.longitude,
         },
       ],
-      id_restaurant: config.id_restaurant,
-      id_delivery: config.id_delivery,
+      id_client: config.id_client,
+      id_driver: config.id_driver,
     };
 
     try {
@@ -46,8 +46,8 @@ export class OrderService {
   };
 
   static acceptOrder = async (
-    id_restaurant: string,
-    id_delivery: string,
+    id_client: string,
+    id_driver: string,
     id_request: string,
     price: number,
   ) => {
@@ -55,8 +55,8 @@ export class OrderService {
       const {data: acceptRequestResponse} = await orbeApi.post(
         `/${this.PREFIX}/acceptRequest`,
         {
-          id_restaurant,
-          id_delivery,
+          id_client,
+          id_driver,
           id_request,
           price,
         },
@@ -64,6 +64,14 @@ export class OrderService {
       return acceptRequestResponse;
     } catch (error) {
       parseError(this.PREFIX + '/acceptRequest', error);
+    }
+  };
+
+  static createRequest = async () => {
+    try {
+      const {} = await orbeApi.post(`/${this.PREFIX}/`);
+    } catch (error) {
+      parseError(this.PREFIX + '/createRequest', error);
     }
   };
 }

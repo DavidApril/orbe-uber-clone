@@ -171,7 +171,6 @@ export const RegisterDeliveryForm = () => {
               <Button
                 // disabled={!isValid}
                 onPress={() => {
-                  console.log({errors});
                   handleSubmit();
                 }}
                 style={{marginTop: 20}}>

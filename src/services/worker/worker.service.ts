@@ -5,6 +5,7 @@ import type {
   DELIVERY,
   DRIVER,
   GetDeliveryByUidResponse,
+  GetDeliveryByUidResponseData,
   GetDeliveryByUserIDResponse,
   GetDriverByUidResponse,
   GetDriverByUserIDResponse,
@@ -150,7 +151,9 @@ export class WorkerService {
     }
   };
 
-  static getDeliveryByUid = async (uid: string) => {
+  static getDeliveryByUid = async (
+    uid: string,
+  ): Promise<GetDeliveryByUidResponseData | null> => {
     try {
       // TODO: response interface
       const {data: response}: {data: GetDeliveryByUidResponse} =
@@ -160,7 +163,8 @@ export class WorkerService {
 
       return response.data;
     } catch (error) {
-      console.log({error});
+      parseError(this.PREFIX + '/getDeliveryByUid', error);
+      return null;
     }
   };
 

@@ -1,11 +1,10 @@
 import {Button, Spinner, Text} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
-import {StorageService} from '../../../services';
+import {StorageService, WorkerService} from '../../../services';
 import {currencyFormat} from '../../../utils';
 import {globalColors, globalDimensions} from '../../theme/styles';
 import {Image, View} from 'react-native';
-import {useUIStore} from '../../../store';
 import {CViewAlpha} from '../ui/custom-view-alpha';
 
 interface Props {
@@ -23,12 +22,11 @@ export const DriverInformationCard = ({
 }: Props) => {
   const [driverData, setDriverData] = useState<any>();
   const [loadingRequest, setLoadingRequest] = useState<boolean>(false);
-  const {isDarkMode} = useUIStore();
 
   const getDriverData = async () => {
-    const response = await DriverService.getDriverByUserUid(driver.id);
+    const response = await WorkerService.getDriverByUserId(driver.id);
     if (response && !driverData) {
-      setDriverData(response.data);
+      setDriverData(response);
     }
   };
 

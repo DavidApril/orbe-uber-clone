@@ -171,7 +171,6 @@ export const RegisterDriverForm = () => {
               <Button
                 // disabled={!isValid}
                 onPress={() => {
-                  console.log({errors});
                   handleSubmit();
                 }}
                 style={{marginTop: 20}}>

@@ -1,6 +1,6 @@
 import {create} from 'zustand';
-import {DriverResponseByUidData, Location} from '../../interfaces';
-import {RacesService} from '../../services';
+import {Location} from '../../interfaces';
+import { RaceService } from '../../services';
 
 export type Race = {
   distance: number;
@@ -57,7 +57,7 @@ export const useClientDriverStore = create<ClientDriverStore>()((set, get) => ({
     }
 
     try {
-      await RacesService.createRequest({
+      await RaceService.createOrder({
         id_client: uid_user,
         id_driver: id_driver,
         origin: {

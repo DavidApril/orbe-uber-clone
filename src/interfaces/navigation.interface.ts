@@ -23,7 +23,7 @@ export type RootStackParams = {
   CheckoutScreen: undefined;
   ShoppingHistoryScreen: undefined;
   ShoppingHistoryItemScreen: undefined;
-  RefillsScreen: undefined;
+  RechargeScreen: undefined;
   ChatBotScreen: undefined;
 
   MyCardsScreen: undefined;

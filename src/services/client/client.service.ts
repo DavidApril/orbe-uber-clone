@@ -5,9 +5,12 @@ import {
   ClientRegisterForm,
   ClientUpdatedForm,
   CreateClienteResponse,
+  GetClientByUidResponse,
+  GetClientByUidResponseData,
 } from '../../interfaces';
 import {auth} from '../../config/firebase/config';
 import {parseError} from '../../utils';
+import axios from 'axios';
 
 export class ClientService {
   static PREFIX = 'user';
@@ -38,9 +41,11 @@ export class ClientService {
           ],
         });
 
+      console.log({response});
+
       return response.data;
     } catch (error) {
-      parseError('createClient', error);
+      parseError(this.PREFIX + 'createClient', error);
     }
   };
 
@@ -61,12 +66,10 @@ export class ClientService {
 
   static getClientByUid = async (uid: string) => {
     try {
-      // TODO: response interface
-      const {data: response} = await orbeApi.get(
-        `/${this.PREFIX}/getUserByUid?uid_firebase=${uid}`,
+      
+      const {data: response} = await axios.get(
+        `https://orbeapi.devzeros.com/api_v1/user/getUserByUid?uid_firebase=${uid}`,
       );
-
-      console.log({response});
 
       return response.data;
     } catch (error) {
@@ -75,7 +78,6 @@ export class ClientService {
       return undefined;
     }
   };
-
   static updateClient = async (clientUpdated: ClientUpdatedForm) => {
     try {
       // TODO: response interface
