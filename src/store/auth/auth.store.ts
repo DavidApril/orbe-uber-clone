@@ -5,32 +5,26 @@ import {
   CLIENT,
   ClientRegisterForm,
   DELIVERY,
-  DeliveryRegisterForm,
   DRIVER,
-  DriverRegisterForm,
-  UserResponseByUid,
+  WorkerDocument,
+  WorkerRegisterForm,
+  WorkerVehicle,
 } from '../../interfaces';
-import {AuthService, UserService} from '../../services';
-import { API_URL } from '@env';
+import {AuthService, ClientService} from '../../services';
 
 export interface AuthState {
   status: AuthStatus;
   token?: string;
   user?: User;
   role: CLIENT | DELIVERY | DRIVER | null;
-  registerForm:
-    | DriverRegisterForm
-    | ClientRegisterForm
-    | DeliveryRegisterForm
-    | any;
+  registerForm: ClientRegisterForm | WorkerRegisterForm | any;
   image_url: string | null;
   userByUid: UserResponseByUid | null;
-
+  workerDocuments: WorkerDocument[];
+  WorkerVehicle: WorkerVehicle | null;
   setUserByUid: (user: ClientResponseByUid) => void;
   setRole: (role: DRIVER | CLIENT | DELIVERY) => void;
-  setRegisterForm: (
-    form: DriverRegisterForm & ClientRegisterForm & DeliveryRegisterForm,
-  ) => void;
+  setRegisterForm: (form: ClientRegisterForm & WorkerRegisterForm) => void;
   registerImage: (image_url: string) => void;
   login: (email: string, password: string) => Promise<{ok: boolean}>;
   logout: () => void;
@@ -38,31 +32,43 @@ export interface AuthState {
   sendPasswordResetEmail: (email: string) => Promise<void>;
   resetPassword: (actionCode: string, newPassword: string) => Promise<void>;
   googleSignIn: () => Promise<void>;
+  addWorkerDocument: (document: WorkerDocument) => void;
+
 }
 
 const storeApi: StateCreator<AuthState> = (set, get) => ({
-  status: 'unauthorized',
-  token: undefined,
   user: undefined,
+  token: undefined,
+  status: 'unauthorized',
 
   role: null,
+  userByUid: null,
   registerForm: null,
   image_url: null,
-
-  userByUid: null,
+  workerDocuments: [],
+  WorkerVehicle: null,
 
   setUserByUid: userByUid => set({userByUid}),
   setRole: role => set({role}),
   registerImage: image_url => set({image_url}),
   setRegisterForm: form => set({registerForm: form}),
+  addWorkerDocument: document =>
+    set(state => ({
+      workerDocuments: [...state.workerDocuments, document],
+    })),
+  addVehicleDocument: document =>
+    set(state => ({
+      workerDocuments: [...state.workerDocuments, document],
+    })),
   login: async (email: string, password: string) => {
     try {
       const {user, token} = await AuthService.login(email, password);
-      const userByUID = await UserService.getClientByUid(user.uid);
+      console.log(user);
+      const userByUID = await ClientService.getClientByUid(user.uid);
 
       set({userByUid: userByUID});
 
-      console.log({userByUID})
+      console.log({userByUID});
 
       if (userByUID != null) {
         if (!!userByUID.cliente) {
@@ -73,7 +79,6 @@ const storeApi: StateCreator<AuthState> = (set, get) => ({
           set({role: DELIVERY});
         }
       }
-
 
       set({status: 'authorized', token, user});
       return {ok: true};

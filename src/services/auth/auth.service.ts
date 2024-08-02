@@ -14,6 +14,9 @@ import {INVALID_CREDENTIALS} from '../../interfaces';
 import {orbeApi} from '../../config/api';
 
 export class AuthService {
+
+  static PREFIX: string = 'auth'
+
   static login = async (
     email: string,
     password: string,

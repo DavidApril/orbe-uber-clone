@@ -20,7 +20,7 @@ export const HistoryShoppingScreen = ({navigation}: Props) => {
   // const {isDarkMode} = useUIStore();
   const {transactionsByUser, setTransactionsByUser} = usePaymentStore();
   const {userByUid} = useAuthStore();
-
+  console.log(userByUid?.uid_firebase)
   useEffect(() => {
     PaymentService.getTransactionsByUser(userByUid!.uid_firebase).then(
       transactions => setTransactionsByUser(transactions),

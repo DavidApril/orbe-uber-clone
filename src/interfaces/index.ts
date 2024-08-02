@@ -2,11 +2,10 @@ export * from './errors.interfaces';
 export * from './auth.interface';
 export * from './permissions.interface';
 export * from './location.interface';
-export * from './driver.interface';
-export * from './client.interface';
+export * from './worker.interface';
 export * from './consts';
+export * from './client.interface'
 export * from './navigation.interface';
-export * from './delivery.interfaces';
 export * from './restaurant.interface';
 export * from './cart.interface';
 export * from './chatbot.interface';

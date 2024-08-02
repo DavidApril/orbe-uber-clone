@@ -1,12 +1,14 @@
 import {orbeApi} from '../../config/api';
 import {Coupon} from '../../interfaces';
+import {parseError} from '../../utils';
 
 export class CouponService {
+  static PREFIX: string = 'cupon';
   static take: number = 5;
-
+  
   static async createCoupon() {
     try {
-      const {data} = await orbeApi.post(`/cupon/createCupon`, {
+      const {data} = await orbeApi.post(`/${this.PREFIX}/createCupon`, {
         name: 'Cupon 01',
         description: 'descripción cupón 01',
         cupon_type: 'discount',
@@ -24,7 +26,7 @@ export class CouponService {
       });
       return data;
     } catch (error) {
-      console.log({error});
+      parseError(this.PREFIX + '/createCupon', error);
     }
   }
 
@@ -34,22 +36,26 @@ export class CouponService {
   ): Promise<Coupon[]> {
     try {
       const {data: response}: {data: {data: Coupon[]}} = await orbeApi.get(
-        `/cupon/getCupons?skip=${skip}&take=${take}`,
+        `/${this.PREFIX}/getCupons?skip=${skip}&take=${take}`,
       );
       return response.data;
     } catch (error) {
-      console.log({error});
+      parseError(this.PREFIX + '/getCupons', error);
       return [];
     }
   }
 
   static async addCouponUser(idCoupon: number, uidUser: string) {
     try {
-      const {data: response} = await orbeApi.post(`/coupon/addCuponUser`, {
-        idCoupon,
-        uidUser,
-      });
-      console.log(response);
-    } catch (error) {}
+      const {data: response} = await orbeApi.post(
+        `/${this.PREFIX}/addCuponUser`,
+        {
+          idCoupon,
+          uidUser,
+        },
+      );
+    } catch (error) {
+      parseError(this.PREFIX + '/addCuponUser', error);
+    }
   }
 }

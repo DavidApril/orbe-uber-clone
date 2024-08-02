@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {CModal} from '../ui/custom-modal';
 import {CViewAlpha} from '../ui/custom-view-alpha';
 import {FlatList, Pressable, Text, TextInput, View} from 'react-native';
-import {parseNumberToText, parseTextToNumber} from '../../../utils';
+import {parseError, parseNumberToText, parseTextToNumber} from '../../../utils';
 import {globalColors, stateColors} from '../../theme/styles';
 import {CTextHeader} from '../ui/custom-text-header';
 import {CreditCard} from '../wallet/credit-card';
@@ -88,7 +88,7 @@ export const ModalRefill = ({
         addPoints(+rechargeValue / response.value);
       }
     } catch (error) {
-      console.log({error});
+      parseError('createClient', error);
     }
 
     setIsPaying(false);

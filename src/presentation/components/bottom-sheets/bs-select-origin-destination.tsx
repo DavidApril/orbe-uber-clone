@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Spinner} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
-import {DriverInformationCard} from '../driver/driver-information-card';
+import {DriverInformationCard} from '../worker/driver-information-card';
 import {useClientDriverStore} from '../../../store/client/client-driver-store';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {useUIStore} from '../../../store';

@@ -1,6 +1,9 @@
-import { orbeApi } from "../../config/api";
+import {orbeApi} from '../../config/api';
+import {parseError} from '../../utils';
 
 export class OrderService {
+  static PREFIX: string = 'request';
+
   static createOrder = async (config: {
     id_delivery: string;
     id_restaurant: string;
@@ -32,17 +35,17 @@ export class OrderService {
 
     try {
       const {data: response} = await orbeApi.post(
-        `/request/createRequest`,
+        `/${this.PREFIX}/createRequest`,
         request,
       );
 
       return response;
     } catch (error) {
-      console.log(error);
+      parseError(this.PREFIX + '/createRequest', error);
     }
   };
 
-  static acceptRequest = async (
+  static acceptOrder = async (
     id_restaurant: string,
     id_delivery: string,
     id_request: string,
@@ -50,7 +53,7 @@ export class OrderService {
   ) => {
     try {
       const {data: acceptRequestResponse} = await orbeApi.post(
-        '/request/acceptRequest',
+        `/${this.PREFIX}/acceptRequest`,
         {
           id_restaurant,
           id_delivery,
@@ -60,10 +63,7 @@ export class OrderService {
       );
       return acceptRequestResponse;
     } catch (error) {
-      console.log({error});
+      parseError(this.PREFIX + '/acceptRequest', error);
     }
   };
-
-
-
 }

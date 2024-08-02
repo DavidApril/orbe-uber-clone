@@ -1,12 +1,13 @@
 import {Button, Input, Layout} from '@ui-kitten/components/ui';
 import {Formik} from 'formik';
 import React from 'react';
-import * as Yup from 'yup';
 import {ClientRegisterForm} from '../../../../../interfaces';
 import {useAuthStore} from '../../../../../store';
 import {ClientService} from '../../../../../services/client/client.service';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import i18n from '../../../../../config/i18n/i18n';
+import { parseError } from '../../../../../utils';
+import * as Yup from 'yup';
 
 export const RegisterClientForm = () => {
   const validationSchema = Yup.object({
@@ -44,7 +45,7 @@ export const RegisterClientForm = () => {
       await ClientService.createClient(values);
       await login(values!.email, values.password);
     } catch (error) {
-      console.log({error});
+      parseError('createClient', error);
     }
   }
 

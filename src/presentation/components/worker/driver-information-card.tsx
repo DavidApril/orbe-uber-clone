@@ -1,7 +1,7 @@
 import {Button, Spinner, Text} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
-import {DriverService, StorageService} from '../../../services';
+import {StorageService} from '../../../services';
 import {currencyFormat} from '../../../utils';
 import {globalColors, globalDimensions} from '../../theme/styles';
 import {Image, View} from 'react-native';
@@ -64,7 +64,7 @@ export const DriverInformationCard = ({
             <Image
               style={{height: 80, width: 80, borderRadius: 50}}
               source={{
-                uri: StorageService.getPhotoByFilename('product/image.png')
+                uri: StorageService.getPhotoByFilename('product/image.png'),
               }}
             />
           </View>

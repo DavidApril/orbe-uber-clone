@@ -19,6 +19,12 @@ export * from './ui/text-header-screen';
 export * from './ui/active-services';
 export * from './ui/im-here-button';
 export * from './ui/accept-cancel-button';
+export * from './ui/accept-cancel-button';
+export * from './ui/buttons/button';
+export * from './ui/inputs/upload-document';
+export * from './ui/inputs/upload-image';
+export * from './ui/inputs/custom-input';
+export * from './ui/inputs/custom-text-area';
 
 export * from './bottom-tabs/custom-bottom-tabs';
 
@@ -30,7 +36,10 @@ export * from './client/select-origin-destination';
 export * from './client/client-information-card';
 export * from './client/payment-controllers';
 
-export * from './driver/driver-information-card';
+export * from './worker/driver-information-card';
+export * from './worker/analize-order-button';
+export * from './worker/register-vehicle-form';
+export * from './worker/register-worker-form';
 
 export * from './tabs/custom-top-tap-navigation';
 
