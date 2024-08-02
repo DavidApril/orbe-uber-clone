@@ -1,4 +1,24 @@
 {
   "welcome": "Bienvenido",
-  "login": "Iniciar sesión"
+  "change-language": "Cambiar idioma a ingles",
+  "please, log in to continue" : "Por favor, ingrese para continuar",
+  "login": "Ingresar",
+  "email-address": "Correo electronico",
+  "password": "Contraseña",
+  "you do not have an account?": "¿No tienes cuenta?",
+  "create one here": "crea una aquí",
+  "register": "Registro",
+  "register-client": "Registro cliente",
+  "register-driver": "Registro conductor",
+  "register-delivery": "Registro repartidor",
+  "enter-the-following-information-to-register": "Ingresa los siguientes datos para registrarte",
+  "name": "Nombres",
+  "lastname": "Apellidos",
+  "identification": "Numero de identificacion",
+  "phone": "Numero",
+  "confirm-password": "Confirmar contraseña",
+  "next": "Siguiente",
+  "quick-and": "Rapidas &  ",
+  "delicious": "deliciosas",
+  "fast-food": "comidas"
 }

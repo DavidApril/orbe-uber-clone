@@ -13,6 +13,8 @@ import {SingleRestaurantResponse} from '../../../interfaces';
 import {OpenDrawerMenu, RestaurantCard} from '../../components';
 import {globalColors, globalDimensions} from '../../theme/styles';
 import {useUIStore} from '../../../store';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../../config/i18n/i18n';
 
 export const HomeClientDeliveryScreen = ({navigation}: any) => {
   const [loadingInfo, setLoadingInfo] = useState(false);
@@ -20,6 +22,8 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
   const [restaurants, setRestaurants] = useState<
     SingleRestaurantResponse[] | null
   >(null);
+
+  const {t} = useTranslation()
 
   const getRestaurants = async () => {
     const restaurants = await RestaurantService.getRestaurants();
@@ -37,7 +41,8 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
   return (
     <>
       {loadingInfo ? (
-        <View
+        <I18nextProvider i18n={i18n}>
+          <View
           style={{
             flex: 1,
             flexDirection: 'column',
@@ -58,15 +63,15 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
               fontWeight: '300',
               zIndex: 999,
             }}>
-            Rápidas &{' '}
+            {t('quick-and')}{' '}
             <Text
               style={{
                 fontWeight: 'bold',
                 color: globalColors.primaryColors.primary,
               }}>
-              deliciosas
+              {t('delicious')}
             </Text>{' '}
-            comidas
+            {t('fast-food')}
           </Text>
           <View
             style={{
@@ -119,6 +124,7 @@ export const HomeClientDeliveryScreen = ({navigation}: any) => {
           <OpenDrawerMenu />
 
         </View>
+        </I18nextProvider>
       ) : (
         <View>
           <LoadingScreen />

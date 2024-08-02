@@ -13,6 +13,9 @@ import {
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 import {DrawerNavigation} from './drawer-navigation';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../config/i18n/i18n';
+import { globalColors } from '../theme/styles';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -25,10 +28,12 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
 };
 
 export const StackNavigator = () => {
+  const {t} = useTranslation()
   return (
-    <Navigator
+    <I18nextProvider i18n={i18n}>
+      <Navigator
       initialRouteName="LoginScreen"
-      screenOptions={{headerShown: true}}>
+      screenOptions={{headerShown: true, headerTintColor: globalColors.primaryColors.primary}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
         name="LoadingScreen"
@@ -43,14 +48,14 @@ export const StackNavigator = () => {
         component={LoginScreen}
       />
       <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
+        options={{cardStyleInterpolator: fadeAnimation, title: t('register')}}
         name="RegisterScreen"
         component={RegisterScreen}
       />
       <Screen
         options={{
           cardStyleInterpolator: fadeAnimation,
-          title: 'Registro Driver',
+          title: t('register-driver'),
         }}
         name="RegisterDriverScreen"
         component={RegisterDriverScreen}
@@ -58,7 +63,7 @@ export const StackNavigator = () => {
       <Screen
         options={{
           cardStyleInterpolator: fadeAnimation,
-          title: 'Registro cliente',
+          title: t('register-client'),
         }}
         name="RegisterClientScreen"
         component={RegisterClientScreen}
@@ -66,7 +71,7 @@ export const StackNavigator = () => {
       <Screen
         options={{
           cardStyleInterpolator: fadeAnimation,
-          title: 'Registro delivery',
+          title: t('register-delivery'),
         }}
         name="RegisterDeliveryScreen"
         component={RegisterDeliveryScreen}
@@ -77,5 +82,6 @@ export const StackNavigator = () => {
         component={DrawerNavigation}
       />
     </Navigator>
+    </I18nextProvider>
   );
 };

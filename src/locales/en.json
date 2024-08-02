@@ -1,4 +1,24 @@
 {
-  "welcome": "Bienvenido",
-  "login": "Iniciar sesión"
+  "welcome": "Welcome",
+  "change-language": "Change language to spanish",
+  "please, log in to continue" : "Please, log in to continue",
+  "login": "Login",
+  "email-address": "Email address",
+  "password": "Password",
+  "you do not have an account?": "You do not have an account?",
+  "create one here": "create one here",
+  "register": "Register",
+  "register-client": "Register client",
+  "register-driver": "Register driver",
+  "register-delivery": "Register delivery",
+  "enter-the-following-information-to-register": "Enter the following information to register",
+  "name": "Name",
+  "lastname": "Lastname",
+  "identification": "Identification",
+  "phone": "Phone",
+  "confirm-password": "Confirm password",
+  "next": "Next",
+  "quick-and-delicious-fast-food": "Quick &  ",
+  "delicious": "delicious",
+  "fast-food": "fast food"
 }

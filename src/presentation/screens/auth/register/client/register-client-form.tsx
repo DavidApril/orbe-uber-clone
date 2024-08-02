@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 import {ClientRegisterForm} from '../../../../../interfaces';
 import {useAuthStore} from '../../../../../store';
 import {ClientService} from '../../../../../services/client/client.service';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../../../../config/i18n/i18n';
 
 export const RegisterClientForm = () => {
   const validationSchema = Yup.object({
@@ -19,6 +21,8 @@ export const RegisterClientForm = () => {
       // @ts-ignore
       .oneOf([Yup.ref('password'), null], 'Passwords must match'),
   });
+
+  const {t} = useTranslation()
 
   const initialValues: ClientRegisterForm = {
     firstName: '',
@@ -45,7 +49,8 @@ export const RegisterClientForm = () => {
   }
 
   return (
-    <Formik
+    <I18nextProvider i18n={i18n}>
+      <Formik
       validationSchema={validationSchema}
       initialValues={initialValues}
       onSubmit={onSubmit}>
@@ -61,7 +66,7 @@ export const RegisterClientForm = () => {
             }
             value={values.firstName}
             onChangeText={handleChange('firstName')}
-            placeholder="Nombres"
+            placeholder={t('name')}
             autoCapitalize="words"
           />
 
@@ -75,7 +80,7 @@ export const RegisterClientForm = () => {
             }
             value={values.lastName}
             onChangeText={handleChange('lastName')}
-            placeholder="Apellidos"
+            placeholder={t('lastname')}
             autoCapitalize="words"
           />
 
@@ -97,7 +102,7 @@ export const RegisterClientForm = () => {
             onChangeText={handleChange('identification')}
             inputMode="numeric"
             keyboardType="numbers-and-punctuation"
-            placeholder="Número de identificación"
+            placeholder={t("identification")}
           />
 
           <Input
@@ -112,7 +117,7 @@ export const RegisterClientForm = () => {
             onChangeText={handleChange('email')}
             inputMode="email"
             keyboardType="email-address"
-            placeholder="Correo electrónico"
+            placeholder={t("email-address")}
           />
 
           <Input
@@ -128,7 +133,7 @@ export const RegisterClientForm = () => {
             inputMode="numeric"
             dataDetectorTypes="phoneNumber"
             keyboardType="phone-pad"
-            placeholder="Número de teléfono"
+            placeholder={t("phone")}
           />
 
           <Input
@@ -141,7 +146,7 @@ export const RegisterClientForm = () => {
             }
             value={values.password}
             onChangeText={handleChange('password')}
-            placeholder="Contraseña"
+            placeholder={t("password")}
             secureTextEntry
             autoCapitalize="none"
           />
@@ -156,7 +161,7 @@ export const RegisterClientForm = () => {
             }
             value={values.confirmPassword}
             onChangeText={handleChange('confirmPassword')}
-            placeholder="Confirmar contraseña"
+            placeholder={t("confirm-password")}
             secureTextEntry
             autoCapitalize="none"
           />
@@ -166,10 +171,11 @@ export const RegisterClientForm = () => {
               handleSubmit();
             }}
             style={{marginTop: 20}}>
-            Continuar
+            {t('next')}
           </Button>
         </Layout>
       )}
     </Formik>
+    </I18nextProvider>
   );
 };

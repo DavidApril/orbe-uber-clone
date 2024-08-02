@@ -6,6 +6,8 @@ import {
   ROLE_LIST_WITH_DESCRIPTIONS,
 } from '../../../../interfaces';
 import {CustomIcon} from '../../../components';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../../../config/i18n/i18n';
 
 interface Props {
   roles: typeof ROLE_LIST_WITH_DESCRIPTIONS;
@@ -15,8 +17,10 @@ interface Props {
 }
 
 export const SelectRoleAccount = ({roles, setRole}: Props) => {
+  const {t} = useTranslation()
   return (
-    <Layout
+    <I18nextProvider i18n={i18n}>
+      <Layout
       style={{
         flexDirection: 'column',
         gap: 20,
@@ -63,7 +67,7 @@ export const SelectRoleAccount = ({roles, setRole}: Props) => {
           <Layout style={{justifyContent: 'center'}}>
             <Button
               onPress={() => setRole(role.name)}
-              status="success"
+              status="primary"
               appearance="ghost">
               Seleccionar
             </Button>
@@ -71,5 +75,6 @@ export const SelectRoleAccount = ({roles, setRole}: Props) => {
         </Layout>
       ))}
     </Layout>
+    </I18nextProvider>
   );
 };

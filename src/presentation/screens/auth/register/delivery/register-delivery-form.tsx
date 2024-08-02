@@ -5,10 +5,13 @@ import {Button, Input, Layout, Text} from '@ui-kitten/components';
 import {Formik} from 'formik';
 import {ScrollView} from 'react-native-gesture-handler';
 import * as Yup from 'yup';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../../../../config/i18n/i18n';
 
 export const RegisterDeliveryForm = () => {
   const {height} = useWindowDimensions();
   const {setRegisterForm} = useAuthStore();
+  const {t} = useTranslation()
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required(),
@@ -40,12 +43,13 @@ export const RegisterDeliveryForm = () => {
   }
 
   return (
-    <Layout style={{flex: 1}}>
+    <I18nextProvider i18n={i18n}>
+      <Layout style={{flex: 1}}>
       <ScrollView style={{marginHorizontal: 40}}>
         <Layout style={{paddingTop: height * 0.1}}>
-          <Text category="h1">Registro</Text>
+          <Text category="h1">{t('register')}</Text>
           <Text category="p2">
-            Ingresa los siguientes datos para registrarte
+            {t('enter-the-following-information-to-register')}
           </Text>
         </Layout>
 
@@ -65,7 +69,7 @@ export const RegisterDeliveryForm = () => {
                 }
                 value={values.firstName}
                 onChangeText={handleChange('firstName')}
-                placeholder="Nombres"
+                placeholder={t('name')}
                 autoCapitalize="words"
               />
 
@@ -79,7 +83,7 @@ export const RegisterDeliveryForm = () => {
                 }
                 value={values.lastName}
                 onChangeText={handleChange('lastName')}
-                placeholder="Apellidos"
+                placeholder={t('lastname')}
                 autoCapitalize="words"
               />
 
@@ -101,7 +105,7 @@ export const RegisterDeliveryForm = () => {
                 onChangeText={handleChange('identification')}
                 inputMode="numeric"
                 keyboardType="numbers-and-punctuation"
-                placeholder="Número de identificación"
+                placeholder={t('identification')}
               />
 
               <Input
@@ -116,7 +120,7 @@ export const RegisterDeliveryForm = () => {
                 onChangeText={handleChange('email')}
                 inputMode="email"
                 keyboardType="email-address"
-                placeholder="Correo electrónico"
+                placeholder={t('email-address')}
               />
 
               <Input
@@ -132,7 +136,7 @@ export const RegisterDeliveryForm = () => {
                 inputMode="numeric"
                 dataDetectorTypes="phoneNumber"
                 keyboardType="phone-pad"
-                placeholder="Número de teléfono"
+                placeholder={t('phone')}
               />
 
               <Input
@@ -145,7 +149,7 @@ export const RegisterDeliveryForm = () => {
                 }
                 value={values.password}
                 onChangeText={handleChange('password')}
-                placeholder="Contraseña"
+                placeholder={t('password')}
                 secureTextEntry
                 autoCapitalize="none"
               />
@@ -160,7 +164,7 @@ export const RegisterDeliveryForm = () => {
                 }
                 value={values.confirmPassword}
                 onChangeText={handleChange('confirmPassword')}
-                placeholder="Confirmar contraseña"
+                placeholder={t('confirm-password')}
                 secureTextEntry
                 autoCapitalize="none"
               />
@@ -171,12 +175,13 @@ export const RegisterDeliveryForm = () => {
                   handleSubmit();
                 }}
                 style={{marginTop: 20}}>
-                Continuar
+                {t('next')}
               </Button>
             </Layout>
           )}
         </Formik>
       </ScrollView>
     </Layout>
+    </I18nextProvider>
   );
 };
