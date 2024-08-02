@@ -31,8 +31,16 @@ export type RootStackParams = {
   PurchasesHistoryScreen: undefined;
   PurchaseInfoScreen: undefined;
 
+  TravelsHistoryScreen: undefined;
+
   RechargeScreen: undefined;
   ChatBotScreen: undefined;
   SettingsScreen: undefined;
 
+  ProfileClientScreen: undefined;
+  ProfileWorker: undefined;
+  MyCardsScreen: undefined;
+
+  HomeDriverScreen: undefined;
+  HomeDeliveryScreen: undefined;
 };

@@ -4,7 +4,7 @@ import {globalColors, globalDimensions} from '../../theme/styles';
 import {useUIStore} from '../../../store';
 import {CustomIcon} from '../../components';
 
-export const HistoryTravelItem = () => {
+export const TravelInfoScreen = () => {
   const {isDarkMode} = useUIStore();
 
   return (

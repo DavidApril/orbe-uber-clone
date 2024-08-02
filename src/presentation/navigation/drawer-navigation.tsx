@@ -1,23 +1,27 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {globalColors, primaryColors} from '../theme/styles';
 import {CustomDrawerContent, CustomIcon} from '../components';
-import {RootStackParams} from '../../interfaces';
-import {useUIStore} from '../../store';
-import {HomeScreen} from '../screens/home/home-screen';
+import {CLIENT, RootStackParams} from '../../interfaces';
+import {useAuthStore, useUIStore} from '../../store';
 import {
+  HomeScreen,
   CartOfProductsScreen,
   ChatBotScreen,
   RechargeScreen,
   SettingsScreen,
   ShoppingHistoryScreen,
+  TravelsHistoryScreen,
 } from '../screens';
-import {I18nextProvider, useTranslation} from 'react-i18next';
+import {I18nextProvider} from 'react-i18next';
 import i18n from '../../config/i18n/i18n';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
 export function DrawerNavigation() {
   const {isDarkMode} = useUIStore();
+  const {role} = useAuthStore();
+
+  const isClient = role === CLIENT;
 
   return (
     <I18nextProvider i18n={i18n}>
@@ -57,33 +61,57 @@ export function DrawerNavigation() {
             name="CartOfProductsScreen"
             component={CartOfProductsScreen}
           />
-          <Screen
-            options={{
-              title: 'Compras',
-              headerShown: false,
-              sceneContainerStyle: {
-                flex: 1,
-              },
-              drawerIcon: ({color}) => <CustomIcon fill={color} name="menu" />,
-            }}
-            name="ShoppingHistoryScreen"
-            component={ShoppingHistoryScreen}
-          />
 
-          <Screen
-            options={{
-              title: 'Recargas',
-              headerShown: false,
-              sceneContainerStyle: {
-                flex: 1,
-              },
-              drawerIcon: ({color}) => (
-                <CustomIcon fill={color} name="credit-card" />
-              ),
-            }}
-            name="RechargeScreen"
-            component={RechargeScreen}
-          />
+          {isClient && (
+            <Screen
+              options={{
+                title: 'Compras',
+                headerShown: false,
+                sceneContainerStyle: {
+                  flex: 1,
+                },
+                drawerIcon: ({color}) => (
+                  <CustomIcon fill={color} name="menu" />
+                ),
+              }}
+              name="ShoppingHistoryScreen"
+              component={ShoppingHistoryScreen}
+            />
+          )}
+
+          {!isClient && (
+            <Screen
+              options={{
+                title: 'Viajes',
+                headerShown: false,
+                sceneContainerStyle: {
+                  flex: 1,
+                },
+                drawerIcon: ({color}) => (
+                  <CustomIcon fill={color} name="menu" />
+                ),
+              }}
+              name="TravelsHistoryScreen"
+              component={TravelsHistoryScreen}
+            />
+          )}
+
+          {!isClient && (
+            <Screen
+              options={{
+                title: 'Recargas',
+                headerShown: false,
+                sceneContainerStyle: {
+                  flex: 1,
+                },
+                drawerIcon: ({color}) => (
+                  <CustomIcon fill={color} name="credit-card" />
+                ),
+              }}
+              name="RechargeScreen"
+              component={RechargeScreen}
+            />
+          )}
 
           <Screen
             options={{
@@ -111,86 +139,6 @@ export function DrawerNavigation() {
             component={SettingsScreen}
           />
         </>
-
-        {/* {role === DRIVER && (
-          <>
-            <Screen
-              options={{
-                title: 'Inicio',
-                headerShown: false,
-                sceneContainerStyle: {
-                  flex: 1,
-                },
-                drawerIcon: ({color}) => (
-                  <CustomIcon fill={color} name="home" />
-                ),
-              }}
-              name="HomeDriverScreen"
-              component={HomeDriverScreen}
-            />
-            <Screen
-              options={{
-                title: 'Viajes',
-                headerShown: false,
-                sceneContainerStyle: {
-                  flex: 1,
-                },
-                drawerIcon: ({color}) => (
-                  <CustomIcon fill={color} name="menu" />
-                ),
-              }}
-              name="HistoryScreen"
-              component={HistoryScreen}
-            />
-            <Screen
-              options={{
-                title: 'Recargas',
-                headerShown: false,
-                sceneContainerStyle: {
-                  flex: 1,
-                },
-                drawerIcon: ({color}) => (
-                  <CustomIcon fill={color} name="credit-card" />
-                ),
-              }}
-              name="RechargeScreen"
-              component={RechargeScreen}
-            />
-          </>
-        )}
-
-        {role === DELIVERY && (
-          <>
-            <Screen
-              options={{
-                title: 'Inicio',
-                headerShown: false,
-                sceneContainerStyle: {
-                  flex: 1,
-                },
-                drawerIcon: ({color}) => (
-                  <CustomIcon fill={color} name="home" />
-                ),
-              }}
-              name="HomeScreen"
-              component={HomeScreen}
-            />
-            <Screen
-              options={{
-                title: 'Ordenes',
-                headerShown: false,
-                sceneContainerStyle: {
-                  flex: 1,
-                },
-                drawerIcon: ({color}) => (
-                  <CustomIcon fill={color} name="menu" />
-                ),
-              }}
-              name="HistoryScreen"
-              component={HistoryScreen}
-            />
-          </>
-        )} */}
       </Navigator>
     </I18nextProvider>
   );

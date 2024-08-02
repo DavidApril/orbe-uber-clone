@@ -3,9 +3,8 @@ import {FlatList, Text, View} from 'react-native';
 import {useUIStore} from '../../../store';
 import {globalColors} from '../../theme/styles';
 import {OpenDrawerMenu} from '../../components';
-import {HistoryTravelItem} from './history-travel-item';
 
-export const HistoryTravels = () => {
+export const TravelsHistoryScreen = () => {
   const {isDarkMode} = useUIStore();
 
   return (
@@ -37,11 +36,11 @@ export const HistoryTravels = () => {
           }}>
           Aquí podrás encontrar todos los recorridos que has hecho.
         </Text>
-        <FlatList
+        {/* <FlatList
           style={{paddingHorizontal: 30, marginVertical: 30}}
           data={[0, 1, 2]}
-          renderItem={() => <HistoryTravelItem />}
-        />
+          renderItem={() => <></>}
+        /> */}
       </View>
     </View>
   );
