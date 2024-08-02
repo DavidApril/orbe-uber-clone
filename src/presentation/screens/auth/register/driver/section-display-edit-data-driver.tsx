@@ -3,9 +3,8 @@ import React, {useState} from 'react';
 import {useAuthStore} from '../../../../../store';
 import {Alert, Image, useWindowDimensions} from 'react-native';
 import {LoadingScreen} from '../../../loading/loading-screen';
-import { UserService } from '../../../../../services';
-import {DeliveryRegisterForm} from '../../../../../interfaces';
-
+import { WorkerService } from '../../../../../services';
+import { DRIVER } from '../../../../../interfaces';
 
 export const SectionDisplayEditDataDriver = () => {
   const {width} = useWindowDimensions();
@@ -18,9 +17,7 @@ export const SectionDisplayEditDataDriver = () => {
 
     try {
       setIsLoading(true);
-      console.log(typeof registerForm)
-      // @ts-ignore
-      await UserService.createDriver(registerForm, image_url);
+      await WorkerService.create(registerForm, DRIVER, image_url);
       await login(email, password);
       setIsLoading(false);
     } catch (error) {

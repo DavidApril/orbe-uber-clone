@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 import {Location} from '../../interfaces';
-import { RaceService } from '../../services';
+import {RaceService} from '../../services';
+import {parseError} from '../../utils';
 
 export type Race = {
   distance: number;
@@ -71,7 +72,6 @@ export const useClientDriverStore = create<ClientDriverStore>()((set, get) => ({
       });
       return {ok: true};
     } catch (error) {
-      console.log({error});
       return {ok: false};
     }
   },

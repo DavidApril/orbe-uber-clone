@@ -14,8 +14,6 @@ import {useCartStore, useUIStore} from '../../../store';
 import {fontColor, globalColors, globalDimensions} from '../../theme/styles';
 
 export const RestaurantScreen = () => {
-  const {height, width} = useWindowDimensions();
-
   const navigation = useNavigation<NavigationProp<RootStackParams, 'RestaurantScreen'>>();
   const {cart, setCartNews, restaurantSelected} = useCartStore();
 
@@ -40,11 +38,8 @@ export const RestaurantScreen = () => {
     const products = await RestaurantService.getProducts(
       restaurantSelected!.id,
     );
-    console.log(products.length)
     setProducts(products);
   };
-
-  console.log(restaurantSelected.id)
 
   useEffect(() => {
     setCartNews(true);
@@ -88,7 +83,7 @@ export const RestaurantScreen = () => {
           <CustomIcon fill={globalColors.primaryColors.primary} name="arrow-back" />
         </Pressable>
         <Pressable
-          onPress={() => navigation.navigate('ProductsCartScreen')}
+          onPress={() => navigation.navigate('CartOfProductsScreen')}
           style={{
             height: 45,
             zIndex: 999,

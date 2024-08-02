@@ -58,7 +58,6 @@ export const RegisterWorkerForm = () => {
 
   const onSubmit = async (values: typeof initialValues) => {
     try {
-      console.log('aquí');
       const formData = new FormData();
       formData.append('file', image);
       formData.append('fileName', uuid.v4());
@@ -72,12 +71,9 @@ export const RegisterWorkerForm = () => {
         // @ts-ignore
         image[0].uri.split('/').reverse()[0],
       );
-
-      navigation.navigate('RegisterUserDocumentsScreen');
     } catch (error) {
       parseError('error at upload image', error);
       setWorkerIsCreated(false);
-      console.log('error');
     } finally {
       setIsLoading(false);
     }

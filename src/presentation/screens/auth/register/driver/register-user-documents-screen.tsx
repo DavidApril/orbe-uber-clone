@@ -13,11 +13,7 @@ interface Props {
   icon?: string;
 }
 export const RegisterUserDocumentsScreen = () => {
-  const {workerDocuments, addWorkerDocument} = useAuthStore();
-
-  useEffect(() => {
-    console.log(workerDocuments.length);
-  }, [workerDocuments]);
+  const {addWorkerDocument} = useAuthStore();
 
   return (
     <CView style={{flex: 1}}>
