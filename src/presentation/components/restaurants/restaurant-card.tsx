@@ -119,7 +119,7 @@ export const RestaurantCard = ({
         <Pressable
           onPress={() => setModal(false)}
           style={{
-            backgroundColor: '#0009',
+            backgroundColor: '#000c',
             width: '100%',
             height: '100%',
             justifyContent: 'center',
@@ -136,12 +136,12 @@ export const RestaurantCard = ({
             }}>
             <Text
               style={{
-                color: globalColors.primaryColors.primary,
+                color: globalColors.neutralColors.background,
                 fontSize: 26,
-                fontWeight: '100',
+                fontWeight: 'bold',
                 textAlign: 'center',
               }}>
-              Producto añadido con exito a favoritos
+              Restaurante añadido con exito a favoritos
             </Text>
           </View>
         </Pressable>
