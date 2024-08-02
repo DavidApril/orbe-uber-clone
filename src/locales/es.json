@@ -11,6 +11,9 @@
   "register-client": "Registro cliente",
   "register-driver": "Registro conductor",
   "register-delivery": "Registro repartidor",
+  "register-documents": "Registrar documentos",
+  "register-documents-vehicle": "Registrar documentos del vehiculo",
+  "edit-register": "Editar registro",
   "enter-the-following-information-to-register": "Ingresa los siguientes datos para registrarte",
   "name": "Nombres",
   "lastname": "Apellidos",
@@ -18,7 +21,16 @@
   "phone": "Numero",
   "confirm-password": "Confirmar contraseña",
   "next": "Siguiente",
-  "quick-and": "Rapidas &  ",
+  "quick-and": "Rapidas & ",
   "delicious": "deliciosas",
-  "fast-food": "comidas"
+  "fast-food": "comidas",
+  "registration-form": "Formulario de registro",
+  "enter-all-your-details-to-continue": "Ingresa todos tus datos para continuar",
+  "basic-information": "Informacion basica",
+  "profile": "Perfil",
+  "this-will-be-your-profile-picture": "Esta será tu imagen de perfil",
+  "open-camera": "Abrir cámara",
+  "to-register": "Registrar",
+
+  "settings": "Ajustes"
 }

@@ -11,14 +11,26 @@
   "register-client": "Register client",
   "register-driver": "Register driver",
   "register-delivery": "Register delivery",
+  "register-documents": "Register documents",
+  "register-documents-vehicle": "Register vehicle documents",
   "enter-the-following-information-to-register": "Enter the following information to register",
+  "edit-register": "Register edit",
   "name": "Name",
   "lastname": "Lastname",
   "identification": "Identification",
   "phone": "Phone",
   "confirm-password": "Confirm password",
   "next": "Next",
-  "quick-and-delicious-fast-food": "Quick &  ",
+  "quick-and": "Quick & ",
   "delicious": "delicious",
-  "fast-food": "fast food"
+  "fast-food": "fast food",
+  "registration-form": "Registration form",
+  "enter-all-your-details-to-continue": "Enter all your details to continue",
+  "basic-information": "Basic information",
+  "profile": "Profile",
+  "this-will-be-your-profile-picture": "This will be your profile picture",
+  "open-camera": "Open camera",
+  "to-register": "To register",
+
+  "settings": "Settings"
 }

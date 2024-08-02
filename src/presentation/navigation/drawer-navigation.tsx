@@ -1,27 +1,30 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {globalColors} from '../theme/styles';
+import {globalColors, primaryColors} from '../theme/styles';
 import {CustomDrawerContent, CustomIcon} from '../components';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../interfaces';
 import {useAuthStore, useUIStore} from '../../store';
 import {
   HomeScreen,
-  BottomTapNavigationDelivery,
   BottomTapNavigationDriver,
 } from '../screens/home/home-screen';
-import { ProductsCartScreen, ChatBotScreen, RechargeScreen, OrderScreen, RegisterScreen} from '../screens';
+import {ProductsCartScreen, RechargeScreen, ChatBotScreen, SettingsScreen} from '../screens';
 import {CouponsScreen} from './top-tap-coupons-navigation';
 import {HistoryScreen} from '../screens';
 import {StackRechargeNavigation} from './stack-recharge-navigation';
 import {StackNavigator} from './stack-navigation';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../config/i18n/i18n';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 
 export function DrawerNavigation() {
   const {isDarkMode} = useUIStore();
   const {role} = useAuthStore();
+  const {t} = useTranslation()
 
   return (
-    <Navigator
+    <I18nextProvider i18n={i18n}>
+      <Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerType: 'back',
@@ -111,13 +114,14 @@ export function DrawerNavigation() {
             component={ChatBotScreen}
           />
           <Screen
-            name="LoginScreen"
+            name="SettingsScreen"
             options={{
-              headerShown: false,
-              title: 'Cerrar sesión',
-              drawerIcon: ({color}) => <CustomIcon fill={color} name="power" />,
+              headerShown: true,
+              title: t('settings'),
+              headerTintColor: primaryColors.primary,
+              drawerIcon: ({color}) => <CustomIcon fill={color} name="settings-outline" />,
             }}
-            component={StackNavigator}
+            component={SettingsScreen}
           />
         </>
       )}
@@ -194,5 +198,6 @@ export function DrawerNavigation() {
         </>
       )}
     </Navigator>
+    </I18nextProvider>
   );
 }

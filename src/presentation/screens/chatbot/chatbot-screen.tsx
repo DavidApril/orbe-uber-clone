@@ -99,7 +99,7 @@ export const ChatBotScreen = () => {
             alignItems: 'center',
             justifyContent: 'center',
             // width: width - 60,
-            padding: 30,
+            padding: 20,
           }}>
           <TextInput
             onChangeText={setPrompt}

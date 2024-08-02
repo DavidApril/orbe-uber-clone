@@ -3,13 +3,13 @@ import {ResponseInterface} from './response.interface';
 export interface ClientRegisterForm {
   firstName: string;
   lastName: string;
-  selectedTypeId: string;
+  selectedTypeId?: string;
   identification: string;
   phone: string;
   email: string;
   password: string;
   confirmPassword: string;
-  image: string;
+  image?: string;
 }
 
 export interface ClientUpdatedForm {

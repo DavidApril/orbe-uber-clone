@@ -1,6 +1,6 @@
 import React from 'react';
-import {Pressable} from 'react-native';
-import {globalStyles} from '../../../theme/styles';
+import {Pressable, Text} from 'react-native';
+import {globalStyles, neutralColors} from '../../../theme/styles';
 import {CTextHeader} from '../custom-text-header';
 import {Spinner} from '@ui-kitten/components';
 
@@ -38,7 +38,7 @@ export const CButton = ({
       {isLoading ? (
         <Spinner status="basic" />
       ) : (
-        <CTextHeader>{label}</CTextHeader>
+        <Text style={{ color: neutralColors.background }}>{label}</Text>
       )}
     </Pressable>
   );
