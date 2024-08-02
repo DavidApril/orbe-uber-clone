@@ -23,9 +23,9 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import {Divider} from '@ui-kitten/components';
 
 interface Props
-  extends StackScreenProps<RootStackParams, 'ProductsCartScreen'> {}
+  extends StackScreenProps<RootStackParams, 'CartOfProductsScreen'> {}
 
-export const ProductsCartScreen = ({navigation}: Props) => {
+export const CartOfProductsScreen = ({navigation}: Props) => {
   const [shipping] = useState(3000);
   const {height} = useWindowDimensions();
   const {isDarkMode} = useUIStore();

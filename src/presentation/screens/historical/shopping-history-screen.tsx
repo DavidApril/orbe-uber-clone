@@ -2,11 +2,8 @@ import {
   StackCardStyleInterpolator,
   createStackNavigator,
 } from '@react-navigation/stack';
-
-import {HistoryShoppingScreen} from '..';
+import {PurchaseInfoScreen, PurchasesHistoryScreen} from '..';
 import {RootStackParams} from '../../../interfaces';
-import {ShoppingHistoryItemScreen} from './history-shopping-item-screen';
-import {useAuthStore} from '../../../store';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -18,28 +15,26 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
   };
 };
 
-export const HistoryScreen = () => {
-  const {role} = useAuthStore();
-
+export const ShoppingHistoryScreen = () => {
   return (
     <Navigator
-      initialRouteName="HistoryListScreen"
+      initialRouteName="PurchasesHistoryScreen"
       screenOptions={{headerShown: true}}>
       <Screen
         options={{
           cardStyleInterpolator: fadeAnimation,
           headerShown: false,
         }}
-        name="ShoppingHistoryScreen"
-        component={HistoryShoppingScreen}
+        name="PurchasesHistoryScreen"
+        component={PurchasesHistoryScreen}
       />
       <Screen
         options={{
           cardStyleInterpolator: fadeAnimation,
           headerShown: false,
         }}
-        name="ShoppingHistoryItemScreen"
-        component={ShoppingHistoryItemScreen}
+        name="PurchaseInfoScreen"
+        component={PurchaseInfoScreen}
       />
     </Navigator>
   );

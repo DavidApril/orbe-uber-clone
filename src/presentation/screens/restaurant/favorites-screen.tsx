@@ -6,7 +6,7 @@ import {OpenDrawerMenu, TextHeaderScreen} from '../../components';
 import {useCartStore, useUIStore} from '../../../store';
 import {useRestaurantStore} from '../../../store/restaurant/restaurant.store';
 import {ProductsList} from './products/products-list';
-import {RestaurantsList} from './restaurants-list';
+import {RestaurantsList} from '../../components/restaurants/restaurants-list';
 
 export const FavoritesScreen = () => {
   const {isDarkMode} = useUIStore();

@@ -18,9 +18,9 @@ import {View} from 'react-native';
 import {stateColors} from '../../theme/styles';
 
 interface Props
-  extends StackScreenProps<RootStackParams, 'ShoppingHistoryItemScreen'> {}
+  extends StackScreenProps<RootStackParams, 'PurchaseInfoScreen'> {}
 
-export const ShoppingHistoryItemScreen = ({navigation}: Props) => {
+export const PurchaseInfoScreen = ({navigation}: Props) => {
   const {transactionSelected: transaction} = usePaymentStore();
   const {fontScale} = useWindowDimensions();
 

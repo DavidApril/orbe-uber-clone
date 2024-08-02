@@ -1,4 +1,3 @@
-import {HomeClientDeliveryScreen} from '../screens';
 import {RootStackParams} from '../../interfaces';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {CustomTopBar} from '../components';

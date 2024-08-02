@@ -19,10 +19,9 @@ import {useCartStore, useUIStore} from '../../../../store';
 import {CartQuantitySelector} from '../../../components/restaurants/cart/cart-quantity-selector';
 import {globalColors, globalStyles} from '../../../theme/styles';
 
-interface Props
-  extends StackScreenProps<RootStackParams, 'ProductItemScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'ProductScreen'> {}
 
-export const ProductItemScreen = ({navigation}: Props) => {
+export const ProductScreen = ({navigation}: Props) => {
   const {isDarkMode} = useUIStore();
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const {height} = useWindowDimensions();
@@ -35,7 +34,7 @@ export const ProductItemScreen = ({navigation}: Props) => {
     removeFavorite,
     favorites,
     cartNews,
-    setCartNews
+    setCartNews,
   } = useCartStore();
 
   const [productInCart, setProductInCart] = useState<CartProduct | null>(null);
@@ -57,14 +56,16 @@ export const ProductItemScreen = ({navigation}: Props) => {
       <Pressable
         onPress={() => navigation.goBack()}
         style={globalStyles.FABBackButton}>
-        <CustomIcon fill={globalColors.neutralColors.backgroundAlpha} name="arrow-back" />
+        <CustomIcon
+          fill={globalColors.neutralColors.backgroundAlpha}
+          name="arrow-back"
+        />
       </Pressable>
 
       <Pressable
         onPress={() => {
           navigation.navigate('ProductsCartScreen');
-          setCartNews(false)
-
+          setCartNews(false);
         }}
         style={[globalStyles.FABShoppingCartButton]}>
         {cartNews && (
@@ -80,7 +81,10 @@ export const ProductItemScreen = ({navigation}: Props) => {
             }}
           />
         )}
-        <CustomIcon fill={globalColors.neutralColors.backgroundAlpha} name="shopping-cart-outline" />
+        <CustomIcon
+          fill={globalColors.neutralColors.backgroundAlpha}
+          name="shopping-cart-outline"
+        />
       </Pressable>
 
       <View
@@ -169,12 +173,17 @@ export const ProductItemScreen = ({navigation}: Props) => {
             {currencyFormat(+item.priceUnitary)}
           </Text>
           <Pressable
-            style={{borderRadius: 50, backgroundColor: globalColors.primaryColors.primary, paddingVertical: 25, paddingHorizontal: 35}}
+            style={{
+              borderRadius: 50,
+              backgroundColor: globalColors.primaryColors.primary,
+              paddingVertical: 25,
+              paddingHorizontal: 35,
+            }}
             onPress={() => {
               addProductToCart(item);
             }}
             disabled={!!productInCart}>
-            <Text style={{ color: 'white' }}>AÑADIR AL CARRITO</Text>
+            <Text style={{color: 'white'}}>AÑADIR AL CARRITO</Text>
           </Pressable>
           <Pressable
             onPress={() => {

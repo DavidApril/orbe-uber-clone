@@ -1,17 +1,16 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {RootStackParams} from '../../interfaces';
+import {RootStackParams} from '../../../interfaces';
+import {CustomIcon} from '../../components';
 import {
-  CheckoutScreen,
-  OrderArrival,
   OrderScreen,
-  OrderTrackingScreen,
   PreparingOrderScreen,
-} from '../screens';
-import {CustomIcon} from '../components';
+  OrderTrackingScreen,
+  OrderArrival,
+} from '..';
 
 const {Navigator, Screen} = createMaterialTopTabNavigator<RootStackParams>();
 
-export const TopTapOrdersNavigations = () => {
+export const OrdersScreen = () => {
   return (
     <Navigator
       screenOptions={{

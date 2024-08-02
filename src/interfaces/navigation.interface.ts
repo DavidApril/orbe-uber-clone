@@ -1,52 +1,38 @@
 export type RootStackParams = {
-  SessionModuleScreen: undefined;
-  LoadingScreen: undefined;
   LoginScreen: undefined;
-  HomeScreen: undefined;
+  LoadingScreen: undefined;
   RegisterScreen: undefined;
-
-  RegisterWorkerScreen: undefined
-  RegisterUserDocumentsScreen: undefined
-  RegisterVehiclesDocumentsScreen: undefined
-
-  RegisterDriverScreen: undefined;
   RegisterClientScreen: undefined;
+  RegisterDriverScreen: undefined;
   RegisterDeliveryScreen: undefined;
-  RegisterEditScreen: undefined;
+
   PermissionsScreen: undefined;
-  RegisterDocumentsScreen: undefined;
-  HomeClientDeliveryScreen: undefined;
 
-  RestaurantScreen: undefined;
-  ProductsCartScreen: undefined;
-  ProductItemScreen: undefined;
-  CheckoutScreen: undefined;
-  ShoppingHistoryScreen: undefined;
-  ShoppingHistoryItemScreen: undefined;
-  RechargeScreen: undefined;
-  ChatBotScreen: undefined;
+  HomeScreen: undefined;
 
-  MyCardsScreen: undefined;
-
-  ProfileClientScreen: undefined;
-
-  HomeClientScreen: undefined;
-  HomeDriverScreen: undefined;
-  HomeDeliveryScreen: undefined;
-
-  CouponsScreen: undefined;
-  MyCouponsScreen: undefined;
+  RestaurantsScreen: undefined;
+  ProfileScreen: undefined;
+  RequestDriverScreen: undefined;
   favoritesScreen: undefined;
 
-  ProfileDriverScreen: undefined;
+  RestaurantsAndProductsScreen: undefined;
+  RestaurantScreen: undefined;
+  ProductScreen: undefined;
+  CartOfProductsScreen: undefined;
+  CheckoutScreen: undefined;
 
-  SettingsScreen: undefined;
-  ErrorScreen: undefined;
-  HistoryScreen: undefined;
-  HistoryListScreen: undefined;
-
+  OrdersScreen: undefined;
   OrderScreen: undefined;
   PreparingOrderScreen: undefined;
   OrderTrackingScreen: undefined;
   OrderArrival: undefined;
+
+  ShoppingHistoryScreen: undefined;
+  PurchasesHistoryScreen: undefined;
+  PurchaseInfoScreen: undefined;
+
+  RechargeScreen: undefined;
+  ChatBotScreen: undefined;
+  SettingsScreen: undefined;
+
 };

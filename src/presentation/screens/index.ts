@@ -5,15 +5,17 @@ export * from './auth/register/register-screen';
 
 export * from './home/home-driver-screen';
 export * from './home/home-delivery-screen';
-export * from './home/home-client-delivery-screen';
-export * from './home/home-client-driver-screen';
+export * from './home/restaurants-and-products-screen';
 
-export * from './restaurant/products/product-item-screen';
-export * from './restaurant/products/products-list';
-export * from './restaurant/cart/products-cart-screen';
+export * from './restaurant/products/product-screen';
+export * from './restaurant/cart/cart-of-products-screen';
 export * from './restaurant/restaurant-screen';
 export * from './restaurant/favorites-screen';
+export * from './restaurant/restaurants-screen';
 
+export * from './driver/request-driver-screen';
+
+export * from './payment/orders-screen';
 export * from './payment/my-cards-screen';
 export * from './payment/my-balance-screen';
 export * from './payment/recharge-screen';
@@ -32,18 +34,19 @@ export * from './auth/register/client/register-client-screen';
 export * from './auth/register/delivery/register-delivery-screen';
 
 export * from './profile/client/profile-client-screen';
-export * from './profile/driver/profile-driver-screen';
+export * from './profile/worker/profile-driver-screen';
 export * from './profile/delivery/profile-delivery-screen';
+export * from './profile/profile-screen';
 
 export * from './settings/settings-screen';
 
 export * from './loading/loading-screen';
 
-export * from './historical/history-screen';
+export * from './historical/shopping-history-screen';
 export * from './historical/history-travels';
 export * from './historical/history-travel-item';
-export * from './historical/history-shopping-screen';
-export * from './historical/history-shopping-item-screen';
+export * from './historical/purchases-history-screen';
+export * from './historical/purchase-info-screen';
 
 export * from './coupons/coupons-screen';
 

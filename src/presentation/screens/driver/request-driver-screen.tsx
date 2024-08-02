@@ -12,7 +12,7 @@ import {
 } from '@react-navigation/native';
 import {useClientDriverStore} from '../../../store/client/client-driver-store';
 
-export const HomeClientDriverScreen = () => {
+export const RequestDriverScreen = () => {
   const {user} = useAuthStore();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {lastKnownLocation, getLocation} = useLocationStore();

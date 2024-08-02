@@ -1,12 +1,12 @@
-import {CouponsScreen, MyCardsScreen, ProfileClientScreen} from '../screens';
-import {RootStackParams} from '../../interfaces';
+import {CouponsScreen, MyCardsScreen, ProfileClientScreen} from '..';
+import {RootStackParams} from '../../../interfaces';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {CustomTopBar} from '../components';
-import {MyCouponsScreen} from '../screens/coupons/my-coupons-tab';
+import {CustomTopBar} from '../../components';
+import {MyCouponsScreen} from '../coupons/my-coupons-tab';
 
 const {Screen, Navigator} = createMaterialTopTabNavigator<RootStackParams>();
 
-export const TopTabClientProfileNavigation = (): React.ReactElement => {
+export const ProfileScreen = (): React.ReactElement => {
   return (
     <Navigator
     // tabBar={props => <CustomTopBar {...props} />}
