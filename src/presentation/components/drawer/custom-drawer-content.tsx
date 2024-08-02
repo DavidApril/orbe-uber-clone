@@ -16,7 +16,7 @@ import {
 import {useState} from 'react';
 import {StorageService} from '../../../services';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../../interfaces';
-import {fontColor, globalColors, globalDimensions} from '../../theme/styles';
+import {fontColor, globalColors, globalDimensions, primaryColors} from '../../theme/styles';
 import {useNavigation} from '@react-navigation/native';
 
 export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
@@ -133,13 +133,12 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               alignItems: 'center',
               flexDirection: 'column',
               gap: 50,
+              backgroundColor: 'white'
             }}>
             <Text
               style={{
                 fontSize: 18,
-                color: isDarkMode
-                  ? fontColor.textColorHeaderDark
-                  : fontColor.textColorHeaderDark,
+                color: primaryColors.primary
               }}>
               Esta seguro de cerrar sesion?
             </Text>
@@ -151,7 +150,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                   paddingHorizontal: 20,
                 }}
                 onPress={() => setModal(false)}>
-                <Text style={{color: 'white'}}>Cancelar</Text>
+                <Text style={{color: primaryColors.primary}}>Cancelar</Text>
               </Pressable>
               <Pressable
                 style={{

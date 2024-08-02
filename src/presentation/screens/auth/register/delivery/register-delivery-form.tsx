@@ -1,4 +1,4 @@
-import {DeliveryRegisterForm} from '../../../../../interfaces';
+import {WorkerRegisterForm} from '../../../../../interfaces';
 import {useAuthStore} from '../../../../../store';
 import {useWindowDimensions} from 'react-native';
 import {Button, Input, Layout, Text} from '@ui-kitten/components';
@@ -26,10 +26,10 @@ export const RegisterDeliveryForm = () => {
       .oneOf([Yup.ref('password'), null], 'Passwords must match'),
   });
 
-  const initialValues: DeliveryRegisterForm = {
+  const initialValues: WorkerRegisterForm = {
     firstName: '',
     lastName: '',
-    // selectedTypeId: '',
+    selectedTypeId: '',
     identification: '',
     phone: '',
     email: '',

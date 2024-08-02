@@ -9,7 +9,7 @@ export interface WorkerRegisterForm {
   email: string;
   password: string;
   image?: string;
-  confirmPassword?: string;
+  confirmPassword: string;
 }
 // TODO: set correctly forms to update worker
 export interface UpdateWorkerForm {
@@ -65,7 +65,7 @@ export interface GetDeliveryByUserIDResponseData {
   driver: null;
 }
 
-export interface Delivery {
+export interface Driver {
   id: number;
   created_date: Date;
   updated_date: Date;

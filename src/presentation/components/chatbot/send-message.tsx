@@ -27,6 +27,7 @@ export const SendMessage = ({message}: Props) => {
         style={{
           fontSize: 16,
           color: globalColors.grayScale.white,
+          width:'auto'
         }}>
         {message}
       </Text>

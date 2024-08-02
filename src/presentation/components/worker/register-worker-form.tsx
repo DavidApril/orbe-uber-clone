@@ -1,6 +1,6 @@
 import {Formik} from 'formik';
 import {Image, Pressable, TextInput, View} from 'react-native';
-import {globalDimensions, neutralColors, stateColors} from '../../theme/styles';
+import {globalColors, globalDimensions, neutralColors, stateColors} from '../../theme/styles';
 import {
   CViewAlpha,
   CTextHeader,
@@ -19,6 +19,8 @@ import {useNavigation} from '@react-navigation/native';
 import {MaterialTopTabNavigationProp} from '@react-navigation/material-top-tabs';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {parseError} from '../../../utils';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../../config/i18n/i18n';
 
 export const RegisterWorkerForm = () => {
   const navigation =
@@ -29,6 +31,7 @@ export const RegisterWorkerForm = () => {
   const [workerIsCreated, setWorkerIsCreated] = useState<boolean | null>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
+  const {t} = useTranslation()
   // const validationSchema = Yup.object({
   //   firstName: Yup.string().required(),
   //   lastName: Yup.string().required(),
@@ -83,7 +86,8 @@ export const RegisterWorkerForm = () => {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
+    <I18nextProvider i18n={i18n}>
+      <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({values, handleChange, handleSubmit}) => (
         <>
           <CViewAlpha
@@ -94,44 +98,49 @@ export const RegisterWorkerForm = () => {
               height: 'auto',
             }}>
             <CTextHeader style={{fontSize: 15, marginBottom: 15}}>
-              Información básica
+              {t("basic-information")}
             </CTextHeader>
 
             <View style={{flexDirection: 'column', gap: 15}}>
               <View style={{flexDirection: 'row', gap: 5}}>
                 <CInput
+                  style={{ backgroundColor: 'white', borderWidth: 1, borderColor: globalColors.primaryColors.primary }}
                   value={values.firstName}
                   handleValue={handleChange('firstName')}
-                  label="Nombres"
+                  label={t("name")}
                 />
                 <CInput
+                  style={{ backgroundColor: 'white', borderWidth: 1, borderColor: globalColors.primaryColors.primary }}
                   value={values.lastName}
                   handleValue={handleChange('lastName')}
-                  label="Apellidos"
+                  label={t("lastname")}
                 />
               </View>
 
               <CInput
+                style={{ backgroundColor: 'white', borderWidth: 1, borderColor: globalColors.primaryColors.primary }}
                 value={values.identification}
                 handleValue={handleChange('identification')}
-                label="No. Identificación"
+                label={t("identification")}
               />
 
               <CInput
+                style={{ backgroundColor: 'white', borderWidth: 1, borderColor: globalColors.primaryColors.primary }}
                 value={values.email}
                 handleValue={handleChange('email')}
                 keyboardType="email-address"
-                label="Correo electrónico"
+                label={t("email-address")}
               />
 
               <View
                 style={{flexDirection: 'row', alignItems: 'flex-end', gap: 5}}>
                 <CInput
+                  style={{ backgroundColor: 'white', borderWidth: 1, borderColor: globalColors.primaryColors.primary }}
                   value={values.password}
                   handleValue={handleChange('password')}
                   secureTextEntry={!passwordShown}
                   autoCapitalize="none"
-                  label="Contraseña"
+                  label={t("password")}
                 />
                 <Pressable
                   onPress={() => setPasswordShown(!passwordShown)}
@@ -141,12 +150,11 @@ export const RegisterWorkerForm = () => {
                     borderRadius: 100,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: passwordShown
-                      ? stateColors.success
-                      : neutralColors.textInputBackgroundDark,
+                    backgroundColor: neutralColors.background
                   }}>
                   <CustomIcon
                     name={passwordShown ? 'eye' : 'eye-off-outline'}
+                    fill={passwordShown ? globalColors.primaryColors.primary : neutralColors.textInputBackgroundDark}
                   />
                 </Pressable>
               </View>
@@ -192,13 +200,13 @@ export const RegisterWorkerForm = () => {
 
               <View style={{flexDirection: 'column', flex: 1, gap: 10}}>
                 <View>
-                  <CTextHeader style={{fontSize: 20}}>Perfil</CTextHeader>
-                  <CText>Esta será tu imagen de perfil</CText>
+                  <CTextHeader style={{fontSize: 20}}>{t('profile')}</CTextHeader>
+                  <CText>{t("this-will-be-your-profile-picture")}</CText>
                 </View>
 
                 <View style={{flexDirection: 'row', gap: 5}}>
                   <CButton
-                    label="Abrir cámara"
+                    label={t("open-camera")}
                     onPress={async () => {
                       launchCamera({mediaType: 'photo'}, response => {
                         if (response.didCancel) {
@@ -220,11 +228,12 @@ export const RegisterWorkerForm = () => {
               isLoading={isLoading}
               disabled={!image}
               onPress={handleSubmit}
-              label="Registar"
+              label={t("to-register")}
             />
           </View>
         </>
       )}
     </Formik>
+    </I18nextProvider>
   );
 };
