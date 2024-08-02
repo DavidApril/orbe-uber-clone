@@ -50,6 +50,7 @@ export * from './restaurants/cart/fab-shopping-cart';
 export * from './restaurants/cart/cart-quantity-selector';
 export * from './restaurants/coupons/buy-coupon-selected';
 export * from './restaurants/stats';
+export * from './restaurants/restaurants-list';
 
 export * from './bottom-sheets/bs-add-credit-card';
 export * from './bottom-sheets/bs-select-origin-destination';

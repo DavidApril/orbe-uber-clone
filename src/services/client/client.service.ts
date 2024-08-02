@@ -41,8 +41,6 @@ export class ClientService {
           ],
         });
 
-      console.log({response});
-
       return response.data;
     } catch (error) {
       parseError(this.PREFIX + 'createClient', error);
@@ -85,8 +83,6 @@ export class ClientService {
         `/${this.PREFIX}/updateClient`,
         clientUpdated,
       );
-
-      console.log({response});
 
       return response.data;
     } catch (error) {

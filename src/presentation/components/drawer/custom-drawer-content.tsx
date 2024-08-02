@@ -160,10 +160,10 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                   backgroundColor: globalColors.stateColors.error,
                 }}
                 onPress={() => {
-                  navigation.reset({
-                    index: 0,
-                    routes: [{name: 'LoginScreen'}],
-                  });
+                  // navigation.reset({
+                  //   index: 0,
+                  //   routes: [{name: 'LoginScreen'}],
+                  // });
                   logout(), setModal(false);
                 }}>
                 <Text style={{color: 'white', fontWeight: 'bold'}}>

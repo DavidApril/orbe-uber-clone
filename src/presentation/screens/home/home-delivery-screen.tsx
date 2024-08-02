@@ -22,7 +22,7 @@ import {globalDimensions} from '../../theme/styles';
 import {CameraAdapter} from '../../../config/adapters';
 import {StorageService} from '../../../services';
 
-interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'HomeDeliveryScreen'> {}
 
 export const HomeDeliveryScreen = ({navigation}: Props) => {
   const {lastKnownLocation, getLocation} = useLocationStore();

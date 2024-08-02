@@ -2,16 +2,14 @@ import {
   StackCardStyleInterpolator,
   createStackNavigator,
 } from '@react-navigation/stack';
-
 import {
-  ProductItemScreen,
   RestaurantScreen,
-  ProductsCartScreen,
-  HomeClientDeliveryScreen,
   CheckoutScreen,
-} from '../screens';
-import {RootStackParams} from '../../interfaces';
-import { TopTapOrdersNavigations } from './top-tap-orders-navigation';
+  RestaurantsAndProductsScreen,
+  ProductScreen,
+  OrdersScreen,
+} from '..';
+import {RootStackParams} from '../../../interfaces';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -23,15 +21,15 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
   };
 };
 
-export const StackRestaurantNavigation = () => {
+export const RestaurantsScreen = () => {
   return (
     <Navigator
-      initialRouteName="HomeClientDeliveryScreen"
+      initialRouteName="RestaurantsAndProductsScreen"
       screenOptions={{headerShown: false}}>
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
-        name="HomeClientDeliveryScreen"
-        component={HomeClientDeliveryScreen}
+        name="RestaurantsAndProductsScreen"
+        component={RestaurantsAndProductsScreen}
       />
       <Screen
         options={{
@@ -46,13 +44,8 @@ export const StackRestaurantNavigation = () => {
           cardStyleInterpolator: fadeAnimation,
           headerShown: false,
         }}
-        name="ProductItemScreen"
-        component={ProductItemScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
-        name="ProductsCartScreen"
-        component={ProductsCartScreen}
+        name="ProductScreen"
+        component={ProductScreen}
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
@@ -61,8 +54,8 @@ export const StackRestaurantNavigation = () => {
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
-        name="OrderScreen"
-        component={TopTapOrdersNavigations}
+        name="OrdersScreen"
+        component={OrdersScreen}
       />
     </Navigator>
   );

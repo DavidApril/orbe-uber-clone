@@ -1,162 +1,195 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   FavoritesScreen,
-  HistoryTravels,
-  HomeClientDriverScreen,
   HomeDeliveryScreen,
   HomeDriverScreen,
-  ProfileDriverScreen,
+  ProfileScreen,
+  RequestDriverScreen,
+  RestaurantsScreen,
 } from '..';
 import {CustomBottomTabs} from '../../components';
-import {RootStackParams} from '../../../interfaces';
-import {ChatBotScreen} from '../chatbot/chatbot-screen';
-import {StackRestaurantNavigation} from '../../navigation/stack-restaurant-navigation';
-import {TopTabClientProfileNavigation} from '../../navigation/top-tab-client-profile';
+import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../../interfaces';
+import {useAuthStore} from '../../../store';
 
 const Tab = createBottomTabNavigator<RootStackParams>();
 
 export const HomeScreen = () => {
+  const {role} = useAuthStore();
+  const isClient = role === CLIENT;
+  const isDriver = role === DRIVER;
+  const isDelivery = role === DELIVERY;
   return (
     <Tab.Navigator
       tabBar={props => <CustomBottomTabs {...props} />}
-      initialRouteName="HomeDriverScreen"
       screenOptions={{
         headerTransparent: true,
       }}>
+      {isClient && (
+        <Tab.Screen
+          name={`RestaurantsScreen`}
+          options={{
+            // icon name
+            title: 'home-outline',
+            headerShown: false,
+          }}
+          component={RestaurantsScreen}
+        />
+      )}
+
+      {isDriver && (
+        <Tab.Screen
+          name={`HomeDriverScreen`}
+          options={{
+            // icon name
+            title: 'home-outline',
+            headerShown: false,
+          }}
+          component={HomeDriverScreen}
+        />
+      )}
+
+      {isDelivery && (
+        <Tab.Screen
+          name={`HomeDeliveryScreen`}
+          options={{
+            // icon name
+            title: 'home-outline',
+            headerShown: false,
+          }}
+          component={HomeDeliveryScreen}
+        />
+      )}
+
       <Tab.Screen
-        name={`HomeScreen`}
-        options={{
-          // icon name
-          title: 'home-outline',
-          headerShown: false,
-        }}
-        component={StackRestaurantNavigation}
-      />
-      <Tab.Screen
-        name="ProfileClientScreen"
+        name="ProfileScreen"
         options={{
           // icon name
           title: 'person-outline',
           headerShown: false,
         }}
-        component={TopTabClientProfileNavigation}
+        component={ProfileScreen}
       />
-      <Tab.Screen
-        name="HomeClientScreen"
-        options={{
-          // icon name
-          title: 'map-outline',
-          headerShown: false,
-        }}
-        component={HomeClientDriverScreen}
-      />
-      <Tab.Screen
-        name="favoritesScreen"
-        options={{
-          // icon name
-          title: 'heart',
-          headerShown: false,
-        }}
-        component={FavoritesScreen}
-      />
+
+      {isClient && (
+        <Tab.Screen
+          name="RequestDriverScreen"
+          options={{
+            // icon name
+            title: 'map-outline',
+            headerShown: false,
+          }}
+          component={RequestDriverScreen}
+        />
+      )}
+      {isClient && (
+        <Tab.Screen
+          name="favoritesScreen"
+          options={{
+            // icon name
+            title: 'heart',
+            headerShown: false,
+          }}
+          component={FavoritesScreen}
+        />
+      )}
     </Tab.Navigator>
   );
 };
 
-export const BottomTapNavigationDriver = () => {
-  return (
-    <Tab.Navigator
-      tabBar={props => <CustomBottomTabs {...props} />}
-      initialRouteName="HomeClientDeliveryScreen"
-      screenOptions={{
-        headerTransparent: true,
-      }}>
-      <Tab.Screen
-        name={`HomeDriverScreen`}
-        options={{
-          // icon name
-          title: 'home-outline',
-          headerShown: false,
-        }}
-        component={HomeDriverScreen}
-      />
-      <Tab.Screen
-        name="ProfileClientScreen"
-        options={{
-          // icon name
-          title: 'person-outline',
-          headerShown: false,
-        }}
-        component={ProfileDriverScreen}
-      />
+// export const HomeDriverScreen = () => {
+//   return (
+//     <Tab.Navigator
+//       tabBar={props => <CustomBottomTabs {...props} />}
+//       initialRouteName="HomeClientDeliveryScreen"
+//       screenOptions={{
+//         headerTransparent: true,
+//       }}>
+//       <Tab.Screen
+//         name={`HomeDriverScreen`}
+//         options={{
+//           // icon name
+//           title: 'home-outline',
+//           headerShown: false,
+//         }}
+//         component={HomeDriverScreen}
+//       />
+//       <Tab.Screen
+//         name="ProfileClientScreen"
+//         options={{
+//           // icon name
+//           title: 'person-outline',
+//           headerShown: false,
+//         }}
+//         component={ProfileDriverScreen}
+//       />
 
-      <Tab.Screen
-        name="HistoryScreen"
-        options={{
-          headerShown: false,
-          // icon name
-          title: 'layers-outline',
-        }}
-        component={HistoryTravels}
-      />
-      <Tab.Screen
-        name="ChatBotScreen"
-        options={{
-          headerShown: false,
-          // icon name
-          title: 'message-circle-outline',
-        }}
-        component={ChatBotScreen}
-      />
-    </Tab.Navigator>
-  );
-};
+//       <Tab.Screen
+//         name="HistoryScreen"
+//         options={{
+//           headerShown: false,
+//           // icon name
+//           title: 'layers-outline',
+//         }}
+//         component={HistoryTravels}
+//       />
+//       <Tab.Screen
+//         name="ChatBotScreen"
+//         options={{
+//           headerShown: false,
+//           // icon name
+//           title: 'message-circle-outline',
+//         }}
+//         component={ChatBotScreen}
+//       />
+//     </Tab.Navigator>
+//   );
+// };
 
-export const BottomTapNavigationDelivery = () => {
-  return (
-    <Tab.Navigator
-      tabBar={props => <CustomBottomTabs {...props} />}
-      initialRouteName="HomeDriverScreen"
-      screenOptions={{
-        headerTransparent: true,
-      }}>
-      <Tab.Screen
-        name={`HomeDriverScreen`}
-        options={{
-          // icon name
-          title: 'home-outline',
-          headerShown: false,
-        }}
-        component={HomeDeliveryScreen}
-      />
-      <Tab.Screen
-        name="ProfileClientScreen"
-        options={{
-          // icon name
-          title: 'person-outline',
-          headerShown: false,
-        }}
-        component={ProfileDriverScreen}
-      />
+// export const HomeDeliveryScreen = () => {
+//   return (
+//     <Tab.Navigator
+//       tabBar={props => <CustomBottomTabs {...props} />}
+//       initialRouteName="HomeDriverScreen"
+//       screenOptions={{
+//         headerTransparent: true,
+//       }}>
+//       <Tab.Screen
+//         name={`HomeDriverScreen`}
+//         options={{
+//           // icon name
+//           title: 'home-outline',
+//           headerShown: false,
+//         }}
+//         component={HomeDeliveryScreen}
+//       />
+//       <Tab.Screen
+//         name="ProfileClientScreen"
+//         options={{
+//           // icon name
+//           title: 'person-outline',
+//           headerShown: false,
+//         }}
+//         component={ProfileDriverScreen}
+//       />
 
-      <Tab.Screen
-        name="HistoryScreen"
-        options={{
-          headerShown: false,
-          // icon name
-          title: 'layers-outline',
-        }}
-        component={HistoryTravels}
-      />
-      <Tab.Screen
-        name="ChatBotScreen"
-        options={{
-          headerShown: false,
-          // icon name
-          title: 'message-circle-outline',
-        }}
-        component={ChatBotScreen}
-      />
-    </Tab.Navigator>
-  );
-};
+//       <Tab.Screen
+//         name="HistoryScreen"
+//         options={{
+//           headerShown: false,
+//           // icon name
+//           title: 'layers-outline',
+//         }}
+//         component={HistoryTravels}
+//       />
+//       <Tab.Screen
+//         name="ChatBotScreen"
+//         options={{
+//           headerShown: false,
+//           // icon name
+//           title: 'message-circle-outline',
+//         }}
+//         component={ChatBotScreen}
+//       />
+//     </Tab.Navigator>
+//   );
+// };

@@ -41,10 +41,6 @@ export const ModalRefill = ({
 
   const {points, addPoints} = useCouponStore();
 
-  useEffect(() => {
-    console.log(points);
-  }, [points]);
-
   const handleRecharge = async () => {
     setIsPaying(true);
 

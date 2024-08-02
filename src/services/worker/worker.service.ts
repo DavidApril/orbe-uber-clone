@@ -98,8 +98,6 @@ export class WorkerService {
         {vehicles},
       );
 
-      console.log({response});
-
       return response;
     } catch (error) {
       console.log({error});
@@ -112,8 +110,6 @@ export class WorkerService {
       const {data: response}: {data: any} = await orbeApi.delete(
         `/${this.PREFIX}/deleteVehicle?idVehicle=${idVehicle}`,
       );
-
-      console.log(response);
 
       return response;
     } catch (error) {
@@ -129,8 +125,6 @@ export class WorkerService {
           `/${this.PREFIX}/getDeliveryByUserId?idUser=${idUser}`,
         );
 
-      console.log({response});
-
       return response.data;
     } catch (error) {
       console.log({error});
@@ -142,8 +136,6 @@ export class WorkerService {
       // TODO: response interface
       const {data: response}: {data: GetDriverByUserIDResponse} =
         await orbeApi.get(`/${this.PREFIX}/getDriverByUserId?idUser=${idUser}`);
-
-      console.log({response});
 
       return response.data;
     } catch (error) {
@@ -159,8 +151,6 @@ export class WorkerService {
       const {data: response}: {data: GetDeliveryByUidResponse} =
         await orbeApi.get(`/${this.PREFIX}/getDeliveryByUid?uid=${uid}`);
 
-      console.log({response});
-
       return response.data;
     } catch (error) {
       parseError(this.PREFIX + '/getDeliveryByUid', error);
@@ -173,8 +163,6 @@ export class WorkerService {
       // TODO: response interface
       const {data: response}: {data: GetDriverByUidResponse} =
         await orbeApi.get(`/${this.PREFIX}/getDriverByUid?uid=${uid}`);
-
-      console.log({response});
 
       return response.data;
     } catch (error) {
@@ -217,8 +205,6 @@ export class WorkerService {
         `/${this.PREFIX}/deleteDelivery?idUser=${idUser}`,
       );
 
-      console.log({response});
-
       return response.data;
     } catch (error) {
       console.log({error});
@@ -231,8 +217,6 @@ export class WorkerService {
       const {data: response}: {data: any} = await orbeApi.delete(
         `/${this.PREFIX}/deleteDriver?idUser=${idUser}`,
       );
-
-      console.log({response});
 
       return response.data;
     } catch (error) {

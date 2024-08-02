@@ -32,7 +32,6 @@ export class AuthService {
     } catch (error) {
       // Axios error
       if (error instanceof AxiosError) {
-        console.log(error.response?.data);
         throw new Error(error.response?.data);
       }
 
@@ -89,7 +88,6 @@ export class AuthService {
       // return { ...response };
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(error.response?.data);
         throw new Error(error.response?.data);
       }
 
@@ -107,7 +105,6 @@ export class AuthService {
       return token;
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(error.response?.data);
         throw new Error(error.response?.data);
       }
 
@@ -123,7 +120,6 @@ export class AuthService {
       return response;
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(error.response?.data);
         throw new Error(error.response?.data);
       }
 

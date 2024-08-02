@@ -1,17 +1,17 @@
-import {useAuthStore, useCouponStore} from '../../../../store';
-import {StorageService} from '../../../../services';
-import {globalColors, globalDimensions} from '../../../theme/styles';
 import {
-  Image,
-  ScrollView,
-  Text,
-  useColorScheme,
   useWindowDimensions,
+  useColorScheme,
+  ScrollView,
   View,
+  Image,
+  Text,
 } from 'react-native';
-import {LoadingScreen} from '../../loading/loading-screen';
-import {OpenDrawerMenu, StatusButton} from '../../../components';
-import {parseDate} from '../../../../utils';
+import {StorageService} from '../../../services';
+import {useAuthStore} from '../../../store';
+import {parseDate} from '../../../utils';
+import {OpenDrawerMenu, StatusButton} from '../../components';
+import {globalColors, globalDimensions} from '../../theme/styles';
+import {LoadingScreen} from '../loading/loading-screen';
 
 export const ProfileClientScreen = () => {
   const {userByUid} = useAuthStore();

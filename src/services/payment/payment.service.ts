@@ -8,7 +8,7 @@ import {
   PayWithCardResponse,
   PayWithCardResponseData,
 } from '../../interfaces';
-import { parseError } from '../../utils';
+import {parseError} from '../../utils';
 
 export class PaymentService {
   static PREFIX: string = 'pay';
@@ -22,7 +22,7 @@ export class PaymentService {
 
       return response;
     } catch (error) {
-      parseError(this.PREFIX + '/rechargePoints', error)
+      parseError(this.PREFIX + '/rechargePoints', error);
       return [];
     }
   }
@@ -37,7 +37,7 @@ export class PaymentService {
       );
       return response.data;
     } catch (error) {
-      parseError(this.PREFIX + '/cardCreditPayment', error)
+      parseError(this.PREFIX + '/cardCreditPayment', error);
       return null;
     }
   }
@@ -45,10 +45,12 @@ export class PaymentService {
   static async GetPayMethodsUser(user_uid: string): Promise<ICreditCard[]> {
     try {
       const {data: response}: {data: GetPayMethodsUserResponse} =
-        await orbeApi.get(`/${this.PREFIX}/GetPayMethodsUser?user_uid=${user_uid}`);
+        await orbeApi.get(
+          `/${this.PREFIX}/GetPayMethodsUser?user_uid=${user_uid}`,
+        );
       return response.data;
     } catch (error) {
-      console.log(error);
+      parseError(this.PREFIX + '/GetPayMethodsUser', error);
       return [];
     }
   }
@@ -65,7 +67,7 @@ export class PaymentService {
         );
       return response.data;
     } catch (error) {
-      parseError(this.PREFIX + '/getTransactionsByUser', error)
+      parseError(this.PREFIX + '/getTransactionsByUser', error);
       return [];
     }
   }
