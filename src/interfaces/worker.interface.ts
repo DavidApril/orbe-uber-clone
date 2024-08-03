@@ -146,3 +146,4 @@ export interface GetDriverByUidResponseData {
   roles: any[];
   delivery: Delivery;
 }
+

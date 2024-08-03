@@ -1,12 +1,9 @@
 import {create} from 'zustand';
-import {Location} from '../../interfaces';
+import {Location, Race} from '../../interfaces';
 import {RaceService} from '../../services';
 import {parseError} from '../../utils';
 
-export type Race = {
-  distance: number;
-  duration: number;
-};
+
 
 interface ClientDriverStore {
   searchingDriver: boolean;

@@ -9,6 +9,7 @@ import {
   AcceptCancelButtons,
   ActiveServicesButton,
   CButton,
+  CInput,
   ClientInformationCard,
   CText,
   CTextHeader,
@@ -20,12 +21,17 @@ import {
 } from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
-import {FlatList, Pressable, View} from 'react-native';
+import {FlatList, Pressable, TextInput, View} from 'react-native';
 
 import {RootStackParams} from '../../../interfaces';
 import {currencyFormat} from '../../../utils';
 import {StackScreenProps} from '@react-navigation/stack';
-import {globalDimensions, neutralColors} from '../../theme/styles';
+import {
+  globalDimensions,
+  globalStyles,
+  neutralColors,
+  stateColors,
+} from '../../theme/styles';
 import {API_SOCKET_URL} from '@env';
 
 interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
@@ -33,9 +39,10 @@ interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 export const HomeDriverScreen = ({}: Props) => {
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
+  const {socket} = useSocket(`${API_SOCKET_URL}/location`);
   const {isDarkMode} = useUIStore();
   const [driverArrived, setDriverArrived] = useState<boolean>(false);
+  const [clientCode, setClientCode] = useState<string>('');
   const {
     driverServiceIsActive,
     origin,
@@ -51,7 +58,7 @@ export const HomeDriverScreen = ({}: Props) => {
     setOrigin,
   } = useDriverStore();
 
-  console.log({online});
+  console.log({currentRequest});
 
   useEffect(() => {
     socket.on('driver-request', data => {
@@ -90,7 +97,7 @@ export const HomeDriverScreen = ({}: Props) => {
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
   }
-console.log({driverRequests})
+
   return (
     <View style={{flex: 1}}>
       <OpenDrawerMenu />
@@ -130,40 +137,42 @@ console.log({driverRequests})
         />
       ) : (
         <>
-          <View
-            style={{
-              top: 100,
-              left: 40,
-              right: 40,
-              position: 'absolute',
-              flexDirection: 'row',
-              gap: 10,
-            }}>
-            <CView
+          {raceData && (
+            <View
               style={{
-                flex: 1,
-                padding: 10,
+                top: 100,
+                left: 40,
+                right: 40,
+                position: 'absolute',
                 flexDirection: 'row',
-                justifyContent: 'center',
                 gap: 10,
-                borderRadius: 10,
               }}>
-              <CustomIcon name="activity" />
-              <CTextHeader>{raceData?.distance} km</CTextHeader>
-            </CView>
-            <CView
-              style={{
-                flex: 1,
-                padding: 10,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: 10,
-                borderRadius: 10,
-              }}>
-              <CustomIcon name="clock" />
-              <CTextHeader>{raceData?.duration.toFixed(2)} min</CTextHeader>
-            </CView>
-          </View>
+              <CView
+                style={{
+                  flex: 1,
+                  padding: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 10,
+                  borderRadius: 10,
+                }}>
+                <CustomIcon name="activity" />
+                <CTextHeader>{raceData.distance} km</CTextHeader>
+              </CView>
+              <CView
+                style={{
+                  flex: 1,
+                  padding: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 10,
+                  borderRadius: 10,
+                }}>
+                <CustomIcon name="clock" />
+                <CTextHeader>{raceData.duration.toFixed(2)} min</CTextHeader>
+              </CView>
+            </View>
+          )}
 
           <FAB
             white={true}
@@ -201,7 +210,7 @@ console.log({driverRequests})
               style={{
                 position: 'absolute',
                 bottom: 120,
-                height: 120,
+                height: 220,
                 left: 30,
                 right: 30,
                 flex: 1,
@@ -214,10 +223,36 @@ console.log({driverRequests})
                   ? neutralColors.backgroundDarkAlpha
                   : neutralColors.backgroundAlpha,
               }}>
-              <CText>Código del cliente</CText>
-              <CTextHeader style={{fontSize: 40, letterSpacing: 10}}>
-                XJK5Z2
-              </CTextHeader>
+              <View style={{transform: [{scale: 3}], marginBottom: 30}}>
+                <CustomIcon
+                  fill={
+                    clientCode.length < 4
+                      ? stateColors.error
+                      : stateColors.success
+                  }
+                  name="alert-circle-outline"
+                />
+              </View>
+              <CText>Ingrese el código del cliente</CText>
+              <TextInput
+                value={clientCode}
+                onChangeText={value => setClientCode(value.toUpperCase())}
+                style={[
+                  globalStyles.primaryInput,
+                  {
+                    backgroundColor: isDarkMode
+                      ? neutralColors.textInputBackgroundDark
+                      : neutralColors.textInputBackgroundDark,
+                    borderRadius: globalDimensions.cardBorderRadius,
+                    width: '80%',
+                    fontSize: 30,
+                    letterSpacing: 8,
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    marginVertical: 10,
+                  },
+                ]}
+              />
             </View>
           )}
         </>

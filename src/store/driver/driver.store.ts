@@ -1,6 +1,5 @@
 import {create} from 'zustand';
-import {Location} from '../../interfaces';
-import {Race} from '../client/client-driver-store';
+import {Location, Race, RequestDriver} from '../../interfaces';
 
 interface DriverState {
   driverServiceIsActive: boolean;
@@ -11,7 +10,7 @@ interface DriverState {
   driverRequests: any[];
   raceData: Race | null;
   // TODO: currentRequest Interface
-  currentRequest: any;
+  currentRequest: RequestDriver | null;
   currentRaceAccepted: boolean;
 
   setDriverServiceIsActive: (value: boolean) => void;
@@ -21,7 +20,7 @@ interface DriverState {
   setRaceData: (value: Race | null) => void;
   setDriverRequests: (driverRequests: any) => void;
   // TODO: currentRequest Interface
-  setCurrentRequest: (currentRequest: any) => void;
+  setCurrentRequest: (currentRequest: RequestDriver) => void;
   setCurrentRaceAccepted: (value: boolean) => void;
 }
 
@@ -32,7 +31,7 @@ export const useDriverStore = create<DriverState>()(set => ({
   analyzingRace: false,
   driverRequests: [],
   raceData: null,
-  currentRequest: false,
+  currentRequest: null,
   currentRaceAccepted: false,
 
   setDriverServiceIsActive: driverServiceIsActive =>

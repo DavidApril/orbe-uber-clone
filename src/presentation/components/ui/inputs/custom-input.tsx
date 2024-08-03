@@ -5,7 +5,7 @@ import {useUIStore} from '../../../../store';
 import {CText} from '../custom-text';
 
 interface Props {
-  label: string;
+  label?: string;
   value: string;
   handleValue: (value: string) => void;
   style?: StyleProp<ViewStyle>;

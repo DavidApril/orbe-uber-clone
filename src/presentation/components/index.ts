@@ -33,9 +33,10 @@ export * from './maps/map-view';
 export * from './drawer/custom-drawer-content';
 
 export * from './client/select-origin-destination';
-export * from './worker/client-information-card';
 export * from './client/payment-controllers';
+export * from './client/code-for-driver';
 
+export * from './worker/client-information-card';
 export * from './worker/driver-information-card';
 export * from './worker/analize-order-button';
 export * from './worker/register-vehicle-form';
