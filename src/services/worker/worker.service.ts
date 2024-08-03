@@ -160,13 +160,14 @@ export class WorkerService {
 
   static getDriverByUid = async (uid: string) => {
     try {
-      // TODO: response interface
+      console.log(uid);
       const {data: response}: {data: GetDriverByUidResponse} =
-        await orbeApi.get(`/${this.PREFIX}/getDriverByUid?uid=${uid}`);
+        await orbeApi.get(`/${this.PREFIX}/getDriversByUid?uid=${uid}`);
+
 
       return response.data;
     } catch (error) {
-      console.log({error});
+      parseError(this.PREFIX +  '/getDriversByUid', error)
     }
   };
 
