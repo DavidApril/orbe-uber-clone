@@ -40,8 +40,8 @@ export const FAB = ({
           zIndex: 1,
           position: 'absolute',
           borderRadius: 100,
-          height: 30,
-          width: 30,
+          height: 45,
+          width: 45,
           justifyContent: 'center',
           backgroundColor: !isDarkMode
             ? globalColors.primaryColors.primary

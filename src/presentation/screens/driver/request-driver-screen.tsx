@@ -26,9 +26,8 @@ export const RequestDriverScreen = () => {
     setCurrentDriverAcceptRace,
     setNearbyDrivers,
     setRaceData,
-    searchingDriver,
   } = useClientDriverStore();
-  const {socket, online} = useSocket(`${API_SOCKET_URL}/location-client`);
+  const {socket} = useSocket(`${API_SOCKET_URL}/location-client`);
   const {socket: raceWaitsSocket} = useSocket(
     `${API_SOCKET_URL}/client-driver-wait`,
   );
@@ -42,25 +41,23 @@ export const RequestDriverScreen = () => {
   }, [payWithCard]);
 
   useEffect(() => {
-    const payload = {
-      id: user?.uid,
-      longitud: lastKnownLocation?.longitude,
-      latitud: lastKnownLocation?.latitude,
-    };
-    socket.emit('message-client', payload);
-    return () => {
-      socket.off();
-    };
+    if (lastKnownLocation) {
+      socket.emit('message-client', {
+        id: user?.uid,
+        longitud: lastKnownLocation.longitude,
+        latitud: lastKnownLocation.latitude,
+      });
+    }
   }, [lastKnownLocation]);
 
   useEffect(() => {
     socket.on('conductores-cercanos', data => {
+      console.log({data});
       setNearbyDrivers(data);
     });
-
-    return () => {
-      socket.off();
-    };
+    // return () => {
+    //   socket.off();
+    // };
   }, []);
 
   useEffect(() => {

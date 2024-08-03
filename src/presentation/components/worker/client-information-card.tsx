@@ -18,7 +18,7 @@ export const ClientInformationCard = ({request}: Props) => {
   const {isDarkMode} = useUIStore();
 
   const {setCurrentRequest, setDestination, setOrigin, setAnalyzingRace} =
-    useDeliveryStore();
+    useDriverStore();
 
   useEffect(() => {
     ClientService.getClientByUid(request.id_client).then(client =>

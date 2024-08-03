@@ -1,6 +1,7 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {SelectOriginDestination} from '../client/select-origin-destination';
 import {
+  FlatList,
   Pressable,
   ScrollView,
   Text,
@@ -14,14 +15,16 @@ import {useClientDriverStore} from '../../../store/client/client-driver-store';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {useAuthStore, useUIStore} from '../../../store';
 import {globalColors} from '../../theme/styles';
+import {WorkerService} from '../../../services';
+import {parseError} from '../../../utils';
 
 export const BSSelectOriginDestination = () => {
   const SearchingDriverBottomSheetRef = useRef<BottomSheet>(null);
   const {userByUid} = useAuthStore();
-  const snapPoints = useMemo(() => ['25%', '90%'], []);
   const {height, width} = useWindowDimensions();
 
   const {isDarkMode} = useUIStore();
+  const snapPoints = useMemo(() => ['25%', '90%'], []);
 
   const {
     searchingDriver,
@@ -151,20 +154,34 @@ export const BSSelectOriginDestination = () => {
             </View>
           )}
 
-          {nearbyDrivers &&
-            nearbyDrivers?.map(driver => (
-              <>
-                <DriverInformationCard
-                  key={driver.uid_firebase}
-                  currentDriverAcceptRace={currentDriverAcceptRace}
-                  createRequest={() => {
-                    createRequest(driver.id.toString(), userByUid.uid_firebase);
-                  }}
-                  raceData={raceData}
-                  driver={driver}
-                />
-              </>
-            ))}
+          {nearbyDrivers && (
+            <FlatList
+              data={nearbyDrivers}
+              renderItem={({item: driver}) => {
+                const driverData = WorkerService.getDriverByUid(
+                  driver.uid_firebase,
+                ).then(driver => {
+                  return driver;
+                });
+                console.log({driverData});
+
+                return (
+                  <DriverInformationCard
+                    key={driver.uid_firebase}
+                    currentDriverAcceptRace={currentDriverAcceptRace}
+                    createRequest={() => {
+                      createRequest(
+                        driver.id.toString(),
+                        userByUid!.uid_firebase,
+                      );
+                    }}
+                    raceData={raceData}
+                    driver={driverData}
+                  />
+                );
+              }}
+            />
+          )}
         </ScrollView>
       )}
     </BottomSheet>

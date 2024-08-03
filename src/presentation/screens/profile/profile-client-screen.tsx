@@ -149,11 +149,8 @@ export const ProfileClientScreen = () => {
                     : globalColors.neutralColors.backgroundDarkAlpha,
                 }}>
                 <Text>Puntos</Text>
-                <Text
-                  numberOfLines={0}
-                  style={{fontSize: 28, fontWeight: 'bold'}}>
-                  {/* {currencyFormat(5000)} */}
-                  {Math.trunc(points)}
+                <Text style={{fontSize: 28, fontWeight: 'bold'}}>
+                  {points.toFixed(2)}
                 </Text>
               </View>
             </View>
