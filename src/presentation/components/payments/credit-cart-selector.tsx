@@ -11,7 +11,6 @@ import {FlatList} from 'react-native-gesture-handler';
 import {CreditCard} from '../wallet/credit-card';
 import {CViewAlpha} from '../ui/custom-view-alpha';
 import {CustomIcon} from '../ui/custom-icon';
-import {globalDimensions} from '../../theme/styles';
 import {usePaymentStore} from '../../../store';
 import {CText} from '../ui/custom-text';
 
@@ -29,22 +28,24 @@ export const CreditCardSelector = ({
   const {creditCardsTokens, setCreditCardsSelected} = usePaymentStore();
 
   return (
-    <ScrollView style={{marginHorizontal: 30, position: 'relative', flex: 1}}>
-      <CTextHeader style={{fontWeight: '100', fontSize: 20, marginBottom: 15}}>
-        Método de pago
+    <ScrollView
+      style={{
+        marginHorizontal: 30,
+        position: 'relative',
+        flex: 1,
+      }}>
+      <CTextHeader style={{fontWeight: '100', fontSize: 20}}>
+        Selecciona un método de pago
       </CTextHeader>
 
       <View
         style={{
-          height: creditCardsTokens.length === 0 ? 200 : 500,
           width: '100%',
           flex: 1,
         }}>
         <View
           style={{
-            position: 'absolute',
             flex: 1,
-            height: creditCardsTokens.length === 0 ? 390 : 480,
             alignSelf: 'center',
           }}>
           {creditCardsTokens.length === 0 && (
@@ -52,6 +53,9 @@ export const CreditCardSelector = ({
           )}
           <FlatList
             horizontal={horizontal}
+            style={{
+              flex: 1,
+            }}
             data={creditCardsTokens}
             renderItem={({item: creditCard}) => (
               <CreditCard creditCard={creditCard} />
@@ -91,19 +95,6 @@ export const CreditCardSelector = ({
             </CViewAlpha>
           </Pressable>
         )}
-
-        <ImageBackground
-          style={{
-            borderRadius: globalDimensions.cardBorderRadius,
-            zIndex: -10,
-            height: '100%',
-            overflow: 'hidden',
-          }}>
-          <Image
-            source={require('../../../assets/white-gradient.webp')}
-            style={{width: '100%', height: '100%'}}
-          />
-        </ImageBackground>
       </View>
     </ScrollView>
   );

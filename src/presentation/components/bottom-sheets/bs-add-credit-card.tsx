@@ -90,7 +90,6 @@ export const BSAddCreditCard = () => {
 
   return (
     <BottomSheet
-      style={{zIndex: 99999}}
       handleStyle={{
         backgroundColor: isDarkMode
           ? neutralColors.backgroundDarkAlpha

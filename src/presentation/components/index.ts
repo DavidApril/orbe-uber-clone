@@ -61,6 +61,7 @@ export * from './chatbot/header-chatbot';
 
 export * from './payments/transaction-item';
 export * from './payments/credit-cart-selector';
+export * from './payments/add-card-button';
 
 export * from './modals/modal-paying-loader';
 export * from './modals/modal-refill';

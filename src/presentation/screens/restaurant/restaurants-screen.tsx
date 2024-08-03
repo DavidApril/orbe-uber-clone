@@ -8,9 +8,9 @@ import {
   RestaurantsAndProductsScreen,
   ProductScreen,
   OrdersScreen,
+  CouponsScreen,
 } from '..';
 import {RootStackParams} from '../../../interfaces';
-import {CouponsScreen} from '../../navigation';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore

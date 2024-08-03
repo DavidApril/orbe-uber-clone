@@ -1,9 +1,4 @@
-import {
-  CouponsScreen,
-  MyCardsScreen,
-  ProfileClientScreen,
-  ProfileWorkerScreen,
-} from '..';
+import {MyCardsScreen, ProfileClientScreen, ProfileWorkerScreen} from '..';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../../interfaces';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useAuthStore} from '../../../store';
@@ -14,9 +9,7 @@ export const ProfileScreen = (): React.ReactElement => {
   const {role} = useAuthStore();
 
   return (
-    <Navigator
-    // tabBar={props => <CustomTopBar {...props} />}
-    >
+    <Navigator>
       {role === CLIENT && (
         <Screen
           options={{
