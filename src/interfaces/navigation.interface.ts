@@ -5,6 +5,10 @@ export type RootStackParams = {
   RegisterClientScreen: undefined;
   RegisterDriverScreen: undefined;
   RegisterDeliveryScreen: undefined;
+  RegisterUserDocumentsScreen: undefined;
+  RegisterWorkerScreen: undefined;
+  RegisterVehiclesDocumentsScreen: undefined;
+  RegisterEditScreen: undefined;
 
   PermissionsScreen: undefined;
 
@@ -21,6 +25,7 @@ export type RootStackParams = {
   ProductScreen: undefined;
   CartOfProductsScreen: undefined;
   CheckoutScreen: undefined;
+  
 
   OrdersScreen: undefined;
   OrderScreen: undefined;

@@ -4,9 +4,6 @@ declare module '@env' {
 
   export const API_SOCKET_URL: string;
 
-  export const MAPBOX_ACCESS_TOKEN: string;
-  export const MAPBOX_API_URL: string;
-
   export const GOOGLE_API_KEY: string;
   export const EPAYCO_API_KEY: string;
   export const EPAYCO_PRIVATE_KEY: string;

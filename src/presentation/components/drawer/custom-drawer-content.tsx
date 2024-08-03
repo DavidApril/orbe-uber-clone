@@ -35,7 +35,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     } else if (role === DRIVER) {
       image_url = StorageService.getPhotoFromCache(userByUid!.driver!.photo);
     } else if (role === DELIVERY) {
-      image_url = StorageService.getPhotoFromCache(userByUid!.delivery!.imageUrl);
+      image_url = StorageService.getPhotoFromCache(userByUid!.delivery!.image_url);
     }
   }
 

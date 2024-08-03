@@ -21,6 +21,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {parseError} from '../../../utils';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import i18n from '../../../config/i18n/i18n';
+import * as Yup from 'yup'
 
 export const RegisterWorkerForm = () => {
   const navigation =
@@ -32,18 +33,18 @@ export const RegisterWorkerForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const {t} = useTranslation()
-  // const validationSchema = Yup.object({
-  //   firstName: Yup.string().required(),
-  //   lastName: Yup.string().required(),
-  //   identification: Yup.string().required(),
-  //   phone: Yup.string().required(),
-  //   email: Yup.string().required().email(),
-  //   password: Yup.string().required(),
-  //   confirmPassword: Yup.string()
-  //     .required()
-  //     // @ts-ignore
-  //     .oneOf([Yup.ref('password'), null], 'Passwords must match'),
-  // });
+  const validationSchema = Yup.object({
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
+    identification: Yup.string().required(),
+    phone: Yup.string().required(),
+    email: Yup.string().required().email(),
+    password: Yup.string().required(),
+    confirmPassword: Yup.string()
+      .required()
+      // @ts-ignore
+      .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  });
 
   const initialValues: WorkerRegisterForm = {
     firstName: '',
@@ -81,7 +82,7 @@ export const RegisterWorkerForm = () => {
 
   return (
     <I18nextProvider i18n={i18n}>
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+      <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
       {({values, handleChange, handleSubmit}) => (
         <>
           <CViewAlpha

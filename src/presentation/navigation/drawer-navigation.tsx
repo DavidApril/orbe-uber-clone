@@ -12,7 +12,7 @@ import {
   ShoppingHistoryScreen,
   TravelsHistoryScreen,
 } from '../screens';
-import {I18nextProvider} from 'react-i18next';
+import {I18nextProvider, useTranslation} from 'react-i18next';
 import i18n from '../../config/i18n/i18n';
 
 const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
@@ -20,6 +20,7 @@ const {Navigator, Screen} = createDrawerNavigator<RootStackParams>();
 export function DrawerNavigation() {
   const {isDarkMode} = useUIStore();
   const {role} = useAuthStore();
+  const {t} = useTranslation()
 
   const isClient = role === CLIENT;
 
@@ -129,7 +130,7 @@ export function DrawerNavigation() {
           <Screen
             options={{
               headerShown: true,
-              title: 'settings',
+              title: t('settings'),
               headerTintColor: primaryColors.primary,
               drawerIcon: ({color}) => (
                 <CustomIcon fill={color} name="settings-outline" />
