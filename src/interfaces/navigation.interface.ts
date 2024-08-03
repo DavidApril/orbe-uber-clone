@@ -17,6 +17,7 @@ export type RootStackParams = {
 
   RestaurantsAndProductsScreen: undefined;
   RestaurantScreen: undefined;
+  CouponsScreen: undefined;
   ProductScreen: undefined;
   CartOfProductsScreen: undefined;
   CheckoutScreen: undefined;

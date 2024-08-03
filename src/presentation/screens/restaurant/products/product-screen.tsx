@@ -64,7 +64,7 @@ export const ProductScreen = ({navigation}: Props) => {
 
       <Pressable
         onPress={() => {
-          navigation.navigate('ProductsCartScreen');
+          navigation.navigate('CartOfProductsScreen');
           setCartNews(false);
         }}
         style={[globalStyles.FABShoppingCartButton]}>

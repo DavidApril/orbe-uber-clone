@@ -6,35 +6,51 @@ import {
   Image,
   Text,
 } from 'react-native';
-import {StorageService} from '../../../services';
-import {useAuthStore} from '../../../store';
+import {ClientService, StorageService} from '../../../services';
+import {useAuthStore, useCouponStore, useUIStore} from '../../../store';
 import {parseDate} from '../../../utils';
-import {OpenDrawerMenu, StatusButton} from '../../components';
+import {
+  CustomIcon,
+  FABGoBackButton,
+  OpenDrawerMenu,
+  StatusButton,
+} from '../../components';
 import {globalColors, globalDimensions} from '../../theme/styles';
 import {LoadingScreen} from '../loading/loading-screen';
+import {useIsFocused} from '@react-navigation/native';
+import {useEffect} from 'react';
 
 export const ProfileClientScreen = () => {
   const {userByUid} = useAuthStore();
+  const {addPoints, points} = useCouponStore();
   const {height, width} = useWindowDimensions();
-  const colorSchema = useColorScheme();
+  const {isDarkMode} = useUIStore();
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (userByUid) {
+      ClientService.getClientByUid(userByUid?.uid_firebase).then(user =>
+        addPoints(user.points),
+      );
+    }
+  }, [isFocused]);
 
   if (!userByUid) {
     return <LoadingScreen />;
   }
 
-  const image_url = StorageService.getPhotoByFilename(userByUid.cliente!.photo);
-
   return (
     <>
       <OpenDrawerMenu />
+      <FABGoBackButton />
       <ScrollView
         style={{flex: 1, height, backgroundColor: 'red', position: 'relative'}}>
         <View
           style={{
-            backgroundColor:
-              colorSchema === 'light'
-                ? globalColors.neutralColors.background
-                : globalColors.neutralColors.backgroundDark,
+            backgroundColor: !isDarkMode
+              ? globalColors.neutralColors.background
+              : globalColors.neutralColors.backgroundDark,
             flex: 1,
             paddingHorizontal: 50,
             paddingTop: 130,
@@ -51,21 +67,31 @@ export const ProfileClientScreen = () => {
             }}>
             <View
               style={{
-                height: 200,
-                width: 200,
-                borderWidth: 10,
-                borderColor:
-                  colorSchema === 'light'
-                    ? globalColors.neutralColors.border
-                    : globalColors.stateColors.success,
+                height: 240,
+                width: 240,
                 backgroundColor: 'white',
                 borderRadius: 100,
                 overflow: 'hidden',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
-              <Image
-                style={{height: 200, width: 200}}
-                source={{uri: image_url}}
-              />
+              {userByUid.cliente.photo !== '' ? (
+                <Image
+                  style={{height: 240, width: 240}}
+                  source={{
+                    uri: StorageService.getPhotoByFilename(
+                      userByUid.cliente.photo,
+                    ),
+                  }}
+                />
+              ) : (
+                <View style={{transform: [{scale: 3}]}}>
+                  <CustomIcon
+                    fill={isDarkMode ? 'black' : 'white'}
+                    name="person"
+                  />
+                </View>
+              )}
             </View>
 
             <View style={{justifyContent: 'center', marginVertical: 10}}>
@@ -76,10 +102,9 @@ export const ProfileClientScreen = () => {
                 style={{
                   fontSize: 38,
                   textAlign: 'center',
-                  color:
-                    colorSchema === 'light'
-                      ? globalColors.fontColor.textColorHeader
-                      : globalColors.fontColor.textColorHeaderDark,
+                  color: !isDarkMode
+                    ? globalColors.fontColor.textColorHeader
+                    : globalColors.fontColor.textColorHeaderDark,
                 }}>
                 {userByUid.cliente!.name}
               </Text>
@@ -100,10 +125,9 @@ export const ProfileClientScreen = () => {
               <View style={{justifyContent: 'center'}}>
                 <Text
                   style={{
-                    color:
-                      colorSchema === 'light'
-                        ? globalColors.fontColor.textColor
-                        : globalColors.fontColor.textColorDark,
+                    color: !isDarkMode
+                      ? globalColors.fontColor.textColor
+                      : globalColors.fontColor.textColorDark,
                   }}>
                   {userByUid.cliente?.created_date &&
                     parseDate(userByUid.cliente?.created_date)}
@@ -120,17 +144,16 @@ export const ProfileClientScreen = () => {
                   padding: 30,
                   width: width * 0.4,
                   borderRadius: globalDimensions.borderRadiusButtom,
-                  backgroundColor:
-                    colorSchema === 'light'
-                      ? globalColors.neutralColors.backgroundAlpha
-                      : globalColors.neutralColors.backgroundDarkAlpha,
+                  backgroundColor: !isDarkMode
+                    ? globalColors.neutralColors.backgroundAlpha
+                    : globalColors.neutralColors.backgroundDarkAlpha,
                 }}>
                 <Text>Puntos</Text>
                 <Text
                   numberOfLines={0}
                   style={{fontSize: 28, fontWeight: 'bold'}}>
                   {/* {currencyFormat(5000)} */}
-                  {Math.trunc(userByUid.points)}
+                  {Math.trunc(points)}
                 </Text>
               </View>
             </View>

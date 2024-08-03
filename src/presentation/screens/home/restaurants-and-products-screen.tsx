@@ -7,7 +7,6 @@ import {
   useWindowDimensions,
   TextInput,
 } from 'react-native';
-import {LoadingScreen} from '..';
 import {RestaurantService} from '../../../services';
 import {SingleRestaurantResponse} from '../../../interfaces';
 import {OpenDrawerMenu, RestaurantCard} from '../../components';
@@ -19,7 +18,7 @@ import i18n from '../../../config/i18n/i18n';
 
 export const RestaurantsAndProductsScreen = ({navigation}: any) => {
   const {isDarkMode} = useUIStore();
-  const [loadingInfo, setLoadingInfo] = useState(false);
+  const {height, width} = useWindowDimensions();
   const [restaurants, setRestaurants] = useState<
     SingleRestaurantResponse[] | null
   >(null);
@@ -27,7 +26,6 @@ export const RestaurantsAndProductsScreen = ({navigation}: any) => {
   const {t} = useTranslation();
 
   useEffect(() => {
-    setLoadingInfo(true);
     RestaurantService.getRestaurants()
       .then(restaurants => setRestaurants(restaurants))
       .catch(error =>
@@ -35,103 +33,93 @@ export const RestaurantsAndProductsScreen = ({navigation}: any) => {
           'Error at try get restaurants and products in restaurant and products screen',
           error,
         ),
-      )
-      .finally(() => setLoadingInfo(false));
+      );
   }, []);
 
-  const {height, width} = useWindowDimensions();
   return (
-    <>
-      {loadingInfo ? (
-        <I18nextProvider i18n={i18n}>
-          <View
+    <I18nextProvider i18n={i18n}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          backgroundColor: !isDarkMode
+            ? globalColors.neutralColors.background
+            : globalColors.neutralColors.backgroundDark,
+          gap: 28,
+        }}>
+        <Text
+          style={{
+            top: 80,
+            paddingHorizontal: 20,
+            fontSize: 40,
+            position: 'absolute',
+            color: !isDarkMode
+              ? globalColors.fontColor.textColor
+              : globalColors.fontColor.textColorDark,
+            fontWeight: '300',
+            zIndex: 999,
+          }}>
+          {t('quick-and')}{' '}
+          <Text
             style={{
-              flex: 1,
-              flexDirection: 'column',
-              backgroundColor: !isDarkMode
-                ? globalColors.neutralColors.background
-                : globalColors.neutralColors.backgroundDark,
-              gap: 28,
+              fontWeight: 'bold',
+              color: globalColors.primaryColors.primary,
             }}>
-            <Text
+            {t('delicious')}
+          </Text>{' '}
+          {t('fast-food')}
+        </Text>
+        <View
+          style={{
+            backgroundColor: 'transparent',
+            flexDirection: 'row',
+            position: 'absolute',
+            gap: 10,
+            top: 200,
+          }}>
+          <View style={{flex: 1, paddingHorizontal: 20}}>
+            <TextInput
+              placeholderTextColor={
+                !isDarkMode
+                  ? globalColors.neutralColors.placeholderColor
+                  : globalColors.neutralColors.placeholderColorDark
+              }
               style={{
-                top: 80,
                 paddingHorizontal: 20,
-                fontSize: 40,
-                position: 'absolute',
-                color: !isDarkMode
-                  ? globalColors.fontColor.textColor
-                  : globalColors.fontColor.textColorDark,
-                fontWeight: '300',
-                zIndex: 999,
-              }}>
-              {t('quick-and')}{' '}
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  color: globalColors.primaryColors.primary,
-                }}>
-                {t('delicious')}
-              </Text>{' '}
-              {t('fast-food')}
-            </Text>
-            <View
-              style={{
-                backgroundColor: 'transparent',
-                flexDirection: 'row',
-                position: 'absolute',
-                gap: 10,
-                top: 200,
-              }}>
-              <View style={{flex: 1, paddingHorizontal: 20}}>
-                <TextInput
-                  placeholderTextColor={
-                    !isDarkMode
-                      ? globalColors.neutralColors.placeholderColor
-                      : globalColors.neutralColors.placeholderColorDark
-                  }
-                  style={{
-                    paddingHorizontal: 20,
-                    backgroundColor: !isDarkMode
-                      ? globalColors.neutralColors.textInputBackground
-                      : globalColors.neutralColors.bottomTabBackgroundDark,
-                    borderRadius: globalDimensions.borderRadiusButtom,
-                  }}
-                  placeholder="Buscar..."
-                />
-              </View>
-            </View>
-
-            <View
-              style={{
-                position: 'absolute',
-                backgroundColor: 'transparent',
-                flex: 1,
-                paddingVertical: 10,
-                top: 250,
-                width,
-                height: height * 0.5,
-              }}>
-              <FlatList
-                data={restaurants}
-                renderItem={({item: restaurant}) => (
-                  <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-                )}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={{gap: 5, flex: 1, paddingHorizontal: 20}}
-              />
-            </View>
-
-            <OpenDrawerMenu />
+                backgroundColor: !isDarkMode
+                  ? globalColors.neutralColors.textInputBackground
+                  : globalColors.neutralColors.bottomTabBackgroundDark,
+                borderRadius: globalDimensions.borderRadiusButtom,
+              }}
+              placeholder="Buscar..."
+            />
           </View>
-        </I18nextProvider>
-      ) : (
-        <View>
-          <LoadingScreen />
         </View>
-      )}
-    </>
+
+        <View
+          style={{
+            position: 'absolute',
+            backgroundColor: 'transparent',
+            flex: 1,
+            paddingVertical: 10,
+            top: 250,
+            width,
+            height: height * 0.5,
+          }}>
+          <FlatList
+            data={restaurants}
+            renderItem={({item: restaurant}) => (
+              <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{gap: 5, flex: 1, paddingHorizontal: 20}}
+          />
+        </View>
+
+        <OpenDrawerMenu />
+      </View>
+    </I18nextProvider>
   );
 };
 

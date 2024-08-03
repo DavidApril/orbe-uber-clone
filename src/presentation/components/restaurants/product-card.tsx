@@ -36,7 +36,7 @@ export const ProductCard = ({product}: Props) => {
     <Pressable
       onPress={() => {
         setProductSelected(product);
-        navigation.navigate('ProductItemScreen');
+        navigation.navigate('ProductScreen');
       }}>
       <View
         style={{

@@ -5,13 +5,14 @@ import {
   RestaurantsResponse,
   ProductRestaurant,
 } from '../../interfaces';
+import { parseError } from '../../utils';
 
 export class RestaurantService {
   static take: number = 6;
-
+  static PREFIX: string = 'restaurant';
   static createRestaurant = async (restaurant: ICreateRestaurante) => {
     try {
-      const {data: Response} = await orbeApi.post(`/restaurant/create`, {
+      const {data: Response} = await orbeApi.post(`/${this.PREFIX}/create`, {
         ...restaurant,
       });
 
@@ -30,14 +31,21 @@ export class RestaurantService {
     take = this.take,
   ): Promise<SingleRestaurantResponse[]> => {
     try {
-      const {data: Restaurants}: {data: RestaurantsResponse} =
-        await orbeApi.get(`/restaurant?&skip=${skip}&take=${take}`);
+      const {data: response}: {data: RestaurantsResponse} = await orbeApi.get(
+        `/${this.PREFIX}?&skip=${skip}&take=${take}`,
+      );
 
-      const restaurants: SingleRestaurantResponse[] = Restaurants.data.map(
+      console.log(`/${this.PREFIX}?&skip=${skip}&take=${take}`)
+
+
+      console.log({response});
+      const restaurants: SingleRestaurantResponse[] = response.data.map(
         restaurant => restaurant,
       );
+
       return restaurants;
     } catch (error) {
+      parseError(this.PREFIX + '/getRestaurants', error)
       return [];
     }
   };
@@ -47,7 +55,7 @@ export class RestaurantService {
   ): Promise<SingleRestaurantResponse> => {
     try {
       const {data: Restaurant} = await orbeApi.get(
-        `/restaurant/getById?idRestaurant=${id}`,
+        `/${this.PREFIX}/getById?idRestaurant=${id}`,
       );
       const restaurant: SingleRestaurantResponse = Restaurant.data;
       return restaurant;
@@ -58,7 +66,7 @@ export class RestaurantService {
 
   static getTotalPages = async (): Promise<number> => {
     const {data: totalRestaurants} = await orbeApi.get(
-      `/restaurant/TotalRestaurants`,
+      `/${this.PREFIX}/TotalRestaurants`,
     );
 
     const totalPages = Math.ceil(totalRestaurants.data / this.take);

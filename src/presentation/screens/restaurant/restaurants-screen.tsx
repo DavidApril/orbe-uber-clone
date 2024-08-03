@@ -10,6 +10,7 @@ import {
   OrdersScreen,
 } from '..';
 import {RootStackParams} from '../../../interfaces';
+import {CouponsScreen} from '../../navigation';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();
 // @ts-ignore
@@ -38,6 +39,14 @@ export const RestaurantsScreen = () => {
         }}
         name="RestaurantScreen"
         component={RestaurantScreen}
+      />
+      <Screen
+        options={{
+          cardStyleInterpolator: fadeAnimation,
+          headerShown: false,
+        }}
+        name="CouponsScreen"
+        component={CouponsScreen}
       />
       <Screen
         options={{

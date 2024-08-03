@@ -22,7 +22,7 @@ import {RootStackParams} from '../../../interfaces';
 
 export const PaymentControllers = () => {
   const navigation =
-    useNavigation<StackNavigationProp<RootStackParams, 'ProductsCartScreen'>>();
+    useNavigation<StackNavigationProp<RootStackParams, 'ProductScreen'>>();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const {width} = useWindowDimensions();
   const {isDarkMode} = useUIStore();

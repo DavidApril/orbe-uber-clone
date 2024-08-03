@@ -109,9 +109,7 @@ export const CartOfProductsScreen = ({navigation}: Props) => {
                   No hay productos en el carrito.
                 </Text>
                 <Pressable
-                  onPress={() =>
-                    navigation.navigate('HomeClientDeliveryScreen')
-                  }
+                  onPress={() => navigation.navigate('HomeScreen')}
                   style={{
                     paddingVertical: 10,
                     paddingHorizontal: 25,
@@ -165,13 +163,7 @@ export const CartOfProductsScreen = ({navigation}: Props) => {
 
               <Divider style={{marginVertical: 10}} />
 
-              <PaymentControllers
-                itemsInCart={itemsInCart}
-                shipping={shipping}
-                subtotal={subTotal}
-                tax={tax}
-                total={total}
-              />
+              <PaymentControllers />
             </View>
           </BottomSheet>
         )}

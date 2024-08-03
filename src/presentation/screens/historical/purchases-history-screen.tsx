@@ -12,6 +12,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../../interfaces';
 import {useAuthStore, usePaymentStore, useUIStore} from '../../../store';
 import {PaymentService} from '../../../services';
+import {useIsFocused} from '@react-navigation/native';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'PurchasesHistoryScreen'> {}
@@ -20,11 +21,20 @@ export const PurchasesHistoryScreen = ({navigation}: Props) => {
   // const {isDarkMode} = useUIStore();
   const {transactionsByUser, setTransactionsByUser} = usePaymentStore();
   const {userByUid} = useAuthStore();
+
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     PaymentService.getTransactionsByUser(userByUid!.uid_firebase).then(
-      transactions => setTransactionsByUser(transactions),
+      transactions => {
+        setTransactionsByUser(transactions);
+      },
     );
-  }, []);
+  }, [isFocused]);
+
+  useEffect(() => {
+    console.log(userByUid?.uid_firebase);
+  }, [transactionsByUser]);
 
   return (
     <CView style={{flex: 1}}>

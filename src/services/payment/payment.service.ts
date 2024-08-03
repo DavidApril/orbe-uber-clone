@@ -63,8 +63,11 @@ export class PaymentService {
     try {
       const {data: response}: {data: GetTransactionsByUserResponse} =
         await orbeApi.get(
-          `/${this.PREFIX}/getTransactionsByUser?user_uid=${user_uid}&take=${take}&skip=${skip}`,
+          `/${this.PREFIX}/getTransactionsByUser?take=${take}&skip=${skip}&user_uid=${user_uid}`,
         );
+
+      console.log({response})
+
       return response.data;
     } catch (error) {
       parseError(this.PREFIX + '/getTransactionsByUser', error);

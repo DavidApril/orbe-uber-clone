@@ -82,7 +82,7 @@ export const MyCouponsScreen = () => {
                 onPressDelete={() => setCouponToUse(null)}
                 couponSelected={couponToUse}
                 onPress={() => {
-                  navigation.navigate('ProductsCartScreen');
+                  navigation.navigate('CartOfProductsScreen');
                 }}
               />
             )}

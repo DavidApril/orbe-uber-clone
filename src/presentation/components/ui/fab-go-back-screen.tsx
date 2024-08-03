@@ -32,7 +32,7 @@ export const FABGoBackButton = ({fill, style}: Props) => {
         },
         globalStyles.boxShadow,
       ]}>
-      <CustomIcon fill="black" name="arrow-back" />
+      <CustomIcon fill="black" name="undo" />
     </Pressable>
   );
 };

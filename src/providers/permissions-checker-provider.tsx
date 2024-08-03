@@ -8,12 +8,11 @@ import {
   useUIStore,
 } from '../store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../interfaces';
-import {PaymentService, UserService} from '../services';
+import {RootStackParams} from '../interfaces';
+import {PaymentService} from '../services';
 
 export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   const {status} = useAuthStore();
-  const {role} = useAuthStore();
   const {checkLocationPermission, locationStatus} = usePermissionStore();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
@@ -52,16 +51,10 @@ export const PermissionsCheckerProvider = ({children}: PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    if (locationStatus === 'granted' && status === 'authorized') {
-      if (role === CLIENT) {
-        navigation.navigate('HomeClientScreen');
-      } else if (role === DRIVER) {
-        navigation.navigate('HomeDriverScreen');
-      } else if (role === DELIVERY) {
-        navigation.navigate('HomeDeliveryScreen');
-      }
-    } else if (locationStatus === 'undetermined' && status === 'authorized') {
+    if (locationStatus === 'undetermined' && status === 'authorized') {
       navigation.navigate('PermissionsScreen');
+    } else if (locationStatus === 'granted' && status === 'authorized') {
+      navigation.navigate('HomeScreen');
     } else {
       navigation.navigate('LoginScreen');
     }

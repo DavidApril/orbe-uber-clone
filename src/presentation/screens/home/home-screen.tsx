@@ -21,6 +21,7 @@ export const HomeScreen = () => {
   return (
     <Tab.Navigator
       tabBar={props => <CustomBottomTabs {...props} />}
+      initialRouteName="RestaurantsScreen"
       screenOptions={{
         headerTransparent: true,
       }}>
@@ -95,101 +96,3 @@ export const HomeScreen = () => {
     </Tab.Navigator>
   );
 };
-
-// export const HomeDriverScreen = () => {
-//   return (
-//     <Tab.Navigator
-//       tabBar={props => <CustomBottomTabs {...props} />}
-//       initialRouteName="HomeClientDeliveryScreen"
-//       screenOptions={{
-//         headerTransparent: true,
-//       }}>
-//       <Tab.Screen
-//         name={`HomeDriverScreen`}
-//         options={{
-//           // icon name
-//           title: 'home-outline',
-//           headerShown: false,
-//         }}
-//         component={HomeDriverScreen}
-//       />
-//       <Tab.Screen
-//         name="ProfileClientScreen"
-//         options={{
-//           // icon name
-//           title: 'person-outline',
-//           headerShown: false,
-//         }}
-//         component={ProfileDriverScreen}
-//       />
-
-//       <Tab.Screen
-//         name="HistoryScreen"
-//         options={{
-//           headerShown: false,
-//           // icon name
-//           title: 'layers-outline',
-//         }}
-//         component={HistoryTravels}
-//       />
-//       <Tab.Screen
-//         name="ChatBotScreen"
-//         options={{
-//           headerShown: false,
-//           // icon name
-//           title: 'message-circle-outline',
-//         }}
-//         component={ChatBotScreen}
-//       />
-//     </Tab.Navigator>
-//   );
-// };
-
-// export const HomeDeliveryScreen = () => {
-//   return (
-//     <Tab.Navigator
-//       tabBar={props => <CustomBottomTabs {...props} />}
-//       initialRouteName="HomeDriverScreen"
-//       screenOptions={{
-//         headerTransparent: true,
-//       }}>
-//       <Tab.Screen
-//         name={`HomeDriverScreen`}
-//         options={{
-//           // icon name
-//           title: 'home-outline',
-//           headerShown: false,
-//         }}
-//         component={HomeDeliveryScreen}
-//       />
-//       <Tab.Screen
-//         name="ProfileClientScreen"
-//         options={{
-//           // icon name
-//           title: 'person-outline',
-//           headerShown: false,
-//         }}
-//         component={ProfileDriverScreen}
-//       />
-
-//       <Tab.Screen
-//         name="HistoryScreen"
-//         options={{
-//           headerShown: false,
-//           // icon name
-//           title: 'layers-outline',
-//         }}
-//         component={HistoryTravels}
-//       />
-//       <Tab.Screen
-//         name="ChatBotScreen"
-//         options={{
-//           headerShown: false,
-//           // icon name
-//           title: 'message-circle-outline',
-//         }}
-//         component={ChatBotScreen}
-//       />
-//     </Tab.Navigator>
-//   );
-// };
