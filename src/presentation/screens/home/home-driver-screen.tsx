@@ -3,7 +3,6 @@ import {
   useAuthStore,
   useDriverStore,
   useLocationStore,
-  useProfileDriverStore,
   useUIStore,
 } from '../../../store';
 import {
@@ -21,21 +20,20 @@ import {
 } from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
-import {Button} from '@ui-kitten/components';
 import {FlatList, Pressable, View} from 'react-native';
 
 import {RootStackParams} from '../../../interfaces';
 import {currencyFormat} from '../../../utils';
 import {StackScreenProps} from '@react-navigation/stack';
-import {API_SOCKET_URL} from '@env';
 import {globalDimensions, neutralColors} from '../../theme/styles';
+import {API_SOCKET_URL} from '@env';
 
 interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 
 export const HomeDriverScreen = ({}: Props) => {
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const {socket} = useSocket(`${API_SOCKET_URL}/location`);
+  const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
   const {isDarkMode} = useUIStore();
   const [driverArrived, setDriverArrived] = useState<boolean>(false);
   const {
@@ -51,16 +49,13 @@ export const HomeDriverScreen = ({}: Props) => {
     setRaceData,
     setDriverRequests,
     setOrigin,
-    setDestination,
   } = useDriverStore();
+
+  console.log({online});
 
   useEffect(() => {
     socket.on('driver-request', data => {
-      data.client_request.forEach((request: any) => {
-        if (request.coordinates) {
-          setDriverRequests([...driverRequests, request]);
-        }
-      });
+      setDriverRequests(data.client_request);
     });
   }, []);
 
@@ -88,14 +83,14 @@ export const HomeDriverScreen = ({}: Props) => {
 
   useEffect(() => {
     if (currentRaceAccepted) {
-      setOrigin(lastKnownLocation)
+      setOrigin(lastKnownLocation);
     }
   }, [currentRaceAccepted, lastKnownLocation]);
 
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
   }
-
+console.log({driverRequests})
   return (
     <View style={{flex: 1}}>
       <OpenDrawerMenu />

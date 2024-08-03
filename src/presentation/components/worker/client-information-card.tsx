@@ -1,12 +1,13 @@
 import {Button} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
-import {useDeliveryStore, useDriverStore, useUIStore} from '../../../store';
+import {useDriverStore, useUIStore} from '../../../store';
 import {Pressable, View, Text} from 'react-native';
 import {globalDimensions, neutralColors, stateColors} from '../../theme/styles';
 import {CTextHeader} from '../ui/custom-text-header';
 import {CText} from '../ui/custom-text';
 import {ClientService} from '../../../services';
+import {GetClientByUidResponseData} from '../../../interfaces';
 
 interface Props {
   request: any;
@@ -14,7 +15,8 @@ interface Props {
 
 export const ClientInformationCard = ({request}: Props) => {
   const [raceData] = useState<any>(request.coordinates);
-  const [setClient] = useState<any>(null);
+  const [client, setClient] = useState<GetClientByUidResponseData | null>(null);
+
   const {isDarkMode} = useUIStore();
 
   const {setCurrentRequest, setDestination, setOrigin, setAnalyzingRace} =
@@ -32,12 +34,13 @@ export const ClientInformationCard = ({request}: Props) => {
       if (type == 'origen') {
         setOrigin({latitude: latitud, longitude: longitud});
       }
-
       if (type == 'destino') {
         setDestination({latitude: latitud, longitude: longitud});
       }
     });
   }, [raceData]);
+
+  // console.log(client);
 
   return (
     <View
@@ -85,7 +88,7 @@ export const ClientInformationCard = ({request}: Props) => {
 
           <View style={{flexDirection: 'column'}}>
             <CTextHeader style={{fontWeight: 'bold', fontSize: 18}}>
-              El Sabor del Paraíso
+              {client?.cliente.name}
             </CTextHeader>
             <CText>Cra54 #24 - 32, 450 Avenue </CText>
           </View>

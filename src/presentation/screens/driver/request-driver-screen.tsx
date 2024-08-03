@@ -52,7 +52,6 @@ export const RequestDriverScreen = () => {
 
   useEffect(() => {
     socket.on('conductores-cercanos', data => {
-      console.log({data});
       setNearbyDrivers(data);
     });
     // return () => {
