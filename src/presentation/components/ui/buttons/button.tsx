@@ -1,7 +1,6 @@
 import React from 'react';
-import {Pressable, Text} from 'react-native';
+import {Pressable, PressableProps, StyleProp, Text, ViewProps} from 'react-native';
 import {globalStyles, neutralColors} from '../../../theme/styles';
-import {CTextHeader} from '../custom-text-header';
 import {Spinner} from '@ui-kitten/components';
 
 interface Props {
@@ -10,6 +9,7 @@ interface Props {
   icon?: string;
   disabled?: boolean;
   isLoading?: boolean;
+  style?: StyleProp<PressableProps>;
 }
 
 export const CButton = ({
@@ -17,6 +17,7 @@ export const CButton = ({
   label,
   isLoading = false,
   disabled = false,
+  style,
 }: Props) => {
   return (
     <Pressable
@@ -34,11 +35,12 @@ export const CButton = ({
           justifyContent: 'center',
           alignItems: 'center',
         },
+        style,
       ]}>
       {isLoading ? (
         <Spinner status="basic" />
       ) : (
-        <Text style={{ color: neutralColors.background }}>{label}</Text>
+        <Text style={{color: neutralColors.background}}>{label}</Text>
       )}
     </Pressable>
   );

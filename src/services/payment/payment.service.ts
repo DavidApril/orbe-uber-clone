@@ -66,7 +66,7 @@ export class PaymentService {
           `/${this.PREFIX}/getTransactionsByUser?take=${take}&skip=${skip}&user_uid=${user_uid}`,
         );
 
-      console.log({response})
+      console.log({response});
 
       return response.data;
     } catch (error) {

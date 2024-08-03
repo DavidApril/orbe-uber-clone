@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {
   useAuthStore,
   useDriverStore,
@@ -7,47 +7,51 @@ import {
   useUIStore,
 } from '../../../store';
 import {
+  AcceptCancelButtons,
   ActiveServicesButton,
+  CButton,
   ClientInformationCard,
-  ClientInformationCardDriver,
+  CText,
+  CTextHeader,
+  CustomIcon,
   CustomMapView,
+  CView,
   FAB,
   OpenDrawerMenu,
 } from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
-import {Button, Layout, List} from '@ui-kitten/components';
-import {FlatList, useColorScheme, View} from 'react-native';
+import {Button} from '@ui-kitten/components';
+import {FlatList, Pressable, View} from 'react-native';
 
 import {RootStackParams} from '../../../interfaces';
-import {globalColors} from '../../theme/styles';
 import {currencyFormat} from '../../../utils';
 import {StackScreenProps} from '@react-navigation/stack';
 import {API_SOCKET_URL} from '@env';
-import {OrderService, RaceService} from '../../../services';
+import {globalDimensions, neutralColors} from '../../theme/styles';
 
 interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 
 export const HomeDriverScreen = ({}: Props) => {
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
-  const {addBalance, increaseTrips} = useProfileDriverStore();
-
+  const {socket} = useSocket(`${API_SOCKET_URL}/location`);
+  const {isDarkMode} = useUIStore();
+  const [driverArrived, setDriverArrived] = useState<boolean>(false);
   const {
     driverServiceIsActive,
     origin,
+    currentRequest,
     destination,
     analyzingRace,
     currentRaceAccepted,
-    currentRequest,
     driverRequests,
     raceData,
     setDriverServiceIsActive,
-    setAnalyzingRace,
-    setCurrentRaceAccepted,
     setRaceData,
     setDriverRequests,
+    setOrigin,
+    setDestination,
   } = useDriverStore();
 
   useEffect(() => {
@@ -82,6 +86,12 @@ export const HomeDriverScreen = ({}: Props) => {
     return () => clearInterval(driverLocationInterval);
   }, [driverServiceIsActive]);
 
+  useEffect(() => {
+    if (currentRaceAccepted) {
+      setOrigin(lastKnownLocation)
+    }
+  }, [currentRaceAccepted, lastKnownLocation]);
+
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
   }
@@ -89,7 +99,7 @@ export const HomeDriverScreen = ({}: Props) => {
   return (
     <View style={{flex: 1}}>
       <OpenDrawerMenu />
-      {driverRequests.length > 0 && driverServiceIsActive && (
+      {driverRequests.length > 0 && driverServiceIsActive && !analyzingRace && (
         <FlatList
           style={{
             position: 'absolute',
@@ -104,7 +114,7 @@ export const HomeDriverScreen = ({}: Props) => {
           }}
           data={driverRequests}
           renderItem={({item: request}) => (
-            <ClientInformationCardDriver request={request} />
+            <ClientInformationCard request={request} />
           )}
         />
       )}
@@ -116,8 +126,8 @@ export const HomeDriverScreen = ({}: Props) => {
         origin={analyzingRace ? origin : null}
         initialLocation={lastKnownLocation!}
       />
-      {/* !analyzingRace  !!!!  */}
-      {!analyzingRace &&  driverRequests.length === 0 ? (
+
+      {!analyzingRace && driverRequests.length === 0 ? (
         <ActiveServicesButton
           isActive={driverServiceIsActive}
           setIsActive={setDriverServiceIsActive}
@@ -125,31 +135,40 @@ export const HomeDriverScreen = ({}: Props) => {
         />
       ) : (
         <>
-          <Layout
+          <View
             style={{
-              bottom: 140,
+              top: 100,
               left: 40,
-              backgroundColor: 'transparent',
               right: 40,
               position: 'absolute',
               flexDirection: 'row',
               gap: 10,
             }}>
-            <FAB
-              iconName={'activity-outline'}
-              white={true}
-              style={{position: 'static', flex: 1}}
-              label={`${Math.ceil(raceData?.distance ?? 0)} Km`}
-              onPress={() => {}}
-            />
-            <FAB
-              white={true}
-              iconName={'clock-outline'}
-              style={{position: 'static', flex: 1}}
-              label={`${Math.ceil(raceData?.duration ?? 0)} Min`}
-              onPress={() => {}}
-            />
-          </Layout>
+            <CView
+              style={{
+                flex: 1,
+                padding: 10,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: 10,
+                borderRadius: 10,
+              }}>
+              <CustomIcon name="activity" />
+              <CTextHeader>{raceData?.distance} km</CTextHeader>
+            </CView>
+            <CView
+              style={{
+                flex: 1,
+                padding: 10,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: 10,
+                borderRadius: 10,
+              }}>
+              <CustomIcon name="clock" />
+              <CTextHeader>{raceData?.duration.toFixed(2)} min</CTextHeader>
+            </CView>
+          </View>
 
           <FAB
             white={true}
@@ -165,60 +184,46 @@ export const HomeDriverScreen = ({}: Props) => {
             )}`}
             onPress={() => {}}
           />
-          {!currentRaceAccepted ? (
-            <Layout
+          {!currentRaceAccepted && currentRequest && <AcceptCancelButtons />}
+          {currentRaceAccepted && !driverArrived && (
+            <View
               style={{
-                bottom: 20,
-                left: 40,
-                backgroundColor: 'transparent',
-                right: 40,
                 position: 'absolute',
-                flexDirection: 'row',
-                gap: 10,
+                bottom: 120,
+                height: 120,
+                left: 30,
+                right: 30,
+                flex: 1,
               }}>
-              <Button
-                onPress={() => {
-                  setDriverServiceIsActive(true);
-                  setAnalyzingRace(false);
-                }}
-                status="danger"
-                style={{flex: 1, borderRadius: 50}}>
-                Rechazar
-              </Button>
-              <Button
-                onPress={async () => {
-                  const response = await RaceService.acceptOrder(
-                    currentRequest.id_client,
-                    currentRequest.id_driver,
-                    currentRequest.id,
-                    raceData!.distance * 850 + 4600,
-                  );
-                  if (response) {
-                    setCurrentRaceAccepted(currentRequest);
-                    addBalance(Math.ceil(raceData!.distance * 850 + 4600));
-                    increaseTrips();
-                  }
-                }}
-                status="success"
-                style={{flex: 1, borderRadius: 50}}>
-                Aceptar
-              </Button>
-            </Layout>
-          ) : (
-            <Layout
+              <CButton
+                label="Ya estoy aquí"
+                onPress={() => setDriverArrived(true)}
+              />
+            </View>
+          )}
+          {driverArrived && (
+            <View
               style={{
-                bottom: 20,
-                left: 40,
-                backgroundColor: 'transparent',
-                right: 40,
                 position: 'absolute',
-                flexDirection: 'row',
-                gap: 10,
+                bottom: 120,
+                height: 120,
+                left: 30,
+                right: 30,
+                flex: 1,
+                justifyContent: 'center',
+                opacity: 0.9,
+                alignItems: 'center',
+                overflow: 'hidden',
+                borderRadius: globalDimensions.cardBorderRadius,
+                backgroundColor: isDarkMode
+                  ? neutralColors.backgroundDarkAlpha
+                  : neutralColors.backgroundAlpha,
               }}>
-              <Button status="success" style={{flex: 1}}>
-                Ya estoy aquí
-              </Button>
-            </Layout>
+              <CText>Código del cliente</CText>
+              <CTextHeader style={{fontSize: 40, letterSpacing: 10}}>
+                XJK5Z2
+              </CTextHeader>
+            </View>
           )}
         </>
       )}

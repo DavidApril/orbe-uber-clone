@@ -33,7 +33,7 @@ export * from './maps/map-view';
 export * from './drawer/custom-drawer-content';
 
 export * from './client/select-origin-destination';
-export * from './client/client-information-card-delivery';
+export * from './worker/client-information-card';
 export * from './client/payment-controllers';
 
 export * from './worker/driver-information-card';

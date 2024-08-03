@@ -2,11 +2,12 @@ import React from 'react';
 import {Pressable, View} from 'react-native';
 import {globalDimensions, stateColors} from '../../theme/styles';
 import {CustomIcon} from './custom-icon';
-import {useDeliveryStore} from '../../../store';
-import {OrderService, RacesService} from '../../../services';
+import {useDeliveryStore, useDriverStore} from '../../../store';
+import {OrderService} from '../../../services';
 
 export const AcceptCancelButtons = () => {
-  const {setCurrentRaceAccepted, currentRequest, raceData} = useDeliveryStore();
+  
+  const {setCurrentRaceAccepted, currentRequest} = useDriverStore();
 
   return (
     <View
@@ -40,7 +41,7 @@ export const AcceptCancelButtons = () => {
           //   raceData!.distance * 850 + 4600,
           // );
           // if (response) {
-            setCurrentRaceAccepted(currentRequest);
+          setCurrentRaceAccepted(currentRequest);
           // }
         }}
         style={{
