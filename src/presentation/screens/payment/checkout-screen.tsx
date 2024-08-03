@@ -11,7 +11,15 @@ import {
   OpenDrawerMenu,
 } from '../../components';
 import {globalDimensions, stateColors} from '../../theme/styles';
-import {Pressable, ScrollView, Text, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  Pressable,
+  ScrollView,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import {
   useAuthStore,
   useCartStore,
@@ -29,6 +37,7 @@ export const CheckoutScreen = ({navigation}: Props) => {
   const {userByUid} = useAuthStore();
   const {cart, getSummaryInformation} = useCartStore();
   const {couponToUse} = useCouponStore();
+  const {height} = useWindowDimensions();
   const {total, discount, subTotal, itemsInCart, tax} = getSummaryInformation(
     couponToUse?.value,
   );
@@ -88,6 +97,20 @@ export const CheckoutScreen = ({navigation}: Props) => {
 
   return (
     <CView style={{flex: 1}}>
+      <ImageBackground
+        style={{
+          zIndex: -10,
+        }}>
+        <Image
+          source={require('../../../assets/background-gradient.jpg')}
+          style={{
+            position: 'absolute',
+
+            width: '100%',
+            height,
+          }}
+        />
+      </ImageBackground>
       <ScrollView style={{flex: 1}}>
         <OpenDrawerMenu />
         <FABGoBackButton />
@@ -97,7 +120,7 @@ export const CheckoutScreen = ({navigation}: Props) => {
             paddingHorizontal: 30,
             marginTop: globalDimensions.paddingTopCheckoutScreens,
           }}>
-          <CText style={{fontSize: 35, fontWeight: '100'}}>Checkout</CText>
+          <CTextHeader style={{fontSize: 35, fontWeight: '100'}}>Checkout</CTextHeader>
 
           <View
             style={{
@@ -215,6 +238,7 @@ export const CheckoutScreen = ({navigation}: Props) => {
               </View>
             </View>
           </View>
+
         </View>
         <CViewAlpha
           style={{
@@ -234,6 +258,7 @@ export const CheckoutScreen = ({navigation}: Props) => {
 
         {payWithCard && (
           <CreditCardSelector
+            showAddButton={false}
             horizontal={false}
             onAddButtonPress={() => addTarjetBottomSheetRef?.current?.expand()}
           />

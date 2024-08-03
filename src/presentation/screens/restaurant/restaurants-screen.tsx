@@ -7,7 +7,6 @@ import {
   CheckoutScreen,
   RestaurantsAndProductsScreen,
   ProductScreen,
-  OrdersScreen,
   CouponsScreen,
 } from '..';
 import {RootStackParams} from '../../../interfaces';
@@ -60,11 +59,6 @@ export const RestaurantsScreen = () => {
         options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
         name="CheckoutScreen"
         component={CheckoutScreen}
-      />
-      <Screen
-        options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
-        name="OrdersScreen"
-        component={OrdersScreen}
       />
     </Navigator>
   );
