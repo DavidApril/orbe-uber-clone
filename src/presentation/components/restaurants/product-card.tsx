@@ -1,5 +1,5 @@
 import {Button, Text} from '@ui-kitten/components/ui';
-import {Image, Pressable, useColorScheme, View} from 'react-native';
+import {Image, Modal, Pressable, useColorScheme, View} from 'react-native';
 import {StorageService} from '../../../services';
 import {ProductRestaurant, RootStackParams} from '../../../interfaces';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -19,6 +19,7 @@ export const ProductCard = ({product}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
+  const [modal, setModal] = useState<boolean>(false)
   const {setProductSelected} = useCartStore();
   const {isDarkMode} = useUIStore();
   const {
@@ -31,6 +32,19 @@ export const ProductCard = ({product}: Props) => {
   if (!product) {
     return <LoadingScreen />;
   }
+
+  const handleModalTimeOut = () => {
+    setModal(true);
+    setTimeout(() => {
+      setIsFavorite(!isFavorite);
+            if (isFavorite) {
+              removeFavorite(product);
+            } else {
+              addProductToFavorites(product);
+            }
+      setModal(false);
+    }, 3000);
+  };
 
   return (
     <Pressable
@@ -62,14 +76,7 @@ export const ProductCard = ({product}: Props) => {
         <FAB
           fill={!isFavorite ? 'gray' : 'red'}
           iconName="heart"
-          onPress={() => {
-            setIsFavorite(!isFavorite);
-            if (isFavorite) {
-              removeFavorite(product);
-            } else {
-              addProductToFavorites(product);
-            }
-          }}
+          onPress={handleModalTimeOut}
           style={{right: 10, top: 10, backgroundColor: 'white'}}
         />
         <Image
@@ -121,6 +128,41 @@ export const ProductCard = ({product}: Props) => {
           }}>
           <CustomIcon white name={!isAddedToCart ? 'plus' : 'checkmark'} />
         </Button>
+        <Modal
+        visible={modal}
+        animationType="fade"
+        transparent
+        onRequestClose={() => setModal(false)}>
+        <Pressable
+          onPress={() => setModal(false)}
+          style={{
+            backgroundColor: '#000c',
+            width: '100%',
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              width: '85%',
+              height: 250,
+              borderRadius: 25,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingHorizontal: 20,
+            }}>
+            <Text
+              style={{
+                color: globalColors.neutralColors.background,
+                fontSize: 26,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+              {!isFavorite ? 'Producto añadido con exito a favoritos' : 'Producto quitado de favoritos'}
+            </Text>
+          </View>
+        </Pressable>
+      </Modal>
       </View>
     </Pressable>
   );
