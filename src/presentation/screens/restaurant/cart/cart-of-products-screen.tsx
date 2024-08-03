@@ -26,11 +26,9 @@ interface Props
   extends StackScreenProps<RootStackParams, 'CartOfProductsScreen'> {}
 
 export const CartOfProductsScreen = ({navigation}: Props) => {
-  const [shipping] = useState(3000);
   const {height} = useWindowDimensions();
   const {isDarkMode} = useUIStore();
   const {cart, getSummaryInformation} = useCartStore();
-  const {itemsInCart, subTotal, tax, total} = getSummaryInformation();
 
   const snapPoints = useMemo(() => ['28%', '80%'], []);
   const summaryBottomSheetRef = useRef<BottomSheet>(null);

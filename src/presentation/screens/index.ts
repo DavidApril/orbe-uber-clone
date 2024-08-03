@@ -13,6 +13,7 @@ export * from './restaurant/cart/cart-of-products-screen';
 export * from './restaurant/restaurant-screen';
 export * from './restaurant/favorites-screen';
 export * from './restaurant/restaurants-screen';
+export * from './restaurant/processing-order-screen';
 
 export * from './driver/request-driver-screen';
 

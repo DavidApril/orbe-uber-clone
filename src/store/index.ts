@@ -9,4 +9,5 @@ export * from './chatbot/chatbot.store';
 export * from './coupon/coupon.store';
 export * from './coupon/coupon.store';
 export * from './payments/payments.store';
-export * from './delivery/delivery.store'
+export * from './delivery/delivery.store';
+export * from './orders/orders.store';

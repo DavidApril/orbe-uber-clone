@@ -24,6 +24,7 @@ import {
   useAuthStore,
   useCartStore,
   useCouponStore,
+  useOrderStore,
   usePaymentStore,
 } from '../../../store';
 import {currencyFormat, parseNumberToText} from '../../../utils';
@@ -51,6 +52,8 @@ export const CheckoutScreen = ({navigation}: Props) => {
     pay,
     payWithCard,
   } = usePaymentStore();
+
+  const {createOrder} = useOrderStore();
 
   const handleAddCard = async () => {
     let paymentDetailsDto: PaymentDetails = {
@@ -92,7 +95,26 @@ export const CheckoutScreen = ({navigation}: Props) => {
     await pay(paymentDetailsDto);
     setIsPaying(false);
 
-    navigation.navigate('OrderScreen');
+    createOrder({
+      address_destination: '',
+      products: [],
+      id_client: '',
+      id_restaurant: '',
+      method_pay: '',
+      status: 'false',
+      // products: cart.map(item => ({
+      //   name: 'string',
+      //   description: 'string',
+      //   price: 123,
+      //   extras: cart.map(item => ({
+      //     description: 'item',
+      //     name: '',
+      //     price: 123,
+      //   })),
+      // })),
+    });
+
+    navigation.navigate('OrdersScreen');
   };
 
   return (
@@ -120,7 +142,9 @@ export const CheckoutScreen = ({navigation}: Props) => {
             paddingHorizontal: 30,
             marginTop: globalDimensions.paddingTopCheckoutScreens,
           }}>
-          <CTextHeader style={{fontSize: 35, fontWeight: '100'}}>Checkout</CTextHeader>
+          <CTextHeader style={{fontSize: 35, fontWeight: '100'}}>
+            Checkout
+          </CTextHeader>
 
           <View
             style={{
@@ -238,7 +262,6 @@ export const CheckoutScreen = ({navigation}: Props) => {
               </View>
             </View>
           </View>
-
         </View>
         <CViewAlpha
           style={{

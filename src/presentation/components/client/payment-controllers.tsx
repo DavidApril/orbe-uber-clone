@@ -231,7 +231,7 @@ export const PaymentControllers = () => {
         </View>
 
         <Pressable
-          onPress={() => navigation.navigate('CheckoutScreen')}
+          onPress={() => navigation.navigate('ProccesingOrderScreen')}
           style={{
             backgroundColor: globalColors.primaryColors.primary,
             justifyContent: 'center',

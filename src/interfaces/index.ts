@@ -12,3 +12,4 @@ export * from './chatbot.interface';
 export * from './coupon.interface';
 export * from './payment.interface';
 export * from './race.interface'
+export * from './products.interface'

@@ -4,10 +4,10 @@ import {
 } from '@react-navigation/stack';
 import {
   RestaurantScreen,
-  CheckoutScreen,
   RestaurantsAndProductsScreen,
   ProductScreen,
   CouponsScreen,
+  ProccesingOrderScreen,
 } from '..';
 import {RootStackParams} from '../../../interfaces';
 
@@ -57,8 +57,8 @@ export const RestaurantsScreen = () => {
       />
       <Screen
         options={{cardStyleInterpolator: fadeAnimation, title: 'Registro'}}
-        name="CheckoutScreen"
-        component={CheckoutScreen}
+        name="ProccesingOrderScreen"
+        component={ProccesingOrderScreen}
       />
     </Navigator>
   );
