@@ -1,19 +1,22 @@
 import {
   BSAddCreditCard,
+  CInput,
   CreditCardSelector,
   CText,
   CTextHeader,
   CustomIcon,
+  CustomMapView,
   CView,
   CViewAlpha,
   FABGoBackButton,
   ModalPaying,
   OpenDrawerMenu,
 } from '../../components';
-import {globalDimensions, stateColors} from '../../theme/styles';
+import {globalColors, globalDimensions, stateColors} from '../../theme/styles';
 import {
   Image,
   ImageBackground,
+  Modal,
   Pressable,
   ScrollView,
   Text,
@@ -24,35 +27,46 @@ import {
   useAuthStore,
   useCartStore,
   useCouponStore,
+  useLocationStore,
   useOrderStore,
   usePaymentStore,
+  usePermissionStore,
+  useUIStore,
 } from '../../../store';
 import {currencyFormat, parseNumberToText} from '../../../utils';
 import {StackScreenProps} from '@react-navigation/stack';
 import {PaymentDetails, RootStackParams} from '../../../interfaces';
 import {Spinner} from '@ui-kitten/components';
+import {useEffect, useState} from 'react';
+import {GOOGLE_API_KEY} from '@env';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 interface Props extends StackScreenProps<RootStackParams, 'CheckoutScreen'> {}
 
 export const CheckoutScreen = ({navigation}: Props) => {
   const {userByUid} = useAuthStore();
-  const {cart, getSummaryInformation} = useCartStore();
+  const {cart, restaurantSelected, getSummaryInformation} = useCartStore();
   const {couponToUse} = useCouponStore();
-  const {height} = useWindowDimensions();
+  const {lastKnownLocation, getLocation} = useLocationStore();
+  const {locationStatus} = usePermissionStore();
+  const {height, width} = useWindowDimensions();
+  const {isDarkMode} = useUIStore();
   const {total, discount, subTotal, itemsInCart, tax} = getSummaryInformation(
     couponToUse?.value,
   );
+  const [address_destination, setAddress_destination] = useState<string>('');
+
+  const [selectingAddress, setSelectingAddress] = useState<boolean>(false);
 
   const {
     isPaying,
-    setIsPaying,
     creditCardsTokens,
     creditCardsSelected,
     addTarjetBottomSheetRef,
-    pay,
     payWithCard,
+    setIsPaying,
+    pay,
   } = usePaymentStore();
-
   const {createOrder} = useOrderStore();
 
   const handleAddCard = async () => {
@@ -60,8 +74,8 @@ export const CheckoutScreen = ({navigation}: Props) => {
       value: total < 100000 ? total.toString() : '100000',
       docType: 'CC',
       docNumber: '123456789',
-      name: 'jon',
-      lastName: 'doe',
+      name: userByUid?.cliente.name,
+      lastName: '',
       email: userByUid?.email,
       cellPhone: userByUid?.cliente?.phone,
       phone: userByUid?.cliente?.phone,
@@ -72,7 +86,7 @@ export const CheckoutScreen = ({navigation}: Props) => {
       userUid: userByUid?.uid_firebase,
       dues: '1',
       methodPay: 'TC',
-      typeTransaction: 'Travel',
+      typeTransaction: 'Food',
       description: 'Pago por productos',
       details: cart.map(item => ({
         key: item.product.name,
@@ -90,32 +104,37 @@ export const CheckoutScreen = ({navigation}: Props) => {
         },
       };
     }
-
-    setIsPaying(true);
-    await pay(paymentDetailsDto);
-    setIsPaying(false);
-
     createOrder({
-      address_destination: '',
-      products: [],
-      id_client: '',
-      id_restaurant: '',
-      method_pay: '',
-      status: 'false',
-      // products: cart.map(item => ({
-      //   name: 'string',
-      //   description: 'string',
-      //   price: 123,
-      //   extras: cart.map(item => ({
-      //     description: 'item',
-      //     name: '',
-      //     price: 123,
-      //   })),
-      // })),
+      id_restaurant: restaurantSelected!.id.toString(),
+      address_destination: 'valledupar',
+      id_client: userByUid!.uid_firebase,
+      method_pay: 'TC',
+      products: cart.map(product => ({
+        name: product.product.name,
+        price: +product.product.priceUnitary,
+        description: product.product.description,
+        extras: product.product.extras.map(extra => ({
+          name: extra.name,
+          description: extra.description,
+          price: extra.price,
+        })),
+      })),
     });
 
-    navigation.navigate('OrdersScreen');
+    setIsPaying(true);
+    const {ok} = await pay(paymentDetailsDto);
+    setIsPaying(false);
+
+    if (ok) {
+      navigation.navigate('OrdersScreen');
+    }
   };
+
+  useEffect(() => {
+    if (lastKnownLocation === null) {
+      getLocation();
+    }
+  }, []);
 
   return (
     <CView style={{flex: 1}}>
@@ -136,6 +155,12 @@ export const CheckoutScreen = ({navigation}: Props) => {
       <ScrollView style={{flex: 1}}>
         <OpenDrawerMenu />
         <FABGoBackButton />
+
+        <Modal
+          visible={selectingAddress}
+          onRequestClose={() => {
+            setSelectingAddress(false);
+          }}></Modal>
 
         <View
           style={{
@@ -279,6 +304,92 @@ export const CheckoutScreen = ({navigation}: Props) => {
           </View>
         </CViewAlpha>
 
+        <ScrollView
+          style={{
+            margin: 30,
+          }}>
+          <GooglePlacesAutocomplete
+            placeholder="Dirección de entrega"
+            textInputProps={{
+              placeholderTextColor: isDarkMode
+                ? globalColors.fontColor.textColorHeaderDark
+                : globalColors.fontColor.textColorHeader,
+            }}
+            fetchDetails={true}
+            enableHighAccuracyLocation
+            numberOfLines={5}
+            debounce={300}
+            styles={{
+              container: {
+                flex: 1,
+                width: '100%',
+                opacity: 0.3,
+                gap: 20,
+              },
+              row: {
+                padding: 13,
+                height: 100,
+                backgroundColor: isDarkMode
+                  ? globalColors.neutralColors.backgroundDarkAlpha
+                  : globalColors.neutralColors.backgroundAlpha,
+                flexDirection: 'row',
+                borderRadius: 12,
+                width: width * 0.75,
+                left: 10,
+                right: 10,
+              },
+              primaryText: {
+                color: isDarkMode
+                  ? globalColors.fontColor.textColorHeaderDark
+                  : globalColors.fontColor.textColorDark,
+                fontSize: 16,
+                fontWeight: 'bold',
+              },
+              separator: {
+                height: 5,
+                backgroundColor: 'transparent',
+              },
+              textInput: {
+                borderRadius: 50,
+                backgroundColor: 'black',
+                color: 'white',
+                paddingHorizontal: 20,
+              },
+              poweredContainer: {
+                display: 'none',
+              },
+              listView: {
+                backgroundColor: 'transparent',
+                zIndex: 9999,
+                transform: [{translateY: height * 0}],
+              },
+            }}
+            onPress={(data, details = null) => {
+              console.log({data});
+            }}
+            query={{
+              key: GOOGLE_API_KEY,
+              language: 'es',
+            }}
+          />
+        </ScrollView>
+
+        {locationStatus === 'granted' && lastKnownLocation && (
+          <View
+            style={{
+              height: 300,
+              marginHorizontal: 30,
+              marginBottom: 30,
+              borderRadius: globalDimensions.cardBorderRadius,
+            }}>
+            <CustomMapView initialLocation={lastKnownLocation} />
+          </View>
+        )}
+
+        {/* {locationStatus === 'granted'  &&   <View style={{height: 400}}>
+              <CustomMapView initialLocation={lastKnownLocation!}></CustomMapView>
+            </View>,
+          } */}
         {payWithCard && (
           <CreditCardSelector
             showAddButton={false}

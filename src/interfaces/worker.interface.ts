@@ -144,6 +144,6 @@ export interface GetDriverByUidResponseData {
   email_verify: boolean;
   points: number;
   roles: any[];
-  delivery: Delivery;
+  driver: Driver;
 }
 

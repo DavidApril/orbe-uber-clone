@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef} from 'react';
 import {SelectOriginDestination} from '../client/select-origin-destination';
 import {
   FlatList,
@@ -13,14 +13,11 @@ import {CustomIcon} from '../ui/custom-icon';
 import {DriverInformationCard} from '../worker/driver-information-card';
 import {useClientDriverStore} from '../../../store/client/client-driver-store';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {useAuthStore, useUIStore} from '../../../store';
+import {useUIStore} from '../../../store';
 import {globalColors} from '../../theme/styles';
-import {WorkerService} from '../../../services';
-import {parseError} from '../../../utils';
 
 export const BSSelectOriginDestination = () => {
   const SearchingDriverBottomSheetRef = useRef<BottomSheet>(null);
-  const {userByUid} = useAuthStore();
   const {height, width} = useWindowDimensions();
 
   const {isDarkMode} = useUIStore();
@@ -28,11 +25,9 @@ export const BSSelectOriginDestination = () => {
 
   const {
     searchingDriver,
-    raceData,
     nearbyDrivers,
     setSearchingDriver,
     currentDriverAcceptRace,
-    createRequest,
   } = useClientDriverStore();
 
   useEffect(() => {
@@ -158,25 +153,11 @@ export const BSSelectOriginDestination = () => {
             <FlatList
               data={nearbyDrivers}
               renderItem={({item: driver}) => {
-                const driverData = WorkerService.getDriverByUid(
-                  driver.uid_firebase,
-                ).then(driver => {
-                  return driver;
-                });
-                console.log({driverData});
-
+                console.log(driver);
                 return (
                   <DriverInformationCard
                     key={driver.uid_firebase}
-                    currentDriverAcceptRace={currentDriverAcceptRace}
-                    createRequest={() => {
-                      createRequest(
-                        driver.id.toString(),
-                        userByUid!.uid_firebase,
-                      );
-                    }}
-                    raceData={raceData}
-                    driver={driverData}
+                    driverUid={driver.id}
                   />
                 );
               }}

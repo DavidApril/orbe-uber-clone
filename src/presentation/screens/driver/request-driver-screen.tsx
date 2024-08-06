@@ -27,18 +27,12 @@ export const RequestDriverScreen = () => {
     setNearbyDrivers,
     setRaceData,
   } = useClientDriverStore();
-  const {socket} = useSocket(`${API_SOCKET_URL}/location-client`);
+  const {socket, online} = useSocket(`${API_SOCKET_URL}/location-client`);
   const {socket: raceWaitsSocket} = useSocket(
     `${API_SOCKET_URL}/client-driver-wait`,
   );
 
-  const checkout = async () => {};
-
-  useEffect(() => {
-    if (payWithCard) {
-      checkout();
-    }
-  }, [payWithCard]);
+  console.log({online, socket});
 
   useEffect(() => {
     if (lastKnownLocation) {
@@ -52,6 +46,7 @@ export const RequestDriverScreen = () => {
 
   useEffect(() => {
     socket.on('conductores-cercanos', data => {
+      console.log(data);
       setNearbyDrivers(data);
     });
     // return () => {
@@ -67,6 +62,7 @@ export const RequestDriverScreen = () => {
 
   useEffect(() => {
     raceWaitsSocket.on('request-response', response => {
+      console.log({response});
       if (response.data.price) {
         setCurrentDriverAcceptRace(true);
       }

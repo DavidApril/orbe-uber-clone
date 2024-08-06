@@ -2,6 +2,7 @@ import {StateCreator, create} from 'zustand';
 import {ICreditCard, ITransaction, PaymentDetails} from '../../interfaces';
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import {PaymentService} from '../../services';
+import {parseError} from '../../utils';
 
 export interface PaymentState {
   creditCardsTokens: ICreditCard[];
@@ -15,7 +16,7 @@ export interface PaymentState {
 
   addTarjetBottomSheetRef: React.RefObject<BottomSheetMethods> | null;
 
-  pay: (payment: PaymentDetails) => Promise<void>;
+  pay: (payment: PaymentDetails) => Promise<{ok: boolean}>;
   setIsPaying: (value: boolean) => void;
   setTransactionsByUser: (transaction: ITransaction[]) => void;
   setCreditCardsTokens: (tokens: ICreditCard[]) => void;
@@ -40,7 +41,13 @@ const storeApi: StateCreator<PaymentState> = (set, get) => ({
   rechargeValue: '0',
 
   pay: async payment => {
-    await PaymentService.cardCreditPayment(payment);
+    try {
+      await PaymentService.cardCreditPayment(payment);
+      return {ok: true};
+    } catch (error) {
+      parseError('Error at pay payment store method', error);
+      return {ok: false};
+    }
   },
   setIsPaying: value => set({isPaying: value}),
   setCreditCardsTokens: tokens => set({creditCardsTokens: tokens}),

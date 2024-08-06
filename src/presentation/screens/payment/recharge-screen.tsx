@@ -37,8 +37,8 @@ export const RechargeScreen = () => {
   useEffect(() => {
     if (user) {
       ClientService.getClientByUid(user?.uid).then(userByUid => {
-        addPoints(userByUid.points);
-        PaymentService.getTransactionsByUser(userByUid.uid_firebase).then(
+        addPoints(userByUid!.points);
+        PaymentService.getTransactionsByUser(userByUid!.uid_firebase).then(
           transactions => setTransactionsByUser(transactions),
         );
       });

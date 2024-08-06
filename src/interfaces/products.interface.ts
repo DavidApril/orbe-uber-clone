@@ -2,7 +2,6 @@
 export interface ProductsRequestDTO {
   id_client: string;
   id_restaurant: string;
-  status: string;
   products: ProductDTO[];
   address_destination: string;
   method_pay: string;
