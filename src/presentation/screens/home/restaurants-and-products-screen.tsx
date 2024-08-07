@@ -91,7 +91,7 @@ export const RestaurantsAndProductsScreen = ({navigation}: any) => {
                   : globalColors.neutralColors.bottomTabBackgroundDark,
                 borderRadius: globalDimensions.borderRadiusButtom,
               }}
-              placeholder="Buscar..."
+              placeholder={t("search")}
             />
           </View>
         </View>

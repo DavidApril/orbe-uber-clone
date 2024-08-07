@@ -54,7 +54,7 @@ export class WorkerService {
           },
         ],
       });
-
+      
       return response.data;
     } catch (error) {
       parseError(this.PREFIX + '/create', error);
@@ -65,7 +65,7 @@ export class WorkerService {
     try {
       // TODO: response interface
       const {data: response}: {data: any} = await orbeApi.post(
-        `/${this.PREFIX}/ createDocuments`,
+        `/${this.PREFIX}/createDocuments`,
         {documents},
       );
 

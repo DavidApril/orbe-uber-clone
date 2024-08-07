@@ -13,6 +13,7 @@ import {RootStackParams} from '../../../interfaces';
 import {useAuthStore, usePaymentStore, useUIStore} from '../../../store';
 import {PaymentService} from '../../../services';
 import {useIsFocused} from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'PurchasesHistoryScreen'> {}
@@ -23,6 +24,7 @@ export const PurchasesHistoryScreen = ({navigation}: Props) => {
   const {userByUid} = useAuthStore();
 
   const isFocused = useIsFocused();
+  const {t} = useTranslation()
 
   useEffect(() => {
     PaymentService.getTransactionsByUser(userByUid!.uid_firebase).then(
@@ -40,8 +42,8 @@ export const PurchasesHistoryScreen = ({navigation}: Props) => {
     <CView style={{flex: 1}}>
       <OpenDrawerMenu />
       <TextHeaderScreen
-        title="Historial de compras"
-        description="Un listado de todas tus compras realizadas..."
+        title={t("shopping-history")}
+        description={t("a-list-of-all-your-purchases-made")}
       />
       <FlatList
         data={transactionsByUser}

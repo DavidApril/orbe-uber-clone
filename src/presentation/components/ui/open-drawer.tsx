@@ -7,7 +7,7 @@ import {
 import {RootStackParams} from '../../../interfaces';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {Pressable, StyleProp, useColorScheme, ViewStyle} from 'react-native';
-import {globalColors, globalStyles} from '../../theme/styles';
+import {globalColors, globalStyles, primaryColors} from '../../theme/styles';
 import {CustomIcon} from './custom-icon';
 import {useUIStore} from '../../../store';
 
@@ -38,7 +38,7 @@ export const OpenDrawerMenu = ({style}: Props) => {
         },
         globalStyles.boxShadow,
       ]}>
-      <CustomIcon fill="black" name="menu-2" />
+      <CustomIcon fill={primaryColors.primary} name="menu-2" />
     </Pressable>
   );
 };

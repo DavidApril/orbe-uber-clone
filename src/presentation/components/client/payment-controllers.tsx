@@ -19,6 +19,8 @@ import {CustomIcon} from '../ui/custom-icon';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '../../../interfaces';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../../config/i18n/i18n';
 
 export const PaymentControllers = () => {
   const navigation =
@@ -36,6 +38,7 @@ export const PaymentControllers = () => {
   } = getSummaryInformation(couponToUse?.value);
 
   const {setPayWithCard} = usePaymentStore();
+  const {t} = useTranslation()
 
   useEffect(() => {
     if (selectedIndex === 0) {
@@ -46,7 +49,8 @@ export const PaymentControllers = () => {
   }, [selectedIndex]);
 
   return (
-    <View
+    <I18nextProvider i18n={i18n}>
+      <View
       style={{
         padding: 30,
         backgroundColor: isDarkMode
@@ -124,7 +128,7 @@ export const PaymentControllers = () => {
             </View>
           </Pressable>
         ) : (
-          <Text>No hay ningún cupón en uso</Text>
+          <Text>{t('there-are-no-coupons-in-use')}</Text>
         )}
       </View>
 
@@ -144,7 +148,7 @@ export const PaymentControllers = () => {
               color: globalColors.primaryColors.primary,
               fontWeight: 'bold',
             }}>
-            Ver cupones
+            {t('view-coupons')}
           </Text>
         </Pressable>
       </View>
@@ -153,7 +157,7 @@ export const PaymentControllers = () => {
         <>
           <Divider style={{marginVertical: 20}} />
           <Text>
-            Descuento por cupón:{' '}
+            {t('coupon-discount')}:{' '}
             <Text style={{color: stateColors.warning, fontWeight: 'bold'}}>
               {currencyFormat(discount)}
             </Text>
@@ -205,7 +209,7 @@ export const PaymentControllers = () => {
                   ? globalColors.neutralColors.backgroundDarkAlpha
                   : globalColors.neutralColors.backgroundAlpha,
               }}>
-              <Text>Crédito</Text>
+              <Text>{t('credit')}</Text>
             </Radio>
             <Radio
               style={{
@@ -225,7 +229,7 @@ export const PaymentControllers = () => {
                   ? globalColors.neutralColors.backgroundDarkAlpha
                   : globalColors.neutralColors.backgroundAlpha,
               }}>
-              <Text>Efectivo</Text>
+              <Text>{t('cash')}</Text>
             </Radio>
           </RadioGroup>
         </View>
@@ -244,10 +248,11 @@ export const PaymentControllers = () => {
               fontSize: 17,
               color: globalColors.neutralColors.background,
             }}>
-            Pagar
+            {t('pay')}
           </Text>
         </Pressable>
       </View>
     </View>
+    </I18nextProvider>
   );
 };

@@ -1,17 +1,16 @@
 import {useAuthStore} from '../../../../../store';
 import {SectionDisplayEditDataDriver} from './section-display-edit-data-driver';
 import {RegisterWorkerScreen} from './register-worker-screen';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {RootStackParams} from '../../../../../interfaces';
 import {RegisterVehiclesDocumentsScreen} from './register-vehicle-documents-screen';
 import {RegisterUserDocumentsScreen} from './register-user-documents-screen';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import i18n from '../../../../../config/i18n/i18n';
+import { globalColors, neutralColors, primaryColors } from '../../../../theme/styles';
 import { CustomIcon } from '../../../../components';
-import { globalColors, primaryColors } from '../../../../theme/styles';
-import { Icon } from '@ui-kitten/components';
 
-const {Screen, Navigator} = createMaterialTopTabNavigator<RootStackParams>();
+const {Screen, Navigator} = createMaterialBottomTabNavigator<RootStackParams>();
 
 export const RegisterDriverScreen = () => {
   const {registerForm, image_url} = useAuthStore();
@@ -20,31 +19,55 @@ export const RegisterDriverScreen = () => {
   return (
     <I18nextProvider i18n={i18n}>
       <Navigator
+      activeColor={globalColors.primaryColors.primary}
+      barStyle={{ backgroundColor: neutralColors.background, paddingHorizontal: 20, paddingVertical: 10, alignItems: 'center' }}
       screenOptions={{
-        swipeEnabled: false,
-        tabBarBounces: true,
-        tabBarIndicatorContainerStyle: {
-          width: '100%',
-        },
+        // swipeEnabled: false,
+        // tabBarBounces: true,
+        // tabBarIndicatorContainerStyle: {
+        //   width: '100%',
+        // },
       }}>
-      <Screen name="RegisterWorkerScreen" options={{ title: t('register-driver') }} component={RegisterWorkerScreen} />
+        <Screen 
+          options={{
+            tabBarLabel: t('register-driver'),
+            tabBarIcon: ({color}) => (
+              <CustomIcon name='person' fill={color} />
+            )
+          }} 
+          component={RegisterWorkerScreen} 
+          name="RegisterWorkerScreen" 
+          />
       <Screen
         options={{ 
-          title: t('register-documents'), 
-          // tabBarIcon: ({focused}) => (
-          //   <CustomIcon name={focused ? 'person-fill' : 'person-outline'} fill={focused ? primaryColors.primary : globalColors.grayScale.gray} />
+          tabBarLabel: t('register-documents'),
+          // tabBarIcon: ({color}) => (
+          //   <CustomIcon name='document' fill={color} />
           // )
+          tabBarIcon: ({color}) => (
+            <CustomIcon name='file-text' fill={color} />
+          )
         }}
         name="RegisterUserDocumentsScreen"
         component={RegisterUserDocumentsScreen}
       />
       <Screen
-        options={{ title: t('register-documents-vehicle') }}
+        options={{ 
+          tabBarLabel: t('register-documents-vehicle'),
+          tabBarIcon: ({color}) => (
+            <CustomIcon name='car' fill={color} />
+          )
+         }}
         name="RegisterVehiclesDocumentsScreen"
         component={RegisterVehiclesDocumentsScreen}
       />
       <Screen
-        options={{ title: t('register-edit') }}
+        options={{ 
+          tabBarLabel: t('edit-register'),
+          tabBarIcon: ({color}) => (
+            <CustomIcon name='edit' fill={color} />
+          )
+         }}
         name="RegisterEditScreen"
         component={SectionDisplayEditDataDriver}
       />

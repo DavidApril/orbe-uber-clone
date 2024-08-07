@@ -21,6 +21,8 @@ import {
 import {globalColors, globalDimensions} from '../../../theme/styles';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {Divider} from '@ui-kitten/components';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../../../config/i18n/i18n';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'CartOfProductsScreen'> {}
@@ -34,11 +36,13 @@ export const CartOfProductsScreen = ({navigation}: Props) => {
 
   const snapPoints = useMemo(() => ['28%', '80%'], []);
   const summaryBottomSheetRef = useRef<BottomSheet>(null);
+  const {t} = useTranslation()
 
   return (
     <>
       <OpenDrawerMenu />
       <FABGoBackButton />
+      <I18nextProvider i18n={i18n}>
       <View
         style={{
           flex: 1,
@@ -59,7 +63,7 @@ export const CartOfProductsScreen = ({navigation}: Props) => {
                   ? globalColors.primaryColors.primary
                   : globalColors.primaryColors.primary,
               }}>
-              Productos
+              {t('products')}
             </Text>
             <Text
               style={{
@@ -68,7 +72,7 @@ export const CartOfProductsScreen = ({navigation}: Props) => {
                   ? globalColors.fontColor.textColor
                   : globalColors.fontColor.textColorDark,
               }}>
-              Una lista de todos los productos en el carrito.
+              {t('a-list-of-all-the-products-in-the-cart')}
             </Text>
           </View>
           <View
@@ -106,7 +110,7 @@ export const CartOfProductsScreen = ({navigation}: Props) => {
                       ? globalColors.neutralColors.backgroundDarkAlpha
                       : globalColors.neutralColors.backgroundAlpha,
                   }}>
-                  No hay productos en el carrito.
+                  {t('there-are-no-products-in-the-cart')}
                 </Text>
                 <Pressable
                   onPress={() => navigation.navigate('HomeScreen')}
@@ -117,7 +121,7 @@ export const CartOfProductsScreen = ({navigation}: Props) => {
                     backgroundColor: globalColors.primaryColors.primary,
                     marginVertical: 10,
                   }}>
-                  <Text style={{color: '#eee'}}>Ver restaurantes</Text>
+                  <Text style={{color: '#eee'}}>{t('see-restaurants')}</Text>
                 </Pressable>
               </View>
             )}
@@ -158,7 +162,7 @@ export const CartOfProductsScreen = ({navigation}: Props) => {
                     ? globalColors.fontColor.textColorHeaderDark
                     : globalColors.fontColor.textColorHeader,
                 }}>
-                Paga aquí
+                {t('pay-here')}
               </Text>
 
               <Divider style={{marginVertical: 10}} />
@@ -168,6 +172,7 @@ export const CartOfProductsScreen = ({navigation}: Props) => {
           </BottomSheet>
         )}
       </View>
+      </I18nextProvider>
     </>
   );
 };

@@ -36,6 +36,8 @@ export type RootStackParams = {
   ShoppingHistoryScreen: undefined;
   PurchasesHistoryScreen: undefined;
   PurchaseInfoScreen: undefined;
+  RefillsScreen: undefined;
+  ShoppingHistoryItemScreen: undefined;
 
   TravelsHistoryScreen: undefined;
 

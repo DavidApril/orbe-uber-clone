@@ -17,7 +17,7 @@ import {StorageService} from '../../../../services';
 import {currencyFormat} from '../../../../utils';
 import {useCartStore, useUIStore} from '../../../../store';
 import {CartQuantitySelector} from '../../../components/restaurants/cart/cart-quantity-selector';
-import {globalColors, globalStyles} from '../../../theme/styles';
+import {globalColors, globalStyles, primaryColors} from '../../../theme/styles';
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreen'> {}
 
@@ -93,7 +93,7 @@ export const ProductScreen = ({navigation}: Props) => {
         }}>
         <ImageBackground
           style={{
-            height: '35%',
+            height: '45%',
             borderBottomLeftRadius: 40,
             borderBottomRightRadius: 40,
             overflow: 'hidden',
@@ -146,68 +146,69 @@ export const ProductScreen = ({navigation}: Props) => {
       <View
         style={{
           position: 'absolute',
-          bottom: 130,
-          flex: 1,
+          bottom: 10,
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          marginBottom: 24,
         }}>
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: 'column',
             justifyContent: 'center',
-            alignItems: 'center',
+            // alignItems: 'center',
+            marginHorizontal: 5,
             gap: 20,
             flex: 1,
           }}>
-          <Text
-            style={{
-              color: isDarkMode
-                ? globalColors.fontColor.textColorHeaderDark
-                : globalColors.fontColor.textColorHeader,
-              textAlignVertical: 'center',
-              fontWeight: 'bold',
-              fontSize: 16,
-            }}>
-            {currencyFormat(+item.priceUnitary)}
-          </Text>
-          <Pressable
-            style={{
-              borderRadius: 50,
-              backgroundColor: globalColors.primaryColors.primary,
-              paddingVertical: 25,
-              paddingHorizontal: 35,
-            }}
-            onPress={() => {
-              addProductToCart(item);
-            }}
-            disabled={!!productInCart}>
-            <Text style={{color: 'white'}}>AÑADIR AL CARRITO</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              setIsFavorite(!isFavorite);
-              if (isFavorite) {
-                removeFavorite(item);
-              } else {
-                addProductToFavorites(item);
-              }
-            }}
-            style={{
-              borderRadius: 50,
-              height: 40,
-              width: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: isFavorite
-                ? globalColors.stateColors.error
-                : isDarkMode
-                ? globalColors.neutralColors.backgroundDarkAlpha
-                : globalColors.neutralColors.backgroundAlpha,
-            }}>
-            <CustomIcon white name="heart" />
-          </Pressable>
+            <Text
+              style={{
+                color: primaryColors.primary,
+                textAlignVertical: 'center',
+                fontWeight: '300',
+                fontSize: 30,
+                paddingHorizontal: 20
+              }}>
+              {currencyFormat(+item.priceUnitary)}
+            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', paddingHorizontal: 10 }}>
+              <Pressable
+                style={{
+                  borderRadius: 50,
+                  backgroundColor: globalColors.primaryColors.primary,
+                  paddingVertical: 25,
+                  paddingHorizontal: 35,
+                  width: '80%',
+                }}
+                onPress={() => {
+                  addProductToCart(item);
+                }}
+                disabled={!!productInCart}>
+                <Text style={{color: 'white', textAlign: 'center'}}>AÑADIR AL CARRITO</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  setIsFavorite(!isFavorite);
+                  if (isFavorite) {
+                    removeFavorite(item);
+                  } else {
+                    addProductToFavorites(item);
+                  }
+                }}
+                style={{
+                  borderRadius: 50,
+                  height: 60,
+                  width: 60,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: isFavorite
+                    ? globalColors.stateColors.error
+                    : isDarkMode
+                    ? globalColors.neutralColors.backgroundDarkAlpha
+                    : globalColors.neutralColors.backgroundAlpha,
+                }}>
+                <CustomIcon white name="heart" />
+              </Pressable>
+            </View>
         </View>
       </View>
     </View>
