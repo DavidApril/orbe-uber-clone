@@ -1,23 +1,20 @@
-import {StackScreenProps} from '@react-navigation/stack';
-import {useEffect, useState} from 'react';
-import {Animated, Pressable, useWindowDimensions} from 'react-native';
-import {Button, Input, Layout, Spinner, Text} from '@ui-kitten/components';
-import {ScrollView} from 'react-native-gesture-handler';
-import {useAuthStore} from '../../../../store/auth/auth.store';
-import {CustomIcon} from '../../../components';
-import {globalColors} from '../../../theme/styles';
-import {Formik} from 'formik';
-import {RootStackParams} from '../../../../interfaces';
-import {useAnimation} from '../../../../hooks';
-import * as Yup from 'yup';
-import {I18nextProvider} from 'react-i18next';
-
 import '../../../../config/i18n/i18n';
+import {Animated, Pressable, useWindowDimensions, View} from 'react-native';
+import {Button, Input, Spinner, Text} from '@ui-kitten/components';
+import {changeLanguage} from '../../../../config/i18n/change-language.ts';
+import {CButton, CInput, CustomIcon, CView} from '../../../components';
+import {Formik} from 'formik';
+import {globalColors, stateColors} from '../../../theme/styles';
+import {I18nextProvider} from 'react-i18next';
+import {RootStackParams} from '../../../../interfaces';
+import {ScrollView} from 'react-native-gesture-handler';
+import {StackScreenProps} from '@react-navigation/stack';
+import {useAnimation} from '../../../../hooks';
+import {useAuthStore} from '../../../../store/auth/auth.store';
+import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import i18n from '../../../../config/i18n/i18n.ts';
-import {changeLanguage} from '../../../../config/i18n/change-language.ts';
-import {orbeApi} from '../../../../config/api/orbe-api.ts';
-import axios from 'axios';
+import * as Yup from 'yup';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
@@ -57,7 +54,7 @@ export const LoginScreen = ({navigation}: Props) => {
 
   return (
     <I18nextProvider i18n={i18n}>
-      <Layout style={{flex: 1}}>
+      <CView style={{flex: 1}}>
         <Pressable
           onPress={handleLanguage}
           style={{
@@ -77,7 +74,7 @@ export const LoginScreen = ({navigation}: Props) => {
           </Text>
         </Pressable>
         <ScrollView style={{marginHorizontal: 30}}>
-          <Layout
+          <View
             style={{
               paddingTop: height * 0.25,
               paddingBottom: 40,
@@ -95,11 +92,11 @@ export const LoginScreen = ({navigation}: Props) => {
               source={require('../../../../assets/loading.png')}
             />
 
-            <Layout>
+            <View>
               <Text category="h1">{t('welcome')}</Text>
               <Text category="p2">{t('please, log in to continue')}</Text>
-            </Layout>
-          </Layout>
+            </View>
+          </View>
 
           {/* Inputs */}
           <Formik
@@ -108,68 +105,58 @@ export const LoginScreen = ({navigation}: Props) => {
             onSubmit={onSubmit}>
             {({values, handleChange, handleSubmit, errors, touched}) => (
               <>
-                <Layout style={{marginTop: 20}}>
-                  <Input
-                    status={
-                      touched.email && errors.email
-                        ? 'danger'
-                        : touched.email && !errors.email
-                        ? 'success'
-                        : 'basic'
-                    }
+                <View>
+                  <CInput
                     value={values.email}
-                    onChangeText={handleChange('email')}
+                    handleValue={handleChange('email')}
                     accessoryLeft={<CustomIcon name="email-outline" />}
                     placeholder={t('email-address')}
                     keyboardType="email-address"
                     autoCapitalize="none"
-                    style={{marginBottom: 10}}
+                    style={{
+                      borderColor:
+                        touched.email && errors.email
+                          ? stateColors.error
+                          : touched.email && !errors.email
+                          ? stateColors.success
+                          : stateColors.info,
+                    }}
                   />
-                  <Input
-                    status={
-                      touched.password && errors.password
-                        ? 'danger'
-                        : touched.password && !errors.password
-                        ? 'success'
-                        : 'basic'
-                    }
+                  <CInput
                     value={values.password}
-                    onChangeText={handleChange('password')}
+                    handleValue={handleChange('password')}
                     accessoryLeft={<CustomIcon name="lock-outline" />}
                     placeholder={t('password')}
                     secureTextEntry
                     autoCapitalize="none"
-                    style={{marginBottom: 20}}
+                    style={{
+                      marginBottom: 10,
+                      borderColor:
+                        touched.password && errors.password
+                          ? stateColors.error
+                          : touched.password && !errors.password
+                          ? stateColors.success
+                          : stateColors.info,
+                    }}
                   />
-                </Layout>
+                </View>
 
                 {/* Space */}
-                <Layout style={{height: 20}}></Layout>
+                <View style={{height: 20}}></View>
 
                 {/* Button */}
-                <Layout>
-                  <Button
-                    disabled={isLoading}
-                    onPress={() => handleSubmit()}
-                    appearance="ghost">
-                    {!isLoading ? (
-                      t('login')
-                    ) : (
-                      <Text>
-                        <Spinner />
-                      </Text>
-                    )}
-                  </Button>
-                </Layout>
+                <View>
+                  <CButton onPress={handleSubmit} label={t('login')} />
+                </View>
               </>
             )}
           </Formik>
 
           {/* Space */}
-          <Layout style={{height: 100}}></Layout>
+          <View style={{height: 100}}></View>
 
           {/* Not have account */}
-          <Layout
+          <View
             style={{
               alignItems: 'flex-end',
               flexDirection: 'row',
@@ -183,9 +170,9 @@ export const LoginScreen = ({navigation}: Props) => {
               {' '}
               {t('create one here')}
             </Text>
-          </Layout>
+          </View>
         </ScrollView>
-      </Layout>
+      </CView>
     </I18nextProvider>
   );
 };

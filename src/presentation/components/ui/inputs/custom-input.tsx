@@ -22,12 +22,16 @@ export const CInput = ({label, style, value, handleValue, ...props}: Props) => {
         {...props}
         value={value}
         onChangeText={handleValue}
+        placeholderTextColor={
+          !isDarkMode ? neutralColors.placeholderColor : 'white'
+        }
         style={[
           globalStyles.primaryTextInput,
           {
+            fontWeight: '300',
             backgroundColor: isDarkMode
               ? neutralColors.textInputBackgroundDark
-              : neutralColors.textInputBackgroundDark,
+              : neutralColors.textInputBackground,
           },
           style,
         ]}

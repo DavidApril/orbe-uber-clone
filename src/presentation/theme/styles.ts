@@ -125,10 +125,8 @@ export const globalStyles = StyleSheet.create({
   },
 
   primaryTextInput: {
-    borderWidth: 1,
     paddingLeft: 15,
     borderRadius: 10,
-    
   },
 
   FABBackButton: {
