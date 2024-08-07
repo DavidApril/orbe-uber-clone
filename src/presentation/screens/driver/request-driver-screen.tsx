@@ -1,4 +1,13 @@
-import {BSSelectOriginDestination, CustomMapView, FAB} from '../../components';
+import {
+  BSSelectOriginDestination,
+  CInput,
+  CText,
+  CTextHeader,
+  CustomIcon,
+  CustomMapView,
+  CViewAlpha,
+  FAB,
+} from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useAuthStore, useLocationStore} from '../../../store';
 import {useEffect, useState} from 'react';
@@ -11,17 +20,24 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {useClientDriverStore} from '../../../store/client/client-driver-store';
+import {Modal, Pressable, useWindowDimensions} from 'react-native';
+import {View} from 'react-native';
+import {RatingService} from '../../../services';
+import {Spinner} from '@ui-kitten/components';
 
 export const RequestDriverScreen = () => {
   const {user} = useAuthStore();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {lastKnownLocation, getLocation} = useLocationStore();
+  const {height, width} = useWindowDimensions();
   const [currentDriver, setCurrentDriver] = useState<any>(null);
-
+  const [rating, setRating] = useState<number>(0);
+  const [observations, setObservations] = useState<string>('');
+  const [qualifyWorker, setQualifyWorker] = useState<boolean>(false);
+  const [sendingRating, setSendingRating] = useState<boolean>(false);
   const {
     origin,
     destination,
-    payWithCard,
     nearbyDrivers,
     setCurrentDriverAcceptRace,
     setNearbyDrivers,
@@ -31,14 +47,6 @@ export const RequestDriverScreen = () => {
   const {socket: raceWaitsSocket} = useSocket(
     `${API_SOCKET_URL}/client-driver-wait`,
   );
-
-  const checkout = async () => {};
-
-  useEffect(() => {
-    if (payWithCard) {
-      checkout();
-    }
-  }, [payWithCard]);
 
   useEffect(() => {
     if (lastKnownLocation) {
@@ -52,12 +60,11 @@ export const RequestDriverScreen = () => {
 
   useEffect(() => {
     socket.on('conductores-cercanos', data => {
-      console.log({data});
       setNearbyDrivers(data);
     });
-    // return () => {
-    //   socket.off();
-    // };
+    return () => {
+      socket.off();
+    };
   }, []);
 
   useEffect(() => {
@@ -100,6 +107,95 @@ export const RequestDriverScreen = () => {
           backgroundColor: '#3fc1f2',
         }}
       />
+
+      <Modal
+        animationType="slide"
+        statusBarTranslucent
+        visible={qualifyWorker}
+        hardwareAccelerated
+        transparent
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          width,
+          height,
+          backgroundColor: 'black',
+          opacity: 0.6,
+        }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginHorizontal: 30,
+          }}>
+          <CViewAlpha
+            style={{
+              height: 'auto',
+              width: '100%',
+              borderRadius: 30,
+              padding: 30,
+            }}>
+            <CTextHeader style={{fontWeight: '100', fontSize: 30}}>
+              Ayudanos a mejorar nuestros servicios
+            </CTextHeader>
+
+            <View style={{height: 60, marginTop: 20}}>
+              <CInput
+                value={observations}
+                handleValue={setObservations}
+                label="Observaciones"
+              />
+            </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                gap: 10,
+                justifyContent: 'center',
+                marginVertical: 30,
+                transform: [{scale: 1.5}],
+              }}>
+              {Array.from({length: 5}).map((_, index) => {
+                if (index < rating) {
+                  return (
+                    <Pressable onPress={() => setRating(index + 1)}>
+                      <CustomIcon name="star" />
+                    </Pressable>
+                  );
+                }
+                return (
+                  <Pressable onPress={() => setRating(index + 1)}>
+                    <CustomIcon name="star-outline" />
+                  </Pressable>
+                );
+              })}
+            </View>
+            <Pressable
+              onPress={async () => {
+                setSendingRating(true);
+                await RatingService.create({
+                  value: rating,
+                  observation: observations,
+                  user: {
+                    id: 109,
+                  },
+                }).finally(() => {
+                  setSendingRating(false);
+                  setQualifyWorker(false);
+                });
+              }}
+              style={{
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 5,
+              }}>
+              {!sendingRating ? <CText>Enviar</CText> : <Spinner />}
+            </Pressable>
+          </CViewAlpha>
+        </View>
+      </Modal>
 
       <CustomMapView
         driverPosition={currentDriver ? currentDriver : null}

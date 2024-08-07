@@ -23,7 +23,7 @@ interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
 export const LoginScreen = ({navigation}: Props) => {
   const {t} = useTranslation();
-  const {login, role} = useAuthStore();
+  const {login} = useAuthStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {height} = useWindowDimensions();
   const [english, setEnglish] = useState<boolean>(false);

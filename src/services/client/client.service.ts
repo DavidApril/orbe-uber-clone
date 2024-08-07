@@ -62,18 +62,17 @@ export class ClientService {
     }
   };
 
-  static getClientByUid = async (uid: string) => {
+  static getClientByUid = async (
+    uid: string,
+  ): Promise<GetClientByUidResponseData | null> => {
     try {
-      
-      const {data: response} = await axios.get(
-        `https://orbeapi.devzeros.com/api_v1/user/getUserByUid?uid_firebase=${uid}`,
-      );
+      const {data: response}: {data: GetClientByUidResponse} =
+        await orbeApi.get(`/${this.PREFIX}/getUserByUid?uid_firebase=${uid}`);
 
       return response.data;
     } catch (error) {
       parseError('getUserByUid', error);
-
-      return undefined;
+      return null;
     }
   };
   static updateClient = async (clientUpdated: ClientUpdatedForm) => {

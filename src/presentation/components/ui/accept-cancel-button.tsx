@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Pressable, View} from 'react-native';
 import {globalDimensions, stateColors} from '../../theme/styles';
 import {CustomIcon} from './custom-icon';
-import {useDeliveryStore, useDriverStore} from '../../../store';
-import {OrderService} from '../../../services';
+import {useDriverStore} from '../../../store';
+import {RaceService} from '../../../services';
+import {Spinner} from '@ui-kitten/components';
 
 export const AcceptCancelButtons = () => {
-  
-  const {setCurrentRaceAccepted, currentRequest} = useDriverStore();
-
+  const {setCurrentRaceAccepted, currentRequest, raceData} = useDriverStore();
+  const [isAcceptingRequest, setIsAcceptingRequest] = useState<boolean>(false);
   return (
     <View
       style={{
@@ -33,16 +33,17 @@ export const AcceptCancelButtons = () => {
         <CustomIcon name="close-outline" />
       </View>
       <Pressable
+        disabled={isAcceptingRequest}
         onPress={async () => {
-          // const response = await OrderService.acceptRequest(
-          //   currentRequest.id_client,
-          //   currentRequest.id_restaurant,
-          //   currentRequest.id,
-          //   raceData!.distance * 850 + 4600,
-          // );
-          // if (response) {
-          setCurrentRaceAccepted(currentRequest);
-          // }
+          setIsAcceptingRequest(true);
+          await RaceService.acceptOrder(
+            currentRequest!.id_client,
+            currentRequest!.id_client,
+            currentRequest!.id,
+            raceData!.distance * 850 + 4600,
+          );
+          setCurrentRaceAccepted(true);
+          setIsAcceptingRequest(false);
         }}
         style={{
           flex: 1,
@@ -52,7 +53,11 @@ export const AcceptCancelButtons = () => {
           alignItems: 'center',
           backgroundColor: stateColors.success,
         }}>
-        <CustomIcon name="checkmark-outline" />
+        {isAcceptingRequest ? (
+          <Spinner status="basic" />
+        ) : (
+          <CustomIcon name="checkmark-outline" />
+        )}
       </Pressable>
     </View>
   );

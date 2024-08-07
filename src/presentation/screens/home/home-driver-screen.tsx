@@ -3,13 +3,13 @@ import {
   useAuthStore,
   useDriverStore,
   useLocationStore,
-  useProfileDriverStore,
   useUIStore,
 } from '../../../store';
 import {
   AcceptCancelButtons,
   ActiveServicesButton,
   CButton,
+  CInput,
   ClientInformationCard,
   CText,
   CTextHeader,
@@ -21,14 +21,18 @@ import {
 } from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
-import {Button} from '@ui-kitten/components';
-import {FlatList, Pressable, View} from 'react-native';
+import {FlatList, Pressable, TextInput, View} from 'react-native';
 
 import {RootStackParams} from '../../../interfaces';
 import {currencyFormat} from '../../../utils';
 import {StackScreenProps} from '@react-navigation/stack';
+import {
+  globalDimensions,
+  globalStyles,
+  neutralColors,
+  stateColors,
+} from '../../theme/styles';
 import {API_SOCKET_URL} from '@env';
-import {globalDimensions, neutralColors} from '../../theme/styles';
 
 interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 
@@ -38,6 +42,7 @@ export const HomeDriverScreen = ({}: Props) => {
   const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
   const {isDarkMode} = useUIStore();
   const [driverArrived, setDriverArrived] = useState<boolean>(false);
+  const [clientCode, setClientCode] = useState<string>('');
   const {
     driverServiceIsActive,
     origin,
@@ -51,16 +56,13 @@ export const HomeDriverScreen = ({}: Props) => {
     setRaceData,
     setDriverRequests,
     setOrigin,
-    setDestination,
   } = useDriverStore();
+
+  console.log({currentRequest});
 
   useEffect(() => {
     socket.on('driver-request', data => {
-      data.client_request.forEach((request: any) => {
-        if (request.coordinates) {
-          setDriverRequests([...driverRequests, request]);
-        }
-      });
+      setDriverRequests(data.client_request);
     });
   }, []);
 
@@ -90,7 +92,7 @@ export const HomeDriverScreen = ({}: Props) => {
 
   useEffect(() => {
     if (currentRaceAccepted) {
-      setOrigin(lastKnownLocation)
+      setOrigin(lastKnownLocation);
     }
   }, [currentRaceAccepted, lastKnownLocation]);
 
@@ -137,40 +139,42 @@ export const HomeDriverScreen = ({}: Props) => {
         />
       ) : (
         <>
-          <View
-            style={{
-              top: 100,
-              left: 40,
-              right: 40,
-              position: 'absolute',
-              flexDirection: 'row',
-              gap: 10,
-            }}>
-            <CView
+          {raceData && (
+            <View
               style={{
-                flex: 1,
-                padding: 10,
+                top: 100,
+                left: 40,
+                right: 40,
+                position: 'absolute',
                 flexDirection: 'row',
-                justifyContent: 'center',
                 gap: 10,
-                borderRadius: 10,
               }}>
-              <CustomIcon name="activity" />
-              <CTextHeader>{raceData?.distance} km</CTextHeader>
-            </CView>
-            <CView
-              style={{
-                flex: 1,
-                padding: 10,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: 10,
-                borderRadius: 10,
-              }}>
-              <CustomIcon name="clock" />
-              <CTextHeader>{raceData?.duration.toFixed(2)} min</CTextHeader>
-            </CView>
-          </View>
+              <CView
+                style={{
+                  flex: 1,
+                  padding: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 10,
+                  borderRadius: 10,
+                }}>
+                <CustomIcon name="activity" />
+                <CTextHeader>{raceData.distance} km</CTextHeader>
+              </CView>
+              <CView
+                style={{
+                  flex: 1,
+                  padding: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 10,
+                  borderRadius: 10,
+                }}>
+                <CustomIcon name="clock" />
+                <CTextHeader>{raceData.duration.toFixed(2)} min</CTextHeader>
+              </CView>
+            </View>
+          )}
 
           <FAB
             white={true}
@@ -208,7 +212,7 @@ export const HomeDriverScreen = ({}: Props) => {
               style={{
                 position: 'absolute',
                 bottom: 120,
-                height: 120,
+                height: 220,
                 left: 30,
                 right: 30,
                 flex: 1,
@@ -221,10 +225,36 @@ export const HomeDriverScreen = ({}: Props) => {
                   ? neutralColors.backgroundDarkAlpha
                   : neutralColors.backgroundAlpha,
               }}>
-              <CText>Código del cliente</CText>
-              <CTextHeader style={{fontSize: 40, letterSpacing: 10}}>
-                XJK5Z2
-              </CTextHeader>
+              <View style={{transform: [{scale: 3}], marginBottom: 30}}>
+                <CustomIcon
+                  fill={
+                    clientCode.length < 4
+                      ? stateColors.error
+                      : stateColors.success
+                  }
+                  name="alert-circle-outline"
+                />
+              </View>
+              <CText>Ingrese el código del cliente</CText>
+              <TextInput
+                value={clientCode}
+                onChangeText={value => setClientCode(value.toUpperCase())}
+                style={[
+                  globalStyles.primaryInput,
+                  {
+                    backgroundColor: isDarkMode
+                      ? neutralColors.textInputBackgroundDark
+                      : neutralColors.textInputBackgroundDark,
+                    borderRadius: globalDimensions.cardBorderRadius,
+                    width: '80%',
+                    fontSize: 30,
+                    letterSpacing: 8,
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    marginVertical: 10,
+                  },
+                ]}
+              />
             </View>
           )}
         </>

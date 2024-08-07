@@ -3,32 +3,35 @@ import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
 import {StorageService, WorkerService} from '../../../services';
 import {currencyFormat} from '../../../utils';
-import {globalColors, globalDimensions} from '../../theme/styles';
+import {
+  globalColors,
+  globalDimensions,
+  primaryColors,
+} from '../../theme/styles';
 import {Image, View} from 'react-native';
 import {CViewAlpha} from '../ui/custom-view-alpha';
+import {GetDriverByUidResponseData} from '../../../interfaces';
+import {useClientDriverStore} from '../../../store/client/client-driver-store';
+import {CText} from '../ui/custom-text';
+import {useAuthStore} from '../../../store';
 
 interface Props {
-  driver: any;
-  raceData: any;
-  createRequest: any;
-  currentDriverAcceptRace: boolean | null;
+  driverUid: string;
 }
 
-export const DriverInformationCard = ({
-  driver,
-  raceData,
-  createRequest,
-  currentDriverAcceptRace,
-}: Props) => {
-  const [driverData, setDriverData] = useState<any>();
+export const DriverInformationCard = ({driverUid}: Props) => {
   const [loadingRequest, setLoadingRequest] = useState<boolean>(false);
+  const {userByUid} = useAuthStore();
+  const [user, setUser] = useState<GetDriverByUidResponseData | null>(null);
 
-  const getDriverData = async () => {
-    const response = await WorkerService.getDriverByUserId(driver.id);
-    if (response && !driverData) {
-      setDriverData(response);
-    }
-  };
+  useEffect(() => {
+    WorkerService.getDriverByUid(driverUid).then(user => {
+      if (user) setUser(user);
+    });
+  }, []);
+
+  const {currentDriverAcceptRace, raceData, createRequest} =
+    useClientDriverStore();
 
   useEffect(() => {
     if (currentDriverAcceptRace !== null) {
@@ -36,9 +39,13 @@ export const DriverInformationCard = ({
     }
   }, [currentDriverAcceptRace]);
 
-  useEffect(() => {
-    getDriverData();
-  }, []);
+  if (!user) {
+    return (
+      <View>
+        <Spinner />
+      </View>
+    );
+  }
 
   return (
     <CViewAlpha
@@ -57,21 +64,21 @@ export const DriverInformationCard = ({
               width: 80,
               borderRadius: 50,
               justifyContent: 'center',
-              backgroundColor: 'black',
+              overflow: 'hidden',
             }}>
             <Image
               style={{height: 80, width: 80, borderRadius: 50}}
               source={{
-                uri: StorageService.getPhotoByFilename('product/image.png'),
+                uri: StorageService.getPhotoByFilename(`product/images.jpg`),
               }}
             />
           </View>
 
           <View style={{flexDirection: 'column'}}>
             <Text style={{fontWeight: 'bold', fontSize: 18}}>
-              {driverData?.driver.name + ' ' + driverData?.driver.lastName}
+              {user?.driver?.name + ' ' + user?.driver?.lastName}
             </Text>
-            <Text>{driverData?.driver.identification}</Text>
+            <Text>{user?.driver?.identification}</Text>
           </View>
 
           <View
@@ -101,7 +108,7 @@ export const DriverInformationCard = ({
                 fontWeight: 'bold',
                 fontSize: 25,
               }}>
-              {currencyFormat(Math.ceil(raceData.distance * 850 + 4600))}
+              {currencyFormat(Math.ceil(raceData!.distance * 850 + 4600))}
             </Text>
           </View>
         </View>
@@ -120,7 +127,7 @@ export const DriverInformationCard = ({
                 fontWeight: 'bold',
                 fontSize: 20,
               }}>
-              {Math.ceil(raceData.distance)} Km
+              {Math.ceil(raceData!.distance)} Km
             </Text>
           </View>
 
@@ -131,7 +138,7 @@ export const DriverInformationCard = ({
                 fontWeight: 'bold',
                 fontSize: 20,
               }}>
-              {Math.ceil(raceData.duration)} Min
+              {Math.ceil(raceData!.duration)} Min
             </Text>
           </View>
         </View>
@@ -165,11 +172,7 @@ export const DriverInformationCard = ({
               </Button>
             </View>
 
-            <Text>+57 {driverData?.driver.phone}</Text>
-
-            {/* <Button style={{borderRadius: 60, paddingHorizontal: 50}}>
-              Ver perfil
-            </Button> */}
+            <CText>+57 {user?.driver?.phone}</CText>
           </View>
           <View style={{height: 1, backgroundColor: '#dedad9'}}></View>
 
@@ -188,7 +191,7 @@ export const DriverInformationCard = ({
                 disabled={loadingRequest}
                 onPress={() => {
                   setLoadingRequest(true);
-                  createRequest();
+                  createRequest(user.uid_firebase, userByUid!.uid_firebase);
                 }}
                 status="success"
                 style={{flex: 1, borderRadius: 50}}>
@@ -208,7 +211,7 @@ export const DriverInformationCard = ({
               style={{
                 flex: 1,
                 paddingVertical: 15,
-                backgroundColor: globalColors.primary,
+                backgroundColor: primaryColors.primary,
                 borderRadius: 15,
                 justifyContent: 'center',
                 alignItems: 'center',

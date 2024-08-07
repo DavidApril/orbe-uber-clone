@@ -128,6 +128,7 @@ export const globalStyles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 15,
     borderRadius: 10,
+    
   },
 
   FABBackButton: {

@@ -4,10 +4,13 @@ export * from './permissions.interface';
 export * from './location.interface';
 export * from './worker.interface';
 export * from './consts';
-export * from './client.interface'
+export * from './client.interface';
 export * from './navigation.interface';
 export * from './restaurant.interface';
 export * from './cart.interface';
 export * from './chatbot.interface';
 export * from './coupon.interface';
 export * from './payment.interface';
+export * from './race.interface';
+export * from './products.interface';
+export * from './rating.interface';

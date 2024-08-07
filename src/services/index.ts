@@ -11,3 +11,4 @@ export * from './payment/payment.service';
 export * from './configurations/configurations-service';
 export * from './race/race.services';
 export * from './order/order.service';
+export * from './rating/rating.service';

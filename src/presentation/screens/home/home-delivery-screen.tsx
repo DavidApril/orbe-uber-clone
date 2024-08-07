@@ -21,14 +21,14 @@ import {Image, Pressable, View} from 'react-native';
 import {globalDimensions} from '../../theme/styles';
 import {CameraAdapter} from '../../../config/adapters';
 import {StorageService} from '../../../services';
+import {API_SOCKET_URL} from '@env';
 
-interface Props extends StackScreenProps<RootStackParams, 'HomeDeliveryScreen'> {}
+interface Props
+  extends StackScreenProps<RootStackParams, 'HomeDeliveryScreen'> {}
 
 export const HomeDeliveryScreen = ({navigation}: Props) => {
-  const {lastKnownLocation, getLocation} = useLocationStore();
-  const {socket} = useSocket(
-    `ws://orbeapi.devzeros.com:3001/request-restaurant`,
-  );
+  const {lastKnownLocation} = useLocationStore();
+  const {socket} = useSocket(`${API_SOCKET_URL}/request-restaurant`);
 
   const {
     deliveryServiceIsActive,
@@ -46,24 +46,7 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
     productImage,
   } = useDeliveryStore();
 
-  useEffect(() => {
-  }, [productImage]);
-
-  useEffect(() => {
-    socket.on('request-restaurant', data => {
-      // data.client_request.forEach((request: any) => {
-      //   if (request.coordinates) {
-      //     setDeliveryRequests([...deliveryRequests, request]);
-      //   }
-      // });
-    });
-  }, []);
-
-  useEffect(() => {
-    if (lastKnownLocation === null) {
-      getLocation();
-    }
-  }, []);
+  useEffect(() => {}, [productImage]);
 
   const sendDeliveryLocation = () => {
     // socket.emit('location-driver', {

@@ -48,21 +48,6 @@ export interface AttachmentToCreate {
 	description: string;
 }
 
-export interface ProductRestaurant {
-	id:           number;
-	created_date: Date;
-	updated_date: Date;
-	delete_date:  null;
-	name:         string;
-	description:  string;
-	priceUnitary: string;
-	discount:     string;
-	category:     string;
-	state:        boolean;
-	imageUrl:     string;
-	extras:       any[];
-	restaurant:   Restaurant;
-}
 
 export interface Restaurant {
 	id:           number;

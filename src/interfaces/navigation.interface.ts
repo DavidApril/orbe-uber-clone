@@ -25,7 +25,7 @@ export type RootStackParams = {
   ProductScreen: undefined;
   CartOfProductsScreen: undefined;
   CheckoutScreen: undefined;
-  
+  ProccesingOrderScreen: undefined;
 
   OrdersScreen: undefined;
   OrderScreen: undefined;
