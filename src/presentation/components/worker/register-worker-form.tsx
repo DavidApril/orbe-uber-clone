@@ -70,7 +70,7 @@ export const RegisterWorkerForm = () => {
         values,
         DRIVER,
         // @ts-ignore
-        image[0].uri.split('/').reverse()[0],
+        image,
       );
     } catch (error) {
       parseError('error at upload image', error);

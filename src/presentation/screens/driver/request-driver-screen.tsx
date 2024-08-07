@@ -1,11 +1,10 @@
 import {
   BSSelectOriginDestination,
-  CButton,
+  CInput,
   CText,
   CTextHeader,
   CustomIcon,
   CustomMapView,
-  CView,
   CViewAlpha,
   FAB,
 } from '../../components';
@@ -23,6 +22,8 @@ import {
 import {useClientDriverStore} from '../../../store/client/client-driver-store';
 import {Modal, Pressable, useWindowDimensions} from 'react-native';
 import {View} from 'react-native';
+import {RatingService} from '../../../services';
+import {Spinner} from '@ui-kitten/components';
 
 export const RequestDriverScreen = () => {
   const {user} = useAuthStore();
@@ -31,16 +32,18 @@ export const RequestDriverScreen = () => {
   const {height, width} = useWindowDimensions();
   const [currentDriver, setCurrentDriver] = useState<any>(null);
   const [rating, setRating] = useState<number>(0);
+  const [observations, setObservations] = useState<string>('');
+  const [qualifyWorker, setQualifyWorker] = useState<boolean>(false);
+  const [sendingRating, setSendingRating] = useState<boolean>(false);
   const {
     origin,
     destination,
-    payWithCard,
     nearbyDrivers,
     setCurrentDriverAcceptRace,
     setNearbyDrivers,
     setRaceData,
   } = useClientDriverStore();
-  const {socket, online} = useSocket(`${API_SOCKET_URL}/location-client`);
+  const {socket} = useSocket(`${API_SOCKET_URL}/location-client`);
   const {socket: raceWaitsSocket} = useSocket(
     `${API_SOCKET_URL}/client-driver-wait`,
   );
@@ -57,7 +60,6 @@ export const RequestDriverScreen = () => {
 
   useEffect(() => {
     socket.on('conductores-cercanos', data => {
-      console.log(data);
       setNearbyDrivers(data);
     });
     return () => {
@@ -73,7 +75,6 @@ export const RequestDriverScreen = () => {
 
   useEffect(() => {
     raceWaitsSocket.on('request-response', response => {
-      console.log({response});
       if (response.data.price) {
         setCurrentDriverAcceptRace(true);
       }
@@ -88,10 +89,6 @@ export const RequestDriverScreen = () => {
       setCurrentDriver(driver[0]);
     }
   }, [nearbyDrivers]);
-
-  useEffect(() => {
-    console.log({rating});
-  }, [rating]);
 
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
@@ -114,7 +111,7 @@ export const RequestDriverScreen = () => {
       <Modal
         animationType="slide"
         statusBarTranslucent
-        visible
+        visible={qualifyWorker}
         hardwareAccelerated
         transparent
         style={{
@@ -125,7 +122,6 @@ export const RequestDriverScreen = () => {
           backgroundColor: 'black',
           opacity: 0.6,
         }}>
-        {/* <CViewAlpha style={{height: 400, width: 300}}></CViewAlpha> */}
         <View
           style={{
             flex: 1,
@@ -143,7 +139,15 @@ export const RequestDriverScreen = () => {
             <CTextHeader style={{fontWeight: '100', fontSize: 30}}>
               Ayudanos a mejorar nuestros servicios
             </CTextHeader>
-            <CText>¿Qué tan felíz estás con tu servicio?</CText>
+
+            <View style={{height: 60, marginTop: 20}}>
+              <CInput
+                value={observations}
+                handleValue={setObservations}
+                label="Observaciones"
+              />
+            </View>
+
             <View
               style={{
                 flexDirection: 'row',
@@ -168,13 +172,26 @@ export const RequestDriverScreen = () => {
               })}
             </View>
             <Pressable
+              onPress={async () => {
+                setSendingRating(true);
+                await RatingService.create({
+                  value: rating,
+                  observation: observations,
+                  user: {
+                    id: 109,
+                  },
+                }).finally(() => {
+                  setSendingRating(false);
+                  setQualifyWorker(false);
+                });
+              }}
               style={{
                 height: 50,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: 5,
               }}>
-              <CText>Enviar</CText>
+              {!sendingRating ? <CText>Enviar</CText> : <Spinner />}
             </Pressable>
           </CViewAlpha>
         </View>
