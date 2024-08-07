@@ -39,7 +39,7 @@ interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 export const HomeDriverScreen = ({}: Props) => {
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const {socket} = useSocket(`${API_SOCKET_URL}/location`);
+  const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
   const {isDarkMode} = useUIStore();
   const [driverArrived, setDriverArrived] = useState<boolean>(false);
   const [clientCode, setClientCode] = useState<string>('');
@@ -71,6 +71,8 @@ export const HomeDriverScreen = ({}: Props) => {
       getLocation();
     }
   }, []);
+
+  console.log({online})
 
   const sendDriverLocation = () => {
     socket.emit('location-driver', {

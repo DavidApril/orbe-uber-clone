@@ -63,15 +63,15 @@ export const RegisterWorkerForm = () => {
       formData.append('file', image);
       formData.append('fileName', uuid.v4());
       formData.append('directory', 'profile');
-
+      
       await StorageService.uploadPhoto(formData);
 
       await WorkerService.create(
         values,
         DRIVER,
-        // @ts-ignore
-        image,
+        image[0]
       );
+      console.log(image[0])
     } catch (error) {
       parseError('error at upload image', error);
       setWorkerIsCreated(false);
@@ -83,7 +83,7 @@ export const RegisterWorkerForm = () => {
   return (
     <I18nextProvider i18n={i18n}>
       <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
-      {({values, handleChange, handleSubmit}) => (
+      {({values, handleChange}) => (
         <>
           <CViewAlpha
             style={{
@@ -216,7 +216,7 @@ export const RegisterWorkerForm = () => {
             <CButton
               isLoading={isLoading}
               disabled={!image}
-              onPress={handleSubmit}
+              onPress={onSubmit}
               label={t("to-register")}
             />
           </View>

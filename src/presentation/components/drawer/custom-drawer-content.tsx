@@ -18,6 +18,8 @@ import {StorageService} from '../../../services';
 import {CLIENT, DELIVERY, DRIVER, RootStackParams} from '../../../interfaces';
 import {fontColor, globalColors, globalDimensions, primaryColors} from '../../theme/styles';
 import {useNavigation} from '@react-navigation/native';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../../config/i18n/i18n';
 
 export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const navigation = useNavigation<DrawerNavigationProp<RootStackParams>>();
@@ -26,6 +28,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const {height} = useWindowDimensions();
   const [modal, setModal] = useState<boolean>(false);
   const {isDarkMode} = useUIStore();
+  const {t} = useTranslation()
 
   let image_url: string = '';
 
@@ -41,7 +44,8 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
 
   return (
-    <View
+    <I18nextProvider i18n={i18n}>
+      <View
       style={{
         backgroundColor: !isDarkMode
           ? globalColors.neutralColors.background
@@ -103,7 +107,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           onPress={() => setModal(true)}
           status="danger"
           appearance="ghost">
-          Cerrar sesión
+          {t('sign-off')}
         </Button>
       </View>
       <Modal
@@ -132,15 +136,16 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               justifyContent: 'center',
               alignItems: 'center',
               flexDirection: 'column',
-              gap: 50,
+              gap: 20,
               backgroundColor: 'white'
             }}>
             <Text
               style={{
-                fontSize: 18,
-                color: primaryColors.primary
+                fontSize: 22,
+                color: primaryColors.primary,
+                fontWeight: 'bold'
               }}>
-              Esta seguro de cerrar sesion?
+              {t('are-you-sure-you-want-to-log-out?')}
             </Text>
             <View style={{flexDirection: 'row', gap: 10}}>
               <Pressable
@@ -150,14 +155,14 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                   paddingHorizontal: 20,
                 }}
                 onPress={() => setModal(false)}>
-                <Text style={{color: primaryColors.primary}}>Cancelar</Text>
+                <Text style={{color: primaryColors.primary}}>{t('cancel')}</Text>
               </Pressable>
               <Pressable
                 style={{
                   padding: 10,
                   borderRadius: globalDimensions.borderRadiusButtom,
                   paddingHorizontal: 20,
-                  backgroundColor: globalColors.stateColors.error,
+                  backgroundColor: globalColors.primaryColors.primary,
                 }}
                 onPress={() => {
                   // navigation.reset({
@@ -167,7 +172,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                   logout(), setModal(false);
                 }}>
                 <Text style={{color: 'white', fontWeight: 'bold'}}>
-                  Cerrar sesion
+                  {t('sign-off')}
                 </Text>
               </Pressable>
             </View>
@@ -175,5 +180,6 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         </Pressable>
       </Modal>
     </View>
+    </I18nextProvider>
   );
 };

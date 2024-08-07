@@ -20,6 +20,7 @@ export const RegisterUserDocumentsScreen = () => {
       <ScrollView>
         <TextHeaderScreen
           paddingTop={30}
+          paddingBottom={30}
           title="Registro de documentos"
           description="Ingresa todos los documentos para registrarte correctamente"
         />

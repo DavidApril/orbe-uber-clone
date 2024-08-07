@@ -12,10 +12,11 @@ export class StorageService {
     } catch (error) {
       parseError(this.PREFIX + '/uploadImage', error);
     }
+    console.log(file)
   };
 
   static getPhotoByFilename = (filename: string) => {
-    const src = `https://orbeapi.devzeros.com/${API_PREFIX}/${this.PREFIX}?fileName=${filename}`;
+    const src = `${API_URL}/${API_PREFIX}/${this.PREFIX}?fileName=${filename}`;
     return src;
   };
 

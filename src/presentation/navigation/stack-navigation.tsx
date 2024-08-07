@@ -10,6 +10,7 @@ import {
   RegisterDriverScreen,
   RegisterClientScreen,
   RegisterDeliveryScreen,
+  ProductScreen,
 } from '../screens';
 import {RootStackParams} from '../../interfaces';
 import {DrawerNavigation} from './drawer-navigation';
@@ -49,6 +50,14 @@ export const StackNavigator = () => {
           }}
           name="LoginScreen"
           component={LoginScreen}
+        />
+        <Screen 
+          options={{
+            cardStyleInterpolator: fadeAnimation,
+            headerShown: false
+          }}
+          name="ProductScreen"
+          component={ProductScreen}
         />
         <Screen
           options={{

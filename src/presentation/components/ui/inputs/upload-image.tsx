@@ -41,11 +41,11 @@ export const UploadImageInput = ({
       <CTextHeader
         style={{
           fontSize: 30,
-          fontWeight: '300',
+          fontWeight: '200',
         }}>
-        {documentName}
-        <CText style={{fontSize: 15, fontWeight: 'bold'}}> {description}</CText>
+      {documentName}
       </CTextHeader>
+      <CText style={{fontSize: 15, fontWeight: 'bold'}}> {description}</CText>
       <View
         style={{
           flexDirection: 'row',
@@ -53,7 +53,7 @@ export const UploadImageInput = ({
           marginVertical: 15,
         }}>
         <CButton label="Subir imagen" onPress={handleUploadPhoto} />
-        <CButton label="tomar imagen" onPress={handleTakePhoto} />
+        <CButton label="Tomar imagen" onPress={handleTakePhoto} />
       </View>
     </CViewAlpha>
   );

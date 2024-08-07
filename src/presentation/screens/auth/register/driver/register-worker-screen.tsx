@@ -12,7 +12,7 @@ export const RegisterWorkerScreen = () => {
   return (
     <I18nextProvider i18n={i18n}>
       <CView style={{flex: 1, width: '99%'}}>
-      <ScrollView>
+      <ScrollView style={{backgroundColor: 'white'}}>
         <TextHeaderScreen
           paddingTop={30}
           title={t("registration-form")}

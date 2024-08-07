@@ -40,7 +40,7 @@ export function DrawerNavigation() {
         <>
           <Screen
             options={{
-              title: 'Inicio',
+              title: t('home'),
               drawerIcon: ({color}) => <CustomIcon fill={color} name="home" />,
               headerShown: false,
             }}
@@ -50,7 +50,7 @@ export function DrawerNavigation() {
 
           <Screen
             options={{
-              title: 'Mi carrito',
+              title: t('cart'),
               headerShown: false,
               sceneContainerStyle: {
                 flex: 1,
@@ -66,7 +66,7 @@ export function DrawerNavigation() {
           {isClient && (
             <Screen
               options={{
-                title: 'Compras',
+                title: t('shopping'),
                 headerShown: false,
                 sceneContainerStyle: {
                   flex: 1,
@@ -83,7 +83,7 @@ export function DrawerNavigation() {
           {!isClient && (
             <Screen
               options={{
-                title: 'Viajes',
+                title: t('trips'),
                 headerShown: false,
                 sceneContainerStyle: {
                   flex: 1,
@@ -100,7 +100,7 @@ export function DrawerNavigation() {
           {!isClient && (
             <Screen
               options={{
-                title: 'Recargas',
+                title: t('refills'),
                 headerShown: false,
                 sceneContainerStyle: {
                   flex: 1,

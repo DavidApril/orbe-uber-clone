@@ -3,10 +3,6 @@ import {
   createStackNavigator,
 } from '@react-navigation/stack';
 
-import {
-  RefillsScreen,
-  ShoppingHistoryItemScreen,
-} from '../screens';
 import {RootStackParams} from '../../interfaces';
 
 const {Navigator, Screen} = createStackNavigator<RootStackParams>();

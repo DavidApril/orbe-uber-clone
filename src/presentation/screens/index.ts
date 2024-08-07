@@ -49,6 +49,8 @@ export * from './historical/travels-history-screen';
 export * from './historical/travel-info-screen';
 export * from './historical/purchases-history-screen';
 export * from './historical/purchase-info-screen';
+export * from './historical/shopping-history-screen';
+export * from './historical/shopping-history-screen'
 
 export * from './coupons/coupons-screen';
 

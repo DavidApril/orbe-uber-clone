@@ -12,6 +12,8 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {ProductsList} from './products/products-list';
 import {useCartStore, useUIStore} from '../../../store';
 import {fontColor, globalColors, globalDimensions} from '../../theme/styles';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '../../../config/i18n/i18n';
 
 export const RestaurantScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParams, 'RestaurantScreen'>>();
@@ -50,9 +52,11 @@ export const RestaurantScreen = () => {
   }, [page]);
 
   const {isDarkMode} = useUIStore();
+  const {t} = useTranslation()
 
   return (
-    <View
+    <I18nextProvider i18n={i18n}>
+      <View
       style={{
         flex: 1,
         position: 'relative',
@@ -188,10 +192,11 @@ export const RestaurantScreen = () => {
           <Stats />
         </View>
 
-        <ProductsList products={products} title={'Productos'} />
+        <ProductsList products={products} title={t('products')} />
 
         <View style={{height: 100}}></View>
       </ScrollView>
     </View>
+    </I18nextProvider>
   );
 };
