@@ -17,3 +17,13 @@ export interface RequestDriver {
   id_client: string;
   id_driver: string;
 }
+
+export interface WorkerRequest {
+  coordinates: [
+    {latitud: number; longitud: number; type: 'origen'},
+    {latitud: number; longitud: number; type: 'destino'},
+  ];
+  id: string;
+  id_client: string;
+  id_driver: string;
+}

@@ -11,3 +11,4 @@ export * from './coupon/coupon.store';
 export * from './payments/payments.store';
 export * from './delivery/delivery.store';
 export * from './orders/orders.store';
+export * from './worker/worker.store';

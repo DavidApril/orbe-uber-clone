@@ -1,68 +1,88 @@
-import {useEffect} from 'react';
-import {useDeliveryStore, useLocationStore} from '../../../store';
+import {useEffect, useState} from 'react';
+import {
+  useAuthStore,
+  useLocationStore,
+  useUIStore,
+  useWorkerStore,
+} from '../../../store';
 import {
   AcceptCancelButtons,
   ActiveServicesButton,
+  CButton,
   ClientInformationCard,
   CText,
   CTextHeader,
   CustomIcon,
   CustomMapView,
+  CView,
   CViewAlpha,
+  FAB,
   OpenDrawerMenu,
 } from '../../components';
 import {LoadingScreen} from '../loading/loading-screen';
 import {useSocket} from '../../../hooks';
-import {List} from '@ui-kitten/components';
-
-import {RootStackParams} from '../../../interfaces';
-import {StackScreenProps} from '@react-navigation/stack';
-import {Image, Pressable, View} from 'react-native';
-import {globalDimensions} from '../../theme/styles';
-import {CameraAdapter} from '../../../config/adapters';
-import {StorageService} from '../../../services';
+import {TextInput, View} from 'react-native';
+import {
+  globalDimensions,
+  globalStyles,
+  neutralColors,
+  stateColors,
+} from '../../theme/styles';
 import {API_SOCKET_URL} from '@env';
+import {FlatList} from 'react-native';
+import {currencyFormat} from '../../../utils';
 
-interface Props
-  extends StackScreenProps<RootStackParams, 'HomeDeliveryScreen'> {}
-
-export const HomeDeliveryScreen = ({navigation}: Props) => {
-  const {lastKnownLocation} = useLocationStore();
-  const {socket} = useSocket(`${API_SOCKET_URL}/request-restaurant`);
+export const HomeDeliveryScreen = () => {
+  const {lastKnownLocation, getLocation} = useLocationStore();
+  const {socket} = useSocket(`${API_SOCKET_URL}/location-delivery`);
+  const {userByUid} = useAuthStore();
+  const {isDarkMode} = useUIStore();
+  const [clientCode, setClientCode] = useState<string>('');
 
   const {
-    deliveryServiceIsActive,
-    setDeliveryServiceIsActive,
+    workerServiceIsActive,
+    setWorkerServiceIsActive,
     origin,
     destination,
     analyzingRace,
     currentRaceAccepted,
-    deliveryRequests,
+    workerRequests,
     setRaceData,
-    setDeliveryRequests,
-    setDeliveryArrived,
-    deliveryArrived,
-    setProductImage,
+    setWorkerArrived,
+    workerArrived,
+    raceData,
+    currentRequest,
     productImage,
-  } = useDeliveryStore();
+  } = useWorkerStore();
 
   useEffect(() => {}, [productImage]);
 
   const sendDeliveryLocation = () => {
-    // socket.emit('location-driver', {
-    //   id: user?.uid,
-    //   longitud: lastKnownLocation?.longitude,
-    //   latitud: lastKnownLocation?.latitude,
-    // });
+    console.log({
+      id: userByUid!.uid_firebase,
+      longitud: lastKnownLocation?.longitude,
+      latitud: lastKnownLocation?.latitude,
+    });
+    socket.emit('delivery-connect', {
+      id: userByUid!.uid_firebase,
+      longitud: lastKnownLocation?.longitude,
+      latitud: lastKnownLocation?.latitude,
+    });
   };
 
   useEffect(() => {
-    if (!deliveryServiceIsActive) return;
-    const driverLocationInterval = setInterval(() => {
+    if (!workerServiceIsActive) return;
+    const workerLocationInterval = setInterval(() => {
       sendDeliveryLocation();
     }, 2000);
-    return () => clearInterval(driverLocationInterval);
-  }, [deliveryServiceIsActive]);
+    return () => clearInterval(workerLocationInterval);
+  }, [workerServiceIsActive]);
+
+  useEffect(() => {
+    if (lastKnownLocation === null) {
+      getLocation();
+    }
+  }, []);
 
   if (lastKnownLocation === null) {
     return <LoadingScreen />;
@@ -71,21 +91,20 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
   return (
     <View style={{flex: 1}}>
       <OpenDrawerMenu />
-      {!analyzingRace && (
-        <List
+      {workerRequests.length > 0 && workerServiceIsActive && !analyzingRace && (
+        <FlatList
           style={{
             position: 'absolute',
             zIndex: 999,
             top: 80,
             left: 5,
             right: 5,
-            backgroundColor: 'transparent',
             borderRadius: 30,
             marginBottom: 5,
             paddingHorizontal: 20,
             paddingVertical: 10,
           }}
-          data={deliveryRequests}
+          data={workerRequests}
           renderItem={({item: request}) => (
             <ClientInformationCard request={request} />
           )}
@@ -100,113 +119,133 @@ export const HomeDeliveryScreen = ({navigation}: Props) => {
         initialLocation={lastKnownLocation!}
       />
 
-      {deliveryRequests.length === 0 && !analyzingRace && (
+      {!analyzingRace && workerRequests.length === 0 ? (
         <ActiveServicesButton
-          isActive={deliveryServiceIsActive}
-          setIsActive={setDeliveryServiceIsActive}
-          onPress={() => {
-            setDeliveryRequests([0]);
-          }}
+          isActive={workerServiceIsActive}
+          setIsActive={setWorkerServiceIsActive}
+          onPress={() => {}}
         />
-      )}
+      ) : (
+        <>
+          {raceData && (
+            <View
+              style={{
+                top: 100,
+                left: 40,
+                right: 40,
+                position: 'absolute',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <CView
+                style={{
+                  flex: 1,
+                  padding: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 10,
+                  borderRadius: 10,
+                }}>
+                <CustomIcon name="activity" />
+                <CTextHeader>{raceData.distance} km</CTextHeader>
+              </CView>
+              <CView
+                style={{
+                  flex: 1,
+                  padding: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 10,
+                  borderRadius: 10,
+                }}>
+                <CustomIcon name="clock" />
+                <CTextHeader>{raceData.duration.toFixed(2)} min</CTextHeader>
+              </CView>
+            </View>
+          )}
 
-      {analyzingRace && !currentRaceAccepted && <AcceptCancelButtons />}
-
-      {currentRaceAccepted && (
-        <Pressable
-          disabled={deliveryArrived}
-          onPress={() => setDeliveryArrived(true)}
-          style={{
-            bottom: 120,
-            position: 'absolute',
-            left: 30,
-            right: 30,
-            height: !deliveryArrived ? 140 : 700,
-          }}>
-          <CViewAlpha
+          <FAB
+            white={true}
+            iconName={'trending-up-outline'}
             style={{
-              flex: 1,
-              borderRadius: globalDimensions.cardBorderRadius,
-              justifyContent: 'center',
-              opacity: !deliveryArrived ? 0.77 : 0.8,
-              borderWidth: 1,
-              alignItems: 'center',
-            }}>
-            {deliveryArrived && (
-              <View>
-                <CTextHeader
-                  style={{fontSize: 70, fontWeight: '100', letterSpacing: 10}}>
-                  XH3XYZ
-                </CTextHeader>
-                <CText>Entrega este código al restaurante...</CText>
-                <View style={{alignItems: 'center', marginVertical: 10}}>
-                  <Pressable
-                    onPress={async () => {
-                      const image_url = await CameraAdapter.takePicture('back');
-                      if (image_url) {
-                        setProductImage(
-                          StorageService.getPhotoFromCache(image_url[0]),
-                        );
-                      }
-                    }}
-                    style={{
-                      height: 200,
-                      width: 200,
-                      borderRadius: 100,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor: 'black',
-                      opacity: 0.5,
-                    }}>
-                    <View
-                      style={{
-                        transform: [{scale: 2}],
-                      }}>
-                      <CustomIcon name="image-outline" />
-                    </View>
-                  </Pressable>
-                </View>
+              bottom: 80,
+              left: 40,
+              right: 40,
+            }}
+            label={`${currencyFormat(
+              // @ts-ignore
+              Math.ceil(raceData?.distance * 850 + 4600),
+            )}`}
+            onPress={() => {}}
+          />
+          {!currentRaceAccepted && currentRequest && <AcceptCancelButtons />}
+          {currentRaceAccepted && !workerArrived && (
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 120,
+                height: 120,
+                left: 30,
+                right: 30,
+                flex: 1,
+              }}>
+              <CButton
+                label="Ya estoy aquí"
+                onPress={() => setWorkerArrived(true)}
+              />
+            </View>
+          )}
+          {workerArrived && (
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 120,
+                height: 220,
+                left: 30,
+                right: 30,
+                flex: 1,
+                justifyContent: 'center',
+                opacity: 0.9,
+                alignItems: 'center',
+                overflow: 'hidden',
+                borderRadius: globalDimensions.cardBorderRadius,
+                backgroundColor: isDarkMode
+                  ? neutralColors.backgroundDarkAlpha
+                  : neutralColors.backgroundAlpha,
+              }}>
+              <View style={{transform: [{scale: 3}], marginBottom: 30}}>
+                <CustomIcon
+                  fill={
+                    clientCode.length < 4
+                      ? stateColors.error
+                      : stateColors.success
+                  }
+                  name="alert-circle-outline"
+                />
               </View>
-            )}
-
-            {/* {productImage && (
-              <View style={{alignItems: 'center', marginVertical: 10}}>
-                <Pressable
-                  onPress={async () => {
-                    const image_url = await CameraAdapter.takePicture('back');
-                    if (image_url) {
-                      setProductImage(
-                        StorageService.getPhotoFromCache(image_url[0]),
-                      );
-                    }
-                  }}
-                  style={{
-                    height: 200,
-                    width: 200,
-                    borderRadius: 100,
+              <CText>Ingrese el código del cliente</CText>
+              <TextInput
+                value={clientCode}
+                onChangeText={value => setClientCode(value.toUpperCase())}
+                style={[
+                  globalStyles.primaryInput,
+                  {
+                    backgroundColor: isDarkMode
+                      ? neutralColors.textInputBackgroundDark
+                      : neutralColors.textInputBackgroundDark,
+                    borderRadius: globalDimensions.cardBorderRadius,
+                    width: '80%',
+                    fontSize: 30,
+                    letterSpacing: 8,
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    opacity: 0.5,
-                  }}>
-                  <Image
-                    style={{height: 190, width: 190, borderRadius: 100}}
-                    source={{
-                      uri: StorageService.getPhotoFromCache(productImage),
-                    }}
-                  />
-                </Pressable>
-              </View>
-            )} */}
-
-            {!deliveryArrived && (
-              <Pressable>
-                <CText style={{fontWeight: 'bold', fontSize: 18}}>
-                  Estoy aquí
-                </CText>
-              </Pressable>
-            )}
-          </CViewAlpha>
-        </Pressable>
+                    textAlign: 'center',
+                    marginVertical: 10,
+                  },
+                ]}
+              />
+            </View>
+          )}
+        </>
       )}
     </View>
   );

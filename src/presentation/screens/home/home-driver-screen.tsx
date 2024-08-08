@@ -58,8 +58,6 @@ export const HomeDriverScreen = ({}: Props) => {
     setOrigin,
   } = useDriverStore();
 
-  console.log({currentRequest});
-
   useEffect(() => {
     socket.on('driver-request', data => {
       setDriverRequests(data.client_request);

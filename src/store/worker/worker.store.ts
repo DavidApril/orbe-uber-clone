@@ -1,58 +1,51 @@
 import {create} from 'zustand';
-import {Location, Race} from '../../interfaces';
+import {Location, Race, WorkerRequest} from '../../interfaces';
 
-interface DeliveryState {
+interface WorkerState {
+  workerServiceIsActive: boolean;
   origin: Location | null;
   destination: Location | null;
-
+  analyzingRace: boolean;
+  workerRequests: WorkerRequest[];
   raceData: Race | null;
-
-  // TODO: currentRequest Interface
-  currentRequest: any;
-  // TODO: deliveryRequests Interface
-  deliveryRequests: any[];
-
+  currentRequest: WorkerRequest | null;
+  currentRaceAccepted: boolean;
+  workerArrived: boolean;
   productImage: string | null;
 
-  analyzingRace: boolean;
-  currentRaceAccepted: boolean;
-  deliveryServiceIsActive: boolean;
-  deliveryArrived: boolean;
-  setDeliveryArrived: (value: boolean) => void;
-
-  setDeliveryServiceIsActive: (value: boolean) => void;
+  setWorkerArrived: (value: boolean) => void;
+  setWorkerServiceIsActive: (value: boolean) => void;
   setOrigin: (position: Location | null) => void;
   setDestination: (position: Location | null) => void;
   setAnalyzingRace: (value: boolean) => void;
   setRaceData: (value: Race | null) => void;
-  setDeliveryRequests: (deliveryRequests: any) => void;
-  // TODO: currentRequest Interface
-  setCurrentRequest: (currentRequest: any) => void;
+  setWorkerRequests: (workerRequests: any) => void;
+  setCurrentRequest: (currentRequest: WorkerRequest) => void;
   setCurrentRaceAccepted: (value: boolean) => void;
   setProductImage: (image: string | null) => void;
 }
 
-export const useDeliveryStore = create<DeliveryState>()(set => ({
-  deliveryServiceIsActive: false,
+export const useWorkerStore = create<WorkerState>()(set => ({
+  workerServiceIsActive: false,
   origin: null,
   destination: null,
   analyzingRace: false,
-  deliveryRequests: [],
+  workerRequests: [],
   raceData: null,
-  currentRequest: false,
+  currentRequest: null,
   currentRaceAccepted: false,
-  deliveryArrived: false,
+  workerArrived: false,
   productImage: null,
 
-  setDeliveryServiceIsActive: deliveryServiceIsActive =>
-    set({deliveryServiceIsActive}),
+  setWorkerArrived: (value: boolean) => set({workerArrived: value}),
+  setWorkerServiceIsActive: workerServiceIsActive =>
+    set({workerServiceIsActive}),
   setOrigin: position => set({origin: position}),
   setDestination: position => set({destination: position}),
   setAnalyzingRace: value => set({analyzingRace: value}),
   setRaceData: value => set({raceData: value}),
-  setDeliveryRequests: deliveryRequests => set({deliveryRequests}),
+  setWorkerRequests: workerRequests => set({workerRequests}),
   setCurrentRequest: currentRequest => set({currentRequest}),
   setCurrentRaceAccepted: value => set({currentRaceAccepted: value}),
-  setDeliveryArrived: (value: boolean) => set({deliveryArrived: value}),
   setProductImage: image => set({productImage: image}),
 }));
