@@ -1,20 +1,19 @@
 import '../../../../config/i18n/i18n';
 import {Animated, Pressable, useWindowDimensions, View} from 'react-native';
-import {Button, Input, Spinner, Text} from '@ui-kitten/components';
-import {changeLanguage} from '../../../../config/i18n/change-language.ts';
 import {CButton, CInput, CustomIcon, CView} from '../../../components';
+import {changeLanguage} from '../../../../config/i18n/change-language.ts';
 import {Formik} from 'formik';
 import {globalColors, stateColors} from '../../../theme/styles';
-import {I18nextProvider} from 'react-i18next';
 import {RootStackParams} from '../../../../interfaces';
 import {ScrollView} from 'react-native-gesture-handler';
+import {Spinner, Text} from '@ui-kitten/components';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useAnimation} from '../../../../hooks';
 import {useAuthStore} from '../../../../store/auth/auth.store';
 import {useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import i18n from '../../../../config/i18n/i18n.ts';
+import {useTranslation, I18nextProvider} from 'react-i18next';
 import * as Yup from 'yup';
+import i18n from '../../../../config/i18n/i18n.ts';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
@@ -146,7 +145,11 @@ export const LoginScreen = ({navigation}: Props) => {
 
                 {/* Button */}
                 <View>
-                  <CButton onPress={handleSubmit} label={t('login')} />
+                  {!isLoading ? (
+                    <CButton onPress={handleSubmit} label={t('login')} />
+                  ) : (
+                    <Spinner />
+                  )}
                 </View>
               </>
             )}
@@ -156,7 +159,7 @@ export const LoginScreen = ({navigation}: Props) => {
           <View style={{height: 100}}></View>
 
           {/* Not have account */}
-          <View
+          {/* <View
             style={{
               alignItems: 'flex-end',
               flexDirection: 'row',
@@ -170,7 +173,7 @@ export const LoginScreen = ({navigation}: Props) => {
               {' '}
               {t('create one here')}
             </Text>
-          </View>
+          </View> */}
         </ScrollView>
       </CView>
     </I18nextProvider>
