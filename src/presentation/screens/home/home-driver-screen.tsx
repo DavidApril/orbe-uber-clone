@@ -1,15 +1,14 @@
 import {useEffect, useState} from 'react';
 import {
   useAuthStore,
-  useDriverStore,
   useLocationStore,
   useUIStore,
+  useWorkerStore,
 } from '../../../store';
 import {
   AcceptCancelButtons,
   ActiveServicesButton,
   CButton,
-  CInput,
   ClientInformationCard,
   CText,
   CTextHeader,
@@ -39,28 +38,29 @@ interface Props extends StackScreenProps<RootStackParams, 'HomeDriverScreen'> {}
 export const HomeDriverScreen = ({}: Props) => {
   const {user} = useAuthStore();
   const {lastKnownLocation, getLocation} = useLocationStore();
-  const {socket, online} = useSocket(`${API_SOCKET_URL}/location`);
+  const {socket} = useSocket(`${API_SOCKET_URL}/location`);
   const {isDarkMode} = useUIStore();
   const [driverArrived, setDriverArrived] = useState<boolean>(false);
   const [clientCode, setClientCode] = useState<string>('');
+
   const {
-    driverServiceIsActive,
+    workerServiceIsActive,
+    setWorkerServiceIsActive,
     origin,
-    currentRequest,
+    setWorkerRequests,
     destination,
     analyzingRace,
     currentRaceAccepted,
-    driverRequests,
-    raceData,
-    setDriverServiceIsActive,
+    workerRequests,
     setRaceData,
-    setDriverRequests,
+    raceData,
+    currentRequest,
     setOrigin,
-  } = useDriverStore();
+  } = useWorkerStore();
 
   useEffect(() => {
     socket.on('driver-request', data => {
-      setDriverRequests(data.client_request);
+      setWorkerRequests(data.client_request);
     });
   }, []);
 
@@ -69,8 +69,6 @@ export const HomeDriverScreen = ({}: Props) => {
       getLocation();
     }
   }, []);
-
-  console.log({online})
 
   const sendDriverLocation = () => {
     socket.emit('location-driver', {
@@ -81,12 +79,12 @@ export const HomeDriverScreen = ({}: Props) => {
   };
 
   useEffect(() => {
-    if (!driverServiceIsActive) return;
+    if (!workerServiceIsActive) return;
     const driverLocationInterval = setInterval(() => {
       sendDriverLocation();
     }, 2000);
     return () => clearInterval(driverLocationInterval);
-  }, [driverServiceIsActive]);
+  }, [workerServiceIsActive]);
 
   useEffect(() => {
     if (currentRaceAccepted) {
@@ -101,7 +99,7 @@ export const HomeDriverScreen = ({}: Props) => {
   return (
     <View style={{flex: 1}}>
       <OpenDrawerMenu />
-      {driverRequests.length > 0 && driverServiceIsActive && !analyzingRace && (
+      {workerRequests.length > 0 && workerServiceIsActive && !analyzingRace && (
         <FlatList
           style={{
             position: 'absolute',
@@ -114,7 +112,7 @@ export const HomeDriverScreen = ({}: Props) => {
             paddingHorizontal: 20,
             paddingVertical: 10,
           }}
-          data={driverRequests}
+          data={workerRequests}
           renderItem={({item: request}) => (
             <ClientInformationCard request={request} />
           )}
@@ -129,10 +127,10 @@ export const HomeDriverScreen = ({}: Props) => {
         initialLocation={lastKnownLocation!}
       />
 
-      {!analyzingRace && driverRequests.length === 0 ? (
+      {!analyzingRace && workerRequests.length === 0 ? (
         <ActiveServicesButton
-          isActive={driverServiceIsActive}
-          setIsActive={setDriverServiceIsActive}
+          isActive={workerServiceIsActive}
+          setIsActive={setWorkerServiceIsActive}
           onPress={() => {}}
         />
       ) : (

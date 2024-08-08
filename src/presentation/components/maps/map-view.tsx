@@ -1,14 +1,13 @@
 import {Platform, useColorScheme, Image} from 'react-native';
-import MapView, {PROVIDER_GOOGLE, Polyline, Marker} from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import {PropsWithChildren, useEffect, useRef, useState} from 'react';
-import {Location} from '../../../interfaces';
+import {Location, Race} from '../../../interfaces';
 import {useLocationStore} from '../../../store';
 import {FAB} from '../ui/floating-action-button';
 import {MapStyle} from '../../../config/const/map';
 import {GOOGLE_API_KEY} from '@env';
 import MapViewDirections from 'react-native-maps-directions';
 import {MapLightStyle} from '../../../config/const/map-light';
-import { Race } from '../../../store/client/client-driver-store';
 
 interface Props {
   driverPosition?: any;

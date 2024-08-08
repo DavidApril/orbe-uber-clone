@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {Pressable, View} from 'react-native';
 import {globalDimensions, stateColors} from '../../theme/styles';
 import {CustomIcon} from './custom-icon';
-import {useDriverStore} from '../../../store';
+import {useWorkerStore} from '../../../store';
 import {RaceService} from '../../../services';
 import {Spinner} from '@ui-kitten/components';
 
 export const AcceptCancelButtons = () => {
-  const {setCurrentRaceAccepted, currentRequest, raceData} = useDriverStore();
+  const {setCurrentRaceAccepted, currentRequest, raceData} = useWorkerStore();
   const [isAcceptingRequest, setIsAcceptingRequest] = useState<boolean>(false);
   return (
     <View

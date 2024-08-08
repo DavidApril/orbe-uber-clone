@@ -1,11 +1,9 @@
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
-import {Layout, Spinner} from '@ui-kitten/components';
-import {Pressable, useWindowDimensions} from 'react-native';
+import {Layout} from '@ui-kitten/components';
+import {useWindowDimensions} from 'react-native';
 import {globalColors, globalStyles} from '../../theme/styles';
 import {CustomBottomTabItem} from './custom-bottom-tab-item';
-import {useDriverStore, useUIStore} from '../../../store';
-import {CustomIcon} from '../ui/custom-icon';
-import {View} from 'react-native';
+import {useUIStore} from '../../../store';
 
 export const CustomBottomTabs = ({
   state,
@@ -15,7 +13,6 @@ export const CustomBottomTabs = ({
 }: BottomTabBarProps) => {
   const {isDarkMode} = useUIStore();
   const {height, width} = useWindowDimensions();
-  const {driverServiceIsActive, setDriverServiceIsActive} = useDriverStore();
   return (
     <Layout
       style={[

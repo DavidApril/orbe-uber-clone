@@ -43,7 +43,7 @@ export class ClientService {
 
       return response.data;
     } catch (error) {
-      parseError(this.PREFIX + 'createClient', error);
+      parseError(this.PREFIX + '/createClient', error);
     }
   };
 

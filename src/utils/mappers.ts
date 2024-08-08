@@ -1,11 +1,7 @@
 import {CLIENT, DRIVER, DELIVERY} from '../interfaces';
 import {
-  HomeClientDeliveryScreen,
-  HomeDeliveryScreen,
-  HomeDriverScreen,
   ProfileClientScreen,
-  ProfileDeliveryScreen,
-  ProfileDriverScreen,
+  ProfileWorkerScreen,
 } from '../presentation/screens';
 export const registerRoutesByRoleMapper: Record<
   CLIENT | DRIVER | DELIVERY,
@@ -20,18 +16,8 @@ export const profileRoutesByRoleMapper = (role: DRIVER | DELIVERY | CLIENT) => {
   if (role === CLIENT) {
     return ProfileClientScreen;
   } else if (role === DRIVER) {
-    return ProfileDriverScreen;
+    return ProfileWorkerScreen;
   } else if (role === DELIVERY) {
-    return ProfileDeliveryScreen;
-  }
-};
-
-export const routesHomeByRoleMapper = (role: DRIVER | DELIVERY | CLIENT) => {
-  if (role === CLIENT) {
-    return HomeClientDeliveryScreen;
-  } else if (role === DRIVER) {
-    return HomeDriverScreen;
-  } else if (role === DELIVERY) {
-    return HomeDeliveryScreen;
+    return ProfileWorkerScreen;
   }
 };

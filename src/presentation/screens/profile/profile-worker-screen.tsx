@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {DRIVER} from '../../../interfaces';
 import {StorageService} from '../../../services';
-import {useAuthStore, useDriverStore} from '../../../store';
+import {useAuthStore, useWorkerStore} from '../../../store';
 import {parseDate} from '../../../utils';
 import {OpenDrawerMenu, StatusButton} from '../../components';
 import {globalColors, globalDimensions} from '../../theme/styles';
@@ -18,7 +18,7 @@ export const ProfileWorkerScreen = () => {
   const {userByUid, role} = useAuthStore();
   const {height, width} = useWindowDimensions();
   const colorSchema = useColorScheme();
-  const {driverServiceIsActive} = useDriverStore();
+  const {workerServiceIsActive} = useWorkerStore();
 
   if (!userByUid) {
     return <LoadingScreen />;
@@ -93,7 +93,7 @@ export const ProfileWorkerScreen = () => {
           </View>
 
           <View style={{flexDirection: 'row', gap: 20}}>
-            <StatusButton isActive={driverServiceIsActive} />
+            <StatusButton isActive={workerServiceIsActive} />
 
             <View
               style={{

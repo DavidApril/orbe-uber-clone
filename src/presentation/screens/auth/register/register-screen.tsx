@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react';
-import {Layout, Button} from '@ui-kitten/components';
 import {StackScreenProps} from '@react-navigation/stack';
 import {
   CLIENT,
@@ -9,6 +8,7 @@ import {
 } from '../../../../interfaces';
 import {SelectRoleAccount} from './select-role-account';
 import {registerRoutesByRoleMapper} from '../../../../utils';
+import {CView} from '../../../components';
 
 interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 
@@ -45,7 +45,7 @@ export const RegisterScreen = ({navigation}: Props) => {
   }, [role]);
 
   return (
-    <Layout
+    <CView
       style={{
         flex: 1,
         flexDirection: 'column',
@@ -63,6 +63,6 @@ export const RegisterScreen = ({navigation}: Props) => {
         appearance="ghost">
         Volver
       </Button> */}
-    </Layout>
+    </CView>
   );
 };

@@ -1,7 +1,7 @@
 import {Button, Spinner} from '@ui-kitten/components';
 import {CustomIcon} from '../ui/custom-icon';
 import {useEffect, useState} from 'react';
-import {useDriverStore, useUIStore} from '../../../store';
+import {useUIStore, useWorkerStore} from '../../../store';
 import {Pressable, View, Text, Image} from 'react-native';
 import {globalDimensions, neutralColors, stateColors} from '../../theme/styles';
 import {CTextHeader} from '../ui/custom-text-header';
@@ -21,7 +21,7 @@ export const ClientInformationCard = ({request}: Props) => {
   const {isDarkMode} = useUIStore();
 
   const {setCurrentRequest, setDestination, setOrigin, setAnalyzingRace} =
-    useDriverStore();
+    useWorkerStore();
 
   useEffect(() => {
     ClientService.getClientByUid(request.id_client).then(client =>
@@ -40,7 +40,6 @@ export const ClientInformationCard = ({request}: Props) => {
       }
     });
   }, [raceData]);
-
 
   if (!client) {
     return (
@@ -146,7 +145,7 @@ export const ClientInformationCard = ({request}: Props) => {
             setAnalyzingRace(true);
             setCurrentRequest(request);
           }}>
-          <CTextHeader>Analizar pedido</CTextHeader>
+          <CTextHeader>Analizar</CTextHeader>
         </Pressable>
 
         <View
