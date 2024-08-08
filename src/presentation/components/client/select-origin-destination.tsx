@@ -8,6 +8,8 @@ import {globalColors, globalDimensions} from '../../theme/styles';
 import {CustomIcon} from '../ui/custom-icon';
 import {useUIStore} from '../../../store';
 import {useClientDriverStore} from '../../../store/client/client-driver-store';
+import {CView} from '../ui/custom-view';
+import {CViewAlpha} from '../ui/custom-view-alpha';
 
 export const SelectOriginDestination = () => {
   const {height, width} = useWindowDimensions();
@@ -77,7 +79,7 @@ export const SelectOriginDestination = () => {
             alignItems: 'center',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
           }}>
-          <View
+          <CViewAlpha
             style={{
               width: width * 0.9,
               height: height * 0.6,
@@ -149,8 +151,8 @@ export const SelectOriginDestination = () => {
                     latitude: details?.geometry.location.lat,
                     longitude: details?.geometry.location.lng,
                   });
-                  setInputLocation(details.formatted_address || ''); // Actualiza el texto del input
-                  setModalLocation(false); // Cierra el modal al seleccionar un lugar
+                  setInputLocation(details.formatted_address || '');
+                  setModalLocation(false);
                 }
               }}
               query={{
@@ -158,7 +160,7 @@ export const SelectOriginDestination = () => {
                 language: 'es',
               }}
             />
-          </View>
+          </CViewAlpha>
         </Pressable>
       </Modal>
 
@@ -198,7 +200,7 @@ export const SelectOriginDestination = () => {
             alignItems: 'center',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
           }}>
-          <View
+          <CViewAlpha
             style={{
               width: width * 0.9,
               height: height * 0.5,
@@ -216,12 +218,13 @@ export const SelectOriginDestination = () => {
               }}
               fetchDetails={true}
               enableHighAccuracyLocation
+              numberOfLines={5}
               debounce={300}
               styles={{
                 container: {
                   flex: 1,
                   width: '100%',
-                  backgroundColor: 'transparent',
+                  opacity: 0.3,
                   gap: 20,
                 },
                 row: {
@@ -229,7 +232,7 @@ export const SelectOriginDestination = () => {
                   height: 100,
                   backgroundColor: isDarkMode
                     ? globalColors.neutralColors.backgroundDarkAlpha
-                    : globalColors.neutralColors.backgroundDarkAlpha,
+                    : globalColors.neutralColors.backgroundAlpha,
                   flexDirection: 'row',
                   borderRadius: 12,
                   width: width * 0.75,
@@ -285,7 +288,7 @@ export const SelectOriginDestination = () => {
                 <Text>Cerrar</Text>
               </Pressable>
             </View>
-          </View>
+          </CViewAlpha>
         </Pressable>
       </Modal>
 

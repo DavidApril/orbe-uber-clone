@@ -8,22 +8,22 @@ import {
   CViewAlpha,
   FAB,
 } from '../../components';
-import {LoadingScreen} from '../loading/loading-screen';
-import {useAuthStore, useLocationStore} from '../../../store';
-import {useEffect, useState} from 'react';
-import {useSocket} from '../../../hooks';
-import {API_SOCKET_URL} from '@env';
-import {RootStackParams} from '../../../interfaces';
 import {
   DrawerActions,
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native';
-import {useClientDriverStore} from '../../../store/client/client-driver-store';
-import {Modal, Pressable, useWindowDimensions} from 'react-native';
-import {View} from 'react-native';
+import {API_SOCKET_URL} from '@env';
+import {LoadingScreen} from '../loading/loading-screen';
+import {Modal, Pressable, useWindowDimensions, View} from 'react-native';
 import {RatingService} from '../../../services';
+import {RootStackParams} from '../../../interfaces';
 import {Spinner} from '@ui-kitten/components';
+import {useAuthStore, useLocationStore} from '../../../store';
+import {useClientDriverStore} from '../../../store/client/client-driver-store';
+import {useEffect, useState} from 'react';
+import {useSocket} from '../../../hooks';
+import uuid from 'react-native-uuid';
 
 export const RequestDriverScreen = () => {
   const {user} = useAuthStore();
@@ -159,13 +159,17 @@ export const RequestDriverScreen = () => {
               {Array.from({length: 5}).map((_, index) => {
                 if (index < rating) {
                   return (
-                    <Pressable onPress={() => setRating(index + 1)}>
+                    <Pressable
+                      key={uuid.v4().toString()}
+                      onPress={() => setRating(index + 1)}>
                       <CustomIcon name="star" />
                     </Pressable>
                   );
                 }
                 return (
-                  <Pressable onPress={() => setRating(index + 1)}>
+                  <Pressable
+                    key={uuid.v4().toString()}
+                    onPress={() => setRating(index + 1)}>
                     <CustomIcon name="star-outline" />
                   </Pressable>
                 );
@@ -198,11 +202,11 @@ export const RequestDriverScreen = () => {
       </Modal>
 
       <CustomMapView
-        driverPosition={currentDriver ? currentDriver : null}
+        driverPosition={currentDriver}
         origin={origin}
         destination={destination}
         setRaceData={setRaceData}
-        initialLocation={lastKnownLocation!}></CustomMapView>
+        initialLocation={lastKnownLocation}></CustomMapView>
 
       <BSSelectOriginDestination />
     </>
