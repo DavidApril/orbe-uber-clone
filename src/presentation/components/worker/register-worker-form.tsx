@@ -22,6 +22,7 @@ import {parseError} from '../../../utils';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import i18n from '../../../config/i18n/i18n';
 import * as Yup from 'yup'
+// import RNFS from 'react-native-fs'
 
 export const RegisterWorkerForm = () => {
   const navigation =
@@ -29,6 +30,7 @@ export const RegisterWorkerForm = () => {
       MaterialTopTabNavigationProp<RootStackParams, 'RegisterWorkerScreen'>
     >();
   const [image, setImage] = useState<string>('');
+  const [imageBuffer, setImageBuffer] = useState<File>()
   const [workerIsCreated, setWorkerIsCreated] = useState<boolean | null>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
@@ -50,6 +52,7 @@ export const RegisterWorkerForm = () => {
     firstName: '',
     lastName: '',
     identification: '',
+    gender: '',
     phone: '',
     email: '',
     image: '',
@@ -58,20 +61,26 @@ export const RegisterWorkerForm = () => {
   };
 
   const onSubmit = async (values: typeof initialValues) => {
-    try {
+    try {                     
+      const image_blob = await StorageService.convertToBlob(image) as any
+
+      const fileName: string = uuid.v4().toString();
       const formData = new FormData();
-      formData.append('file', image);
-      formData.append('fileName', uuid.v4());
+      formData.append('file', image_blob?.data);
+      formData.append('fileName', fileName);
       formData.append('directory', 'profile');
       
-      await StorageService.uploadPhoto(formData);
+      console.log('this is filename: ', fileName)
+      
+      const image_uploaded = await StorageService.uploadPhoto(formData)
+
+      // console.log(image_uri)
 
       await WorkerService.create(
         values,
         DRIVER,
-        image[0]
+        image_uploaded?.image
       );
-      console.log(image[0])
     } catch (error) {
       parseError('error at upload image', error);
       setWorkerIsCreated(false);
@@ -125,6 +134,13 @@ export const RegisterWorkerForm = () => {
                 handleValue={handleChange('email')}
                 keyboardType="email-address"
                 label={t("email-address")}
+              />
+
+              <CInput
+                style={{ backgroundColor: 'white', borderWidth: 1, borderColor: globalColors.primaryColors.primary }}
+                value={values.gender}
+                handleValue={handleChange('gender')}
+                label={t("gender")}
               />
 
               <View
@@ -204,6 +220,7 @@ export const RegisterWorkerForm = () => {
                     label={t("open-camera")}
                     onPress={async () => {
                       const picture = await CameraAdapter.takePicture();
+                      console.log("->", picture)
                       setImage(picture[0]);
                     }}
                   />

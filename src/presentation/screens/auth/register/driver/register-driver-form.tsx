@@ -30,6 +30,7 @@ export const RegisterDriverForm = () => {
     firstName: '',
     lastName: '',
     selectedTypeId: '',
+    gender: '',
     identification: '',
     phone: '',
     email: '',

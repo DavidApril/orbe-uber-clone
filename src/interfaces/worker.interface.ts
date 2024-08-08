@@ -4,6 +4,7 @@ export interface WorkerRegisterForm {
   firstName: string;
   lastName: string;
   selectedTypeId?: string;
+  gender: string;
   identification: string;
   phone: string;
   email: string;
