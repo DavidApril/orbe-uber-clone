@@ -29,8 +29,8 @@ export const CButton = ({
           : globalStyles.primaryButtonDisable,
         globalStyles.boxShadow,
         {
-          paddingHorizontal: 30,
-          paddingVertical: 10,
+          paddingHorizontal: 20,
+          paddingVertical: 15,
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',

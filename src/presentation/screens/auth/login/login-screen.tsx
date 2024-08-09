@@ -141,14 +141,14 @@ export const LoginScreen = ({navigation}: Props) => {
                 </View>
 
                 {/* Space */}
-                <View style={{height: 20}}></View>
+                <View style={{height: 40}}></View>
 
                 {/* Button */}
                 <View>
-                  {!isLoading ? (
-                    <CButton onPress={handleSubmit} label={t('login')} />
-                  ) : (
+                  {isLoading ? (
                     <Spinner />
+                  ) : (
+                    <CButton onPress={handleSubmit} label={t('login')} />
                   )}
                 </View>
               </>

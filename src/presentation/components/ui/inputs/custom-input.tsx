@@ -17,7 +17,7 @@ export const CInput = ({label, style, value, handleValue, ...props}: Props) => {
 
   return (
     <View style={[{flex: 1}]}>
-      <CText style={{marginBottom: 5}}>{label}</CText>
+      <CText style={{marginBottom: label ? 5 : 0}}>{label}</CText>
       <TextInput
         {...props}
         value={value}

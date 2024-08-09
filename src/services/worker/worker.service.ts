@@ -15,6 +15,8 @@ import type {
   WorkerVehicle,
 } from '../../interfaces';
 import {parseError} from '../../utils';
+import axios from 'axios';
+import { API_PREFIX, API_URL } from '@env';
 
 export class WorkerService {
   static PREFIX: string = 'worker';
@@ -34,10 +36,11 @@ export class WorkerService {
         driver.password,
       );
 
-      const {data: response} = await orbeApi.post(`/${this.PREFIX}/create`, {
+      const {data: response} = await axios.post(`${API_URL}/${API_PREFIX}/${this.PREFIX}/create`, {
         email: driver.email,
         password: driver.password,
         uid: user.uid,
+        gender: driver.gender,
         createWithEmailAndPassword: false,
         driver: {
           identification: driver.identification,
@@ -54,10 +57,11 @@ export class WorkerService {
           },
         ],
       });
-      
+      console.log('worker created succesfully!')
       return response.data;
     } catch (error) {
       parseError(this.PREFIX + '/create', error);
+      console.log('no se creo')
     }
   };
 
